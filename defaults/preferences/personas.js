@@ -1,0 +1,10 @@
+pref("extensions.personas.selected", "default");
+pref("extensions.personas.lastversion", "firstrun");
+pref("extensions.personas.url", "http://people.mozilla.com/~cbeard/personas/");
+pref("extensions.personas.lastselected0", "(none)");
+pref("extensions.personas.lastselected1", "(none)");
+pref("extensions.personas.lastselected2", "(none)");
+pref("extensions.personas.lastcategoryupdate", "");
+pref("extensions.personas.lastlistupdate", "");
+pref("extensions.personas.lastmenuupdate", "");
+pref("extensions.personas.editor", "manual");

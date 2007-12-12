@@ -1,0 +1,7 @@
+<!-- install.rdf/website is in English only and Extension name is not translated -->
+<!ENTITY personas_app_title 	  "Personas for Firefox">
+
+<!ENTITY useDefaultPersona.label  "デフォルトに戻す">
+<!-- FIXME: translate this string -->
+<!ENTITY useCustomPersona.label   "Use Local Header...">
+<!ENTITY aboutPersonas.label      "Personas について...">

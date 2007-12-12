@@ -1,0 +1,5 @@
+<!ENTITY personas_app_title 	  "Personas for Firefox">
+
+<!ENTITY useDefaultPersona.label  "Use Default">
+<!ENTITY useCustomPersona.label   "Use Local Header...">
+<!ENTITY aboutPersonas.label      "About...">
