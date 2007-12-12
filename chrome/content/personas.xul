@@ -62,9 +62,6 @@
         <menuseparator id ="personas-manual-separator" hidden="true"/>
         <menuitem id="personas-manual" label="&useCustomPersona.label;" hidden="true"
                   oncommand="PersonaController.onSelectManual(event)"/>
-        <menuseparator/>
-        <menuitem label="&aboutPersonas.label;"
-                  oncommand="PersonaController.onSelectAbout(event);"/>
       </menupopup>
     </statusbarpanel>
   </statusbar>
