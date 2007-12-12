@@ -50,10 +50,10 @@ if ("import" in Cu) {
   Cu.import("resource://gre/modules/JSON.jsm");
 }
 else {
-  let subscriptLoader = Cc["@mozilla.org/moz/jssubscript-loader;1"].
+  var subscriptLoader = Cc["@mozilla.org/moz/jssubscript-loader;1"].
                         getService(Ci.mozIJSSubScriptLoader);
-  subscriptLoader.loadSubscript("chrome://personas/content/XPCOMUtils.jsm");
-  subscriptLoader.loadSubscript("chrome://personas/content/JSON.jsm");
+  subscriptLoader.loadSubScript("chrome://personas/content/XPCOMUtils.jsm");
+  subscriptLoader.loadSubScript("chrome://personas/content/JSON.jsm");
 }
 
 

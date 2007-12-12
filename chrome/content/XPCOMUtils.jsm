@@ -101,8 +101,8 @@
 
 EXPORTED_SYMBOLS = [ "XPCOMUtils" ];
 
-const Ci = Components.interfaces;
-const Cr = Components.results;
+//const Ci = Components.interfaces;
+//const Cr = Components.results;
 
 var XPCOMUtils = {
   /**

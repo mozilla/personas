@@ -130,12 +130,12 @@ var PersonaController = {
     // information to users.
     var firstRun = this._getPref("extensions.personas.lastversion"); 
     if (firstRun == "firstrun") {
-      let firstRunURL = this._baseURL + this._locale + "/firstrun/?version=" + PERSONAS_VERSION;
+      var firstRunURL = this._baseURL + this._locale + "/firstrun/?version=" + PERSONAS_VERSION;
       setTimeout(function() { window.openUILinkIn(firstRunURL, "tab") }, 500);
       this._prefSvc.setCharPref("extensions.personas.lastversion", PERSONAS_VERSION);
     }
     else if (firstRun != PERSONAS_VERSION) {
-      let updatedURL = this._baseURL + this._locale + "/updated/?version=" + PERSONAS_VERSION;
+      var updatedURL = this._baseURL + this._locale + "/updated/?version=" + PERSONAS_VERSION;
       setTimeout(function() { window.openUILinkIn(updatedURL, "tab") }, 500);
       this._prefSvc.setCharPref("extensions.personas.lastversion", PERSONAS_VERSION);
     }
@@ -190,11 +190,12 @@ var PersonaController = {
     this._prefSvc.setBoolPref("extensions.personas.selectedIsDark", dark);
     this._prefSvc.setCharPref("extensions.personas.selected", personaID);
   },
+
   
   // FIXME: update the menu item to display the persona name as its label.
   _updateTheme: function() {
-    let personaID = this._getPref("extensions.personas.selected");
-    let isDark = this._getPref("extensions.personas.selectedIsDark");
+    var personaID = this._getPref("extensions.personas.selected");
+    var isDark = this._getPref("extensions.personas.selectedIsDark");
 
     // Style the primary toolbar box, adding the new background image.
     var toolbar = document.getElementById("main-window");
@@ -261,6 +262,22 @@ var PersonaController = {
     this._rebuildMenu(categories, personas);
   },
 
+  _getPersonaName : function(persona_id) {
+    var personas = this._personaSvc.personas.wrappedJSObject;
+                var stringsBundle = document.getElementById("personasStringBundle");
+                var defaultString = stringsBundle.getString("Default");
+                if(persona_id == "default") {
+                        return defaultString;
+                }
+        for(var i in personas) {
+            if(personas[i].id == persona_id) {
+                return personas[i].label;
+            }
+        }
+        return defaultString;
+    },
+
+
   _rebuildMenu: function(categories, personas) {
     var openingSeparator = document.getElementById("personasOpeningSeparator");
     var closingSeparator = document.getElementById("personasClosingSeparator");
@@ -269,45 +286,56 @@ var PersonaController = {
     while (openingSeparator.nextSibling && openingSeparator.nextSibling != closingSeparator)
       this._menu.removeChild(openingSeparator.nextSibling);
 
-    document.getElementById("personas-default").disabled = (this.currentPersona == "default");
+//    document.getElementById("personas-default").disabled = (this.currentPersona == "default");
+    document.getElementById("persona-current").label = this._getPersonaName(this._currentPersona);
+   
+    document.getElementById("personas-manual-separator").hidden =
+    document.getElementById("personas-manual").hidden = (this._getPref("extensions.personas.editor") != "manual");
 
-    for (let i = 0; i < categories.length; i++) {
-      let category = categories[i];
+    for (var i = 0; i < categories.length; i++) {
+      var category = categories[i];
 
-      let menu = document.createElement("menu");
+      var menu = document.createElement("menu");
       menu.setAttribute("label", category.label);
 
-      let popupmenu = document.createElement("menupopup");
+      var popupmenu = document.createElement("menupopup");
       popupmenu.setAttribute("id", category.id);
 
       switch(category.type) {
         case "list":
-          for (let j = 0; j < personas.length; j++) {
-            let persona = personas[j];
+          for (var j = 0; j < personas.length; j++) {
+            var persona = personas[j];
 
-            let needle = category.id;
-            let haystack = persona.menu;
+            var needle = category.id;
+            var haystack = persona.menu;
             if (haystack.search(needle) == -1)
               continue;
 
-            let item = this._createPersonaItem(persona);
+            var item = this._createPersonaItem(persona);
             popupmenu.appendChild(item);
           }
           break;
 
         case "recent":
-          for (let k = 0; k < 3; k++) {
-            let recentID = this._getPref("extensions.personas.lastselected" + k);
+          for (var k = 0; k < 3; k++) {
+            var recentID = this._getPref("extensions.personas.lastselected" + k);
             if (!recentID)
               continue;
 
             // Find the persona whose ID matches the one in the preference.
-            let persona = personas.filter(function(val) { return val.id == recentID })[0];
-            if (!persona)
-              continue;
+//		XXX doesn't seem to work
+//            var persona = personas.filter(function(val) { return val.id == recentID })[0];
+//            if (!persona)
+//              continue;
 
-            let item = this._createPersonaItem(persona);
-            popupmenu.appendChild(item);
+             for (var x = 0; x < personas.length; x++) {
+                 if(personas[x].id == recentID) {
+            		var item = this._createPersonaItem(personas[x]);
+            		popupmenu.appendChild(item);
+                        break;
+                  }
+	     }
+
           }
           break;
       }
@@ -324,7 +352,7 @@ var PersonaController = {
   },
 
   _createPersonaItem: function(persona) {
-    let item = document.createElement("menuitem");
+    var item = document.createElement("menuitem");
 
     // We store the ID of the persona in the "personaid" attribute instead of
     // the "id" attribute because "id" has to be unique, and personas sometimes
@@ -342,8 +370,8 @@ var PersonaController = {
   },
 
   onSelectPersona: function(event) {
-    let personaID = event.target.getAttribute("personaid");
-    let dark = (event.target.getAttribute("dark") == "true");
+    var personaID = event.target.getAttribute("personaid");
+    var dark = (event.target.getAttribute("dark") == "true");
     this._setPersona(personaID, dark);
   },
 

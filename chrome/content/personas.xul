@@ -59,8 +59,8 @@
         <menuitem id="personas-default" label="&useDefaultPersona.label;"
                   personaid="default" dark="false"
                   oncommand="PersonaController.onSelectPersona(event)"/>
-        <menuseparator/>
-        <menuitem id="personas-manual" label="&useCustomPersona.label;"
+        <menuseparator id ="personas-manual-separator" hidden="true"/>
+        <menuitem id="personas-manual" label="&useCustomPersona.label;" hidden="true"
                   oncommand="PersonaController.onSelectManual(event)"/>
         <menuseparator/>
         <menuitem label="&aboutPersonas.label;"

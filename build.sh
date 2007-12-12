@@ -25,7 +25,7 @@ cd -
 if [[ ! $1 == xpi ]]; then
     exit 0;
 fi
-
+echo "foo"
 cd chrome
 zip -9 -ur personas.jar *
 cd ..
