@@ -314,6 +314,13 @@ var PersonaController = {
             var item = this._createPersonaItem(persona);
             popupmenu.appendChild(item);
           }
+
+          // Create an item that picks a random persona from the category.
+          item = document.createElement("menuitem");
+          item.setAttribute("label", this._stringBundle.getString("useRandomPersona.label"));
+          item.setAttribute("oncommand", "PersonaController.onSelectRandomPersona(event);");
+          popupmenu.appendChild(item);
+
           break;
 
         case "recent":
@@ -364,15 +371,43 @@ var PersonaController = {
     item.setAttribute("checked", (persona.id == this._currentPersona));
     item.setAttribute("dark", persona.dark);
     item.setAttribute("autocheck", "false");
-    item.setAttribute("oncommand", "PersonaController.onSelectPersona(event);");
+    item.setAttribute("oncommand", "PersonaController.onSelectPersona(event.target);");
 
     return item;
   },
 
-  onSelectPersona: function(event) {
-    var personaID = event.target.getAttribute("personaid");
-    var dark = (event.target.getAttribute("dark") == "true");
+  onSelectPersona: function(menuitem) {
+    var personaID = menuitem.getAttribute("personaid");
+    var dark = (menuitem.getAttribute("dark") == "true");
     this._setPersona(personaID, dark);
+  },
+
+  onSelectRandomPersona: function(event) {
+    var menupopup = event.target.parentNode;
+    var menu = menupopup.parentNode;
+
+    // The index of the last item in the menu.
+    var lastIndex = menupopup.childNodes.length - 1;
+
+    // The index of the second to last item.  We use this to exclude the last
+    // item when selecting a random persona, since the last item is the "select
+    // a random persona" item.
+    var lastPersonaIndex = lastIndex - 1;
+
+    // Get a random item, trying up to five times to get one that is different
+    // from the currently-selected item in the category (if any).
+    // We use Math.floor instead of Math.round to pick a random number because
+    // the JS reference says Math.round returns a non-uniform distribution
+    // <http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Math:random#Examples>.
+    var randomIndex, randomItem;
+    for (var i = 0; i < 5; i++) {
+      randomIndex = Math.floor(Math.random() * (lastPersonaIndex + 1));
+      randomItem = menupopup.childNodes[randomIndex];
+      if (randomItem.getAttribute("personaid") != this._currentPersona)
+        break;
+    }
+
+    this.onSelectPersona(randomItem);
   },
 
   onSelectManual: function(event) {
