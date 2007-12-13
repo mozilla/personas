@@ -19,6 +19,7 @@
  *
  * Contributor(s):
  *   Chris Beard <cbeard@mozilla.org>
+ *   Myk Melez <myk@mozilla.org>
  *
  * Alternatively, the contents of this file may be used under the terms of
  * either the GNU General Public License Version 2 or later (the "GPL"), or
@@ -34,57 +35,14 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-toolbox {
-  -moz-appearance: none !important;
-  background-color: transparent !important;
-  border-top: 0px;
-}
-
-toolbar:not([id="FindToolbar"]), toolbarpalette { 
-  -moz-appearance: none !important;
-  background-image: none !important; /* mac-specific */
-  background-repeat: no-repeat !important;  /* mac-specific */
-  background-color: transparent !important; /* mac-specific */
-  border-bottom-color: transparent !important;
-  border-top-color: transparent !important;
-} 
-
-toolbar:first-child, menubar {
-  border-bottom-color: transparent;
-}
-
-toolbarbutton:not([class="tab-close-button"]) { 
-  -moz-appearance: none !important;
-  background-color: transparent !important;
-  background-repeat: no-repeat !important; 
-} 
-
-/* windows-specific tabs */
-tab.tabbrowser-tab {
-  background-color: transparent !important;
-  background-image: none !important;
-  opacity: 0.85 !important;
-}
-
-.tabbrowser-tabs {
-  background-color: transparent !important;
-  background-image: none !important; 
-}
-
-/* status bar */
-statusbar {
-  border-bottom: 0px !important;
-}
-
-statusbarpanel {
-  -moz-appearance: none !important;
-  border: 0px !important;
-}
+/**
+ * The appearance of the Personas selector button.
+ */
 
 #personas-selector-button {
   list-style-image: url("chrome://personas/skin/personas_16x16.png");
-  -moz-image-region: rect(0px, 16px, 16px, 0px);
-  border: 0px !important;
+  -moz-image-region: rect(0, 16px, 16px, 0px);
+  border: 0 !important;
 }
 
 #personas-selector-button[buttonover="true"],
@@ -98,14 +56,91 @@ statusbarpanel {
   -moz-image-region: rect(48px, 16px, 64px, 0px);
 }
 
+
+/**
+ * Modifications to the appearance of the browser chrome when the user
+ * has selected a persona.
+ */
+
+#main-window[persona] {
+  -moz-appearance: none;
+  background-repeat: no-repeat;
+  background-position: top right;
+}
+
+#main-window[persona] #urlbar {
+  opacity: 0.8;
+}
+
+#main-window[persona] #searchbar {
+  opacity: 0.8;
+}
+
+#main-window[persona] toolbox {
+  -moz-appearance: none !important;
+  background-color: transparent !important;
+  border-top: 0;
+}
+
+#main-window[persona] toolbar:not([id="FindToolbar"]), toolbarpalette {
+  -moz-appearance: none !important;
+  background-image: none !important; /* mac-specific */
+  background-repeat: no-repeat !important;  /* mac-specific */
+  background-color: transparent !important; /* mac-specific */
+  border-bottom-color: transparent !important;
+  border-top-color: transparent !important;
+} 
+
+#main-window[persona] toolbar:first-child, menubar {
+  border-bottom-color: transparent;
+}
+
+#main-window[persona] toolbarbutton:not([class="tab-close-button"]) { 
+  -moz-appearance: none !important;
+  background-color: transparent !important;
+  background-repeat: no-repeat !important; 
+} 
+
+/* windows-specific tabs */
+#main-window[persona] .tabbrowser-tabs {
+  background-color: transparent !important;
+  background-image: none !important; 
+}
+
+#main-window[persona] .tabbrowser-tab {
+  background-color: transparent !important;
+  background-image: none !important;
+  opacity: 0.85 !important;
+}
+
+#main-window[persona] .tabbrowser-strip {
+  -moz-appearance: none; /* mac-specific */
+}
+
+/* status bar */
+statusbar[persona] {
+  -moz-appearance: none;
+
+  border-bottom: 0 !important;
+
+  background-repeat: no-repeat;
+  background-position: top left;
+  background-color: transparent;
+}
+
+#main-window[persona] statusbarpanel {
+  -moz-appearance: none !important;
+  border: 0 !important;
+}
+
 #main-window[_personas-dark-style*="both"] #navigator-toolbox menubar > menu,
 #main-window[_personas-dark-style*="both"] #navigator-toolbox toolbarbutton,
-#main-window[_personas-dark-style*="both"] statusbar,
+#main-window[_personas-dark-style*="both"] > statusbar,
 #main-window[_personas-dark-style*="true"] #navigator-toolbox menubar > menu,
 #main-window[_personas-dark-style*="true"] #navigator-toolbox toolbarbutton,
-#main-window[_personas-dark-style*="true"] statusbar,
+#main-window[_personas-dark-style*="true"] > statusbar,
 #main-window[_personas-dark-style*="toolbox"] #navigator-toolbox menubar > menu,
 #main-window[_personas-dark-style*="toolbox"] #navigator-toolbox toolbarbutton,
-#main-window[_personas-dark-style*="status"] statusbar {
+#main-window[_personas-dark-style*="status"] > statusbar {
   color: white !important;
 }

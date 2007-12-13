@@ -1,7 +1,7 @@
 overlay chrome://browser/content/browser.xul chrome://personas/content/personas.xul
-# content personas chrome/content/
-# skin personas class/1.0 chrome/skin/
-content personas jar:chrome/personas.jar!/content/
-skin personas class/1.0 jar:chrome/personas.jar!/skin/
-locale personas en-US jar:chrome/personas.jar!/locale/en-US/
-locale personas ja jar:chrome/personas.jar!/locale/ja/
+overlay chrome://browser/content/browser.xul chrome://personas/content/personas-mac.xul 
+
+content personas chrome/content/
+skin personas class/1.0 chrome/skin/
+locale personas en-US chrome/locale/en-US/
+locale personas ja chrome/locale/ja/

@@ -38,6 +38,10 @@
 const PERSONAS_VERSION = "0.9";
 
 var PersonaController = {
+  _defaultToolbarBackgroundImage: null,
+  _defaultStatusbarBackgroundImage: null,
+
+
   //**************************************************************************//
   // Shortcuts
 
@@ -127,6 +131,14 @@ var PersonaController = {
     // the lists of categories and personas on a regular basis.
     Cc["@mozilla.org/personas/persona-service;1"].getService();
 
+    // Record the default toolbar and statusbar background images so we can
+    // revert to them if the user selects the default persona.
+    var toolbar = document.getElementById("main-window");
+    this._defaultToolbarBackgroundImage = toolbar.style.backgroundImage;
+    var statusbar = document.getElementById("status-bar");
+    if (statusbar)
+      this._defaultStatusbarBackgroundImage = statusbar.style.backgroundImage;
+
     // Check for a first run or updated extension and display some additional
     // information to users.
     var firstRun = this._getPref("extensions.personas.lastversion"); 
@@ -183,7 +195,7 @@ var PersonaController = {
    */
   _setPersona: function(personaID, categoryID) {
     // Update the list of recent personas.
-    if (personaID != this._currentPersona && this._currentPersona != "random") {
+    if (personaID != "default" && personaID != this._currentPersona && this._currentPersona != "random") {
       this._prefSvc.setCharPref("extensions.personas.lastselected2",
                                 this._getPref("extensions.personas.lastselected1"));
       this._prefSvc.setCharPref("extensions.personas.lastselected1",
@@ -246,13 +258,11 @@ var PersonaController = {
 
   // FIXME: update the menu item to display the persona name as its label.
   _updateTheme: function() {
-    var personaID = this._getPref("extensions.personas.selected");
-  
-    // if a random persona has been selected, pick the next one from the category
-    // first check to ensure that the personas list has been updated by the service,
-    // as this sometimes does not work when you start up if your network
-    // connection is slow
+    var personaID = this._getPref("extensions.personas.selected") || "default";
 
+    // If a random persona has been selected, pick the next one from the category.
+    // First check to ensure that the personas list has been updated by the service,
+    // as this sometimes doesn't work on startup if your network connection is slow.
     if (personaID == "random") {
       if (this._personaSvc.personas) {
         var categoryID = this._getPref("extensions.personas.category");
@@ -263,43 +273,41 @@ var PersonaController = {
         personaID = this._getPref("extensions.personas.lastrandom");
     }
 
+    if (personaID == "default")
+      this._applyDefault();
+    else
+      this._applyPersona(personaID);
+  },
+
+  _applyDefault: function() {
+    var toolbar = document.getElementById("main-window");
+    toolbar.removeAttribute("persona");
+    toolbar.style.backgroundImage = this._defaultToolbarBackgroundImage;
+    toolbar.removeAttribute("_personas-dark-style");
+
+    var statusbar = document.getElementById("status-bar");
+    if (statusbar) {
+      statusbar.removeAttribute("persona");
+      statusbar.style.backgroundImage = this._defaultStatusbarBackgroundImage;
+    }
+  },
+
+  _applyPersona: function(personaID) {
     var isDark = this._getDarkPropertyByPersona(personaID);
 
-    // Style the primary toolbar box, adding the new background image.
+    // Style the primary toolbar box, adding the background image and changing
+    // the text color to reflect dark vs. light personas as advertised by the feed.
     var toolbar = document.getElementById("main-window");
-    toolbar.style.MozAppearance = "none";
+    toolbar.setAttribute("persona", personaID);
     toolbar.style.backgroundImage = "url('" + this._getToolbarURL(personaID) + "')";
-    toolbar.style.backgroundRepeat = "no-repeat";
-    toolbar.style.backgroundPosition = "top right";
-    // Change text color to reflect dark vs. light personas as advertised by feed.
     toolbar.setAttribute("_personas-dark-style", isDark ? "true" : "");
 
-    statusbar = document.getElementById("status-bar");
+    // Style the statusbar, adding the background image.
+    var statusbar = document.getElementById("status-bar");
     if (statusbar) {
-      statusbar.style.MozAppearance = "none";
-      if (personaID != "manual")
-        statusbar.style.backgroundImage = "url('" + this._getStatusbarURL(personaID) + "')";
-      statusbar.style.backgroundRepeat = "no-repeat";
-      statusbar.style.backgroundPosition = "top left";
-      statusbar.style.backgroundColor = "transparent";
+      statusbar.setAttribute("persona", personaID);
+      statusbar.style.backgroundImage = "url('" + this._getStatusbarURL(personaID) + "')";
     }
-
-    // Mac-specific code to style the tabbox.
-    if (navigator.platform.toLowerCase().indexOf("mac") != -1) {
-      var tabbrowser = document.getElementById("content");
-      if (tabbrowser.mTabContainer)
-        tabbrowser.mTabContainer.style.background = "transparent";
-      if (tabbrowser.mStrip)
-        tabbrowser.mStrip.style.MozAppearance = "none";
-    }
-
-    var urlbar = document.getElementById("urlbar");
-    if (urlbar)
-      urlbar.style.opacity = "0.8";
-
-    var searchbar = document.getElementById("searchbar");
-    if (searchbar)
-      searchbar.style.opacity = "0.8";
   },
 
   _getToolbarURL: function(personaID) {
@@ -467,6 +475,10 @@ var PersonaController = {
     var personaID = menuitem.getAttribute("personaid");
     var categoryID = menuitem.getAttribute("categoryid");
     this._setPersona(personaID, categoryID);
+  },
+
+  onSelectDefault: function() {
+    this._setPersona("default", "");
   },
 
   onSelectManual: function(event) {
