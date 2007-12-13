@@ -146,16 +146,12 @@ var PersonaController = {
     // Observe changes to the selected persona that happen in other windows
     // or by users twiddling the preferences directly.
     this._prefSvc.QueryInterface(Ci.nsIPrefBranch2).
-                  addObserver("extensions.personas.selected", this, false);
-    this._prefSvc.QueryInterface(Ci.nsIPrefBranch2).
-                  addObserver("extensions.personas.category", this, false);
+                  addObserver("extensions.personas.", this, false);
   },
 
   shutDown: function() {
     this._prefSvc.QueryInterface(Ci.nsIPrefBranch2).
-                  removeObserver("extensions.personas.selected", this);
-    this._prefSvc.QueryInterface(Ci.nsIPrefBranch2).
-                  removeObserver("extensions.personas.category", this);
+                  removeObserver("extensions.personas.", this);
   },
 
   // nsISupports
@@ -170,7 +166,13 @@ var PersonaController = {
   observe: function(subject, topic, data) {
     switch (topic) {
       case "nsPref:changed":
-        this._updateTheme();
+        switch (data) {
+          case "extensions.personas.selected":
+          case "extensions.personas.manualPath":
+          case "extensions.personas.category":
+            this._updateTheme();
+            break;
+        }
         break;
     }
   },
@@ -314,7 +316,7 @@ var PersonaController = {
       case "default":
         return "chrome://personas/skin/default/tbox-default.jpg";
       case "manual":
-        return "file:///" + this.getManualPersona();
+        return "file://" + this._prefSvc.getCharPref("extensions.personas.manualPath");
       default:
         return this._baseURL + "skins/" + personaID + "/tbox-" + personaID + ".jpg";
     }
