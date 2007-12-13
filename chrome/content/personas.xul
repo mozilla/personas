@@ -40,7 +40,7 @@
 <?xml-stylesheet href="chrome://personas/content/personas.css" type="text/css"?>
 
 <!DOCTYPE overlay SYSTEM "chrome://personas/locale/personas.dtd">
-<overlay id="personas-overlay" 
+<overlay id="personas-overlay"
          xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
   <stringbundleset id="stringbundleset">

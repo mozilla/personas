@@ -287,9 +287,9 @@ var PersonaController = {
     // Mac-specific code to style the tabbox.
     if (navigator.platform.toLowerCase().indexOf("mac") != -1) {
       var tabbrowser = document.getElementById("content");
-      if(tabbrowser.mTabContainer)
+      if (tabbrowser.mTabContainer)
         tabbrowser.mTabContainer.style.background = "transparent";
-      if(tabbrowser.mStrip)
+      if (tabbrowser.mStrip)
         tabbrowser.mStrip.style.MozAppearance = "none";
     }
 
