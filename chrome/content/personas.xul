@@ -47,7 +47,7 @@
     <stringbundle id="personasStringBundle" src="chrome://personas/locale/personas.properties"/>
   </stringbundleset>
 
-  <script type="application/x-javascript" src="chrome://personas/content/personas.js"/>
+  <script type="application/x-javascript;version=1.7" src="chrome://personas/content/personas.js"/>
 
   <statusbar id="status-bar">
     <statusbarpanel id="personas-selector-button" class="statusbarpanel-menu-iconic"
