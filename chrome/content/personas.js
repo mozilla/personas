@@ -380,7 +380,7 @@ var PersonaController = {
     if(this._currentPersona == "random") {
        personaStatus.setAttribute("class", "menuitem-iconic");
        personaStatus.setAttribute("image", "chrome://personas/skin/random-feed-16x16.png");
-       personaStatus.setAttribute("label", this._stringBundle.getString("useRandomPersona.label") + " " + this._getCategoryName(this._getPref("extensions.personas.category")));
+       personaStatus.setAttribute("label", this._stringBundle.getString("useRandomPersona.label") + " " + this._getCategoryName(this._getPref("extensions.personas.category"))+ " : " + this._getPersonaName(this._getPref("extensions.personas.lastrandom")));
     } else {
        personaStatus.removeAttribute("class");
        personaStatus.removeAttribute("image");
