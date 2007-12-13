@@ -147,11 +147,15 @@ var PersonaController = {
     // or by users twiddling the preferences directly.
     this._prefSvc.QueryInterface(Ci.nsIPrefBranch2).
                   addObserver("extensions.personas.selected", this, false);
+    this._prefSvc.QueryInterface(Ci.nsIPrefBranch2).
+                  addObserver("extensions.personas.category", this, false);
   },
 
   shutDown: function() {
     this._prefSvc.QueryInterface(Ci.nsIPrefBranch2).
                   removeObserver("extensions.personas.selected", this);
+    this._prefSvc.QueryInterface(Ci.nsIPrefBranch2).
+                  removeObserver("extensions.personas.category", this);
   },
 
   // nsISupports
@@ -176,9 +180,9 @@ var PersonaController = {
    *
    * @param personaID the ID of the persona to set as the current one.
    */
-  _setPersona: function(personaID, dark) {
+  _setPersona: function(personaID, categoryID) {
     // Update the list of recent personas.
-    if (personaID != this._currentPersona) {
+    if (personaID != this._currentPersona && this._currentPersona != "random") {
       this._prefSvc.setCharPref("extensions.personas.lastselected2",
                                 this._getPref("extensions.personas.lastselected1"));
       this._prefSvc.setCharPref("extensions.personas.lastselected1",
@@ -187,15 +191,86 @@ var PersonaController = {
     }
 
     // Save the new selection to prefs.
-    this._prefSvc.setBoolPref("extensions.personas.selectedIsDark", dark);
+//  this._prefSvc.setBoolPref("extensions.personas.selectedIsDark", dark);
     this._prefSvc.setCharPref("extensions.personas.selected", personaID);
+    this._prefSvc.setCharPref("extensions.personas.category", categoryID);
   },
+
+  _getDarkPropertyByPersona: function(personaID) {
+
+     // FIXME: temporary hack to get around slow loading on initialization     
+     if(!this._personaSvc.personas)
+       return false;
+
+     var personas = this._personaSvc.personas.wrappedJSObject;
+
+     for(var i = 0; i < personas.length; i++) {
+        if(personas[i].id == personaID) {
+		if(personas[i].dark == "true")
+                  return true;
+                if(!personas[i].dark || personas[i].dark == "false")
+                  return false;
+        }
+     }
+    
+     return false;
+  },
+
+  _getRandomPersonaByCategory: function(currentPersona, categoryID) {
+      var personas = this._personaSvc.personas.wrappedJSObject;
+      var subList = new Array();
+      var k = 0;
+
+    // Build the list of possible personas to select from
+      for (var j = 0; j < personas.length; j++) {
+        var persona = personas[j];
+        var needle = categoryID;
+        var haystack = persona.menu;
+
+        if (haystack.search(needle) == -1)
+          continue;
+
+	subList[k++] = persona;
+      }
+
+    // Get a random item, trying up to five times to get one that is different
+    // from the currently-selected item in the category (if any).
+    // We use Math.floor instead of Math.round to pick a random number because
+    // the JS reference says Math.round returns a non-uniform distribution
+    // <http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Math:random#Examples>.
+    var randomIndex, randomItem;
+    for (var i = 0; i < 5; i++) {
+      randomIndex = Math.floor(Math.random() * (subList.length));
+      randomItem = subList[randomIndex];
+      if(randomItem.id != currentPersona);
+        break;
+    }
+
+    return randomItem.id; 
+  },
+
 
   
   // FIXME: update the menu item to display the persona name as its label.
   _updateTheme: function() {
     var personaID = this._getPref("extensions.personas.selected");
-    var isDark = this._getPref("extensions.personas.selectedIsDark");
+  
+    // if a random persona has been selected, pick the next one from the category
+    // first check to ensure that the personas list has been updated by the service,
+    // as this sometimes does not work when you start up if your network
+    // connection is slow
+
+    if(personaID == "random") {
+      if(this._personaSvc.personas) {
+        var categoryID = this._getPref("extensions.personas.category");
+        personaID = this._getRandomPersonaByCategory(personaID, categoryID);
+        this._prefSvc.setCharPref("extensions.personas.lastrandom", personaID);
+      } else { 
+        var personaID = this._getPref("extensions.personas.lastrandom");
+      }
+    }
+
+    var isDark = this._getDarkPropertyByPersona(personaID);
 
     // Style the primary toolbar box, adding the new background image.
     var toolbar = document.getElementById("main-window");
@@ -262,20 +337,33 @@ var PersonaController = {
     this._rebuildMenu(categories, personas);
   },
 
+  _getCategoryName : function(category_id) {
+   var categories = this._personaSvc.categories.wrappedJSObject;
+   for(var i in categories) {
+     if(categories[i].id == category_id) {
+       return categories[i].label;
+     }
+   }
+   return "(unknown)";
+  },
+
   _getPersonaName : function(persona_id) {
     var personas = this._personaSvc.personas.wrappedJSObject;
-                var stringsBundle = document.getElementById("personasStringBundle");
-                var defaultString = stringsBundle.getString("Default");
-                if(persona_id == "default") {
+    var stringsBundle = document.getElementById("personasStringBundle");
+    var defaultString = stringsBundle.getString("Default");
+ 
+    if(persona_id == "default") {
                         return defaultString;
-                }
-        for(var i in personas) {
-            if(personas[i].id == persona_id) {
-                return personas[i].label;
-            }
-        }
-        return defaultString;
-    },
+    }
+
+    for(var i in personas) {
+      if(personas[i].id == persona_id) {
+        return personas[i].label;
+      }
+     }
+ 
+    return defaultString;
+  },
 
 
   _rebuildMenu: function(categories, personas) {
@@ -287,8 +375,18 @@ var PersonaController = {
       this._menu.removeChild(openingSeparator.nextSibling);
 
 //    document.getElementById("personas-default").disabled = (this.currentPersona == "default");
-    document.getElementById("persona-current").label = this._getPersonaName(this._currentPersona);
-   
+
+    var personaStatus = document.getElementById("persona-current");
+    if(this._currentPersona == "random") {
+       personaStatus.setAttribute("class", "menuitem-iconic");
+       personaStatus.setAttribute("image", "chrome://personas/skin/random-feed-16x16.png");
+       personaStatus.setAttribute("label", this._stringBundle.getString("useRandomPersona.label") + " " + this._getCategoryName(this._getPref("extensions.personas.category")));
+    } else {
+       personaStatus.removeAttribute("class");
+       personaStatus.removeAttribute("image");
+       personaStatus.setAttribute("label", this._getPersonaName(this._currentPersona));
+    }
+
     document.getElementById("personas-manual-separator").hidden =
     document.getElementById("personas-manual").hidden = (this._getPref("extensions.personas.editor") != "manual");
 
@@ -311,14 +409,21 @@ var PersonaController = {
             if (haystack.search(needle) == -1)
               continue;
 
-            var item = this._createPersonaItem(persona);
+            var item = this._createPersonaItem(persona, category.id);
             popupmenu.appendChild(item);
           }
 
           // Create an item that picks a random persona from the category.
+	  item = document.createElement("menuseparator");
+          popupmenu.appendChild(item);
+
           item = document.createElement("menuitem");
-          item.setAttribute("label", this._stringBundle.getString("useRandomPersona.label"));
-          item.setAttribute("oncommand", "PersonaController.onSelectRandomPersona(event);");
+	  item.setAttribute("personaid", "random");
+	  item.setAttribute("categoryid", category.id);
+	  item.setAttribute("class", "menuitem-iconic");
+	  item.setAttribute("image", "chrome://personas/skin/random-feed-16x16.png");
+          item.setAttribute("label", this._stringBundle.getString("useRandomPersona.label") + " " + category.label);
+          item.setAttribute("oncommand", "PersonaController.onSelectPersona(event.target);");
           popupmenu.appendChild(item);
 
           break;
@@ -330,14 +435,9 @@ var PersonaController = {
               continue;
 
             // Find the persona whose ID matches the one in the preference.
-//		XXX doesn't seem to work
-//            var persona = personas.filter(function(val) { return val.id == recentID })[0];
-//            if (!persona)
-//              continue;
-
              for (var x = 0; x < personas.length; x++) {
                  if(personas[x].id == recentID) {
-            		var item = this._createPersonaItem(personas[x]);
+            		var item = this._createPersonaItem(personas[x], "");
             		popupmenu.appendChild(item);
                         break;
                   }
@@ -358,7 +458,7 @@ var PersonaController = {
     }
   },
 
-  _createPersonaItem: function(persona) {
+  _createPersonaItem: function(persona, categoryid) {
     var item = document.createElement("menuitem");
 
     // We store the ID of the persona in the "personaid" attribute instead of
@@ -369,8 +469,8 @@ var PersonaController = {
     item.setAttribute("label", persona.label);
     item.setAttribute("type", "checkbox");
     item.setAttribute("checked", (persona.id == this._currentPersona));
-    item.setAttribute("dark", persona.dark);
     item.setAttribute("autocheck", "false");
+    item.setAttribute("categoryid", categoryid);
     item.setAttribute("oncommand", "PersonaController.onSelectPersona(event.target);");
 
     return item;
@@ -378,36 +478,8 @@ var PersonaController = {
 
   onSelectPersona: function(menuitem) {
     var personaID = menuitem.getAttribute("personaid");
-    var dark = (menuitem.getAttribute("dark") == "true");
-    this._setPersona(personaID, dark);
-  },
-
-  onSelectRandomPersona: function(event) {
-    var menupopup = event.target.parentNode;
-    var menu = menupopup.parentNode;
-
-    // The index of the last item in the menu.
-    var lastIndex = menupopup.childNodes.length - 1;
-
-    // The index of the second to last item.  We use this to exclude the last
-    // item when selecting a random persona, since the last item is the "select
-    // a random persona" item.
-    var lastPersonaIndex = lastIndex - 1;
-
-    // Get a random item, trying up to five times to get one that is different
-    // from the currently-selected item in the category (if any).
-    // We use Math.floor instead of Math.round to pick a random number because
-    // the JS reference says Math.round returns a non-uniform distribution
-    // <http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Math:random#Examples>.
-    var randomIndex, randomItem;
-    for (var i = 0; i < 5; i++) {
-      randomIndex = Math.floor(Math.random() * (lastPersonaIndex + 1));
-      randomItem = menupopup.childNodes[randomIndex];
-      if (randomItem.getAttribute("personaid") != this._currentPersona)
-        break;
-    }
-
-    this.onSelectPersona(randomItem);
+    var categoryID = menuitem.getAttribute("categoryid");
+    this._setPersona(personaID, categoryID);
   },
 
   onSelectManual: function(event) {
@@ -416,7 +488,7 @@ var PersonaController = {
     var result = fp.show();
     if (result == Ci.nsIFilePicker.returnOK) {
       this._prefSvc.setCharPref("extensions.personas.manualPath", fp.file.path);
-      this._setPersona("manual", false);
+      this._setPersona("manual", "");
     }
   },
 
