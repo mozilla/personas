@@ -1,5 +1,4 @@
 overlay chrome://browser/content/browser.xul chrome://personas/content/personas.xul
-overlay chrome://browser/content/browser.xul chrome://personas/content/personas-mac.xul 
 
 content personas chrome/content/
 skin personas class/1.0 chrome/skin/
