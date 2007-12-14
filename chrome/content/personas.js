@@ -219,7 +219,7 @@ let PersonaController = {
 
     for each (let persona in personas)
       if (persona.id == personaID)
-        return typeof persona.dark != "undefined" && persona.dark == true;
+        return typeof persona.dark != "undefined" && persona.dark == "true";
 
     return false;
   },
