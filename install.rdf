@@ -4,7 +4,7 @@
   <Description about="urn:mozilla:install-manifest">
     <em:id>personas@christopher.beard</em:id>
     <em:name>Personas for Firefox</em:name>
-    <em:version>0.9</em:version>
+    <em:version>0.9.1</em:version>
     <em:description>Themes, skins, fur coats and more.</em:description>
     <em:creator>Christopher Beard</em:creator>
     <em:updateURL>https://people.mozilla.com/~cbeard/personas/dist/update.rdf</em:updateURL>    

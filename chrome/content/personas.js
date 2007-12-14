@@ -35,7 +35,7 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-const PERSONAS_VERSION = "0.9";
+const PERSONAS_VERSION = "0.9.1";
 
 let PersonaController = {
   _defaultToolbarBackgroundImage: null,
