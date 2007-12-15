@@ -189,6 +189,41 @@ let PersonaController = {
   },
 
   /**
+   * Set the persona from a web page via a SetPersona event.  Checks to ensure
+   * the page is hosted on a server authorized to set personas and the persona
+   * is in the list of personas known to the persona service.  Retrieves the ID
+   * of the persona from the "persona" attribute on the target of the event.
+   *
+   * @param event {Event} the SetPersona DOM event
+   */
+  setPersona: function(event) {
+    // Make sure the host matches an entry in the whitelist.  The host matches
+    // if it ends with one of the entries in the whitelist.  For example, if
+    // .mozilla.com is an entry in the whitelist, then www.mozilla.com matches,
+    // as does labs.mozilla.com, but mozilla.com does not, nor does evil.com.
+    let host = event.target.ownerDocument.location.hostname;
+    let hostBackwards = host.split('').reverse().join('');
+    let authorizedHosts = this._prefSvc.getCharPref("extensions.personas.authorizedHosts").split(/[, ]+/);
+    if (!authorizedHosts.some(function(v) { return hostBackwards.indexOf(v.split('').reverse().join('')) == 0 }))
+      throw host + " not authorized to set personas";
+
+    if (!event.target.hasAttribute("persona"))
+      throw "event target does not have 'persona' attribute";
+
+    let personaID = event.target.getAttribute("persona");
+    let categoryID = event.target.getAttribute("category");
+
+    let personas = this._personaSvc.personas.wrappedJSObject;
+    for each (let persona in personas)
+      if (persona.id == personaID) {
+        this._setPersona(personaID, categoryID);
+        return;
+      }
+
+    throw "unknown persona " + personaID;
+  },
+
+  /**
    * Set the current persona to the one with the specified ID.
    *
    * @param personaID the ID of the persona to set as the current one.
@@ -497,5 +532,6 @@ let PersonaController = {
 
 };
 
-window.addEventListener("load", function(e) { PersonaController.startUp(e); }, false);
-window.addEventListener("unload", function(e) { PersonaController.shutDown(e); }, false);
+window.addEventListener("load", function(e) { PersonaController.startUp(e) }, false);
+window.addEventListener("unload", function(e) { PersonaController.shutDown(e) }, false);
+document.addEventListener("SetPersona", function(e) { PersonaController.setPersona(e) }, false, true);
