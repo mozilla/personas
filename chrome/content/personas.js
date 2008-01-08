@@ -445,17 +445,17 @@ let PersonaController = {
           }
 
           // Create an item that picks a random persona from the category.
-	  let separatorItem = document.createElement("menuseparator");
-          popupmenu.appendChild(separatorItem);
+          popupmenu.appendChild(document.createElement("menuseparator"));
 
-          let item = document.createElement("menuitem");
-	  item.setAttribute("personaid", "random");
-	  item.setAttribute("categoryid", category.id);
-	  item.setAttribute("class", "menuitem-iconic");
-	  item.setAttribute("image", "chrome://personas/skin/random-feed-16x16.png");
-          item.setAttribute("label", this._stringBundle.getString("useRandomPersona.label") + " " + category.label);
-          item.setAttribute("oncommand", "PersonaController.onSelectPersona(event.target);");
-          popupmenu.appendChild(item);
+          let (item = document.createElement("menuitem")) {
+            item.setAttribute("personaid", "random");
+            item.setAttribute("categoryid", category.id);
+            item.setAttribute("class", "menuitem-iconic");
+            item.setAttribute("image", "chrome://personas/skin/random-feed-16x16.png");
+            item.setAttribute("label", this._stringBundle.getString("useRandomPersona.label") + " " + category.label);
+            item.setAttribute("oncommand", "PersonaController.onSelectPersona(event.target);");
+            popupmenu.appendChild(item);
+          }
 
           break;
 
