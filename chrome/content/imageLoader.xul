@@ -1,0 +1,17 @@
+<window xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+        flex="1" style="background-repeat: no-repeat; background-position: top right;">
+  <script type="application/javascript;version=1.7">
+  <![CDATA[
+    // Escape CSS special characters in unquoted URLs
+    // per http://www.w3.org/TR/CSS21/syndata.html#uri
+    function escapeCSSURL(aURLSpec) {
+      return aURLSpec.replace(/[(),\s'"]/g, "\$&");
+    }
+
+    // Load the image URL specified in the search section of the URL
+    // as a background image.
+    let imageURL = window.location.search.substr(1);
+    document.documentElement.style.backgroundImage = "url(" + escapeCSSURL(imageURL) + ")";
+  ]]>
+  </script>
+</window>

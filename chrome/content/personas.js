@@ -35,7 +35,7 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-const PERSONAS_VERSION = "0.9.1";
+const PERSONAS_EXTENSION_ID = "personas@christopher.beard";
 
 let PersonaController = {
   _defaultToolbarBackgroundImage: null,
@@ -43,7 +43,7 @@ let PersonaController = {
 
 
   //**************************************************************************//
-  // Shortcuts
+  // Convenience Getters
 
   // Preference Service
   get _prefSvc() {
@@ -55,7 +55,15 @@ let PersonaController = {
     return this._prefSvc;
   },
 
-  // Persona Service
+  // Observer Service
+  get _obsSvc() {
+    let obsSvc = Cc["@mozilla.org/observer-service;1"].
+                 getService(Ci.nsIObserverService);
+    delete this._obsSvc;
+    this._obsSvc = obsSvc;
+    return this._obsSvc;
+  },
+
   get _personaSvc() {
     let personaSvc = Cc["@mozilla.org/personas/persona-service;1"].
                      getService(Ci.nsIPersonaService);
@@ -123,14 +131,38 @@ let PersonaController = {
     return "en-US";
   },
 
+
   //**************************************************************************//
-  // Initialization
+  // XPCOM Interface Implementations
+
+  // nsISupports
+  QueryInterface: function(aIID) {
+    if (aIID.equals(Ci.nsIObserver) || aIID.equals(Ci.nsISupports))
+      return this;
+    
+    throw Cr.NS_ERROR_NO_INTERFACE;
+  },
+
+  // nsIObserver
+  observe: function(subject, topic, data) {
+    switch (topic) {
+      case "personas:toolbarURLUpdated":
+        this._applyToolbarURLUpdate(data);
+        break;
+      case "personas:statusbarURLUpdated":
+        this._applyStatusbarURLUpdate(data);
+        break;
+      case "personas:defaultPersonaSelected":
+        this._applyDefault();
+        break;
+    }
+  },
+
+
+  //**************************************************************************//
+  // Initialization & Destruction
 
   startUp: function() {
-    // Get the persona service to ensure it gets initialized and starts updating
-    // the lists of categories and personas on a regular basis.
-    Cc["@mozilla.org/personas/persona-service;1"].getService();
-
     // Record the default toolbar and statusbar background images so we can
     // revert to them if the user selects the default persona.
     let toolbar = document.getElementById("main-window");
@@ -139,54 +171,112 @@ let PersonaController = {
     if (statusbar)
       this._defaultStatusbarBackgroundImage = statusbar.style.backgroundImage;
 
-    // Check for a first run or updated extension and display some additional
+    // Get the persona service to kick off retrieval and application
+    // of the selected persona as well as periodic updates to the personas
+    // and categories data.
+    // FIXME: use the category manager to initialize the service on startup.
+    this._personaSvc;
+
+    // Observe various changes that we should apply to the browser window.
+    this._obsSvc.addObserver(this, "personas:toolbarURLUpdated", false);
+    this._obsSvc.addObserver(this, "personas:statusbarURLUpdated", false);
+    this._obsSvc.addObserver(this, "personas:defaultPersonaSelected", false);
+
+    // Check for a first-run or updated extension and display some additional
     // information to users.
-    let firstRun = this._getPref("extensions.personas.lastversion"); 
-    if (firstRun == "firstrun") {
-      let firstRunURL = this._baseURL + this._locale + "/firstrun/?version=" + PERSONAS_VERSION;
+    let lastVersion = this._getPref("extensions.personas.lastversion"); 
+    let thisVersion = Cc["@mozilla.org/extensions/manager;1"].
+                      getService(Ci.nsIExtensionManager).
+                      getItemForID(PERSONAS_EXTENSION_ID).version;
+    if (lastVersion == "firstrun") {
+      let firstRunURL = this._baseURL + this._locale + "/firstrun/?version=" + thisVersion;
       setTimeout(function() { window.openUILinkIn(firstRunURL, "tab") }, 500);
-      this._prefSvc.setCharPref("extensions.personas.lastversion", PERSONAS_VERSION);
+      this._prefSvc.setCharPref("extensions.personas.lastversion", thisVersion);
     }
-    else if (firstRun != PERSONAS_VERSION) {
-      let updatedURL = this._baseURL + this._locale + "/updated/?version=" + PERSONAS_VERSION;
+    else if (lastVersion != thisVersion) {
+      let updatedURL = this._baseURL + this._locale + "/updated/?version=" + thisVersion;
       setTimeout(function() { window.openUILinkIn(updatedURL, "tab") }, 500);
-      this._prefSvc.setCharPref("extensions.personas.lastversion", PERSONAS_VERSION);
+      this._prefSvc.setCharPref("extensions.personas.lastversion", thisVersion);
     }
-
-    // Apply the current persona to the browser theme.
-    this._updateTheme();
-
-    // Observe changes to the selected persona that happen in other windows
-    // or by users twiddling the preferences directly.
-    this._prefSvc.addObserver("extensions.personas.", this, false);
   },
 
   shutDown: function() {
-    this._prefSvc.removeObserver("extensions.personas.", this);
+    this._obsSvc.removeObserver(this, "personas:toolbarURLUpdated");
+    this._obsSvc.removeObserver(this, "personas:statusbarURLUpdated");
+    this._obsSvc.removeObserver(this, "personas:defaultPersonaSelected");
   },
 
-  // nsISupports
-  QueryInterface: function(aIID) {
-    if (aIID == Ci.nsIObserver || aIID == Ci.nsISupports)
-      return this;
 
-    throw Cr.NS_ERROR_NO_INTERFACE;
+  //**************************************************************************//
+  // Appearance Updates
+
+  _applyToolbarURLUpdate: function(aURL) {
+    let personaID = this._getPref("extensions.personas.selected");
+
+    // FIXME: figure out where to locate this function and put it there.
+    // Escape CSS special characters in unquoted URLs
+    // per http://www.w3.org/TR/CSS21/syndata.html#uri
+    function escapeCSSURL(aURLSpec) {
+      return aURLSpec.replace(/[(),\s'"]/g, "\$&");
+    }
+
+    // Style the primary toolbar box, adding the background image and changing
+    // the text color to reflect dark vs. light personas as advertised by the feed.
+    let toolbar = document.getElementById("main-window");
+    toolbar.setAttribute("persona", personaID);
+    toolbar.style.backgroundImage = "url(" + escapeCSSURL(aURL) + ")";
+    let isDark = this._getDarkPropertyByPersona(personaID);
+    toolbar.setAttribute("_personas-dark-style", isDark ? "true" : "");
   },
 
-  // nsIObserver
-  observe: function(subject, topic, data) {
-    switch (topic) {
-      case "nsPref:changed":
-        switch (data) {
-          case "extensions.personas.selected":
-          case "extensions.personas.manualPath":
-          case "extensions.personas.category":
-            this._updateTheme();
-            break;
-        }
-        break;
+  _applyStatusbarURLUpdate: function(aURL) {
+    let personaID = this._getPref("extensions.personas.selected");
+
+    // FIXME: figure out where to locate this function and put it there.
+    // Escape CSS special characters in unquoted URLs
+    // per http://www.w3.org/TR/CSS21/syndata.html#uri
+    function escapeCSSURL(aURLSpec) {
+      return aURLSpec.replace(/[(),\s'"]/g, "\$&");
+    }
+
+    let statusbar = document.getElementById("status-bar");
+    if (statusbar) {
+      statusbar.setAttribute("persona", personaID);
+      statusbar.style.backgroundImage = "url('" + escapeCSSURL(aURL) + "')";
     }
   },
+
+  _applyDefault: function() {
+    let toolbar = document.getElementById("main-window");
+    toolbar.removeAttribute("persona");
+    toolbar.style.backgroundImage = this._defaultToolbarBackgroundImage;
+    toolbar.removeAttribute("_personas-dark-style");
+
+    let statusbar = document.getElementById("status-bar");
+    if (statusbar) {
+      statusbar.removeAttribute("persona");
+      statusbar.style.backgroundImage = this._defaultStatusbarBackgroundImage;
+    }
+  },
+
+  _getDarkPropertyByPersona: function(personaID) {
+
+    // FIXME: temporary hack to get around slow loading on initialization     
+    if (!this._personaSvc.personas)
+      return false;
+
+    let personas = this._personaSvc.personas.wrappedJSObject;
+
+    for each (let persona in personas)
+      if (persona.id == personaID)
+        return typeof persona.dark != "undefined" && persona.dark == "true";
+
+    return false;
+  },
+
+
+  //**************************************************************************//
+  // Persona Setting
 
   /**
    * Set the persona from a web page via a SetPersona event.  Checks to ensure
@@ -239,162 +329,24 @@ let PersonaController = {
     }
 
     // Save the new selection to prefs.
-    //this._prefSvc.setBoolPref("extensions.personas.selectedIsDark", dark);
     this._prefSvc.setCharPref("extensions.personas.selected", personaID);
     this._prefSvc.setCharPref("extensions.personas.category", categoryID);
   },
 
-  _getDarkPropertyByPersona: function(personaID) {
 
-    // FIXME: temporary hack to get around slow loading on initialization     
-    if (!this._personaSvc.personas)
-      return false;
-
-    let personas = this._personaSvc.personas.wrappedJSObject;
-
-    for each (let persona in personas)
-      if (persona.id == personaID)
-        return typeof persona.dark != "undefined" && persona.dark == "true";
-
-    return false;
-  },
-
-  _getRandomPersonaByCategory: function(currentPersona, categoryID) {
-    let personas = this._personaSvc.personas.wrappedJSObject;
-    let subList = new Array();
-    let k = 0;
-
-    // Build the list of possible personas to select from
-    for each (let persona in personas) {
-      let needle = categoryID;
-      let haystack = persona.menu;
-
-      if (haystack.search(needle) == -1)
-        continue;
-
-      subList[k++] = persona;
-    }
-
-    // Get a random item, trying up to five times to get one that is different
-    // from the currently-selected item in the category (if any).
-    // We use Math.floor instead of Math.round to pick a random number because
-    // the JS reference says Math.round returns a non-uniform distribution
-    // <http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Math:random#Examples>.
-    let randomIndex, randomItem;
-    for (let i = 0; i < 5; i++) {
-      randomIndex = Math.floor(Math.random() * subList.length);
-      randomItem = subList[randomIndex];
-      if (randomItem.id != currentPersona)
-        break;
-    }
-
-    return randomItem.id; 
-  },
-
-  // FIXME: update the menu item to display the persona name as its label.
-  _updateTheme: function() {
-    let personaID = this._getPref("extensions.personas.selected") || "default";
-
-    // If a random persona has been selected, pick the next one from the category.
-    // First check to ensure that the personas list has been updated by the service,
-    // as this sometimes doesn't work on startup if your network connection is slow.
-    if (personaID == "random") {
-      if (this._personaSvc.personas) {
-        let categoryID = this._getPref("extensions.personas.category");
-        personaID = this._getRandomPersonaByCategory(personaID, categoryID);
-        this._prefSvc.setCharPref("extensions.personas.lastrandom", personaID);
-      }
-      else
-        personaID = this._getPref("extensions.personas.lastrandom");
-    }
-
-    if (personaID == "default")
-      this._applyDefault();
-    else
-      this._applyPersona(personaID);
-  },
-
-  _applyDefault: function() {
-    let toolbar = document.getElementById("main-window");
-    toolbar.removeAttribute("persona");
-    toolbar.style.backgroundImage = this._defaultToolbarBackgroundImage;
-    toolbar.removeAttribute("_personas-dark-style");
-
-    let statusbar = document.getElementById("status-bar");
-    if (statusbar) {
-      statusbar.removeAttribute("persona");
-      statusbar.style.backgroundImage = this._defaultStatusbarBackgroundImage;
-    }
-  },
-
-  _applyPersona: function(personaID) {
-    let isDark = this._getDarkPropertyByPersona(personaID);
-
-    // Style the primary toolbar box, adding the background image and changing
-    // the text color to reflect dark vs. light personas as advertised by the feed.
-    let toolbar = document.getElementById("main-window");
-    toolbar.setAttribute("persona", personaID);
-    toolbar.style.backgroundImage = "url('" + this._getToolbarURL(personaID) + "')";
-    toolbar.setAttribute("_personas-dark-style", isDark ? "true" : "");
-
-    // Style the statusbar, adding the background image.
-    let statusbar = document.getElementById("status-bar");
-    if (statusbar) {
-      statusbar.setAttribute("persona", personaID);
-      statusbar.style.backgroundImage = "url('" + this._getStatusbarURL(personaID) + "')";
-    }
-  },
-
-  _getToolbarURL: function(personaID) {
-    switch (personaID) {
-      case "default":
-        return "chrome://personas/skin/default/tbox-default.jpg";
-      case "manual":
-        return "file://" + this._prefSvc.getCharPref("extensions.personas.manualPath");
-    }
-
-    return this._baseURL + "skins/" + personaID + "/tbox-" + personaID + ".jpg";
-  },
-
-  _getStatusbarURL: function(personaID) {
-    if (personaID == "default")
-      return "chrome://personas/skin/default/stbar-default.jpg";
-
-    return this._baseURL + "skins/" + personaID + "/stbar-" + personaID + ".jpg";
-  },
+  //**************************************************************************//
+  // Popup Handling
 
   onPersonaPopupShowing: function(event) {
     if (event.target != this._menu)
       return;
 
+    // FIXME: make sure we have this data and display something meaningful
+    // if we don't have it yet.
     let categories = this._personaSvc.categories.wrappedJSObject;
     let personas = this._personaSvc.personas.wrappedJSObject;
 
     this._rebuildMenu(categories, personas);
-  },
-
-  _getCategoryName: function(categoryID) {
-    let categories = this._personaSvc.categories.wrappedJSObject;
-
-    for each (let category in categories)
-      if (category.id == categoryID)
-        return category.label;
-
-    return "(unknown)";
-  },
-
-  _getPersonaName: function(personaID) {
-    let personas = this._personaSvc.personas.wrappedJSObject;
-    let defaultString = this._stringBundle.getString("Default");
-
-    if (personaID == "default")
-      return defaultString;
-
-    for each (let persona in personas)
-      if (persona.id == personaID)
-        return persona.label;
-
-    return defaultString;
   },
 
   _rebuildMenu: function(categories, personas) {
@@ -488,6 +440,30 @@ let PersonaController = {
     }
   },
 
+  _getCategoryName: function(categoryID) {
+    let categories = this._personaSvc.categories.wrappedJSObject;
+
+    for each (let category in categories)
+      if (category.id == categoryID)
+        return category.label;
+
+    return "(unknown)";
+  },
+
+  _getPersonaName: function(personaID) {
+    let personas = this._personaSvc.personas.wrappedJSObject;
+    let defaultString = this._stringBundle.getString("Default");
+
+    if (personaID == "default")
+      return defaultString;
+
+    for each (let persona in personas)
+      if (persona.id == personaID)
+        return persona.label;
+
+    return defaultString;
+  },
+
   _createPersonaItem: function(persona, categoryid) {
     let item = document.createElement("menuitem");
 
@@ -534,4 +510,7 @@ let PersonaController = {
 
 window.addEventListener("load", function(e) { PersonaController.startUp(e) }, false);
 window.addEventListener("unload", function(e) { PersonaController.shutDown(e) }, false);
+
+// This listens for "SetPersona" events from content and applies the selected
+// persona if the event comes from an authorized web site.
 document.addEventListener("SetPersona", function(e) { PersonaController.setPersona(e) }, false, true);
