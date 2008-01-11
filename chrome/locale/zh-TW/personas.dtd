@@ -1,0 +1,5 @@
+<!ENTITY personas_app_title 	  "Personas for Firefox">
+
+<!ENTITY useDefaultPersona.label  "使用預設主題">
+<!ENTITY useCustomPersona.label   "使用本機檔案...">
+<!ENTITY aboutPersonas.label      "關於...">
