@@ -1,0 +1,5 @@
+<!ENTITY personas_app_title 	  "Personas za Firefox">
+
+<!ENTITY useDefaultPersona.label  "Koristi pretpostavljeno">
+<!ENTITY useCustomPersona.label   "Koristi vlastito zaglavlje...">
+<!ENTITY aboutPersonas.label      "O dodatku...">
