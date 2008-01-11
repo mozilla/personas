@@ -4,3 +4,4 @@ content  personas            chrome/content/
 skin     personas class/1.0  chrome/skin/
 locale   personas en-US      chrome/locale/en-US/
 locale   personas ja         chrome/locale/ja/
+locale   personas ko-KR      chrome/locale/ko-KR/

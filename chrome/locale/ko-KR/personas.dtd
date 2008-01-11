@@ -1,0 +1,5 @@
+<!ENTITY personas_app_title 	  "Firefox용 Persona">
+
+<!ENTITY useDefaultPersona.label  "기본 설정 사용">
+<!ENTITY useCustomPersona.label   "로컬 헤더 사용...">
+<!ENTITY aboutPersonas.label      "확장 기능 정보...">
