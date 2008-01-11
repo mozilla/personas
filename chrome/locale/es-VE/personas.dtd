@@ -1,0 +1,5 @@
+<!ENTITY personas_app_title 	  "Personas para Firefox">
+
+<!ENTITY useDefaultPersona.label  "Usar Predeterminado">
+<!ENTITY useCustomPersona.label   "Usar cabecera local...">
+<!ENTITY aboutPersonas.label      "Acerca de...">
