@@ -1,0 +1,4 @@
+<!ENTITY personas_app_title "Personas för Firefox">
+<!ENTITY useDefaultPersona.label  "Använd Standard">
+<!ENTITY useCustomPersona.label   "Använd Egen Rubrik...">
+<!ENTITY aboutPersonas.label      "Om...">
