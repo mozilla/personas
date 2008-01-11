@@ -1,0 +1,5 @@
+<!ENTITY personas_app_title 	  "Personas για Firefox">
+
+<!ENTITY useDefaultPersona.label  "Χρήση Προεπιλεγμένου">
+<!ENTITY useCustomPersona.label   "Χρήση Τοπικής Kεφαλίδας...">
+<!ENTITY aboutPersonas.label      "Περί...">
