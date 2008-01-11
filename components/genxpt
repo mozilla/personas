@@ -1,4 +1,4 @@
-#!/bin/bash -x
+#!/bin/sh -x
 
 if [[ ! -d $MOZBINPATH ]]; then
     echo "MOZBINPATH environment variable must point to a directory containing xpidl, either in a Gecko SDK ($GECKOSDKDIR/bin/) or a Mozilla build obj tree ($MOZOBJDIR/dist/bin)"
