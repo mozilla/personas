@@ -9,4 +9,6 @@ if [[ ! -d $MOZIDLPATH ]]; then
     exit 1
 fi
 
-$MOZBINPATH/xpidl -m typelib -I $MOZIDLPATH -o nsIPersonaService nsIPersonaService.idl
+for idl in `find . -type f -name \*.idl`; do
+    $MOZBINPATH/xpidl -m typelib -I $MOZIDLPATH $idl
+done
