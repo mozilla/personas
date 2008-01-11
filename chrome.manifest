@@ -3,7 +3,7 @@ overlay chrome://browser/content/browser.xul chrome://personas/content/personas.
 content  personas               chrome/content/
 skin     personas   class/1.0   chrome/skin/
 
-# Localizations in alphabetical order
+# localizations in alphabetical order
 locale   personas   de-DE       chrome/locale/de-DE/
 locale   personas   el-GR       chrome/locale/el-GR/
 locale   personas   en-US       chrome/locale/en-US/
