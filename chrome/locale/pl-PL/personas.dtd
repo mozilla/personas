@@ -1,0 +1,5 @@
+<!ENTITY personas_app_title 	  "Personas for Firefox">
+
+<!ENTITY useDefaultPersona.label  "Użyj domyślnej">
+<!ENTITY useCustomPersona.label   "Użyj własnego nagłówka...">
+<!ENTITY aboutPersonas.label      "O rozszerzeniu...">
