@@ -1,0 +1,5 @@
+<!ENTITY personas_app_title 	  "Personas pour Firefox">
+
+<!ENTITY useDefaultPersona.label  "Revenir à l'original">
+<!ENTITY useCustomPersona.label   "En-tête personnalisé">
+<!ENTITY aboutPersonas.label      "À propos...">
