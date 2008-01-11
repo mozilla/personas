@@ -11,5 +11,6 @@ locale   personas   he-IL       chrome/locale/he-IL/
 locale   personas   ja          chrome/locale/ja/
 locale   personas   ko-KR       chrome/locale/ko-KR/
 locale   personas   nb-NO       chrome/locale/nb-NO/
+locale   personas   nl-NL       chrome/locale/nl-NL/
 locale   personas   sv          chrome/locale/sv/
 locale   personas   zh-TW       chrome/locale/zh-TW/

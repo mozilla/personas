@@ -1,0 +1,5 @@
+<!ENTITY personas_app_title 	  "Personas voor Firefox">
+
+<!ENTITY useDefaultPersona.label  "Gebruik Standaard">
+<!ENTITY useCustomPersona.label   "Gebruik Lokale Header...">
+<!ENTITY aboutPersonas.label      "Informatie...">
