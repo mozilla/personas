@@ -377,7 +377,12 @@ PersonaService.prototype = {
     if (request.status != 200)
       throw("problem loading personas: " + request.status + " - " + request.statusText);
 
+    // The "personas" member of the JSON response object is an array of hashes
+    // where each hash represents one persona.
     let personas = JSON.fromString(request.responseText).personas;
+
+    // To share this with (JavaScript) XPCOM consumers without having to create
+    // an complex XPCOM interface to it, we just pass it as a wrapped JS object.
     this.personas = { wrappedJSObject: personas };
 
     this._prefSvc.setCharPref("extensions.personas.lastlistupdate",
@@ -509,24 +514,42 @@ PersonaService.prototype = {
     return randomItem.id; 
   },
 
-  _getToolbarURL: function(personaID) {
+  // FIXME: index personas after retrieving them and make the index (or a method
+  // for accessing it) available to chrome JS in addition to this service's code
+  // so we don't have to iterate through personas all the time.
+  _getPersona: function(aPersonaID) {
+    for each (let persona in this.personas.wrappedJSObject)
+      if (persona.id == aPersonaID)
+        return persona;
+
+    return null;
+  },
+
+  _getToolbarURL: function(aPersonaID) {
     // Custom persona whose toolbar content is a local file specified by the user
     // and stored in the "manualPath" preference.
     // FIXME: store custom personas as full URLs, since that would enable users
     // to specify remote URLs as custom personas instead of being limited to
     // local files (of course then we'd also have to create some usable UI for
     // specifying that remote URL).
-    if (personaID == "manual")
+    if (aPersonaID == "manual")
       return "file://" + this._prefSvc.getCharPref("extensions.personas.manualPath");
 
-    // New-style persona whose toolbar content (which might be dynamic)
-    // is located at the arbitrary URL specified by the "toolbarURL" property.
-    //if (this.personas.wrappedJSObject[personaID].toolbarURL)
-    //  return this.personas.wrappedJSObject[personaID].toolbarURL;
+    let persona = this._getPersona(aPersonaID);
 
-    // Old-style persona whose content is a static image located at a particular
-    // place on the personas server.
-    return this._baseURL + "skins/" + personaID + "/tbox-" + personaID + ".jpg";
+    // Let the persona override the default base URL so it can reference
+    // files on other servers.
+    let baseURL = (typeof persona.baseURL != "undefined") ? persona.baseURL
+                                                          : this._baseURL;
+
+    // New-style persona whose content (which might be dynamic) is located
+    // at the URL specified by a property.
+    if (persona.toolbarURL)
+      return baseURL + persona.toolbarURL;
+
+    // Old-style persona whose content (which must be static) is a JPG image
+    // located at a particular place on the personas server.
+    return baseURL + "skins/" + aPersonaID + "/tbox-" + aPersonaID + ".jpg";
   },
 
   _getStatusbarURL: function(aPersonaID) {
@@ -535,9 +558,21 @@ PersonaService.prototype = {
     if (aPersonaID == "manual")
       return this._prefSvc.getCharPref("extensions.personas.custom.statusbarURL");
 
-    // Old-style persona whose content is a static image located at a particular
-    // place on the personas server.
-    return this._baseURL + "skins/" + aPersonaID + "/stbar-" + aPersonaID + ".jpg";
+    let persona = this._getPersona(aPersonaID);
+
+    // Let the persona override the default base URL so it can reference
+    // files on other servers.
+    let baseURL = (typeof persona.baseURL != "undefined") ? persona.baseURL
+                                                          : this._baseURL;
+
+    // New-style persona whose content (which might be dynamic) is located
+    // at the URL specified by a property.
+    if (persona.statusbarURL)
+      return baseURL + persona.statusbarURL;
+
+    // Old-style persona whose content (which must be static) is a JPG image
+    // located at a particular place on the personas server.
+    return baseURL + "skins/" + aPersonaID + "/stbar-" + aPersonaID + ".jpg";
   }
 
 }
