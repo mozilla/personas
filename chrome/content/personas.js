@@ -200,6 +200,11 @@ let PersonaController = {
     this._obsSvc.addObserver(this, "personas:statusbarURLUpdated", false);
     this._obsSvc.addObserver(this, "personas:defaultPersonaSelected", false);
 
+    // Listen for various persona-related events that can bubble up from content.
+    document.addEventListener("SelectPersona", this, false, true);
+    document.addEventListener("PreviewPersona", this, false, true);
+    document.addEventListener("ResetPersona", this, false, true);
+
     // Check for a first-run or updated extension and display some additional
     // information to users.
     let lastVersion = this._getPref("extensions.personas.lastversion"); 
@@ -219,6 +224,10 @@ let PersonaController = {
   },
 
   shutDown: function() {
+    document.removeEventListener("SelectPersona", this, false);
+    document.removeEventListener("PreviewPersona", this, false);
+    document.removeEventListener("ResetPersona", this, false);
+
     this._obsSvc.removeObserver(this, "personas:toolbarURLUpdated");
     this._obsSvc.removeObserver(this, "personas:statusbarURLUpdated");
     this._obsSvc.removeObserver(this, "personas:defaultPersonaSelected");
@@ -598,8 +607,3 @@ let PersonaController = {
 
 window.addEventListener("load", function(e) { PersonaController.startUp(e) }, false);
 window.addEventListener("unload", function(e) { PersonaController.shutDown(e) }, false);
-
-// Listen for various persona-related events that can bubble up from content.
-document.addEventListener("SelectPersona", PersonaController, false, true);
-document.addEventListener("PreviewPersona", PersonaController, false, true);
-document.addEventListener("ResetPersona", PersonaController, false, true);
