@@ -1,0 +1,5 @@
+<!ENTITY personas_app_title 	  "Firefox炫彩风格">
+
+<!ENTITY useDefaultPersona.label  "使用默认风格">
+<!ENTITY useCustomPersona.label   "使用个性化风格...">
+<!ENTITY aboutPersonas.label      "关于...">
