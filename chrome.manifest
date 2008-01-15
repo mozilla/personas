@@ -16,5 +16,6 @@ locale   personas   ko-KR       chrome/locale/ko-KR/
 locale   personas   nb-NO       chrome/locale/nb-NO/
 locale   personas   nl-NL       chrome/locale/nl-NL/
 locale   personas   pl-PL       chrome/locale/pl-PL/
+locale   personas   ru          chrome/locale/ru/
 locale   personas   sv          chrome/locale/sv/
 locale   personas   zh-TW       chrome/locale/zh-TW/

@@ -1,0 +1,5 @@
+<!ENTITY personas_app_title 	  "Personas для Firefox">
+
+<!ENTITY useDefaultPersona.label  "Стиль по умолчанию">
+<!ENTITY useCustomPersona.label   "Стиль пользователя...">
+<!ENTITY aboutPersonas.label      "О Personas...">
