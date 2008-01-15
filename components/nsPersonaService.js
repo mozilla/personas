@@ -222,6 +222,29 @@ PersonaService.prototype = {
   categories: null,
   personas: null,
 
+  /**
+   * Display the given persona without making it the selected persona.  Useful
+   * for showing users who are browsing a directory of personas what a given
+   * persona will look like when selected, f.e. on mouseover.  Consumers who
+   * call this method should call resetPersona when the user stops previewing
+   * the persona, f.e. on mouseout.  Otherwise the displayed persona will revert
+   * to the selected persona when it is reloaded, the browser is restarted,
+   * or the user selects another persona.
+   */
+  previewPersona: function(aPersonaID) {
+    this._displayPersona(aPersonaID);
+  },
+
+  /**
+   * Reset the displayed persona to the selected persona.  Useful for returning
+   * to the selected persona after previewing personas.  Also called by the pref
+   * observer when the selected persona changes.
+   */
+  resetPersona: function() {
+    let personaID = this._getPref("extensions.personas.selected", "default");
+    this._displayPersona(personaID);
+  },
+
   // nsIObserver
 
   observe: function(subject, topic, data) {
@@ -234,13 +257,13 @@ PersonaService.prototype = {
         switch (data) {
           // If any of the prefs that determine which persona is selected
           // have changed, then reload the persona.
-          // FIXME: figure out how to call _displayPersona only once when both
+          // FIXME: figure out how to call resetPersona only once when both
           // "selected" and "category" preferences are set one after the other
           // by PersonaController._setPersona.
           case "extensions.personas.selected":
           case "extensions.personas.manualPath":
           case "extensions.personas.category":
-            this._displayPersona();
+            this.resetPersona();
             break;
         }
         break;
@@ -270,7 +293,8 @@ PersonaService.prototype = {
   notify: function(aTimer) {
     switch(aTimer) {
       case this._personaReloadTimer:
-        this._reloadPersona();
+        let personaID = this._getPref("extensions.personas.selected", "default");
+        this._reloadPersona(personaID);
         break;
       case this._dataReloadTimer:
         this._reloadData();
@@ -411,20 +435,19 @@ PersonaService.prototype = {
                                                  "personas:statusbarURLUpdated");
 
     // Now apply the selected persona to the browser windows.
-    this._displayPersona();
+    let personaID = this._getPref("extensions.personas.selected", "default");
+    this._displayPersona(personaID);
   },
 
   /**
    * Display the selected persona in the application windows.  This happens
    * on startup and every time the user selects a persona.
    */
-  _displayPersona: function() {
+  _displayPersona: function(aPersonaID) {
     // Cancel the reload timer.
     this._personaReloadTimer.cancel();
 
-    let personaID = this._getPref("extensions.personas.selected", "default");
-
-    if (personaID == "default") {
+    if (aPersonaID == "default") {
       // Reset the background loaders so they don't keep trying to snapshot
       // the previously-selected persona.
       this._toolbarLoader.reset();
@@ -437,7 +460,7 @@ PersonaService.prototype = {
     }
 
     // Load the persona, then initialize a timer that reloads it periodically.
-    this._reloadPersona();
+    this._reloadPersona(aPersonaID);
     this._personaReloadTimer.initWithCallback(this,
                                               this._reloadInterval * 60 * 1000,
                                               Ci.nsITimer.TYPE_REPEATING_SLACK);
@@ -449,14 +472,12 @@ PersonaService.prototype = {
    * by the _reloadInterval property (the latter to incorporate changes
    * to dynamic personas).
    */
-  _reloadPersona: function() {
-    let personaID = this._getPref("extensions.personas.selected", "default");
+  _reloadPersona: function(aPersonaID) {
+    if (aPersonaID == "random")
+      aPersonaID = this._getRandomPersona();
 
-    if (personaID == "random")
-      personaID = this._getRandomPersona();
-
-    this._toolbarLoader.reload(personaID, this._getToolbarURL(personaID));
-    this._statusbarLoader.reload(personaID, this._getStatusbarURL(personaID));
+    this._toolbarLoader.reload(aPersonaID, this._getToolbarURL(aPersonaID));
+    this._statusbarLoader.reload(aPersonaID, this._getStatusbarURL(aPersonaID));
   },
 
   _getRandomPersona: function() {

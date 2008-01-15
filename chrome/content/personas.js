@@ -137,7 +137,9 @@ let PersonaController = {
 
   // nsISupports
   QueryInterface: function(aIID) {
-    if (aIID.equals(Ci.nsIObserver) || aIID.equals(Ci.nsISupports))
+    if (aIID.equals(Ci.nsIObserver) ||
+        aIID.equals(Ci.nsIDOMEventListener) ||
+        aIID.equals(Ci.nsISupports))
       return this;
     
     throw Cr.NS_ERROR_NO_INTERFACE;
@@ -154,6 +156,22 @@ let PersonaController = {
         break;
       case "personas:defaultPersonaSelected":
         this._applyDefault();
+        break;
+    }
+  },
+
+  // nsIDOMEventListener
+
+  handleEvent: function(aEvent) {
+    switch (aEvent.type) {
+      case "SelectPersona":
+        this.onSelectPersonaFromContent(aEvent);
+        break;
+      case "PreviewPersona":
+        this.onPreviewPersonaFromContent(aEvent);
+        break;
+      case "ResetPersona":
+        this.onResetPersonaFromContent(aEvent);
         break;
     }
   },
@@ -276,49 +294,45 @@ let PersonaController = {
 
 
   //**************************************************************************//
-  // Persona Setting
+  // Persona Selection, Preview, and Reset
 
   /**
-   * Set the persona from a web page via a SetPersona event.  Checks to ensure
-   * the page is hosted on a server authorized to set personas and the persona
+   * Select a persona from content via a SelectPersona event.  Checks to ensure
+   * the page is hosted on a server authorized to select personas and the persona
    * is in the list of personas known to the persona service.  Retrieves the ID
    * of the persona from the "persona" attribute on the target of the event.
    *
-   * @param event {Event} the SetPersona DOM event
+   * @param aEvent {Event} the SelectPersona DOM event
    */
-  setPersona: function(event) {
-    // Make sure the host matches an entry in the whitelist.  The host matches
-    // if it ends with one of the entries in the whitelist.  For example, if
-    // .mozilla.com is an entry in the whitelist, then www.mozilla.com matches,
-    // as does labs.mozilla.com, but mozilla.com does not, nor does evil.com.
-    let host = event.target.ownerDocument.location.hostname;
-    let hostBackwards = host.split('').reverse().join('');
-    let authorizedHosts = this._prefSvc.getCharPref("extensions.personas.authorizedHosts").split(/[, ]+/);
-    if (!authorizedHosts.some(function(v) { return hostBackwards.indexOf(v.split('').reverse().join('')) == 0 }))
-      throw host + " not authorized to set personas";
+  onSelectPersonaFromContent: function(aEvent) {
+    this._authorizeHost(aEvent);
 
-    if (!event.target.hasAttribute("persona"))
-      throw "event target does not have 'persona' attribute";
+    if (!aEvent.target.hasAttribute("persona"))
+      throw "node does not have 'persona' attribute";
 
-    let personaID = event.target.getAttribute("persona");
-    let categoryID = event.target.getAttribute("category");
+    let personaID = aEvent.target.getAttribute("persona");
 
-    let personas = this._personaSvc.personas.wrappedJSObject;
-    for each (let persona in personas)
-      if (persona.id == personaID) {
-        this._setPersona(personaID, categoryID);
-        return;
-      }
+    if (!this._getPersona(personaID))
+      throw "unknown persona " + personaID;
 
-    throw "unknown persona " + personaID;
+    let categoryID = aEvent.target.getAttribute("category");
+
+    this._selectPersona(personaID, categoryID);
+  },
+
+  onSelectPersona: function(aEvent) {
+    let personaID = aEvent.target.getAttribute("personaid");
+    let categoryID = aEvent.target.getAttribute("categoryid");
+    this._selectPersona(personaID, categoryID);
   },
 
   /**
-   * Set the current persona to the one with the specified ID.
+   * Select the persona with the specified ID.
    *
-   * @param personaID the ID of the persona to set as the current one.
+   * @param personaID the ID of the persona to select
+   * @param categoryID the ID of the category to which persona belongs
    */
-  _setPersona: function(personaID, categoryID) {
+  _selectPersona: function(personaID, categoryID) {
     // Update the list of recent personas.
     if (personaID != "default" && personaID != this._currentPersona && this._currentPersona != "random") {
       this._prefSvc.setCharPref("extensions.personas.lastselected2",
@@ -333,9 +347,105 @@ let PersonaController = {
     this._prefSvc.setCharPref("extensions.personas.category", categoryID);
   },
 
+  /**
+   * Preview the persona specified by a web page via a PreviewPersona event.
+   * Checks to ensure the page is hosted on a server authorized to set personas
+   * and the persona is in the list of personas known to the persona service.
+   * Retrieves the ID of the persona from the "persona" attribute on the target
+   * of the event.
+   * 
+   * @param aEvent {Event} the PreviewPersona DOM event
+   */
+  onPreviewPersonaFromContent: function(aEvent) {
+    this._authorizeHost(aEvent);
+
+    if (!aEvent.target.hasAttribute("persona"))
+      throw "node does not have 'persona' attribute";
+
+    let personaID = aEvent.target.getAttribute("persona");
+
+    if (!this._getPersona(personaID))
+      throw "unknown persona " + personaID;
+
+    this._previewPersona(personaID);
+  },
+
+  onPreviewPersona: function(aEvent) {
+    this._previewPersona(aEvent.target.getAttribute("personaid"));
+  },
+
+  _previewPersona: function(aPersonaID) {
+    this._personaSvc.previewPersona(aPersonaID);
+  },
+
+  /**
+   * Reset the displayed persona to the selected persona via a ResetPersona event.
+   * Checks to ensure the page is hosted on a server authorized to modify personas
+   * and the persona is in the list of personas known to the persona service.
+   * Retrieves the ID of the persona from the "persona" attribute on the target
+   * of the event.
+   * 
+   * @param aEvent {Event} the ResetPersona DOM event
+   */
+  onResetPersonaFromContent: function(aEvent) {
+    this._authorizeHost(aEvent);
+    this._resetPersona();
+  },
+
+  onResetPersona: function(aEvent) {
+    this._resetPersona();
+  },
+
+  _resetPersona: function() {
+    this._personaSvc.resetPersona();
+  },
+
+  onSelectDefault: function() {
+    this._setPersona("default", "");
+  },
+
+  onSelectManual: function(event) {
+    let fp = Cc["@mozilla.org/filepicker;1"].createInstance(Ci.nsIFilePicker);
+    fp.init(window, "Select a File", Ci.nsIFilePicker.modeOpen);
+    let result = fp.show();
+    if (result == Ci.nsIFilePicker.returnOK) {
+      this._prefSvc.setCharPref("extensions.personas.manualPath", fp.file.path);
+      this._setPersona("manual", "");
+    }
+  },
+
+  onSelectAbout: function(event) {
+    window.openUILinkIn(this._baseURL + this._locale + "/about/?persona=" + this._currentPersona, "tab");
+  },
+
+  /**
+   * Ensure the host that loaded the document from which the given DOM event
+   * came matches an entry in the personas whitelist.  The host matches if it
+   * ends with one of the entries in the whitelist.  For example, if
+   * .mozilla.com is an entry in the whitelist, then www.mozilla.com matches,
+   * as does labs.mozilla.com, but mozilla.com does not, nor does evil.com.
+   * 
+   * @param aEvent {Event} the DOM event
+   */
+  _authorizeHost: function(aEvent) {
+    let host = aEvent.target.ownerDocument.location.hostname;
+    let hostBackwards = host.split('').reverse().join('');
+    let authorizedHosts = this._prefSvc.getCharPref("extensions.personas.authorizedHosts").split(/[, ]+/);
+    if (!authorizedHosts.some(function(v) { return hostBackwards.indexOf(v.split('').reverse().join('')) == 0 }))
+      throw host + " not authorized to modify personas";
+  },
+
+  _getPersona: function(aPersonaID) {
+    for each (let persona in this._personaSvc.personas.wrappedJSObject)
+      if (persona.id == aPersonaID)
+        return persona;
+
+    return null;
+  },
+
 
   //**************************************************************************//
-  // Popup Handling
+  // Popup Construction
 
   onPersonaPopupShowing: function(event) {
     if (event.target != this._menu)
@@ -477,33 +587,11 @@ let PersonaController = {
     item.setAttribute("checked", (persona.id == this._currentPersona));
     item.setAttribute("autocheck", "false");
     item.setAttribute("categoryid", categoryid);
-    item.setAttribute("oncommand", "PersonaController.onSelectPersona(event.target);");
+    item.setAttribute("oncommand", "PersonaController.onSelectPersona(event)");
+    item.setAttribute("onmouseover", "PersonaController.onPreviewPersona(event)");
+    item.setAttribute("onmouseout", "PersonaController.onResetPersona()");
 
     return item;
-  },
-
-  onSelectPersona: function(menuitem) {
-    let personaID = menuitem.getAttribute("personaid");
-    let categoryID = menuitem.getAttribute("categoryid");
-    this._setPersona(personaID, categoryID);
-  },
-
-  onSelectDefault: function() {
-    this._setPersona("default", "");
-  },
-
-  onSelectManual: function(event) {
-    let fp = Cc["@mozilla.org/filepicker;1"].createInstance(Ci.nsIFilePicker);
-    fp.init(window, "Select a File", Ci.nsIFilePicker.modeOpen);
-    let result = fp.show();
-    if (result == Ci.nsIFilePicker.returnOK) {
-      this._prefSvc.setCharPref("extensions.personas.manualPath", fp.file.path);
-      this._setPersona("manual", "");
-    }
-  },
-
-  onSelectAbout: function(event) {
-    window.openUILinkIn(this._baseURL + this._locale + "/about/?persona=" + this._currentPersona, "tab");
   }
 
 };
@@ -511,6 +599,7 @@ let PersonaController = {
 window.addEventListener("load", function(e) { PersonaController.startUp(e) }, false);
 window.addEventListener("unload", function(e) { PersonaController.shutDown(e) }, false);
 
-// This listens for "SetPersona" events from content and applies the selected
-// persona if the event comes from an authorized web site.
-document.addEventListener("SetPersona", function(e) { PersonaController.setPersona(e) }, false, true);
+// Listen for various persona-related events that can bubble up from content.
+document.addEventListener("SelectPersona", PersonaController, false, true);
+document.addEventListener("PreviewPersona", PersonaController, false, true);
+document.addEventListener("ResetPersona", PersonaController, false, true);

@@ -36,11 +36,29 @@
 
 #include "nsISupports.idl"
 
-[scriptable, uuid(7ca3c1b5-6bf6-4439-927f-ad1de3478ecc)]
+[scriptable, uuid(f41fc9e5-6f7b-4d4a-ab2e-4675bbe10f08)]
 interface nsIPersonaService : nsISupports
 {
   // JavaScript data structures providing lists of categories and personas,
   // available in the wrappedJSObject properties of these attributes.
   readonly attribute nsISupports categories;
   readonly attribute nsISupports personas;
+
+  /**
+   * Display the given persona without making it the selected persona.  Useful
+   * for showing users who are browsing a directory of personas what a given
+   * persona will look like when selected, f.e. on mouseover.  Consumers who
+   * call this method should call resetPersona when the user stops previewing
+   * the persona, f.e. on mouseout.  Otherwise the displayed persona will revert
+   * to the selected persona when it is reloaded, the browser is restarted,
+   * or the user selects another persona.
+   */
+  void previewPersona(in AString aPersonaID);
+
+  /**
+   * Reset the displayed persona to the selected persona.  Useful for returning
+   * to the selected persona after previewing personas.  Also called by the pref
+   * observer when the selected persona changes.
+   */
+  void resetPersona();
 };
