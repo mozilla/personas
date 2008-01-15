@@ -410,7 +410,7 @@ let PersonaController = {
   },
 
   onSelectDefault: function() {
-    this._setPersona("default", "");
+    this._selectPersona("default", "");
   },
 
   onSelectManual: function(event) {
@@ -419,7 +419,7 @@ let PersonaController = {
     let result = fp.show();
     if (result == Ci.nsIFilePicker.returnOK) {
       this._prefSvc.setCharPref("extensions.personas.manualPath", fp.file.path);
-      this._setPersona("manual", "");
+      this._selectPersona("manual", "");
     }
   },
 
