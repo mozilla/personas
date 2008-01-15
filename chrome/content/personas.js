@@ -588,8 +588,8 @@ let PersonaController = {
     item.setAttribute("autocheck", "false");
     item.setAttribute("categoryid", categoryid);
     item.setAttribute("oncommand", "PersonaController.onSelectPersona(event)");
-    item.setAttribute("onmouseover", "PersonaController.onPreviewPersona(event)");
-    item.setAttribute("onmouseout", "PersonaController.onResetPersona()");
+    item.addEventListener("DOMMenuItemActive", function(e) { PersonaController.onPreviewPersona(e) }, false);
+    item.addEventListener("DOMMenuItemInactive", function(e) { PersonaController.onResetPersona() }, false);
 
     return item;
   }
