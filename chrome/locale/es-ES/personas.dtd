@@ -1,0 +1,5 @@
+<!ENTITY personas_app_title 	  "Personas para Firefox">
+
+<!ENTITY useDefaultPersona.label  "Usar valor por Defecto">
+<!ENTITY useCustomPersona.label   "Usar Header Local...">
+<!ENTITY aboutPersonas.label      "Acerca de...">
