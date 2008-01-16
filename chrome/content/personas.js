@@ -418,7 +418,8 @@ let PersonaController = {
     fp.init(window, "Select a File", Ci.nsIFilePicker.modeOpen);
     let result = fp.show();
     if (result == Ci.nsIFilePicker.returnOK) {
-      this._prefSvc.setCharPref("extensions.personas.manualPath", fp.file.path);
+      this._prefSvc.setCharPref("extensions.personas.custom.toolbarURL",
+                                fp.fileURL.spec);
       this._selectPersona("manual", "");
     }
   },

@@ -259,9 +259,14 @@ PersonaService.prototype = {
           // have changed, then reload the persona.
           // FIXME: figure out how to call resetPersona only once when both
           // "selected" and "category" preferences are set one after the other
-          // by PersonaController._setPersona.
+          // by PersonaController._setPersona.  Maybe, when we're setting both
+          // the selected persona and some other preferences, we could first
+          // set the selected persona to "disabled", then we could make
+          // the other necessary changes (which this observer ignores while
+          // the selected persona is "disabled"), and finally we could set
+          // the selected persona to the new value.
           case "extensions.personas.selected":
-          case "extensions.personas.manualPath":
+          case "extensions.personas.custom.toolbarURL":
           case "extensions.personas.category":
             this.resetPersona();
             break;
@@ -309,6 +314,16 @@ PersonaService.prototype = {
   _init: function() {
     // Observe application shutdown so we can destroy ourself.
     this._obsSvc.addObserver(this, "xpcom-shutdown", false);
+
+    // For backwards compatibility, migrate the old manualPath preference
+    // to the new custom.toolbarURL preference.
+    // FIXME: remove this once enough users have updated to a version newer
+    // than 0.9.2.
+    if (this._prefSvc.prefHasUserValue("extensions.personas.manualPath")) {
+      let path = this._getPref("extensions.personas.manualPath");
+      this._prefSvc.setCharPref("extensions.personas.custom.toolbarURL", "file://" + path);
+      this._prefSvc.clearUserPref("extensions.personas.manualPath");
+    }
 
     // Observe profile-before-change so we can switch to the datasource
     // in the new profile when the user changes profiles.
@@ -547,14 +562,11 @@ PersonaService.prototype = {
   },
 
   _getToolbarURL: function(aPersonaID) {
-    // Custom persona whose toolbar content is a local file specified by the user
-    // and stored in the "manualPath" preference.
-    // FIXME: store custom personas as full URLs, since that would enable users
-    // to specify remote URLs as custom personas instead of being limited to
-    // local files (of course then we'd also have to create some usable UI for
-    // specifying that remote URL).
+    // Custom persona whose toolbar content is a local file specified by the
+    // user and stored in the custom.toolbarURL preference.
     if (aPersonaID == "manual")
-      return "file://" + this._prefSvc.getCharPref("extensions.personas.manualPath");
+      return this._getPref("extensions.personas.custom.toolbarURL",
+                           "chrome://personas/skin/default/tbox-default.jpg");
 
     let persona = this._getPersona(aPersonaID);
 
@@ -577,7 +589,8 @@ PersonaService.prototype = {
     // Custom persona whose content is in local files specified by the user
     // in preferences.
     if (aPersonaID == "manual")
-      return this._prefSvc.getCharPref("extensions.personas.custom.statusbarURL");
+      return this._getPref("extensions.personas.custom.statusbarURL",
+                           "chrome://personas/skin/default/stbar-default.jpg");
 
     let persona = this._getPersona(aPersonaID);
 
@@ -731,7 +744,7 @@ BackgroundLoader.prototype = {
     // FIXME: file a bug on the ability to turn off image resizing on an
     // iframe-specific basis.
     let url = aURL;
-    if (/\.(jpg|jpeg|png|gif)$/.test(url)) {
+    if (/\.(jpg|jpeg|png|gif)$/i.test(url)) {
       // If this is a custom persona using a local image file, then load it
       // using the chrome-privileged image loader, which we need to use in order
       // to be able to load the local file.
