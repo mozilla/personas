@@ -439,15 +439,15 @@ PersonaService.prototype = {
     this._personaReloadTimer = Cc["@mozilla.org/timer;1"].createInstance(Ci.nsITimer);
 
     // Initialize the toolbar and statusbar background loaders.
-    this._toolbarLoader = new BackgroundLoader(this,
-                                               this._toolbarIframe,
-                                               this._toolbarCanvas,
-                                               "personas:toolbarURLUpdated");
+    this._toolbarLoader = new ToolbarBackgroundLoader(this,
+                                                      this._toolbarIframe,
+                                                      this._toolbarCanvas,
+                                                      "personas:toolbarURLUpdated");
 
-    this._statusbarLoader = new BackgroundLoader(this,
-                                                 this._statusbarIframe,
-                                                 this._statusbarCanvas,
-                                                 "personas:statusbarURLUpdated");
+    this._statusbarLoader = new StatusbarBackgroundLoader(this,
+                                                          this._statusbarIframe,
+                                                          this._statusbarCanvas,
+                                                          "personas:statusbarURLUpdated");
 
     // Now apply the selected persona to the browser windows.
     let personaID = this._getPref("extensions.personas.selected", "default");
@@ -749,7 +749,9 @@ BackgroundLoader.prototype = {
       // using the chrome-privileged image loader, which we need to use in order
       // to be able to load the local file.
       if (aPersonaID == "manual" && /^file:/.test(url))
-        url = "chrome://personas/content/imageLoader.xul?" + url;
+        url = "chrome://personas/content/imageLoader.xul?" +
+              "url=" + encodeURIComponent(url) + "&" +
+              "position=" + encodeURIComponent(this.position);
 
       // Otherwise, load it using an unprivileged image loader constructed
       // inside a data: URL so it can't do anything malicious.  This protects
@@ -761,13 +763,14 @@ BackgroundLoader.prototype = {
               '<window xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" ' +
                       'style="background-image: url(' + escapeXML(escapeCSSURL(url)) + '); ' +
                              'background-repeat: no-repeat; ' +
-                             'background-position: top right;" flex="1"/>';
+                             'background-position: ' + this.position + ';" flex="1"/>';
     }
 
     // Listen for pageshow on the iframe so we know when it finishes loading
     // the background.
     this._iframe.addEventListener("pageshow", this, false);
 
+dump("reload: url is " + url + "\n");
     // Note: we use loadURI instead of just setting the src attribute
     // since setting the attribute doesn't reload the page if we set it
     // to its current value, and we always want to reload the page
@@ -830,6 +833,28 @@ BackgroundLoader.prototype = {
     this._personaSvc._obsSvc.notifyObservers(null, this._notificationTopic, url);
   }
 
+};
+
+// ToolbarBackgroundLoader and StatusbarBackgroundLoader subclass BackgroundLoader
+// with properties specific to each bar, in particular the position property,
+// which determines which corner of the bar to anchor the background image to.
+
+function ToolbarBackgroundLoader(aPersonaService, aIframe, aCanvas, aNotificationTopic) {
+  BackgroundLoader.call(this, aPersonaService, aIframe, aCanvas, aNotificationTopic);
+}
+
+ToolbarBackgroundLoader.prototype = {
+  __proto__: BackgroundLoader.prototype,
+  position: "top right"
+};
+
+function StatusbarBackgroundLoader(aPersonaService, aIframe, aCanvas, aNotificationTopic) {
+  BackgroundLoader.call(this, aPersonaService, aIframe, aCanvas, aNotificationTopic);
+}
+
+StatusbarBackgroundLoader.prototype = {
+  __proto__: BackgroundLoader.prototype,
+  position: "top left"
 };
 
 

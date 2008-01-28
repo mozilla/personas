@@ -1,17 +1,36 @@
 <window xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
-        flex="1" style="background-repeat: no-repeat; background-position: top right;">
-  <script type="application/javascript;version=1.7">
-  <![CDATA[
-    // Escape CSS special characters in unquoted URLs
-    // per http://www.w3.org/TR/CSS21/syndata.html#uri
-    function escapeCSSURL(aURLSpec) {
-      return aURLSpec.replace(/[(),\s'"]/g, "\$&");
-    }
+        flex="1" style="background-repeat: no-repeat;">
 
-    // Load the image URL specified in the search section of the URL
-    // as a background image.
-    let imageURL = window.location.search.substr(1);
-    document.documentElement.style.backgroundImage = "url(" + escapeCSSURL(imageURL) + ")";
-  ]]>
+  <!-- WARNING: this is a chrome-privileged document when loaded from a chrome:
+     - URL, so you should only ever use it to load local images that the user
+     - has selected for a custom persona.  All remote images and images that the
+     - user has not personally selected should be loaded via the non-privileged
+     - loader hardcoded into nsPersonaService.js.
+     -->
+
+  <script type="application/javascript;version=1.7">
+    <![CDATA[
+      // Escape CSS special characters in unquoted URLs
+      // per http://www.w3.org/TR/CSS21/syndata.html#uri
+      function escapeCSSURL(aURLSpec) {
+        return aURLSpec.replace(/[(),\s'"]/g, "\$&");
+      }
+  
+      // Set the background properties specified by the URL.
+      let documentStyle = document.documentElement.style;
+      let params = window.location.search.substr(1);
+      for each (let param in params.split("&")) {
+        let [name, value] = param.split("=");
+        value = decodeURIComponent(value);
+        switch(name) {
+          case "url":
+            documentStyle.backgroundImage = "url(" + escapeCSSURL(value) + ")";
+            break;
+          case "position":
+            documentStyle.backgroundPosition = value;
+            break;
+        }
+      }
+    ]]>
   </script>
 </window>
