@@ -143,14 +143,14 @@ PersonaService.prototype = {
 
   get _hiddenWindow() {
     let hiddenWindow = Cc["@mozilla.org/appshell/appShellService;1"].
-                       getService(Ci.nsIAppShellService).
-                       hiddenDOMWindow;
+                       getService(Ci.nsIAppShellService).hiddenDOMWindow;
     this.__defineGetter__("_hiddenWindow", function() { return hiddenWindow });
     return this._hiddenWindow;
   },
 
   // The interval between consecutive persona reloads.  Measured in minutes,
-  // with a default of 30 minutes and a minimum of one minute.
+  // with a default of 30 minutes (defined in defaults/preferences/personas.js)
+  // and a minimum of one minute.
   get _reloadInterval() {
     let val = this._getPref("extensions.personas.reloadInterval");
     return val < 1 ? 1 : val;
@@ -168,22 +168,6 @@ PersonaService.prototype = {
       default:
         return "en-US";
     }
-  },
-
-  get _toolbarIframe() {
-    return this._personaLoader.contentDocument.getElementById("toolbarIframe");
-  },
-
-  get _toolbarCanvas() {
-    return this._personaLoader.contentDocument.getElementById("toolbarCanvas");
-  },
-
-  get _statusbarIframe() {
-    return this._personaLoader.contentDocument.getElementById("statusbarIframe");
-  },
-
-  get _statusbarCanvas() {
-    return this._personaLoader.contentDocument.getElementById("statusbarCanvas");
   },
 
 
@@ -439,15 +423,8 @@ PersonaService.prototype = {
     this._personaReloadTimer = Cc["@mozilla.org/timer;1"].createInstance(Ci.nsITimer);
 
     // Initialize the toolbar and statusbar background loaders.
-    this._toolbarLoader = new ToolbarBackgroundLoader(this,
-                                                      this._toolbarIframe,
-                                                      this._toolbarCanvas,
-                                                      "personas:toolbarURLUpdated");
-
-    this._statusbarLoader = new StatusbarBackgroundLoader(this,
-                                                          this._statusbarIframe,
-                                                          this._statusbarCanvas,
-                                                          "personas:statusbarURLUpdated");
+    this._toolbarLoader = new ToolbarBackgroundLoader(this);
+    this._statusbarLoader = new StatusbarBackgroundLoader(this);
 
     // Now apply the selected persona to the browser windows.
     let personaID = this._getPref("extensions.personas.selected", "default");
@@ -612,11 +589,8 @@ PersonaService.prototype = {
 }
 
 
-function BackgroundLoader(aPersonaService, aIframe, aCanvas, aNotificationTopic) {
+function BackgroundLoader(aPersonaService) {
   this._personaSvc = aPersonaService;
-  this._iframe = aIframe;
-  this._canvas = aCanvas;
-  this._notificationTopic = aNotificationTopic;
 
   // A timer that periodically snapshots the loaded persona so it incorporates
   // client-side changes to dynamic personas.  Instantiated once the persona
@@ -666,10 +640,22 @@ BackgroundLoader.prototype = {
   },
 
   // The interval between consecutive persona snapshots.  Measured in seconds,
-  // with a default of 60 seconds and a minimum of one second.
+  // with a default of 60 seconds (defined in defaults/preferences/personas.js)
+  // and a minimum of one second.
   get _snapshotInterval() {
     let val = this._getPref("extensions.personas.snapshotInterval");
     return val < 1 ? 1 : val;
+  },
+
+  get _hiddenWindow() {
+    let hiddenWindow = Cc["@mozilla.org/appshell/appShellService;1"].
+                       getService(Ci.nsIAppShellService).hiddenDOMWindow;
+    this.__defineGetter__("_hiddenWindow", function() { return hiddenWindow });
+    return this._hiddenWindow;
+  },
+
+  get _personaLoader() {
+    return this._hiddenWindow.document.getElementById("personaLoader");
   },
 
 
@@ -677,9 +663,6 @@ BackgroundLoader.prototype = {
   // Internal Properties
 
   _personaSvc: null,
-  _iframe: null,
-  _canvas: null,
-  _notificationTopic: null,
 
 
   //**************************************************************************//
@@ -751,7 +734,7 @@ BackgroundLoader.prototype = {
       if (aPersonaID == "manual" && /^file:/.test(url))
         url = "chrome://personas/content/imageLoader.xul?" +
               "url=" + encodeURIComponent(url) + "&" +
-              "position=" + encodeURIComponent(this.position);
+              "position=" + encodeURIComponent(this._position);
 
       // Otherwise, load it using an unprivileged image loader constructed
       // inside a data: URL so it can't do anything malicious.  This protects
@@ -763,23 +746,22 @@ BackgroundLoader.prototype = {
               '<window xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" ' +
                       'style="background-image: url(' + escapeXML(escapeCSSURL(url)) + '); ' +
                              'background-repeat: no-repeat; ' +
-                             'background-position: ' + this.position + ';" flex="1"/>';
+                             'background-position: ' + this._position + ';" flex="1"/>';
     }
 
     // Listen for pageshow on the iframe so we know when it finishes loading
     // the background.
     this._iframe.addEventListener("pageshow", this, false);
 
-dump("reload: url is " + url + "\n");
     // Note: we use loadURI instead of just setting the src attribute
     // since setting the attribute doesn't reload the page if we set it
     // to its current value, and we always want to reload the page
     // at this point so we can periodically update a dynamic persona.
     this._iframe.webNavigation.loadURI(url,
-                                      Ci.nsIWebNavigation.LOAD_FLAGS_NONE,
-                                      null,
-                                      null,
-                                      null);
+                                       Ci.nsIWebNavigation.LOAD_FLAGS_NONE,
+                                       null,
+                                       null,
+                                       null);
   },
 
   _onLoad: function() {
@@ -835,26 +817,47 @@ dump("reload: url is " + url + "\n");
 
 };
 
-// ToolbarBackgroundLoader and StatusbarBackgroundLoader subclass BackgroundLoader
-// with properties specific to each bar, in particular the position property,
-// which determines which corner of the bar to anchor the background image to.
+// ToolbarBackgroundLoader and StatusbarBackgroundLoader subclass
+// BackgroundLoader to define properties specific to each bar.
 
-function ToolbarBackgroundLoader(aPersonaService, aIframe, aCanvas, aNotificationTopic) {
-  BackgroundLoader.call(this, aPersonaService, aIframe, aCanvas, aNotificationTopic);
+function ToolbarBackgroundLoader(aPersonaService) {
+  BackgroundLoader.call(this, aPersonaService);
 }
 
 ToolbarBackgroundLoader.prototype = {
   __proto__: BackgroundLoader.prototype,
-  position: "top right"
+
+  _position: "top right",
+
+  _notificationTopic: "personas:toolbarURLUpdated",
+
+  get _iframe() {
+    return this._personaLoader.contentDocument.getElementById("toolbarIframe");
+  },
+
+  get _canvas() {
+    return this._personaLoader.contentDocument.getElementById("toolbarCanvas");
+  }
 };
 
-function StatusbarBackgroundLoader(aPersonaService, aIframe, aCanvas, aNotificationTopic) {
-  BackgroundLoader.call(this, aPersonaService, aIframe, aCanvas, aNotificationTopic);
+function StatusbarBackgroundLoader(aPersonaService) {
+  BackgroundLoader.call(this, aPersonaService);
 }
 
 StatusbarBackgroundLoader.prototype = {
   __proto__: BackgroundLoader.prototype,
-  position: "top left"
+
+  _position: "top left",
+
+  _notificationTopic: "personas:statusbarURLUpdated",
+
+  get _iframe() {
+    return this._personaLoader.contentDocument.getElementById("statusbarIframe");
+  },
+
+  get _canvas() {
+    return this._personaLoader.contentDocument.getElementById("statusbarCanvas");
+  }
 };
 
 
