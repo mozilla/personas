@@ -847,7 +847,7 @@ function StatusbarBackgroundLoader(aPersonaService) {
 StatusbarBackgroundLoader.prototype = {
   __proto__: BackgroundLoader.prototype,
 
-  _position: "top left",
+  _position: "bottom left",
 
   _notificationTopic: "personas:statusbarURLUpdated",
 
