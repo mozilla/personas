@@ -133,14 +133,26 @@ statusbar[persona] {
   border: 0 !important;
 }
 
+/**
+ * Turn text white if the selected persona is dark-colored.  We do this
+ * for both #navigator-toolbox, which is the ID of the toolbox in Firefox 2
+ * and Firefox 3 up to beta 3, and #browser-toolbox, which is the ID of the
+ * toolbox in Firefox 3 beta 3 and later versions.
+ */
 #main-window[_personas-dark-style*="both"] #navigator-toolbox menubar > menu,
 #main-window[_personas-dark-style*="both"] #navigator-toolbox toolbarbutton,
+#main-window[_personas-dark-style*="both"] #browser-toolbox menubar > menu,
+#main-window[_personas-dark-style*="both"] #browser-toolbox toolbarbutton,
 #main-window[_personas-dark-style*="both"] > statusbar,
 #main-window[_personas-dark-style*="true"] #navigator-toolbox menubar > menu,
 #main-window[_personas-dark-style*="true"] #navigator-toolbox toolbarbutton,
+#main-window[_personas-dark-style*="true"] #browser-toolbox menubar > menu,
+#main-window[_personas-dark-style*="true"] #browser-toolbox toolbarbutton,
 #main-window[_personas-dark-style*="true"] > statusbar,
 #main-window[_personas-dark-style*="toolbox"] #navigator-toolbox menubar > menu,
 #main-window[_personas-dark-style*="toolbox"] #navigator-toolbox toolbarbutton,
+#main-window[_personas-dark-style*="toolbox"] #browser-toolbox menubar > menu,
+#main-window[_personas-dark-style*="toolbox"] #browser-toolbox toolbarbutton,
 #main-window[_personas-dark-style*="status"] > statusbar {
   color: white !important;
 }
