@@ -2,7 +2,7 @@
 
 # Compile the IDL files into XPT files.
 cd components
-./xptgen
+./genxpt
 cd -
 
 # Archive the chrome packages.
@@ -25,7 +25,7 @@ sed -i -r -e 's/^((content|skin|locale)\s+(\S+\s+)(\S+\s+)?)chrome\//\1jar:chrom
 # components/\*.idl excludes IDL files, which are unnecessary in the XPI
 #                   since the info in them has been compiled into XPT files
 # components/xptgen excludes that script, which is part of the build process
-zip -9 -ur personas.xpi chrome/personas.jar components defaults install.rdf chrome.manifest -x \*/CVS/\* -x \*/.\* -x components/\*.idl -x components/xptgen
+zip -9 -ur personas.xpi chrome/personas.jar components defaults install.rdf chrome.manifest -x \*/CVS/\* -x \*/.\* -x components/\*.idl -x components/genxpt
 
 # Restore the backed up chrome.manifest file.
 mv .\#chrome.manifest.bak chrome.manifest
