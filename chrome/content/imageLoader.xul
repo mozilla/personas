@@ -13,7 +13,7 @@
   <!-- Because CSS image loads don't block the load/pageshow events in Firefox 2,
      - we load the image in an image tag, which does block those events, and then
      - set the background-image property once the image has finished loading. -->
-  <image id="image"/>
+  <image id="image" collapsed="true"/>
 
   <script type="application/javascript;version=1.7">
     <![CDATA[

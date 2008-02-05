@@ -750,7 +750,7 @@ BackgroundLoader.prototype = {
               '        onload="document.documentElement.style.backgroundImage = \'url(' + escapeXML(escapeCSSURL(url)) + ')\'"\n' +
               '        style="background-repeat: no-repeat;\n' +
               '               background-position: ' + this._position + ';" flex="1">\n' +
-              '  <image src="' + escapeXML(url) + '"/>\n' +
+              '  <image collapsed="true" src="' + escapeXML(url) + '"/>\n' +
               '</window>\n';
     }
 
