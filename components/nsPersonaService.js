@@ -740,13 +740,18 @@ BackgroundLoader.prototype = {
       // inside a data: URL so it can't do anything malicious.  This protects
       // us against issues like personas providing javascript: URLs that could
       // take advantage of a chrome-privileged loader to access local files.
+      // Because CSS image loads don't block the load/pageshow events in Firefox 2,
+      // we load the image in an image tag, which does block those events, and then
+      // set the background-image property once the image has finished loading.
       // FIXME: use a template to simplify this code?
       else
         url = 'data:application/vnd.mozilla.xul+xml,' +
-              '<window xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" ' +
-                      'style="background-image: url(' + escapeXML(escapeCSSURL(url)) + '); ' +
-                             'background-repeat: no-repeat; ' +
-                             'background-position: ' + this._position + ';" flex="1"/>';
+              '<window id="window" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"\n' +
+              '        onload="document.documentElement.style.backgroundImage = \'url(' + escapeXML(escapeCSSURL(url)) + ')\'"\n' +
+              '        style="background-repeat: no-repeat;\n' +
+              '               background-position: ' + this._position + ';" flex="1">\n' +
+              '  <image src="' + escapeXML(url) + '"/>\n' +
+              '</window>\n';
     }
 
     // Listen for pageshow on the iframe so we know when it finishes loading

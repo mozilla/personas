@@ -1,5 +1,7 @@
 <window xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
-        flex="1" style="background-repeat: no-repeat;">
+        flex="1"
+        style="background-repeat: no-repeat;"
+        onload="document.documentElement.style.backgroundImage = 'url(' + escapeCSSURL(gURL) + ')'">
 
   <!-- WARNING: this is a chrome-privileged document when loaded from a chrome:
      - URL, so you should only ever use it to load local images that the user
@@ -8,8 +10,17 @@
      - loader hardcoded into nsPersonaService.js.
      -->
 
+  <!-- Because CSS image loads don't block the load/pageshow events in Firefox 2,
+     - we load the image in an image tag, which does block those events, and then
+     - set the background-image property once the image has finished loading. -->
+  <image id="image"/>
+
   <script type="application/javascript;version=1.7">
     <![CDATA[
+      // The URL of the image to load.  Defined below by the code that parses
+      // the URL parameters.
+      var gURL;
+
       // Escape CSS special characters in unquoted URLs
       // per http://www.w3.org/TR/CSS21/syndata.html#uri
       function escapeCSSURL(aURLSpec) {
@@ -17,17 +28,17 @@
       }
   
       // Set the background properties specified by the URL.
-      let documentStyle = document.documentElement.style;
       let params = window.location.search.substr(1);
       for each (let param in params.split("&")) {
         let [name, value] = param.split("=");
         value = decodeURIComponent(value);
         switch(name) {
           case "url":
-            documentStyle.backgroundImage = "url(" + escapeCSSURL(value) + ")";
+            gURL = value;
+            document.getElementById("image").setAttribute("src", gURL);
             break;
           case "position":
-            documentStyle.backgroundPosition = value;
+            document.documentElement.style.backgroundPosition = value;
             break;
         }
       }
