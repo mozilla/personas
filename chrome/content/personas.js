@@ -40,6 +40,8 @@ const PERSONAS_EXTENSION_ID = "personas@christopher.beard";
 let PersonaController = {
   _defaultToolbarBackgroundImage: null,
   _defaultStatusbarBackgroundImage: null,
+  _previewTimeoutID: null,
+  _resetTimeoutID: null,
 
 
   //**************************************************************************//
@@ -380,7 +382,17 @@ let PersonaController = {
   },
 
   onPreviewPersona: function(aEvent) {
-    this._previewPersona(aEvent.target.getAttribute("personaid"));
+    //this._previewPersona(aEvent.target.getAttribute("personaid"));
+
+    if (this._resetTimeoutID) {
+      window.clearTimeout(this._resetTimeoutID);
+      this._resetTimeoutID = null;
+    }
+
+    let t = this;
+    let personaID = aEvent.target.getAttribute("personaid");
+    let callback = function() { t._previewPersona(personaID) };
+    this._previewTimeoutID = window.setTimeout(callback, 200);
   },
 
   _previewPersona: function(aPersonaID) {
@@ -402,7 +414,17 @@ let PersonaController = {
   },
 
   onResetPersona: function(aEvent) {
-    this._resetPersona();
+    //this._resetPersona();
+
+    if (this._previewTimeoutID) {
+      window.clearTimeout(this._previewTimeoutID);
+      this._previewTimeoutID = null;
+    }
+
+    let t = this;
+    let personaID = aEvent.target.getAttribute("personaid");
+    let callback = function() { t._resetPersona(personaID) };
+    this._resetTimeoutID = window.setTimeout(callback, 200);
   },
 
   _resetPersona: function() {
@@ -598,8 +620,8 @@ let PersonaController = {
     item.setAttribute("autocheck", "false");
     item.setAttribute("categoryid", categoryid);
     item.setAttribute("oncommand", "PersonaController.onSelectPersona(event)");
-    item.addEventListener("DOMMenuItemActive", function(e) { PersonaController.onPreviewPersona(e) }, false);
-    item.addEventListener("DOMMenuItemInactive", function(e) { PersonaController.onResetPersona() }, false);
+    item.addEventListener("DOMMenuItemActive", function(evt) { PersonaController.onPreviewPersona(evt) }, false);
+    item.addEventListener("DOMMenuItemInactive", function(evt) { PersonaController.onResetPersona(evt) }, false);
 
     return item;
   }
