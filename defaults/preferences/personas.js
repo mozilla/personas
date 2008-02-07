@@ -18,3 +18,9 @@ pref("extensions.personas.reloadInterval", 30);
 // The interval between consecutive persona snapshots.  Measured in seconds,
 // with a default of 60 seconds and a minimum of one second.
 pref("extensions.personas.snapshotInterval", 60);
+
+// How long to wait onmouseover/out before triggering a persona preview
+// or reset, in milliseconds.  It's not particularly useful for users to be able
+// to set this pref, but it's useful for developers and testers to experiment
+// with it to figure out what is the best value for it.
+pref("extensions.personas.previewTimeout", 200);

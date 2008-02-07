@@ -118,6 +118,10 @@ let PersonaController = {
     return this._getPref("extensions.personas.url");
   },
 
+  get _previewTimeout() {
+    return this._getPref("extensions.personas.previewTimeout");
+  },
+
   get _locale() {
     switch (this._getPref("general.useragent.locale", "en-US")) {
       case 'ja':
@@ -387,7 +391,7 @@ let PersonaController = {
     let t = this;
     let personaID = aEvent.target.getAttribute("personaid");
     let callback = function() { t._previewPersona(personaID) };
-    this._previewTimeoutID = window.setTimeout(callback, 200);
+    this._previewTimeoutID = window.setTimeout(callback, this._previewTimeout);
   },
 
   _previewPersona: function(aPersonaID) {
@@ -419,7 +423,7 @@ let PersonaController = {
     let t = this;
     let personaID = aEvent.target.getAttribute("personaid");
     let callback = function() { t._resetPersona(personaID) };
-    this._resetTimeoutID = window.setTimeout(callback, 200);
+    this._resetTimeoutID = window.setTimeout(callback, this._previewTimeout);
   },
 
   _resetPersona: function() {
