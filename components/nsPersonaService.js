@@ -40,19 +40,21 @@ const Ci = Components.interfaces;
 const Cr = Components.results;
 const Cu = Components.utils;
 
-// Load the JavaScript code that will generate the XPCOM plumbing and eval
-// the JSON data we download.  If we're in Firefox 3, we import the code as
-// JavaScript modules; in Firefox 2 we use the subscript loader to load it
-// as subscripts.
+// In Firefox 3 we import modules using Cu.import, but in Firefox 2, which does
+// not support modules, we use the subscript loader to load them as subscripts.
 if ("import" in Cu) {
   Cu.import("resource://gre/modules/XPCOMUtils.jsm");
   Cu.import("resource://gre/modules/JSON.jsm");
+  // We can't import our own modules yet, because that throws
+  // NS_ERROR_NOT_AVAILABLE, so we import them when initializing the service.
+  //Cu.import("resource://personas/modules/PrefCache.js");
 }
 else {
   let subscriptLoader = Cc["@mozilla.org/moz/jssubscript-loader;1"].
                         getService(Ci.mozIJSSubScriptLoader);
-  subscriptLoader.loadSubScript("chrome://personas/content/XPCOMUtils.jsm");
-  subscriptLoader.loadSubScript("chrome://personas/content/JSON.jsm");
+  subscriptLoader.loadSubScript("chrome://personas/content/modules/XPCOMUtils.jsm");
+  subscriptLoader.loadSubScript("chrome://personas/content/modules/JSON.jsm");
+  subscriptLoader.loadSubScript("chrome://personas/content/modules/PrefCache.js");
 }
 
 
@@ -116,29 +118,14 @@ PersonaService.prototype = {
     return this._prefSvc;
   },
 
-  /**
-   * Get the value of a pref, if any; otherwise, get the default value.
-   *
-   * @param   prefName
-   * @param   defaultValue
-   * @returns the value of the pref, if any; otherwise, the default value
-   */
-  _getPref: function(prefName, defaultValue) {
-    let prefSvc = this._prefSvc;
+  get _prefCache() {
+    let prefCache = new PersonasPrefCache("");
+    this.__defineGetter__("_prefCache", function() { return prefCache });
+    return this._prefCache;
+  },
 
-    try {
-      switch (prefSvc.getPrefType(prefName)) {
-        case Ci.nsIPrefBranch.PREF_STRING:
-          return prefSvc.getCharPref(prefName);
-        case Ci.nsIPrefBranch.PREF_INT:
-          return prefSvc.getIntPref(prefName);
-        case Ci.nsIPrefBranch.PREF_BOOL:
-          return prefSvc.getBoolPref(prefName);
-      }
-    }
-    catch (ex) {}
-
-    return defaultValue;
+  _getPref: function(aPrefName, aDefaultValue) {
+    return this._prefCache.getPref(aPrefName, aDefaultValue);
   },
 
   get _hiddenWindow() {
@@ -298,6 +285,11 @@ PersonaService.prototype = {
   _init: function() {
     // Observe application shutdown so we can destroy ourself.
     this._obsSvc.addObserver(this, "xpcom-shutdown", false);
+
+    // Import our own modules, which we couldn't import earlier at parse time
+    // because that throws NS_ERROR_NOT_AVAILABLE.
+    if ("import" in Cu)
+      Cu.import("resource://personas/modules/PrefCache.js");
 
     // For backwards compatibility, migrate the old manualPath preference
     // to the new custom.toolbarURL preference.
@@ -614,29 +606,14 @@ BackgroundLoader.prototype = {
     return this._prefSvc;
   },
 
-  /**
-   * Get the value of a pref, if any; otherwise, get the default value.
-   *
-   * @param   prefName
-   * @param   defaultValue
-   * @returns the value of the pref, if any; otherwise, the default value
-   */
-  _getPref: function(prefName, defaultValue) {
-    let prefSvc = this._prefSvc;
+  get _prefCache() {
+    let prefCache = new PersonasPrefCache("");
+    this.__defineGetter__("_prefCache", function() { return prefCache });
+    return this._prefCache;
+  },
 
-    try {
-      switch (prefSvc.getPrefType(prefName)) {
-        case Ci.nsIPrefBranch.PREF_STRING:
-          return prefSvc.getCharPref(prefName);
-        case Ci.nsIPrefBranch.PREF_INT:
-          return prefSvc.getIntPref(prefName);
-        case Ci.nsIPrefBranch.PREF_BOOL:
-          return prefSvc.getBoolPref(prefName);
-      }
-    }
-    catch (ex) {}
-
-    return defaultValue;
+  _getPref: function(aPrefName, aDefaultValue) {
+    return this._prefCache.getPref(aPrefName, aDefaultValue);
   },
 
   // The interval between consecutive persona snapshots.  Measured in seconds,

@@ -37,6 +37,18 @@
 
 const PERSONAS_EXTENSION_ID = "personas@christopher.beard";
 
+// In Firefox 3 we import modules using Components.utils.import, but in
+// Firefox 2, which does not support modules, we use the subscript loader
+// to load them as subscripts.
+if ("import" in Components.utils) {
+  Components.utils.import("resource://personas/modules/PrefCache.js");
+}
+else {
+  let subscriptLoader = Cc["@mozilla.org/moz/jssubscript-loader;1"].
+                        getService(Ci.mozIJSSubScriptLoader);
+  subscriptLoader.loadSubScript("chrome://personas/content/modules/PrefCache.js");
+}
+
 let PersonaController = {
   _defaultToolbarBackgroundImage: null,
   _defaultStatusbarBackgroundImage: null,
@@ -51,7 +63,6 @@ let PersonaController = {
   get _prefSvc() {
     let prefSvc = Cc["@mozilla.org/preferences-service;1"].
                   getService(Ci.nsIPrefBranch);
-    prefSvc.QueryInterface(Ci.nsIPrefBranch2);
     delete this._prefSvc;
     this._prefSvc = prefSvc;
     return this._prefSvc;
@@ -88,33 +99,17 @@ let PersonaController = {
     return this._menu;
   },
 
-  /**
-   * Get the value of a pref, if any; otherwise, get the default value.
-   *
-   * @param   prefName
-   * @param   defaultValue
-   * @returns the value of the pref, if any; otherwise, the default value
-   */
-  _getPref: function(prefName, defaultValue) {
-    let prefSvc = this._prefSvc;
-
-    try {
-      switch (prefSvc.getPrefType(prefName)) {
-        case Ci.nsIPrefBranch.PREF_STRING:
-          return prefSvc.getCharPref(prefName);
-        case Ci.nsIPrefBranch.PREF_INT:
-          return prefSvc.getIntPref(prefName);
-        case Ci.nsIPrefBranch.PREF_BOOL:
-          return prefSvc.getBoolPref(prefName);
-      }
-    }
-    catch (ex) {}
-
-    return defaultValue;
+  get _prefCache() {
+    let prefCache = new PersonasPrefCache("");
+    delete this._prefCache;
+    this._prefCache = prefCache;
+    return this._prefCache;
   },
 
-  // FIXME: for performance, make this a memoizing getter with a pref listener
-  // that updates it as the pref changes.
+  _getPref: function(aPrefName, aDefaultValue) {
+    return this._prefCache.getPref(aPrefName, aDefaultValue);
+  },
+
   get _currentPersona() {
     return this._getPref("extensions.personas.selected", "default");
   },
@@ -462,7 +457,7 @@ let PersonaController = {
   _authorizeHost: function(aEvent) {
     let host = aEvent.target.ownerDocument.location.hostname;
     let hostBackwards = host.split('').reverse().join('');
-    let authorizedHosts = this._prefSvc.getCharPref("extensions.personas.authorizedHosts").split(/[, ]+/);
+    let authorizedHosts = this._getPref("extensions.personas.authorizedHosts").split(/[, ]+/);
     if (!authorizedHosts.some(function(v) { return hostBackwards.indexOf(v.split('').reverse().join('')) == 0 }))
       throw host + " not authorized to modify personas";
   },

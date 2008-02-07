@@ -3,6 +3,11 @@ overlay chrome://browser/content/browser.xul chrome://personas/content/personas.
 content  personas               chrome/content/
 skin     personas   class/1.0   chrome/skin/
 
+# We put modules into the content directory instead of a top-level directory
+# because we have to use the subscript loader to load them in Firefox 2, and
+# that requires a chrome: URL.
+resource personas   chrome/content/
+
 # localizations in alphabetical order
 locale   personas   de-DE       chrome/locale/de-DE/
 locale   personas   el-GR       chrome/locale/el-GR/
