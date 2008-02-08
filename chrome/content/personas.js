@@ -110,7 +110,7 @@ let PersonaController = {
     return this._prefCache.getPref(aPrefName, aDefaultValue);
   },
 
-  get _currentPersona() {
+  get _selectedPersona() {
     return this._getPref("extensions.personas.selected", "default");
   },
 
@@ -239,7 +239,7 @@ let PersonaController = {
   // Appearance Updates
 
   _applyToolbarURLUpdate: function(aURL) {
-    let personaID = this._getPref("extensions.personas.selected");
+    let personaID = this._selectedPersona;
 
     // FIXME: figure out where to locate this function and put it there.
     // Escape CSS special characters in unquoted URLs
@@ -258,7 +258,7 @@ let PersonaController = {
   },
 
   _applyStatusbarURLUpdate: function(aURL) {
-    let personaID = this._getPref("extensions.personas.selected");
+    let personaID = this._selectedPersona;
 
     // FIXME: figure out where to locate this function and put it there.
     // Escape CSS special characters in unquoted URLs
@@ -344,12 +344,12 @@ let PersonaController = {
    */
   _selectPersona: function(personaID, categoryID) {
     // Update the list of recent personas.
-    if (personaID != "default" && personaID != this._currentPersona && this._currentPersona != "random") {
+    if (personaID != "default" && personaID != this._selectedPersona && this._selectedPersona != "random") {
       this._prefSvc.setCharPref("extensions.personas.lastselected2",
                                 this._getPref("extensions.personas.lastselected1"));
       this._prefSvc.setCharPref("extensions.personas.lastselected1",
                                 this._getPref("extensions.personas.lastselected0"));
-      this._prefSvc.setCharPref("extensions.personas.lastselected0", this._currentPersona);
+      this._prefSvc.setCharPref("extensions.personas.lastselected0", this._selectedPersona);
     }
 
     // Save the new selection to prefs.
@@ -446,7 +446,7 @@ let PersonaController = {
   },
 
   onSelectAbout: function(event) {
-    window.openUILinkIn(this._baseURL + this._locale + "/about/?persona=" + this._currentPersona, "tab");
+    window.openUILinkIn(this._baseURL + this._locale + "/about/?persona=" + this._selectedPersona, "tab");
   },
 
   /**
@@ -501,7 +501,7 @@ let PersonaController = {
     //document.getElementById("personas-default").disabled = (this.currentPersona == "default");
 
     let personaStatus = document.getElementById("persona-current");
-    if (this._currentPersona == "random") {
+    if (this._selectedPersona == "random") {
        personaStatus.setAttribute("class", "menuitem-iconic");
        personaStatus.setAttribute("image", "chrome://personas/skin/random-feed-16x16.png");
        personaStatus.setAttribute("label", this._stringBundle.getString("useRandomPersona.label") + " " +
@@ -511,7 +511,7 @@ let PersonaController = {
     else {
        personaStatus.removeAttribute("class");
        personaStatus.removeAttribute("image");
-       personaStatus.setAttribute("label", this._getPersonaName(this._currentPersona));
+       personaStatus.setAttribute("label", this._getPersonaName(this._selectedPersona));
     }
 
     document.getElementById("personas-manual-separator").hidden =
@@ -615,7 +615,7 @@ let PersonaController = {
     item.setAttribute("personaid", persona.id);
     item.setAttribute("label", persona.label);
     item.setAttribute("type", "checkbox");
-    item.setAttribute("checked", (persona.id == this._currentPersona));
+    item.setAttribute("checked", (persona.id == this._selectedPersona));
     item.setAttribute("autocheck", "false");
     item.setAttribute("categoryid", categoryid);
     item.setAttribute("oncommand", "PersonaController.onSelectPersona(event)");
