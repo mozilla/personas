@@ -146,7 +146,7 @@ PersonasPrefCache.prototype = {
   observe: function(aSubject, aTopic, aData) {
     switch (aTopic) {
       case "nsPref:changed":
-        delete this._prefs[aTopic];
+        delete this._prefs[aData];
         this._notifyObservers(aSubject, aTopic, aData);
         break;
 
