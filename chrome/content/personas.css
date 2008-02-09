@@ -117,42 +117,60 @@
   -moz-appearance: none; /* mac-specific */
 }
 
-/* status bar */
-statusbar[persona] {
-  -moz-appearance: none;
 
-  border-bottom: 0 !important;
+/* bottom box */
 
+#browser-bottombox[persona] {
   background-repeat: no-repeat;
-  background-position: top left;
+  background-position: bottom left;
   background-color: transparent;
 }
 
-#main-window[persona] statusbarpanel {
+/**
+ * Everything inside the bottom box should have no native appearance
+ * (since that could override the persona's specified background image),
+ * no background color (which would bleed through the persona), and no
+ * border (not sure why; perhaps it looks cleaner and messes up the
+ * persona less).
+ */
+#browser-bottombox[persona] > * {
+  -moz-appearance: none;
+  background-color: transparent;
+  border: 0 !important;
+}
+
+/**
+ * The statusbarpanel element that sits inside the statusbar element
+ * defines its own border, so we have to turn that off separately.
+ */
+#browser-bottombox[persona] statusbarpanel {
   -moz-appearance: none !important;
   border: 0 !important;
 }
+
 
 /**
  * Turn text white if the selected persona is dark-colored.  We do this
  * for both #navigator-toolbox, which is the ID of the toolbox in Firefox 2
  * and Firefox 3 up to beta 3, and #browser-toolbox, which is the ID of the
- * toolbox in Firefox 3 beta 3 and later versions.
+ * toolbox in Firefox 3 beta 3 and later versions.  We also do it for the
+ * bottombox, which is the container for all the chrome under the browser
+ * (statusbar, findbar).
  */
-#main-window[_personas-dark-style*="both"] #navigator-toolbox menubar > menu,
-#main-window[_personas-dark-style*="both"] #navigator-toolbox toolbarbutton,
-#main-window[_personas-dark-style*="both"] #browser-toolbox menubar > menu,
-#main-window[_personas-dark-style*="both"] #browser-toolbox toolbarbutton,
-#main-window[_personas-dark-style*="both"] > statusbar,
 #main-window[_personas-dark-style*="true"] #navigator-toolbox menubar > menu,
 #main-window[_personas-dark-style*="true"] #navigator-toolbox toolbarbutton,
-#main-window[_personas-dark-style*="true"] #browser-toolbox menubar > menu,
-#main-window[_personas-dark-style*="true"] #browser-toolbox toolbarbutton,
-#main-window[_personas-dark-style*="true"] > statusbar,
-#main-window[_personas-dark-style*="toolbox"] #navigator-toolbox menubar > menu,
-#main-window[_personas-dark-style*="toolbox"] #navigator-toolbox toolbarbutton,
-#main-window[_personas-dark-style*="toolbox"] #browser-toolbox menubar > menu,
-#main-window[_personas-dark-style*="toolbox"] #browser-toolbox toolbarbutton,
-#main-window[_personas-dark-style*="status"] > statusbar {
+#main-window[_personas-dark-style*="true"] #browser-bottombox,
+#main-window[_personas-dark-style*="true"] #browser-bottombox toolbarbutton
+{
   color: white !important;
+}
+
+/**
+ * Turn disabled text light grey if the selected persona is dark-colored.
+ */
+#main-window[_personas-dark-style*="true"] #navigator-toolbox toolbarbutton[disabled="true"],
+#main-window[_personas-dark-style*="true"] #browser-toolbox toolbarbutton[disabled="true"],
+#main-window[_personas-dark-style*="true"] #browser-bottombox toolbarbutton[disabled="true"]
+{
+  color: #cccccc !important;
 }

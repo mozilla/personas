@@ -14,7 +14,7 @@
 
   <iframe id="statusbarIframe" type="content"
           width="3000" minwidth="3000" maxwidth="3000"
-          height="22" minheight="22" maxheight="22"/>
-  <xhtml:canvas id="statusbarCanvas" width="3000" height="22"></xhtml:canvas>
+          height="100" minheight="100" maxheight="100"/>
+  <xhtml:canvas id="statusbarCanvas" width="3000" height="100"></xhtml:canvas>
 
 </window>

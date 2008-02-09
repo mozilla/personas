@@ -182,13 +182,32 @@ let PersonaController = {
   // Initialization & Destruction
 
   startUp: function() {
-    // Record the default toolbar and statusbar background images so we can
+    // Make sure there's a bottombox element enclosing the items below
+    // the browser widget.  Firefox 3 beta 4 and later have one, but earlier
+    // releases of the browser don't, and that's what we style.
+    if (!document.getElementById("browser-bottombox")) {
+      let bottomBox = document.createElement("vbox");
+      bottomBox.setAttribute("id", "browser-bottombox");
+      let previousNode =
+        // #ifdef TOOLBAR_CUSTOMIZATION_SHEET
+        document.getElementById("customizeToolbarSheetPopup") ||
+        // Firefox 2
+        document.getElementById("browser-stack") ||
+        // Firefox 3
+        document.getElementById("browser");
+      let parentNode = document.getElementById("main-window");
+      parentNode.insertBefore(bottomBox, previousNode.nextSibling);
+      while (bottomBox.nextSibling)
+        bottomBox.appendChild(bottomBox.nextSibling);
+    }
+
+    // Record the default toolbar and bottombox background images so we can
     // revert to them if the user selects the default persona.
     let toolbar = document.getElementById("main-window");
     this._defaultToolbarBackgroundImage = toolbar.style.backgroundImage;
-    let statusbar = document.getElementById("status-bar");
-    if (statusbar)
-      this._defaultStatusbarBackgroundImage = statusbar.style.backgroundImage;
+    let bottombox = document.getElementById("browser-bottombox");
+    if (bottombox)
+      this._defaultStatusbarBackgroundImage = bottombox.style.backgroundImage;
 
     // Get the persona service to kick off retrieval and application
     // of the selected persona as well as periodic updates to the personas
@@ -267,11 +286,9 @@ let PersonaController = {
       return aURLSpec.replace(/[(),\s'"]/g, "\$&");
     }
 
-    let statusbar = document.getElementById("status-bar");
-    if (statusbar) {
-      statusbar.setAttribute("persona", personaID);
-      statusbar.style.backgroundImage = "url('" + escapeCSSURL(aURL) + "')";
-    }
+    let bottombox = document.getElementById("browser-bottombox");
+    bottombox.setAttribute("persona", personaID);
+    bottombox.style.backgroundImage = "url('" + escapeCSSURL(aURL) + "')";
   },
 
   _applyDefault: function() {
@@ -280,11 +297,9 @@ let PersonaController = {
     toolbar.style.backgroundImage = this._defaultToolbarBackgroundImage;
     toolbar.removeAttribute("_personas-dark-style");
 
-    let statusbar = document.getElementById("status-bar");
-    if (statusbar) {
-      statusbar.removeAttribute("persona");
-      statusbar.style.backgroundImage = this._defaultStatusbarBackgroundImage;
-    }
+    let bottombox = document.getElementById("browser-bottombox");
+    bottombox.removeAttribute("persona");
+    bottombox.style.backgroundImage = this._defaultStatusbarBackgroundImage;
   },
 
   _getDarkPropertyByPersona: function(personaID) {
