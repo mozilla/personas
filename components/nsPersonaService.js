@@ -40,18 +40,21 @@ const Ci = Components.interfaces;
 const Cr = Components.results;
 const Cu = Components.utils;
 
+const PERSONAS_EXTENSION_ID = "personas@christopher.beard";
+
 // In Firefox 3 we import modules using Cu.import, but in Firefox 2, which does
 // not support modules, we use the subscript loader to load them as subscripts.
 if ("import" in Cu) {
   Cu.import("resource://gre/modules/XPCOMUtils.jsm");
   Cu.import("resource://gre/modules/JSON.jsm");
-  // We can't import our own modules yet, because that throws
-  // NS_ERROR_NOT_AVAILABLE, so we import them when initializing the service.
-  //Cu.import("resource://personas/modules/PrefCache.js");
 }
 else {
   let subscriptLoader = Cc["@mozilla.org/moz/jssubscript-loader;1"].
                         getService(Ci.mozIJSSubScriptLoader);
+  // These have to be loaded using chrome: URLs to files inside one of the
+  // chrome directories because the "personas" resource: alias isn't available
+  // yet and can't be registered until later in the process, but we need the
+  // XPCOMUtils module immediately.
   subscriptLoader.loadSubScript("chrome://personas/content/modules/XPCOMUtils.jsm");
   subscriptLoader.loadSubScript("chrome://personas/content/modules/JSON.jsm");
   subscriptLoader.loadSubScript("chrome://personas/content/modules/PrefCache.js");
@@ -79,21 +82,20 @@ function escapeXML(aString) {
 //****************************************************************************//
 // The Persona Service
 
-function PersonaService() {
-  this._init();
-}
+function PersonaService() {}
 
 PersonaService.prototype = {
   //**************************************************************************//
   // XPCOM Plumbing
 
-  classDescription: "Persona Service",
-  classID:          Components.ID("{efdd655c-51ac-4e5c-aa61-888b270436b8}"),
-  contractID:       "@mozilla.org/personas/persona-service;1",
-  QueryInterface:   XPCOMUtils.generateQI([Ci.nsIPersonaService,
-                                           Ci.nsIObserver,
-                                           Ci.nsIDOMEventListener,
-                                           Ci.nsITimerCallback]),
+  classDescription:   "Persona Service",
+  classID:            Components.ID("{efdd655c-51ac-4e5c-aa61-888b270436b8}"),
+  contractID:         "@mozilla.org/personas/persona-service;1",
+  _xpcom_categories:  [{ category: "app-startup", service: true }],
+  QueryInterface:     XPCOMUtils.generateQI([Ci.nsIPersonaService,
+                                             Ci.nsIObserver,
+                                             Ci.nsIDOMEventListener,
+                                             Ci.nsITimerCallback]),
 
 
   //**************************************************************************//
@@ -161,6 +163,8 @@ PersonaService.prototype = {
   //**************************************************************************//
   // Internal Properties
 
+  _delayedInitTimer: null,
+
   // The iframe that we add to the hidden window and into which we load a XUL
   // document that helps us to load the toolbar and statusbar backgrounds.
   // Defined when the persona service is initialized.
@@ -193,6 +197,10 @@ PersonaService.prototype = {
   categories: null,
   personas: null,
 
+  // The latest header and footer URLs.
+  headerURL: null,
+  footerURL: null,
+
   /**
    * Display the given persona without making it the selected persona.  Useful
    * for showing users who are browsing a directory of personas what a given
@@ -220,8 +228,27 @@ PersonaService.prototype = {
 
   observe: function(subject, topic, data) {
     switch (topic) {
-      case "xpcom-shutdown":
+      case "app-startup":
+        this._obsSvc.addObserver(this, "final-ui-startup", false);
+        this._obsSvc.addObserver(this, "quit-application", false);
+        break;
+
+      case "final-ui-startup":
+        this._obsSvc.removeObserver(this, "final-ui-startup");
+        this._init();
+        break;
+
+      case "quit-application":
+        this._obsSvc.removeObserver(this, "quit-application");
         this._destroy();
+        break;
+
+      case "personas:toolbarURLUpdated":
+        this.headerURL = data;
+        break;
+
+      case "personas:statusbarURLUpdated":
+        this.footerURL = data;
         break;
 
       case "nsPref:changed":
@@ -268,6 +295,9 @@ PersonaService.prototype = {
 
   notify: function(aTimer) {
     switch(aTimer) {
+      case this._delayedInitTimer:
+        this._delayedInit();
+        break;
       case this._personaReloadTimer:
         let personaID = this._getPref("extensions.personas.selected", "default");
         this._reloadPersona(personaID);
@@ -283,13 +313,12 @@ PersonaService.prototype = {
   // Initialization & Destruction
 
   _init: function() {
-    // Observe application shutdown so we can destroy ourself.
-    this._obsSvc.addObserver(this, "xpcom-shutdown", false);
-
-    // Import our own modules, which we couldn't import earlier at parse time
-    // because that throws NS_ERROR_NOT_AVAILABLE.
+    // Set up a resource alias to the extension directory and then import our
+    // own modules, which we couldn't import earlier at parse time because the
+    // components we needed to set up the alias were not yet available.
+    this._registerResourceAlias();
     if ("import" in Cu)
-      Cu.import("resource://personas/modules/PrefCache.js");
+      Cu.import("resource://personas/chrome/content/modules/PrefCache.js");
 
     // For backwards compatibility, migrate the old manualPath preference
     // to the new custom.toolbarURL preference.
@@ -301,21 +330,26 @@ PersonaService.prototype = {
       this._prefSvc.clearUserPref("extensions.personas.manualPath");
     }
 
-    // Observe profile-before-change so we can switch to the datasource
-    // in the new profile when the user changes profiles.
-    // FIXME: figure out whether or not we should be doing this.
-    // this._obsSvc.addObserver(this, "profile-before-change", false);
-
     // Observe changes to the selected persona that happen in other windows
     // or by users twiddling the preferences directly.
     this._prefSvc.addObserver("extensions.personas.", this, false);
 
-    // Create the persona loader and attach it to the hidden window.
-    this._personaLoader = this._hiddenWindow.document.createElement("iframe");
-    this._personaLoader.setAttribute("id", "personaLoader");
-    this._personaLoader.setAttribute("src", "chrome://personas/content/personaLoader.xul");
-    this._personaLoader.addEventListener("pageshow", this, false);
-    this._hiddenWindow.document.documentElement.appendChild(this._personaLoader);
+    // Delay initialization of the persona loader to give the application
+    // time to finish loading the hidden window, which at this point still has
+    // about:blank loaded in it.
+    this._delayedInitTimer = Cc["@mozilla.org/timer;1"].createInstance(Ci.nsITimer);
+    this._delayedInitTimer.initWithCallback(this, 0, Ci.nsITimer.TYPE_ONE_SHOT);
+
+    // Observe persona URL updates so we can cache the latest URLs and make
+    // them available for windows to apply immediately when they open.
+    this._obsSvc.addObserver(this, "personas:toolbarURLUpdated", false);
+    this._obsSvc.addObserver(this, "personas:statusbarURLUpdated", false);
+
+  },
+
+  _delayedInit: function() {
+    this._delayedInitTimer.cancel();
+    this._delayedInitTimer = null;
 
     // Load the lists of categories and personas, and define a timer
     // that periodically reloads them.
@@ -327,6 +361,9 @@ PersonaService.prototype = {
   },
 
   _destroy: function() {
+    this._obsSvc.removeObserver(this, "personas:toolbarURLUpdated");
+    this._obsSvc.removeObserver(this, "personas:statusbarURLUpdated");
+
     if (this._toolbarLoader)
       this._toolbarLoader.reset();
     this._toolbarLoader = null;
@@ -345,7 +382,25 @@ PersonaService.prototype = {
     this._personaLoader = null;
 
     this._prefSvc.removeObserver("extensions.personas.", this);
-    this._obsSvc.removeObserver(this, "xpcom-shutdown");
+  },
+
+  /**
+   * Register the resource://personas/ alias if it isn't already registered.
+   * We make it point to the top-level directory for the extension, so we can
+   * access files anywhere in the extension.
+   */
+  _registerResourceAlias: function() {
+    let ioSvc = Cc["@mozilla.org/network/io-service;1"].
+                getService(Ci.nsIIOService);
+    let resProt = ioSvc.getProtocolHandler("resource").
+                  QueryInterface(Ci.nsIResProtocolHandler);
+    if (!resProt.hasSubstitution("personas")) {
+      let extMgr = Cc["@mozilla.org/extensions/manager;1"].
+                   getService(Ci.nsIExtensionManager);
+      let loc = extMgr.getInstallLocation(PERSONAS_EXTENSION_ID);
+      let extD = loc.getItemLocation(PERSONAS_EXTENSION_ID);
+      resProt.setSubstitution("personas", ioSvc.newFileURI(extD));
+    }
   },
 
 
@@ -402,6 +457,17 @@ PersonaService.prototype = {
 
     this._prefSvc.setCharPref("extensions.personas.lastlistupdate",
                               new Date().getTime());
+
+    // Now that the data is loaded, we load the persona loader.
+    // FIXME: store all relevant information about the persona in preferences
+    // so we don't need the data to reload the persona.
+
+    // Create the persona loader and attach it to the hidden window.
+    this._personaLoader = this._hiddenWindow.document.createElement("iframe");
+    this._personaLoader.setAttribute("id", "personaLoader");
+    this._personaLoader.setAttribute("src", "chrome://personas/content/personaLoader.xul");
+    this._personaLoader.addEventListener("pageshow", this, false);
+    this._hiddenWindow.document.documentElement.appendChild(this._personaLoader);
   },
 
 
@@ -409,9 +475,9 @@ PersonaService.prototype = {
   // Persona Loading
 
   onPersonaLoaderLoad: function() {
-    // Define the reload and snapshot timers.  We only do this once per browser
-    // session, after which we reuse the same timer for performance, canceling
-    // and reinitializing it as needed.
+    // Define the reload timer.  We only do this once per browser session,
+    // after which we reuse the same timer for performance, canceling and
+    // reinitializing it as needed.
     this._personaReloadTimer = Cc["@mozilla.org/timer;1"].createInstance(Ci.nsITimer);
 
     // Initialize the toolbar and statusbar background loaders.

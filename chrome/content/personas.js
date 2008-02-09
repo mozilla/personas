@@ -38,15 +38,14 @@
 const PERSONAS_EXTENSION_ID = "personas@christopher.beard";
 
 // In Firefox 3 we import modules using Components.utils.import, but in
-// Firefox 2, which does not support modules, we use the subscript loader
+// Firefox 2, which doesn't support modules, we use the subscript loader
 // to load them as subscripts.
-if ("import" in Components.utils) {
-  Components.utils.import("resource://personas/modules/PrefCache.js");
-}
+if ("import" in Components.utils)
+  Components.utils.import("resource://personas/chrome/content/modules/PrefCache.js");
 else {
   let subscriptLoader = Cc["@mozilla.org/moz/jssubscript-loader;1"].
                         getService(Ci.mozIJSSubScriptLoader);
-  subscriptLoader.loadSubScript("chrome://personas/content/modules/PrefCache.js");
+  subscriptLoader.loadSubScript("resource://personas/chrome/content/modules/PrefCache.js");
 }
 
 let PersonaController = {
@@ -209,12 +208,6 @@ let PersonaController = {
     if (bottombox)
       this._defaultStatusbarBackgroundImage = bottombox.style.backgroundImage;
 
-    // Get the persona service to kick off retrieval and application
-    // of the selected persona as well as periodic updates to the personas
-    // and categories data.
-    // FIXME: use the category manager to initialize the service on startup.
-    this._personaSvc;
-
     // Observe various changes that we should apply to the browser window.
     this._obsSvc.addObserver(this, "personas:toolbarURLUpdated", false);
     this._obsSvc.addObserver(this, "personas:statusbarURLUpdated", false);
@@ -241,6 +234,13 @@ let PersonaController = {
       setTimeout(function() { window.openUILinkIn(updatedURL, "tab") }, 500);
       this._prefSvc.setCharPref("extensions.personas.lastversion", thisVersion);
     }
+
+    // See if the persona URLs are immediately available, and if so, apply them.
+    // Otherwise we'll apply them when we get notified that they've been loaded.
+    if (this._personaSvc.headerURL)
+      this._applyToolbarURLUpdate(this._personaSvc.headerURL);
+    if (this._personaSvc.footerURL)
+      this._applyStatusbarURLUpdate(this._personaSvc.footerURL);
   },
 
   shutDown: function() {

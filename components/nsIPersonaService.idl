@@ -36,13 +36,16 @@
 
 #include "nsISupports.idl"
 
-[scriptable, uuid(f41fc9e5-6f7b-4d4a-ab2e-4675bbe10f08)]
+[scriptable, uuid(4b757602-cd4e-4a26-bb39-dc2f2bfc5f41)]
 interface nsIPersonaService : nsISupports
 {
   // JavaScript data structures providing lists of categories and personas,
   // available in the wrappedJSObject properties of these attributes.
   readonly attribute nsISupports categories;
   readonly attribute nsISupports personas;
+
+  readonly attribute AString headerURL;
+  readonly attribute AString footerURL;
 
   /**
    * Display the given persona without making it the selected persona.  Useful

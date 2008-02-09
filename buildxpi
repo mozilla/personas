@@ -17,15 +17,37 @@ cd ..
 # been modified to point to the archive versions of the chrome packages.
 cp chrome.manifest .\#chrome.manifest.bak
 
+
+### This is the version that uses a JAR file.  We're not using it now
+# because supporting Firefox 2 means we have to load modules from a chrome
+# subdirectory, and modules take a resource: URL, and resource: URLs can't be
+# jar: URLs, so we can't stick the chrome subdirectories into a JAR file.
+# This will all be so much easier when we don't have to support Firefox 2.
+
 # Convert the chrome provider instructions in the chrome.manifest file
 # to point to the archived versions of the chrome packages.
-sed -i -r -e 's/^((content|skin|locale)\s+(\S+\s+)(\S+\s+)?)chrome\//\1jar:chrome\/personas.jar!\//g' chrome.manifest
+#sed -i -r -e 's/^((content|skin|locale)\s+(\S+\s+)(\S+\s+)?)chrome\//\1jar:chrome\/personas.jar!\//g' chrome.manifest
 
 # Build the XPI.
 # components/\*.idl excludes IDL files, which are unnecessary in the XPI
 #                   since the info in them has been compiled into XPT files
 # components/xptgen excludes that script, which is part of the build process
-zip -9 -ur personas.xpi chrome/personas.jar components defaults install.rdf chrome.manifest -x \*/CVS/\* -x \*/.\* -x components/\*.idl -x components/genxpt
+#zip -9 -ur personas.xpi chrome/personas.jar components defaults install.rdf chrome.manifest -x \*/CVS/\* -x \*/.\* -x components/\*.idl -x components/genxpt
+
+### End of the version that uses a JAR file.
+
+
+### This is the version that doesn't use a JAR file.  We're using this at
+# the moment for the reason described above.
+
+# Build the XPI.
+# components/\*.idl excludes IDL files, which are unnecessary in the XPI
+#                   since the info in them has been compiled into XPT files
+# components/xptgen excludes that script, which is part of the build process
+zip -9 -ur personas.xpi chrome/content chrome/skin chrome/locale components defaults install.rdf chrome.manifest -x \*/CVS/\* -x \*/.\* -x components/\*.idl -x components/genxpt
+
+### End of the version that doesn't use a JAR file.
+
 
 # Restore the backed up chrome.manifest file.
 mv .\#chrome.manifest.bak chrome.manifest
