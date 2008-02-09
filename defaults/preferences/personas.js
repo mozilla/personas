@@ -12,8 +12,8 @@ pref("extensions.personas.editor", "disabled");
 pref("extensions.personas.authorizedHosts", ".mozilla.com");
 
 // The interval between consecutive persona reloads.  Measured in minutes,
-// with a default of 30 minutes and a minimum of one minute.
-pref("extensions.personas.reloadInterval", 30);
+// with a default of 60 minutes and a minimum of one minute.
+pref("extensions.personas.reloadInterval", 60);
 
 // The interval between consecutive persona snapshots.  Measured in seconds,
 // with a default of 60 seconds and a minimum of one second.
