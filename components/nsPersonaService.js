@@ -42,6 +42,9 @@ const Cu = Components.utils;
 
 const PERSONAS_EXTENSION_ID = "personas@christopher.beard";
 
+const LOAD_STATE_NOT_LOADED = 0;
+const LOAD_STATE_LOADED = 1;
+
 // In Firefox 3 we import modules using Cu.import, but in Firefox 2, which does
 // not support modules, we use the subscript loader to load them as subscripts.
 if ("import" in Cu) {
@@ -138,10 +141,18 @@ PersonaService.prototype = {
   },
 
   // The interval between consecutive persona reloads.  Measured in minutes,
-  // with a default of 30 minutes (defined in defaults/preferences/personas.js)
+  // with a default of 60 minutes (defined in defaults/preferences/personas.js)
   // and a minimum of one minute.
   get _reloadInterval() {
     let val = this._getPref("extensions.personas.reloadInterval");
+    return val < 1 ? 1 : val;
+  },
+
+  // The interval between consecutive persona snapshots.  Measured in seconds,
+  // with a default of 60 seconds (defined in defaults/preferences/personas.js)
+  // and a minimum of one second.
+  get _snapshotInterval() {
+    let val = this._getPref("extensions.personas.snapshotInterval");
     return val < 1 ? 1 : val;
   },
 
@@ -161,7 +172,7 @@ PersonaService.prototype = {
 
 
   //**************************************************************************//
-  // Internal Properties
+  // Private Properties
 
   _delayedInitTimer: null,
 
@@ -176,18 +187,29 @@ PersonaService.prototype = {
   _toolbarLoader: null,
   _statusbarLoader: null,
 
+  // These keep track of which backgrounds are loaded so we know when everything
+  // is loaded and we can update application windows with the persona.
+  _toolbarLoaded: false,
+  _statusbarLoaded: false,
+
   // A timer that periodically reloads the lists of categories and personas
   // to incorporate updates to those lists.
-  _dataReloadTimer: null,
+  _reloadDataTimer: null,
 
   // A timer that periodically reloads the selected persona to incorporate
   // server-side changes to static and dynamic personas.  Defined when the
   // persona loader is loaded.
-  _personaReloadTimer: null,
+  _reloadPersonaTimer: null,
+
+  // A timer that periodically snapshots the loaded persona so it incorporates
+  // client-side changes to dynamic personas.  Instantiated once the persona
+  // loader is ready to load the current persona, and reinitialized each time
+  // we load the persona.
+  _snapshotPersonaTimer: null,
 
 
   //**************************************************************************//
-  // XPCOM Interface Implementations
+  // XPCOM Interfaces
 
   // nsIPersonaService
 
@@ -211,7 +233,7 @@ PersonaService.prototype = {
    * or the user selects another persona.
    */
   previewPersona: function(aPersonaID) {
-    this._displayPersona(aPersonaID);
+    this._switchToPersona(aPersonaID);
   },
 
   /**
@@ -221,7 +243,7 @@ PersonaService.prototype = {
    */
   resetPersona: function() {
     let personaID = this._getPref("extensions.personas.selected", "default");
-    this._displayPersona(personaID);
+    this._switchToPersona(personaID);
   },
 
   // nsIObserver
@@ -243,18 +265,10 @@ PersonaService.prototype = {
         this._destroy();
         break;
 
-      case "personas:toolbarURLUpdated":
-        this.headerURL = data;
-        break;
-
-      case "personas:statusbarURLUpdated":
-        this.footerURL = data;
-        break;
-
       case "nsPref:changed":
         switch (data) {
           // If any of the prefs that determine which persona is selected
-          // have changed, then reload the persona.
+          // have changed, then switch to the selected persona.
           // FIXME: figure out how to call resetPersona only once when both
           // "selected" and "category" preferences are set one after the other
           // by PersonaController._setPersona.  Maybe, when we're setting both
@@ -298,12 +312,18 @@ PersonaService.prototype = {
       case this._delayedInitTimer:
         this._delayedInit();
         break;
-      case this._personaReloadTimer:
-        let personaID = this._getPref("extensions.personas.selected", "default");
-        this._reloadPersona(personaID);
+      case this._reloadDataTimer:
+        this._loadData();
         break;
-      case this._dataReloadTimer:
-        this._reloadData();
+      case this._reloadPersonaTimer:
+        let personaID = this._getPref("extensions.personas.selected", "default");
+        this._loadPersona(personaID);
+        break;
+      case this._snapshotPersonaTimer:
+        this._snapshotPersona();
+        break;
+      case this._onLoadDelayedTimer:
+        this._onLoadDelayed();
         break;
     }
   },
@@ -339,12 +359,6 @@ PersonaService.prototype = {
     // about:blank loaded in it.
     this._delayedInitTimer = Cc["@mozilla.org/timer;1"].createInstance(Ci.nsITimer);
     this._delayedInitTimer.initWithCallback(this, 0, Ci.nsITimer.TYPE_ONE_SHOT);
-
-    // Observe persona URL updates so we can cache the latest URLs and make
-    // them available for windows to apply immediately when they open.
-    this._obsSvc.addObserver(this, "personas:toolbarURLUpdated", false);
-    this._obsSvc.addObserver(this, "personas:statusbarURLUpdated", false);
-
   },
 
   _delayedInit: function() {
@@ -353,17 +367,14 @@ PersonaService.prototype = {
 
     // Load the lists of categories and personas, and define a timer
     // that periodically reloads them.
-    this._reloadData();
-    this._dataReloadTimer = Cc["@mozilla.org/timer;1"].createInstance(Ci.nsITimer);
-    this._dataReloadTimer.initWithCallback(this,
+    this._loadData();
+    this._reloadDataTimer = Cc["@mozilla.org/timer;1"].createInstance(Ci.nsITimer);
+    this._reloadDataTimer.initWithCallback(this,
                                            30 * 60 * 1000, // 30 minutes
                                            Ci.nsITimer.TYPE_REPEATING_SLACK);
   },
 
   _destroy: function() {
-    this._obsSvc.removeObserver(this, "personas:toolbarURLUpdated");
-    this._obsSvc.removeObserver(this, "personas:statusbarURLUpdated");
-
     if (this._toolbarLoader)
       this._toolbarLoader.reset();
     this._toolbarLoader = null;
@@ -372,12 +383,16 @@ PersonaService.prototype = {
       this._statusbarLoader.reset();
     this._statusbarLoader = null;
 
-    if (this._personaReloadTimer)
-      this._personaReloadTimer.cancel();
-    this._personaReloadTimer = null;
+    if (this._reloadPersonaTimer)
+      this._reloadPersonaTimer.cancel();
+    this._reloadPersonaTimer = null;
 
-    this._dataReloadTimer.cancel();
-    this._dataReloadTimer = null;
+    if (this._snapshotPersonaTimer)
+      this._snapshotPersonaTimer.cancel();
+    this._snapshotPersonaTimer = null;
+
+    this._reloadDataTimer.cancel();
+    this._reloadDataTimer = null;
 
     this._personaLoader = null;
 
@@ -407,7 +422,7 @@ PersonaService.prototype = {
   //**************************************************************************//
   // Data Loading
 
-  _reloadData: function() {
+  _loadData: function() {
     let t = this;
     this._makeRequest(this._baseURL + this._locale + "/personas_categories.dat",
                       function(evt) { t.onCategoriesLoad(evt) });
@@ -475,59 +490,90 @@ PersonaService.prototype = {
   // Persona Loading
 
   onPersonaLoaderLoad: function() {
-    // Define the reload timer.  We only do this once per browser session,
-    // after which we reuse the same timer for performance, canceling and
-    // reinitializing it as needed.
-    this._personaReloadTimer = Cc["@mozilla.org/timer;1"].createInstance(Ci.nsITimer);
+    // Define the reload and snapshot timers.  We only do this once per session,
+    // after which we reuse the same timers for performance, reinitializing them
+    // as needed.
+    this._reloadPersonaTimer = Cc["@mozilla.org/timer;1"].createInstance(Ci.nsITimer);
+    this._snapshotPersonaTimer = Cc["@mozilla.org/timer;1"].createInstance(Ci.nsITimer);
 
     // Initialize the toolbar and statusbar background loaders.
-    this._toolbarLoader = new ToolbarBackgroundLoader(this);
-    this._statusbarLoader = new StatusbarBackgroundLoader(this);
+    let t = this;
+    let toolbarLoadCallback = function() { t.onToolbarLoaded() };
+    let statusbarLoadCallback = function() { t.onStatusbarLoaded() };
+    this._toolbarLoader = new ToolbarBackgroundLoader(toolbarLoadCallback);
+    this._statusbarLoader = new StatusbarBackgroundLoader(statusbarLoadCallback);
 
     // Now apply the selected persona to the browser windows.
     let personaID = this._getPref("extensions.personas.selected", "default");
-    this._displayPersona(personaID);
+    this._switchToPersona(personaID);
   },
 
   /**
-   * Display the selected persona in the application windows.  This happens
-   * on startup and every time the user selects a persona.
+   * Switch to the specified persona.  This happens on startup, when the user
+   * selects a persona, and when the user previews a persona or resets to the
+   * elected persona.
    */
-  _displayPersona: function(aPersonaID) {
-    // Cancel the reload timer.
-    this._personaReloadTimer.cancel();
+  _switchToPersona: function(aPersonaID) {
+    this._reloadPersonaTimer.cancel();
+    this._toolbarLoader.reset();
+    this._statusbarLoader.reset();
 
     if (aPersonaID == "default") {
-      // Reset the background loaders so they don't keep trying to snapshot
-      // the previously-selected persona.
-      this._toolbarLoader.reset();
-      this._statusbarLoader.reset();
-
-      // Notify the application windows to apply the default persona.
       this._obsSvc.notifyObservers(null, "personas:defaultPersonaSelected", null);
-
       return;
     }
 
-    // Load the persona, then initialize a timer that reloads it periodically.
-    this._reloadPersona(aPersonaID);
-    this._personaReloadTimer.initWithCallback(this,
+    this._loadPersona(aPersonaID);
+    this._reloadPersonaTimer.initWithCallback(this,
                                               this._reloadInterval * 60 * 1000,
                                               Ci.nsITimer.TYPE_REPEATING_SLACK);
   },
 
   /**
-   * Reload the currently selected persona.  This happens on startup, every
-   * time the user switches personas, and periodically at the interval defined
-   * by the _reloadInterval property (the latter to incorporate changes
-   * to dynamic personas).
+   * Load the given persona.  This happens on startup, every time the user
+   * switches personas, and periodically at the reload interval to incorporate
+   * server-side changes to dynamic personas.  This also happens when the user
+   * previews a persona or resets their browser to the selected persona.
    */
-  _reloadPersona: function(aPersonaID) {
+  _loadPersona: function(aPersonaID) {
+    // Cancel the snapshot timer.
+    this._snapshotPersonaTimer.cancel();
+
+    // If we're loading the "random" persona, pick a persona at random
+    // from the selected category.
     if (aPersonaID == "random")
       aPersonaID = this._getRandomPersona();
 
-    this._toolbarLoader.reload(aPersonaID, this._getToolbarURL(aPersonaID));
-    this._statusbarLoader.reload(aPersonaID, this._getStatusbarURL(aPersonaID));
+    this._toolbarLoader.load(aPersonaID, this._getToolbarURL(aPersonaID));
+    this._statusbarLoader.load(aPersonaID, this._getStatusbarURL(aPersonaID));
+  },
+
+  onToolbarLoaded: function() {
+    if (this._statusbarLoader.loadState == LOAD_STATE_LOADED)
+      this._onPersonaLoaded();
+  },
+
+  onStatusbarLoaded: function() {
+    if (this._toolbarLoader.loadState == LOAD_STATE_LOADED)
+      this._onPersonaLoaded();
+  },
+
+  _onPersonaLoaded: function() {
+    this._snapshotPersona();
+
+    // Start the snapshot timer.
+    this._snapshotPersonaTimer.initWithCallback(this,
+                                                this._snapshotInterval * 1000,
+                                                Ci.nsITimer.TYPE_REPEATING_SLACK);
+  },
+
+  _snapshotPersona: function() {
+    this.headerURL = this._toolbarLoader.getSnapshotURL();
+    this.footerURL = this._statusbarLoader.getSnapshotURL();
+
+    // Notify application windows so they update their appearance to reflect
+    // the new versions of the background images.
+    this._obsSvc.notifyObservers(null, "personas:selectedPersonaUpdated", null);
   },
 
   _getRandomPersona: function() {
@@ -647,48 +693,13 @@ PersonaService.prototype = {
 }
 
 
-function BackgroundLoader(aPersonaService) {
-  this._personaSvc = aPersonaService;
-
-  // A timer that periodically snapshots the loaded persona so it incorporates
-  // client-side changes to dynamic personas.  Instantiated once the persona
-  // loader is ready to load the current persona, and reinitialized each time
-  // we load the persona.
-  this._snapshotTimer = Cc["@mozilla.org/timer;1"].createInstance(Ci.nsITimer);
+function BackgroundLoader(aLoadCallback) {
+  this._loadCallback = aLoadCallback;
 }
 
 BackgroundLoader.prototype = {
   //**************************************************************************//
   // Convenience Getters
-
-  // Preference Service
-  get _prefSvc() {
-    // Enable both the nsIPrefBranch and the nsIPrefBranch2 interfaces
-    // so we can both retrieve preferences and add observers.
-    let prefSvc = Cc["@mozilla.org/preferences-service;1"].
-                  getService(Ci.nsIPrefBranch).
-                  QueryInterface(Ci.nsIPrefBranch2);
-    this.__defineGetter__("_prefSvc", function() { return prefSvc });
-    return this._prefSvc;
-  },
-
-  get _prefCache() {
-    let prefCache = new PersonasPrefCache("");
-    this.__defineGetter__("_prefCache", function() { return prefCache });
-    return this._prefCache;
-  },
-
-  _getPref: function(aPrefName, aDefaultValue) {
-    return this._prefCache.getPref(aPrefName, aDefaultValue);
-  },
-
-  // The interval between consecutive persona snapshots.  Measured in seconds,
-  // with a default of 60 seconds (defined in defaults/preferences/personas.js)
-  // and a minimum of one second.
-  get _snapshotInterval() {
-    let val = this._getPref("extensions.personas.snapshotInterval");
-    return val < 1 ? 1 : val;
-  },
 
   get _hiddenWindow() {
     let hiddenWindow = Cc["@mozilla.org/appshell/appShellService;1"].
@@ -703,13 +714,7 @@ BackgroundLoader.prototype = {
 
 
   //**************************************************************************//
-  // Internal Properties
-
-  _personaSvc: null,
-
-
-  //**************************************************************************//
-  // XPCOM Interface Implementations
+  // XPCOM Interfaces
 
   // nsISupports
 
@@ -737,29 +742,19 @@ BackgroundLoader.prototype = {
 
   notify: function(aTimer) {
     switch(aTimer) {
-      case this._snapshotTimer:
-        this._updateAppearance();
-        break;
-      case this._delayedUpdateTimer:
-        try {
-          this._updateAppearance();
-        }
-        finally {
-          this._delayedUpdateTimer.cancel();
-          this._delayedUpdateTimer = null;
-        }
+      case this._onLoadDelayedTimer:
+        this._onLoadDelayed();
         break;
     }
   },
 
 
-  reset: function() {
-    this._snapshotTimer.cancel();
-  },
+  //**************************************************************************//
+  // Public Interface
 
-  reload: function(aPersonaID, aURL) {
-    this._snapshotTimer.cancel();
+  loadState: LOAD_STATE_NOT_LOADED,
 
+  load: function(aPersonaID, aURL) {
     // If the URL is to an image file, then load it as the background image
     // of a XUL window so it appears at its original size instead of being
     // resized to fit the visible portion of the iframe.  We should figure out
@@ -812,41 +807,23 @@ BackgroundLoader.prototype = {
                                        null);
   },
 
-  _onLoad: function() {
-    // Delay updating the loader momentarily to give the rendering engine
-    // time to finish displaying the content in the iframe before we take
-    // a snapshot of it and turn that into a URL.
-    // Note: I'm not sure why this is necessary, since the content should be
-    // rendered by the time we get notified about the pageshow event, so we
-    // should be able to just call _updateFoo directly, but for some reason
-    // that doesn't work (our snapshot turns out blank).
-    //this._update();
-    this._delayedUpdateTimer = Cc["@mozilla.org/timer;1"].
-                               createInstance(Ci.nsITimer);
-    this._delayedUpdateTimer.initWithCallback(this,
-                                              0,
-                                              Ci.nsITimer.TYPE_ONE_SHOT);
-
-    // Restart the snapshot timer.
-    this._snapshotTimer.initWithCallback(this,
-                                         this._snapshotInterval * 1000,
-                                         Ci.nsITimer.TYPE_REPEATING_SLACK);
+  reset: function() {
+    this.loadState = LOAD_STATE_NOT_LOADED;
   },
 
-  _updateAppearance: function() {
-    // Take a snapshot of the iframe by drawing its contents onto the canvas,
-    // then convert the snapshot into a data: URL containing an image and notify
-    // application windows of the URL so they update their appearance to reflect
-    // the new version of the background image.
-    //
-    // Note: we set the starting point for the snapshot to the top/left corner
-    // of the visible portion of the page so that we show what the URL intends
-    // to show when it contains an anchor (#something) that scrolls the page
-    // to a particular point on the page while it's being loaded.
-    //
-    // Note: We specify an alpha channel in the background color to preserve
-    // transparency in images.
-    //
+  /**
+   * Take a snapshot of the iframe by drawing its contents onto the canvas,
+   * then convert the snapshot into a data: URL containing an image.
+   * 
+   * We set the starting point for the snapshot to the top/left corner
+   * of the visible portion of the page so that we show what the URL intends
+   * to show when it contains an anchor (#something) that scrolls the page
+   * to a particular point on the page while it's being loaded.
+   * 
+   * We specify an alpha channel in the background color to preserve
+   * transparency in images.
+   */
+  getSnapshotURL: function() {
     let context = this._canvas.getContext("2d");
     let window = this._iframe.contentWindow;
     context.drawWindow(window,
@@ -860,24 +837,55 @@ BackgroundLoader.prototype = {
     // Clear the canvas so it's ready for the next snapshot.
     context.clearRect(0, 0, 3000, 200);
 
-    this._personaSvc._obsSvc.notifyObservers(null, this._notificationTopic, url);
+    return url;
+  },
+
+
+  //**************************************************************************//
+  // Private Properties & Methods
+
+  _loadCallback: null,
+
+  _onLoad: function() {
+    // Delay calling the load callback to give the rendering engine time
+    // to finish displaying the content in the iframe.  I'm not sure why this
+    // is necessary, since the content should be rendered by the time we get
+    // the pageshow event, but for some reason that doesn't work (the snapshot
+    // turns out blank).
+    this._onLoadDelayedTimer = Cc["@mozilla.org/timer;1"].
+                               createInstance(Ci.nsITimer);
+    this._onLoadDelayedTimer.initWithCallback(this,
+                                              0,
+                                              Ci.nsITimer.TYPE_ONE_SHOT);
+
+    return;
+  },
+
+  _onLoadDelayed: function() {
+    this.loadState = LOAD_STATE_LOADED;
+    try {
+      this._loadCallback(this);
+    }
+    finally {
+      this._onLoadDelayedTimer.cancel();
+      this._onLoadDelayedTimer = null;
+    }
   }
 
 };
 
+
 // ToolbarBackgroundLoader and StatusbarBackgroundLoader subclass
 // BackgroundLoader to define properties specific to each bar.
 
-function ToolbarBackgroundLoader(aPersonaService) {
-  BackgroundLoader.call(this, aPersonaService);
+function ToolbarBackgroundLoader(aLoadCallback) {
+  BackgroundLoader.call(this, aLoadCallback);
 }
 
 ToolbarBackgroundLoader.prototype = {
   __proto__: BackgroundLoader.prototype,
 
   _position: "top right",
-
-  _notificationTopic: "personas:toolbarURLUpdated",
 
   get _iframe() {
     return this._personaLoader.contentDocument.getElementById("toolbarIframe");
@@ -888,16 +896,14 @@ ToolbarBackgroundLoader.prototype = {
   }
 };
 
-function StatusbarBackgroundLoader(aPersonaService) {
-  BackgroundLoader.call(this, aPersonaService);
+function StatusbarBackgroundLoader(aLoadCallback) {
+  BackgroundLoader.call(this, aLoadCallback);
 }
 
 StatusbarBackgroundLoader.prototype = {
   __proto__: BackgroundLoader.prototype,
 
   _position: "bottom left",
-
-  _notificationTopic: "personas:statusbarURLUpdated",
 
   get _iframe() {
     return this._personaLoader.contentDocument.getElementById("statusbarIframe");

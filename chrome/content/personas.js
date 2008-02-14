@@ -148,11 +148,8 @@ let PersonaController = {
   // nsIObserver
   observe: function(subject, topic, data) {
     switch (topic) {
-      case "personas:toolbarURLUpdated":
-        this._applyToolbarURLUpdate(data);
-        break;
-      case "personas:statusbarURLUpdated":
-        this._applyStatusbarURLUpdate(data);
+      case "personas:selectedPersonaUpdated":
+        this._applyPersona();
         break;
       case "personas:defaultPersonaSelected":
         this._applyDefault();
@@ -209,8 +206,7 @@ let PersonaController = {
       this._defaultStatusbarBackgroundImage = bottombox.style.backgroundImage;
 
     // Observe various changes that we should apply to the browser window.
-    this._obsSvc.addObserver(this, "personas:toolbarURLUpdated", false);
-    this._obsSvc.addObserver(this, "personas:statusbarURLUpdated", false);
+    this._obsSvc.addObserver(this, "personas:selectedPersonaUpdated", false);
     this._obsSvc.addObserver(this, "personas:defaultPersonaSelected", false);
 
     // Listen for various persona-related events that can bubble up from content.
@@ -235,12 +231,10 @@ let PersonaController = {
       this._prefSvc.setCharPref("extensions.personas.lastversion", thisVersion);
     }
 
-    // See if the persona URLs are immediately available, and if so, apply them.
-    // Otherwise we'll apply them when we get notified that they've been loaded.
-    if (this._personaSvc.headerURL)
-      this._applyToolbarURLUpdate(this._personaSvc.headerURL);
-    if (this._personaSvc.footerURL)
-      this._applyStatusbarURLUpdate(this._personaSvc.footerURL);
+    // If the persona is already available, apply it.  Otherwise we'll apply it
+    // when notified that it's ready.
+    if (this._personaSvc.headerURL && this._personaSvc.footerURL)
+      this._applyPersona();
   },
 
   shutDown: function() {
@@ -248,8 +242,7 @@ let PersonaController = {
     document.removeEventListener("PreviewPersona", this, false);
     document.removeEventListener("ResetPersona", this, false);
 
-    this._obsSvc.removeObserver(this, "personas:toolbarURLUpdated");
-    this._obsSvc.removeObserver(this, "personas:statusbarURLUpdated");
+    this._obsSvc.removeObserver(this, "personas:selectedPersonaUpdated");
     this._obsSvc.removeObserver(this, "personas:defaultPersonaSelected");
   },
 
@@ -257,7 +250,11 @@ let PersonaController = {
   //**************************************************************************//
   // Appearance Updates
 
-  _applyToolbarURLUpdate: function(aURL) {
+  _applyPersona: function() {
+    // FIXME: distinguish between selected and loaded personas so we set
+    // the text color correctly when the selected persona is "random" and the
+    // loaded persona is some specific persona that could be light or dark.
+
     let personaID = this._selectedPersona;
 
     // FIXME: figure out where to locate this function and put it there.
@@ -267,28 +264,19 @@ let PersonaController = {
       return aURLSpec.replace(/[(),\s'"]/g, "\$&");
     }
 
-    // Style the primary toolbar box, adding the background image and changing
-    // the text color to reflect dark vs. light personas as advertised by the feed.
+    // Style the header.
+    let headerURL = this._personaSvc.headerURL;
     let toolbar = document.getElementById("main-window");
     toolbar.setAttribute("persona", personaID);
-    toolbar.style.backgroundImage = "url(" + escapeCSSURL(aURL) + ")";
+    toolbar.style.backgroundImage = "url(" + escapeCSSURL(headerURL) + ")";
     let isDark = this._getDarkPropertyByPersona(personaID);
     toolbar.setAttribute("_personas-dark-style", isDark ? "true" : "");
-  },
 
-  _applyStatusbarURLUpdate: function(aURL) {
-    let personaID = this._selectedPersona;
-
-    // FIXME: figure out where to locate this function and put it there.
-    // Escape CSS special characters in unquoted URLs
-    // per http://www.w3.org/TR/CSS21/syndata.html#uri
-    function escapeCSSURL(aURLSpec) {
-      return aURLSpec.replace(/[(),\s'"]/g, "\$&");
-    }
-
+    // Style the footer.
+    let footerURL = this._personaSvc.footerURL;
     let bottombox = document.getElementById("browser-bottombox");
     bottombox.setAttribute("persona", personaID);
-    bottombox.style.backgroundImage = "url('" + escapeCSSURL(aURL) + "')";
+    bottombox.style.backgroundImage = "url('" + escapeCSSURL(footerURL) + "')";
   },
 
   _applyDefault: function() {
