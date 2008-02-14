@@ -7,14 +7,14 @@
      - we tell our persona authors to make their personas.
      -->
 
-  <iframe id="toolbarIframe" type="content"
+  <iframe id="headerIframe" type="content"
           width="3000" minwidth="3000" maxwidth="3000"
           height="200" minheight="200" maxheight="200"/>
-  <xhtml:canvas id="toolbarCanvas" width="3000" height="200"></xhtml:canvas>
+  <xhtml:canvas id="headerCanvas" width="3000" height="200"></xhtml:canvas>
 
-  <iframe id="statusbarIframe" type="content"
+  <iframe id="footerIframe" type="content"
           width="3000" minwidth="3000" maxwidth="3000"
           height="100" minheight="100" maxheight="100"/>
-  <xhtml:canvas id="statusbarCanvas" width="3000" height="100"></xhtml:canvas>
+  <xhtml:canvas id="footerCanvas" width="3000" height="100"></xhtml:canvas>
 
 </window>

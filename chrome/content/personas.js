@@ -49,8 +49,8 @@ else {
 }
 
 let PersonaController = {
-  _defaultToolbarBackgroundImage: null,
-  _defaultStatusbarBackgroundImage: null,
+  _defaultHeaderBackgroundImage: null,
+  _defaultFooterBackgroundImage: null,
   _previewTimeoutID: null,
   _resetTimeoutID: null,
 
@@ -197,13 +197,13 @@ let PersonaController = {
         bottomBox.appendChild(bottomBox.nextSibling);
     }
 
-    // Record the default toolbar and bottombox background images so we can
+    // Record the default header and footer background images so we can
     // revert to them if the user selects the default persona.
-    let toolbar = document.getElementById("main-window");
-    this._defaultToolbarBackgroundImage = toolbar.style.backgroundImage;
-    let bottombox = document.getElementById("browser-bottombox");
-    if (bottombox)
-      this._defaultStatusbarBackgroundImage = bottombox.style.backgroundImage;
+    let header = document.getElementById("main-window");
+    this._defaultHeaderBackgroundImage = header.style.backgroundImage;
+    let footer = document.getElementById("browser-bottombox");
+    if (footer)
+      this._defaultFooterBackgroundImage = footer.style.backgroundImage;
 
     // Observe various changes that we should apply to the browser window.
     this._obsSvc.addObserver(this, "personas:selectedPersonaUpdated", false);
@@ -266,28 +266,28 @@ let PersonaController = {
 
     // Style the header.
     let headerURL = this._personaSvc.headerURL;
-    let toolbar = document.getElementById("main-window");
-    toolbar.setAttribute("persona", personaID);
-    toolbar.style.backgroundImage = "url(" + escapeCSSURL(headerURL) + ")";
+    let header = document.getElementById("main-window");
+    header.setAttribute("persona", personaID);
+    header.style.backgroundImage = "url(" + escapeCSSURL(headerURL) + ")";
     let isDark = this._getDarkPropertyByPersona(personaID);
-    toolbar.setAttribute("_personas-dark-style", isDark ? "true" : "");
+    header.setAttribute("_personas-dark-style", isDark ? "true" : "");
 
     // Style the footer.
     let footerURL = this._personaSvc.footerURL;
-    let bottombox = document.getElementById("browser-bottombox");
-    bottombox.setAttribute("persona", personaID);
-    bottombox.style.backgroundImage = "url('" + escapeCSSURL(footerURL) + "')";
+    let footer = document.getElementById("browser-bottombox");
+    footer.setAttribute("persona", personaID);
+    footer.style.backgroundImage = "url('" + escapeCSSURL(footerURL) + "')";
   },
 
   _applyDefault: function() {
-    let toolbar = document.getElementById("main-window");
-    toolbar.removeAttribute("persona");
-    toolbar.style.backgroundImage = this._defaultToolbarBackgroundImage;
-    toolbar.removeAttribute("_personas-dark-style");
+    let header = document.getElementById("main-window");
+    header.removeAttribute("persona");
+    header.style.backgroundImage = this._defaultHeaderBackgroundImage;
+    header.removeAttribute("_personas-dark-style");
 
-    let bottombox = document.getElementById("browser-bottombox");
-    bottombox.removeAttribute("persona");
-    bottombox.style.backgroundImage = this._defaultStatusbarBackgroundImage;
+    let footer = document.getElementById("browser-bottombox");
+    footer.removeAttribute("persona");
+    footer.style.backgroundImage = this._defaultFooterBackgroundImage;
   },
 
   _getDarkPropertyByPersona: function(personaID) {
@@ -442,7 +442,7 @@ let PersonaController = {
     fp.init(window, "Select a File", Ci.nsIFilePicker.modeOpen);
     let result = fp.show();
     if (result == Ci.nsIFilePicker.returnOK) {
-      this._prefSvc.setCharPref("extensions.personas.custom.toolbarURL",
+      this._prefSvc.setCharPref("extensions.personas.custom.headerURL",
                                 fp.fileURL.spec);
       this._selectPersona("manual", "");
     }

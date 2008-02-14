@@ -177,20 +177,15 @@ PersonaService.prototype = {
   _delayedInitTimer: null,
 
   // The iframe that we add to the hidden window and into which we load a XUL
-  // document that helps us to load the toolbar and statusbar backgrounds.
+  // document that helps us to load the header and footer backgrounds.
   // Defined when the persona service is initialized.
   _personaLoader: null,
 
-  // Objects that are responsible for loading the toolbar and statusbar
-  // backgrounds and providing them to application windows. Defined when
-  // the persona loader is loaded.
-  _toolbarLoader: null,
-  _statusbarLoader: null,
-
-  // These keep track of which backgrounds are loaded so we know when everything
-  // is loaded and we can update application windows with the persona.
-  _toolbarLoaded: false,
-  _statusbarLoaded: false,
+  // Objects that are responsible for loading the header and footer backgrounds
+  // and providing them to application windows. Defined when the persona loader
+  // is loaded.
+  _headerLoader: null,
+  _footerLoader: null,
 
   // A timer that periodically reloads the lists of categories and personas
   // to incorporate updates to those lists.
@@ -278,7 +273,8 @@ PersonaService.prototype = {
           // the selected persona is "disabled"), and finally we could set
           // the selected persona to the new value.
           case "extensions.personas.selected":
-          case "extensions.personas.custom.toolbarURL":
+          case "extensions.personas.custom.headerURL":
+          case "extensions.personas.custom.footerURL":
           case "extensions.personas.category":
             this.resetPersona();
             break;
@@ -341,13 +337,33 @@ PersonaService.prototype = {
       Cu.import("resource://personas/chrome/content/modules/PrefCache.js");
 
     // For backwards compatibility, migrate the old manualPath preference
-    // to the new custom.toolbarURL preference.
+    // to the new custom.headerURL preference.
     // FIXME: remove this once enough users have updated to a version newer
     // than 0.9.2.
     if (this._prefSvc.prefHasUserValue("extensions.personas.manualPath")) {
       let path = this._getPref("extensions.personas.manualPath");
-      this._prefSvc.setCharPref("extensions.personas.custom.toolbarURL", "file://" + path);
+      this._prefSvc.setCharPref("extensions.personas.custom.headerURL", "file://" + path);
       this._prefSvc.clearUserPref("extensions.personas.manualPath");
+    }
+
+    // For backwards compatibility, migrate the old custom.toolbarURL preference
+    // to the new custom.headerURL preference.
+    // FIXME: remove this once enough users have updated to a version newer
+    // than 0.9.4.
+    if (this._prefSvc.prefHasUserValue("extensions.personas.custom.toolbarURL")) {
+      let url = this._getPref("extensions.personas.custom.toolbarURL");
+      this._prefSvc.setCharPref("extensions.personas.custom.headerURL", url);
+      this._prefSvc.clearUserPref("extensions.personas.custom.toolbarURL");
+    }
+
+    // For backwards compatibility, migrate the old custom.statusbarURL preference
+    // to the new custom.footerURL preference.
+    // FIXME: remove this once enough users have updated to a version newer
+    // than 0.9.4.
+    if (this._prefSvc.prefHasUserValue("extensions.personas.custom.statusbarURL")) {
+      let url = this._getPref("extensions.personas.custom.statusbarURL");
+      this._prefSvc.setCharPref("extensions.personas.custom.footerURL", url);
+      this._prefSvc.clearUserPref("extensions.personas.custom.statusbarURL");
     }
 
     // Observe changes to the selected persona that happen in other windows
@@ -375,13 +391,13 @@ PersonaService.prototype = {
   },
 
   _destroy: function() {
-    if (this._toolbarLoader)
-      this._toolbarLoader.reset();
-    this._toolbarLoader = null;
+    if (this._headerLoader)
+      this._headerLoader.reset();
+    this._headerLoader = null;
 
-    if (this._statusbarLoader)
-      this._statusbarLoader.reset();
-    this._statusbarLoader = null;
+    if (this._footerLoader)
+      this._footerLoader.reset();
+    this._footerLoader = null;
 
     if (this._reloadPersonaTimer)
       this._reloadPersonaTimer.cancel();
@@ -496,12 +512,12 @@ PersonaService.prototype = {
     this._reloadPersonaTimer = Cc["@mozilla.org/timer;1"].createInstance(Ci.nsITimer);
     this._snapshotPersonaTimer = Cc["@mozilla.org/timer;1"].createInstance(Ci.nsITimer);
 
-    // Initialize the toolbar and statusbar background loaders.
+    // Initialize the header and footer background loaders.
     let t = this;
-    let toolbarLoadCallback = function() { t.onToolbarLoaded() };
-    let statusbarLoadCallback = function() { t.onStatusbarLoaded() };
-    this._toolbarLoader = new ToolbarBackgroundLoader(toolbarLoadCallback);
-    this._statusbarLoader = new StatusbarBackgroundLoader(statusbarLoadCallback);
+    let loadHeaderCallback = function() { t.onLoadHeader() };
+    let loadFooterCallback = function() { t.onLoadFooter() };
+    this._headerLoader = new HeaderLoader(loadHeaderCallback);
+    this._footerLoader = new FooterLoader(loadFooterCallback);
 
     // Now apply the selected persona to the browser windows.
     let personaID = this._getPref("extensions.personas.selected", "default");
@@ -515,8 +531,8 @@ PersonaService.prototype = {
    */
   _switchToPersona: function(aPersonaID) {
     this._reloadPersonaTimer.cancel();
-    this._toolbarLoader.reset();
-    this._statusbarLoader.reset();
+    this._headerLoader.reset();
+    this._footerLoader.reset();
 
     if (aPersonaID == "default") {
       this._obsSvc.notifyObservers(null, "personas:defaultPersonaSelected", null);
@@ -544,17 +560,17 @@ PersonaService.prototype = {
     if (aPersonaID == "random")
       aPersonaID = this._getRandomPersona();
 
-    this._toolbarLoader.load(aPersonaID, this._getToolbarURL(aPersonaID));
-    this._statusbarLoader.load(aPersonaID, this._getStatusbarURL(aPersonaID));
+    this._headerLoader.load(aPersonaID, this._getHeaderURL(aPersonaID));
+    this._footerLoader.load(aPersonaID, this._getFooterURL(aPersonaID));
   },
 
-  onToolbarLoaded: function() {
-    if (this._statusbarLoader.loadState == LOAD_STATE_LOADED)
+  onLoadHeader: function() {
+    if (this._footerLoader.loadState == LOAD_STATE_LOADED)
       this._onPersonaLoaded();
   },
 
-  onStatusbarLoaded: function() {
-    if (this._toolbarLoader.loadState == LOAD_STATE_LOADED)
+  onLoadFooter: function() {
+    if (this._headerLoader.loadState == LOAD_STATE_LOADED)
       this._onPersonaLoaded();
   },
 
@@ -568,8 +584,8 @@ PersonaService.prototype = {
   },
 
   _snapshotPersona: function() {
-    this.headerURL = this._toolbarLoader.getSnapshotURL();
-    this.footerURL = this._statusbarLoader.getSnapshotURL();
+    this.headerURL = this._headerLoader.getSnapshotURL();
+    this.footerURL = this._footerLoader.getSnapshotURL();
 
     // Notify application windows so they update their appearance to reflect
     // the new versions of the background images.
@@ -642,12 +658,12 @@ PersonaService.prototype = {
     return null;
   },
 
-  _getToolbarURL: function(aPersonaID) {
-    // Custom persona whose toolbar content is a local file specified by the
-    // user and stored in the custom.toolbarURL preference.
+  _getHeaderURL: function(aPersonaID) {
+    // Custom persona whose header and footer are in local files specified by
+    // the user in preferences.
     if (aPersonaID == "manual")
-      return this._getPref("extensions.personas.custom.toolbarURL",
-                           "chrome://personas/skin/default/tbox-default.jpg");
+      return this._getPref("extensions.personas.custom.headerURL",
+                           "chrome://personas/skin/default/header-default.jpg");
 
     let persona = this._getPersona(aPersonaID);
 
@@ -658,19 +674,19 @@ PersonaService.prototype = {
 
     // New-style persona whose content (which might be dynamic) is located
     // at the URL specified by a property.
-    if (persona.toolbarURL)
-      return baseURL + persona.toolbarURL;
+    if (persona.headerURL)
+      return baseURL + persona.headerURL;
 
     // Old-style persona whose content (which must be static) is a JPG image
     // located at a particular place on the personas server.
     return baseURL + "skins/" + aPersonaID + "/tbox-" + aPersonaID + ".jpg";
   },
 
-  _getStatusbarURL: function(aPersonaID) {
-    // Custom persona whose content is in local files specified by the user
-    // in preferences.
+  _getFooterURL: function(aPersonaID) {
+    // Custom persona whose header and footer are in local files specified by
+    // the user in preferences.
     if (aPersonaID == "manual")
-      return this._getPref("extensions.personas.custom.statusbarURL",
+      return this._getPref("extensions.personas.custom.footerURL",
                            "chrome://personas/skin/default/stbar-default.jpg");
 
     let persona = this._getPersona(aPersonaID);
@@ -682,8 +698,8 @@ PersonaService.prototype = {
 
     // New-style persona whose content (which might be dynamic) is located
     // at the URL specified by a property.
-    if (persona.statusbarURL)
-      return baseURL + persona.statusbarURL;
+    if (persona.footerURL)
+      return baseURL + persona.footerURL;
 
     // Old-style persona whose content (which must be static) is a JPG image
     // located at a particular place on the personas server.
@@ -875,42 +891,42 @@ BackgroundLoader.prototype = {
 };
 
 
-// ToolbarBackgroundLoader and StatusbarBackgroundLoader subclass
-// BackgroundLoader to define properties specific to each bar.
+// HeaderLoader and FooterLoader subclass BackgroundLoader to define properties
+// specific to each area.
 
-function ToolbarBackgroundLoader(aLoadCallback) {
+function HeaderLoader(aLoadCallback) {
   BackgroundLoader.call(this, aLoadCallback);
 }
 
-ToolbarBackgroundLoader.prototype = {
+HeaderLoader.prototype = {
   __proto__: BackgroundLoader.prototype,
 
   _position: "top right",
 
   get _iframe() {
-    return this._personaLoader.contentDocument.getElementById("toolbarIframe");
+    return this._personaLoader.contentDocument.getElementById("headerIframe");
   },
 
   get _canvas() {
-    return this._personaLoader.contentDocument.getElementById("toolbarCanvas");
+    return this._personaLoader.contentDocument.getElementById("headerCanvas");
   }
 };
 
-function StatusbarBackgroundLoader(aLoadCallback) {
+function FooterLoader(aLoadCallback) {
   BackgroundLoader.call(this, aLoadCallback);
 }
 
-StatusbarBackgroundLoader.prototype = {
+FooterLoader.prototype = {
   __proto__: BackgroundLoader.prototype,
 
   _position: "bottom left",
 
   get _iframe() {
-    return this._personaLoader.contentDocument.getElementById("statusbarIframe");
+    return this._personaLoader.contentDocument.getElementById("footerIframe");
   },
 
   get _canvas() {
-    return this._personaLoader.contentDocument.getElementById("statusbarCanvas");
+    return this._personaLoader.contentDocument.getElementById("footerCanvas");
   }
 };
 
