@@ -136,6 +136,7 @@
 #browser-bottombox[persona] > * {
   -moz-appearance: none;
   background-color: transparent;
+  background-image: none;
   border: 0 !important;
 }
 
