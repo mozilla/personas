@@ -264,6 +264,7 @@ let PersonaController = {
     // FIXME: distinguish between selected and loaded personas so we set
     // the text color correctly when the selected persona is "random" and the
     // loaded persona is some specific persona that could be light or dark.
+    // Perhaps we should expose the _activePersona property of the service.
 
     let personaID = this._selectedPersona;
 
@@ -301,11 +302,6 @@ let PersonaController = {
   },
 
   _getDarkPropertyByPersona: function(personaID) {
-
-    // FIXME: temporary hack to get around slow loading on initialization     
-    if (!this._personaSvc.personas)
-      return false;
-
     let personas = this._personaSvc.personas.wrappedJSObject;
 
     for each (let persona in personas)
