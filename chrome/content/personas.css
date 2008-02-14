@@ -36,7 +36,7 @@
  * ***** END LICENSE BLOCK ***** */
 
 /**
- * The appearance of the Personas selector button.
+ * The appearance of the Personas selector button and menu.
  */
 
 #personas-selector-button {
@@ -54,6 +54,10 @@
 #personas-selector-button[open="true"],
 #personas-selector-button:hover:active  {
   -moz-image-region: rect(48px, 16px, 64px, 0px);
+}
+
+#personas-selector-menu menuitem[busy="true"] {
+  list-style-image: url("chrome://global/skin/throbber/Throbber-small.gif");
 }
 
 

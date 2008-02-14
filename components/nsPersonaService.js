@@ -42,8 +42,9 @@ const Cu = Components.utils;
 
 const PERSONAS_EXTENSION_ID = "personas@christopher.beard";
 
-const LOAD_STATE_NOT_LOADED = 0;
-const LOAD_STATE_LOADED = 1;
+const LOAD_STATE_EMPTY = 0;
+const LOAD_STATE_LOADING = 1;
+const LOAD_STATE_LOADED = 2;
 
 // In Firefox 3 we import modules using Cu.import, but in Firefox 2, which does
 // not support modules, we use the subscript loader to load them as subscripts.
@@ -186,6 +187,14 @@ PersonaService.prototype = {
   // is loaded.
   _headerLoader: null,
   _footerLoader: null,
+
+  // The ID of the persona currently loaded into the persona loader.  This is
+  // not necessarily the selected persona.  During persona preview, it is the
+  // persona being previewed; if the selected persona is "random", then it is
+  // the ID of the persona that was randomly selected; and if the selected
+  // persona is "default", then it is null, since we don't use the loader to
+  // load the default persona.
+  _activePersona: null,
 
   // A timer that periodically reloads the lists of categories and personas
   // to incorporate updates to those lists.
@@ -514,8 +523,8 @@ PersonaService.prototype = {
 
     // Initialize the header and footer background loaders.
     let t = this;
-    let loadHeaderCallback = function() { t.onLoadHeader() };
-    let loadFooterCallback = function() { t.onLoadFooter() };
+    let loadHeaderCallback = function() { t.onLoadedHeader() };
+    let loadFooterCallback = function() { t.onLoadedFooter() };
     this._headerLoader = new HeaderLoader(loadHeaderCallback);
     this._footerLoader = new FooterLoader(loadFooterCallback);
 
@@ -533,6 +542,14 @@ PersonaService.prototype = {
     this._reloadPersonaTimer.cancel();
     this._headerLoader.reset();
     this._footerLoader.reset();
+    if (this._loadState == LOAD_STATE_LOADING) {
+      // FIXME: cancel the requests currently in process in the header
+      // and footer iframes.
+      this._obsSvc.notifyObservers(null,
+                                   "personas:personaLoadFinished",
+                                   this._activePersona);
+    }
+    this._activePersona = null;
 
     if (aPersonaID == "default") {
       this._obsSvc.notifyObservers(null, "personas:defaultPersonaSelected", null);
@@ -560,21 +577,30 @@ PersonaService.prototype = {
     if (aPersonaID == "random")
       aPersonaID = this._getRandomPersona();
 
+    this._activePersona = aPersonaID;
+
+    this._obsSvc.notifyObservers(null, "personas:personaLoadStarted", aPersonaID);
+    this._loadState = LOAD_STATE_LOADING;
     this._headerLoader.load(aPersonaID, this._getHeaderURL(aPersonaID));
     this._footerLoader.load(aPersonaID, this._getFooterURL(aPersonaID));
   },
 
-  onLoadHeader: function() {
+  onLoadedHeader: function() {
     if (this._footerLoader.loadState == LOAD_STATE_LOADED)
-      this._onPersonaLoaded();
+      this._onLoadedPersona();
   },
 
-  onLoadFooter: function() {
+  onLoadedFooter: function() {
     if (this._headerLoader.loadState == LOAD_STATE_LOADED)
-      this._onPersonaLoaded();
+      this._onLoadedPersona();
   },
 
-  _onPersonaLoaded: function() {
+  _onLoadedPersona: function() {
+    this._loadState = LOAD_STATE_LOADED;
+    this._obsSvc.notifyObservers(null,
+                                 "personas:personaLoadFinished",
+                                 this._activePersona);
+
     this._snapshotPersona();
 
     // Start the snapshot timer.
@@ -589,7 +615,7 @@ PersonaService.prototype = {
 
     // Notify application windows so they update their appearance to reflect
     // the new versions of the background images.
-    this._obsSvc.notifyObservers(null, "personas:selectedPersonaUpdated", null);
+    this._obsSvc.notifyObservers(null, "personas:activePersonaUpdated", null);
   },
 
   _getRandomPersona: function() {
@@ -768,7 +794,7 @@ BackgroundLoader.prototype = {
   //**************************************************************************//
   // Public Interface
 
-  loadState: LOAD_STATE_NOT_LOADED,
+  loadState: LOAD_STATE_EMPTY,
 
   load: function(aPersonaID, aURL) {
     // If the URL is to an image file, then load it as the background image
@@ -824,7 +850,7 @@ BackgroundLoader.prototype = {
   },
 
   reset: function() {
-    this.loadState = LOAD_STATE_NOT_LOADED;
+    this.loadState = LOAD_STATE_EMPTY;
   },
 
   /**

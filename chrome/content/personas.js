@@ -148,11 +148,17 @@ let PersonaController = {
   // nsIObserver
   observe: function(subject, topic, data) {
     switch (topic) {
-      case "personas:selectedPersonaUpdated":
+      case "personas:activePersonaUpdated":
         this._applyPersona();
         break;
       case "personas:defaultPersonaSelected":
         this._applyDefault();
+        break;
+      case "personas:personaLoadStarted":
+        this.showThrobber(data);
+        break;
+      case "personas:personaLoadFinished":
+        this.hideThrobber(data);
         break;
     }
   },
@@ -206,8 +212,10 @@ let PersonaController = {
       this._defaultFooterBackgroundImage = footer.style.backgroundImage;
 
     // Observe various changes that we should apply to the browser window.
-    this._obsSvc.addObserver(this, "personas:selectedPersonaUpdated", false);
+    this._obsSvc.addObserver(this, "personas:activePersonaUpdated", false);
     this._obsSvc.addObserver(this, "personas:defaultPersonaSelected", false);
+    this._obsSvc.addObserver(this, "personas:personaLoadStarted", false);
+    this._obsSvc.addObserver(this, "personas:personaLoadFinished", false);
 
     // Listen for various persona-related events that can bubble up from content.
     document.addEventListener("SelectPersona", this, false, true);
@@ -242,8 +250,10 @@ let PersonaController = {
     document.removeEventListener("PreviewPersona", this, false);
     document.removeEventListener("ResetPersona", this, false);
 
-    this._obsSvc.removeObserver(this, "personas:selectedPersonaUpdated");
+    this._obsSvc.removeObserver(this, "personas:activePersonaUpdated");
     this._obsSvc.removeObserver(this, "personas:defaultPersonaSelected");
+    this._obsSvc.removeObserver(this, "personas:personaLoadStarted", false);
+    this._obsSvc.removeObserver(this, "personas:personaLoadFinished", false);
   },
 
 
@@ -475,6 +485,18 @@ let PersonaController = {
         return persona;
 
     return null;
+  },
+
+  showThrobber: function(aPersonaID) {
+    let items = this._menu.getElementsByAttribute("personaid", aPersonaID);
+    for (let i = 0; i < items.length; i++)
+      items[i].setAttribute("busy", true);
+  },
+
+  hideThrobber: function(aPersonaID) {
+    let items = this._menu.getElementsByAttribute("personaid", aPersonaID);
+    for (let i = 0; i < items.length; i++)
+      items[i].removeAttribute("busy");
   },
 
 
