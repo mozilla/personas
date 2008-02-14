@@ -571,7 +571,7 @@ let PersonaController = {
             item.setAttribute("class", "menuitem-iconic");
             item.setAttribute("image", "chrome://personas/skin/random-feed-16x16.png");
             item.setAttribute("label", this._stringBundle.getString("useRandomPersona.label") + " " + category.label);
-            item.setAttribute("oncommand", "PersonaController.onSelectPersona(event.target);");
+            item.setAttribute("oncommand", "PersonaController.onSelectPersona(event);");
             popupmenu.appendChild(item);
           }
 
