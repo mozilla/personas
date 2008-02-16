@@ -1,5 +1,4 @@
-<!ENTITY personas_app_title 	  "Personas f?r Firefox">
-
+<!ENTITY personas_app_title 	  "Personas für Firefox">
 <!ENTITY useDefaultPersona.label  "Standard benutzen">
 <!ENTITY useCustomPersona.label   "Andere benutzen...">
-<!ENTITY aboutPersonas.label      "?ber...">
+<!ENTITY aboutPersonas.label      "Über...">
