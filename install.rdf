@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<RDF xmlns="http://www.w3.org/1999/02/22-rdf-syntax-ns#" 
+<RDF xmlns="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
      xmlns:em="http://www.mozilla.org/2004/em-rdf#">
   <Description about="urn:mozilla:install-manifest">
     <em:id>personas@christopher.beard</em:id>
     <em:name>Personas for Firefox</em:name>
-    <em:version>0.9.4</em:version>
+    <em:version>0.9.5</em:version>
     <em:description>Themes, skins, fur coats and more.</em:description>
     <em:creator>Christopher Beard</em:creator>
-    <em:updateURL>https://people.mozilla.com/~cbeard/personas/dist/update.rdf</em:updateURL>    
+    <em:contributor>Myk Melez</em:contributor>
+    <em:updateURL>https://people.mozilla.com/~cbeard/personas/dist/update.rdf</em:updateURL>
     <em:homepageURL>http://people.mozilla.com/~cbeard/personas/</em:homepageURL>
     <em:iconURL>chrome://personas/skin/personas_32x32.png</em:iconURL>
     <em:targetApplication>
