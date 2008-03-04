@@ -54,9 +54,8 @@ function PersonasPrefCache(aPrefBranch, aObserver) {
   if (aObserver)
     this.addObserver(aObserver);
 
-  this._prefSvc.addObserver(this._prefBranch, this, false);
-  this._obsSvc.addObserver(this, "profile-after-change", false);
-  this._obsSvc.addObserver(this, "quit-application", false);
+  this._prefSvc.addObserver(this._prefBranch, this, true);
+  this._obsSvc.addObserver(this, "profile-after-change", true);
 }
 
 PersonasPrefCache.prototype = {
@@ -135,6 +134,7 @@ PersonasPrefCache.prototype = {
 
   QueryInterface: function(aIID) {
     if (aIID.equals(Components.interfaces.nsIObserver) ||
+        aIID.equals(Components.interfaces.nsISupportsWeakReference) ||
         aIID.equals(Components.interfaces.nsISupports))
       return this;
     
@@ -152,13 +152,6 @@ PersonasPrefCache.prototype = {
 
       case "profile-after-change":
         this._prefs = {};
-        break;
-
-      case "quit-application":
-        this._obsSvc.removeObserver(this, "profile-after-change");
-        this._obsSvc.removeObserver(this, "quit-application");
-        this._prefSvc.removeObserver(this._prefBranch, this);
-        this._observers = null;
         break;
     }
   }
