@@ -38,6 +38,7 @@
    - ***** END LICENSE BLOCK ***** -->
 
 <?xml-stylesheet href="chrome://personas/content/personas.css" type="text/css"?>
+<?xml-stylesheet href="chrome://personas/skin/personas.css" type="text/css"?>
 
 <!DOCTYPE overlay SYSTEM "chrome://personas/locale/personas.dtd">
 <overlay id="personas-overlay"
