@@ -1,4 +1,12 @@
 <!ENTITY personas_app_title "Personas för Firefox">
+
 <!ENTITY useDefaultPersona.label  "Använd Standard">
 <!ENTITY useCustomPersona.label   "Använd Egen Rubrik...">
 <!ENTITY aboutPersonas.label      "Om...">
+
+<!-- FIXME: translate these strings -->
+<!ENTITY customPersona.label      "Custom Persona">
+<!ENTITY header.label             "Header:">
+<!ENTITY selectBackground.label   "Browse...">
+<!ENTITY footer.label             "Footer:">
+<!ENTITY textColorPicker.label    "Text Color:">

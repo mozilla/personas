@@ -3,3 +3,10 @@
 <!ENTITY useDefaultPersona.label  "使用默认风格">
 <!ENTITY useCustomPersona.label   "使用个性化风格...">
 <!ENTITY aboutPersonas.label      "关于...">
+
+<!-- FIXME: translate these strings -->
+<!ENTITY customPersona.label      "Custom Persona">
+<!ENTITY header.label             "Header:">
+<!ENTITY selectBackground.label   "Browse...">
+<!ENTITY footer.label             "Footer:">
+<!ENTITY textColorPicker.label    "Text Color:">

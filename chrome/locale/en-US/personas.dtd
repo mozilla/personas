@@ -4,6 +4,7 @@
 <!ENTITY useCustomPersona.label   "Custom...">
 <!ENTITY aboutPersonas.label      "About...">
 
+<!-- FIXME: localize these strings -->
 <!ENTITY customPersona.label      "Custom Persona">
 <!ENTITY header.label             "Header:">
 <!ENTITY selectBackground.label   "Browse...">

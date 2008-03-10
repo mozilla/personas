@@ -5,3 +5,10 @@
 <!-- FIXME: translate this string -->
 <!ENTITY useCustomPersona.label   "Use Local Header...">
 <!ENTITY aboutPersonas.label      "Personas について...">
+
+<!-- FIXME: translate these strings -->
+<!ENTITY customPersona.label      "Custom Persona">
+<!ENTITY header.label             "Header:">
+<!ENTITY selectBackground.label   "Browse...">
+<!ENTITY footer.label             "Footer:">
+<!ENTITY textColorPicker.label    "Text Color:">

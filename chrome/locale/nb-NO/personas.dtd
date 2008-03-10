@@ -3,3 +3,10 @@
 <!ENTITY useDefaultPersona.label  "Bruk standard">
 <!ENTITY useCustomPersona.label   "Bruk selvvalgt overskrift ...">
 <!ENTITY aboutPersonas.label      "Om ...">
+
+<!-- FIXME: translate these strings -->
+<!ENTITY customPersona.label      "Custom Persona">
+<!ENTITY header.label             "Header:">
+<!ENTITY selectBackground.label   "Browse...">
+<!ENTITY footer.label             "Footer:">
+<!ENTITY textColorPicker.label    "Text Color:">

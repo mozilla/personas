@@ -3,3 +3,10 @@
 <!ENTITY useDefaultPersona.label  "기본 설정 사용">
 <!ENTITY useCustomPersona.label   "로컬 헤더 사용...">
 <!ENTITY aboutPersonas.label      "확장 기능 정보...">
+
+<!-- FIXME: translate these strings -->
+<!ENTITY customPersona.label      "Custom Persona">
+<!ENTITY header.label             "Header:">
+<!ENTITY selectBackground.label   "Browse...">
+<!ENTITY footer.label             "Footer:">
+<!ENTITY textColorPicker.label    "Text Color:">
