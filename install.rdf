@@ -4,13 +4,13 @@
   <Description about="urn:mozilla:install-manifest">
     <em:id>personas@christopher.beard</em:id>
     <em:name>Personas for Firefox</em:name>
-    <em:version>0.9.5</em:version>
+    <em:version>0.9.6</em:version>
     <em:description>Themes, skins, fur coats and more.</em:description>
     <em:creator>Christopher Beard</em:creator>
     <em:contributor>Myk Melez</em:contributor>
     <em:updateURL>https://people.mozilla.com/~cbeard/personas/dist/update.rdf</em:updateURL>
     <em:homepageURL>http://people.mozilla.com/~cbeard/personas/</em:homepageURL>
-    <em:iconURL>chrome://personas/skin/personas_32x32.png</em:iconURL>
+    <em:iconURL>chrome://personas/content/personas_32x32.png</em:iconURL>
     <em:targetApplication>
       <Description>
         <em:id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</em:id> <!-- firefox -->

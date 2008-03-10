@@ -537,7 +537,7 @@ let PersonaController = {
     let personaStatus = document.getElementById("persona-current");
     if (this._selectedPersona == "random") {
        personaStatus.setAttribute("class", "menuitem-iconic");
-       personaStatus.setAttribute("image", "chrome://personas/skin/random-feed-16x16.png");
+       personaStatus.setAttribute("image", "chrome://personas/content/random-feed-16x16.png");
        personaStatus.setAttribute("label", this._stringBundle.getString("useRandomPersona.label") + " " +
                                            this._getCategoryName(this._getPref("extensions.personas.category")) + " : " +
                                            this._getPersonaName(this._getPref("extensions.personas.lastrandom")));
@@ -574,7 +574,7 @@ let PersonaController = {
             item.setAttribute("personaid", "random");
             item.setAttribute("categoryid", category.id);
             item.setAttribute("class", "menuitem-iconic");
-            item.setAttribute("image", "chrome://personas/skin/random-feed-16x16.png");
+            item.setAttribute("image", "chrome://personas/content/random-feed-16x16.png");
             item.setAttribute("label", this._stringBundle.getString("useRandomPersona.label") + " " + category.label);
             item.setAttribute("oncommand", "PersonaController.onSelectPersona(event);");
             popupmenu.appendChild(item);

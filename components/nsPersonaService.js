@@ -692,7 +692,7 @@ PersonaService.prototype = {
     // the user in preferences.
     if (aPersonaID == "manual")
       return this._getPref("extensions.personas.custom.headerURL",
-                           "chrome://personas/skin/default/header-default.jpg");
+                           "chrome://personas/content/header-default.jpg");
 
     let persona = this._getPersona(aPersonaID);
 
@@ -716,7 +716,7 @@ PersonaService.prototype = {
     // the user in preferences.
     if (aPersonaID == "manual")
       return this._getPref("extensions.personas.custom.footerURL",
-                           "chrome://personas/skin/default/stbar-default.jpg");
+                           "chrome://personas/content/footer-default.jpg");
 
     let persona = this._getPersona(aPersonaID);
 
