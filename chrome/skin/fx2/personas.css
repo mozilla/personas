@@ -35,6 +35,14 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
+/* Personas Selector Menu */
+
+/* Make sure the menus don't reflow when the preview throbber appears. */
+#personas-selector-menu .menu-iconic-left {
+  min-width: 16px;
+  min-height: 16px;
+}
+
 #main-window[persona] {
   -moz-appearance: none;
   background-repeat: no-repeat;

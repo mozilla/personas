@@ -642,6 +642,7 @@ let PersonaController = {
     // the "id" attribute because "id" has to be unique, and personas sometimes
     // are associated with multiple menuitems (f.e. one in the Recent menu
     // and another in a category menu).
+    item.setAttribute("class", "menuitem-iconic");
     item.setAttribute("personaid", persona.id);
     item.setAttribute("label", persona.label);
     item.setAttribute("type", "checkbox");
