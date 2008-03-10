@@ -37,33 +37,59 @@
    -
    - ***** END LICENSE BLOCK ***** -->
 
-<?xml-stylesheet href="chrome://personas/content/personas.css" type="text/css"?>
-<?xml-stylesheet href="chrome://personas/skin/personas.css" type="text/css"?>
-<?xml-stylesheet href="chrome://personas/content/textColor.css" type="text/css"?>
+<?xml-stylesheet href="chrome://personas/content/customPersonaEditor.css" type="text/css"?>
 
 <!DOCTYPE overlay SYSTEM "chrome://personas/locale/personas.dtd">
-<overlay id="personas-overlay"
-         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+<window id="customPersonaEditor"
+        xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+        align="center"
+        pack="center">
 
   <stringbundleset id="stringbundleset">
     <stringbundle id="personasStringBundle" src="chrome://personas/locale/personas.properties"/>
   </stringbundleset>
 
-  <script type="application/x-javascript;version=1.7" src="chrome://personas/content/personas.js"/>
+  <script type="application/x-javascript;version=1.7" src="chrome://personas/content/customPersonaEditor.js"/>
 
-  <statusbar id="status-bar">
-    <statusbarpanel id="personas-selector-button" class="statusbarpanel-menu-iconic"
-                    insertbefore="statusbar-display">
-      <menupopup id="personas-selector-menu" onpopupshowing="PersonaController.onPersonaPopupShowing(event)">
-        <menuitem id="persona-current" disabled="true"/>
-        <menuseparator id="personasOpeningSeparator"/>
-        <menuseparator id="personasClosingSeparator"/>
-        <menuitem label="&useDefaultPersona.label;" personaid="default"
-                  oncommand="PersonaController.onSelectDefault(event)"/>
-        <menuitem label="&useCustomPersona.label;"
-                  oncommand="PersonaController.onSelectCustom(event)"/>
-      </menupopup>
-    </statusbarpanel>
-  </statusbar>
-
-</overlay>
+  <vbox id="container">
+    <h1 xmlns="http://www.w3.org/1999/xhtml" id="title">&customPersona.label;</h1>
+    <grid>
+      <columns>
+        <column/>
+        <column/>
+      </columns>
+      <rows>
+        <row align="center">
+          <hbox flex="1" pack="end">
+            <label control="headerURL" value="&header.label;"/>
+          </hbox>
+          <hbox>
+            <textbox id="headerURL"/>
+            <button id="selectHeaderButton" label="&selectBackground.label;"
+                    oncommand="CustomPersonaEditor.onSelectHeader(event)"/>
+          </hbox>
+        </row>
+        <row align="center">
+          <hbox flex="1" pack="end">
+            <label control="footerURL" value="&footer.label;"/>
+          </hbox>
+          <hbox>
+            <textbox id="footerURL"/>
+            <button id="selectFooterButton" label="&selectBackground.label;"
+                    oncommand="CustomPersonaEditor.onSelectFooter(event)"/>
+          </hbox>
+        </row>
+        <row align="center">
+          <hbox flex="1" pack="end">
+            <label control="textColorPicker" value="&textColorPicker.label;"/>
+          </hbox>
+          <hbox pack="start">
+            <colorpicker id="textColorPicker" type="button"
+                         onchange="CustomPersonaEditor.onChangeColor(event)"/>
+          </hbox>
+        </row>
+      </rows>
+    </grid>
+  </vbox>
+</window>

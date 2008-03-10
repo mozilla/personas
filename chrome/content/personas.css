@@ -35,9 +35,8 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-/**
- * The appearance of the Personas selector button and menu.
- */
+
+/* Personas Selector Button/Menu */
 
 #personas-selector-button {
   list-style-image: url("chrome://personas/content/personas_16x16.png");
@@ -60,31 +59,8 @@
   list-style-image: url("chrome://personas/content/Throbber-small.gif");
 }
 
-/**
- * Turn text white if the selected persona is dark-colored.  We do this
- * for both #navigator-toolbox, which is the ID of the toolbox in Firefox 2
- * and Firefox 3 up to beta 3, and #browser-toolbox, which is the ID of the
- * toolbox in Firefox 3 beta 3 and later versions.  We also do it for the
- * bottombox, which is the container for all the chrome under the browser
- * (statusbar, findbar).
- */
-#main-window[_personas-dark-style*="true"] #navigator-toolbox menubar > menu,
-#main-window[_personas-dark-style*="true"] #navigator-toolbox toolbarbutton,
-#main-window[_personas-dark-style*="true"] #browser-bottombox,
-#main-window[_personas-dark-style*="true"] #browser-bottombox toolbarbutton
-{
-  color: white !important;
-}
 
-/**
- * Turn disabled text light grey if the selected persona is dark-colored.
- */
-#main-window[_personas-dark-style*="true"] #navigator-toolbox toolbarbutton[disabled="true"],
-#main-window[_personas-dark-style*="true"] #browser-toolbox toolbarbutton[disabled="true"],
-#main-window[_personas-dark-style*="true"] #browser-bottombox toolbarbutton[disabled="true"]
-{
-  color: #cccccc !important;
-}
+/* The header is styled in the version/platform-specific files in the skin. */
 
 
 /* Footer */

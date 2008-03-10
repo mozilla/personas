@@ -1,5 +1,11 @@
 <!ENTITY personas_app_title 	  "Personas for Firefox">
 
-<!ENTITY useDefaultPersona.label  "Use Default">
-<!ENTITY useCustomPersona.label   "Use Local Header...">
+<!ENTITY useDefaultPersona.label  "Default">
+<!ENTITY useCustomPersona.label   "Custom...">
 <!ENTITY aboutPersonas.label      "About...">
+
+<!ENTITY customPersona.label      "Custom Persona">
+<!ENTITY header.label             "Header:">
+<!ENTITY selectBackground.label   "Browse...">
+<!ENTITY footer.label             "Footer:">
+<!ENTITY textColorPicker.label    "Text Color:">

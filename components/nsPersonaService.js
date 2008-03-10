@@ -223,9 +223,10 @@ PersonaService.prototype = {
   categories: null,
   personas: null,
 
-  // The latest header and footer URLs.
+  // The latest header and footer URLs and text color.
   headerURL: null,
   footerURL: null,
+  textColor: null,
 
   /**
    * Display the given persona without making it the selected persona.  Useful
@@ -284,6 +285,7 @@ PersonaService.prototype = {
           case "extensions.personas.selected":
           case "extensions.personas.custom.headerURL":
           case "extensions.personas.custom.footerURL":
+          case "extensions.personas.custom.textColor":
           case "extensions.personas.category":
             this.resetPersona();
             break;
@@ -583,6 +585,7 @@ PersonaService.prototype = {
     this._loadState = LOAD_STATE_LOADING;
     this._headerLoader.load(aPersonaID, this._getHeaderURL(aPersonaID));
     this._footerLoader.load(aPersonaID, this._getFooterURL(aPersonaID));
+    this.textColor = this._getTextColor(aPersonaID);
   },
 
   onLoadedHeader: function() {
@@ -730,8 +733,23 @@ PersonaService.prototype = {
     // Old-style persona whose content (which must be static) is a JPG image
     // located at a particular place on the personas server.
     return baseURL + "skins/" + aPersonaID + "/stbar-" + aPersonaID + ".jpg";
-  }
+  },
 
+  _getTextColor: function(aPersonaID) {
+    // Custom persona whose text color is specified by the user in a preference.
+    if (aPersonaID == "manual")
+      return this._getPref("extensions.personas.custom.textColor", "#ffffff");
+
+    let persona = this._getPersona(aPersonaID);
+
+    if (persona.textColor)
+      return persona.textColor;
+
+    if (typeof persona.dark != "undefined" && persona.dark == "true")
+      return "#ffffff";
+
+    return "#000000";
+  }
 }
 
 

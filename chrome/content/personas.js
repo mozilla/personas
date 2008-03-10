@@ -261,11 +261,6 @@ let PersonaController = {
   // Appearance Updates
 
   _applyPersona: function() {
-    // FIXME: distinguish between selected and loaded personas so we set
-    // the text color correctly when the selected persona is "random" and the
-    // loaded persona is some specific persona that could be light or dark.
-    // Perhaps we should expose the _activePersona property of the service.
-
     let personaID = this._selectedPersona;
 
     // FIXME: figure out where to locate this function and put it there.
@@ -280,35 +275,62 @@ let PersonaController = {
     let header = document.getElementById("main-window");
     header.setAttribute("persona", personaID);
     header.style.backgroundImage = "url(" + escapeCSSURL(headerURL) + ")";
-    let isDark = this._getDarkPropertyByPersona(personaID);
-    header.setAttribute("_personas-dark-style", isDark ? "true" : "");
 
     // Style the footer.
     let footerURL = this._personaSvc.footerURL;
     let footer = document.getElementById("browser-bottombox");
     footer.setAttribute("persona", personaID);
     footer.style.backgroundImage = "url('" + escapeCSSURL(footerURL) + "')";
+
+    // Style the text color.
+    let textColor = this._personaSvc.textColor;
+    if (textColor) {
+      for (let i = 0; i < document.styleSheets.length; i++) {
+        let styleSheet = document.styleSheets[i];
+        if (styleSheet.href == "chrome://personas/content/textColor.css") {
+          while (styleSheet.cssRules.length > 0)
+            styleSheet.deleteRule(0);
+
+          styleSheet.insertRule(
+            "#navigator-toolbox menubar > menu, " +
+            "#navigator-toolbox toolbarbutton, " +
+            "#browser-bottombox, " +
+            "#browser-bottombox toolbarbutton { color: " + textColor + "}",
+            0
+          );
+
+          // FIXME: figure out what to do about the disabled color.  Maybe we
+          // should let personas specify it independently and then apply it via
+          // a rule like this:
+          // #navigator-toolbox toolbarbutton[disabled="true"],
+          // #browser-toolbox toolbarbutton[disabled="true"],
+          // #browser-bottombox toolbarbutton[disabled="true"]
+          //   { color: #cccccc !important; }
+
+          break;
+        }
+      }
+    }
   },
 
   _applyDefault: function() {
     let header = document.getElementById("main-window");
     header.removeAttribute("persona");
     header.style.backgroundImage = this._defaultHeaderBackgroundImage;
-    header.removeAttribute("_personas-dark-style");
 
     let footer = document.getElementById("browser-bottombox");
     footer.removeAttribute("persona");
     footer.style.backgroundImage = this._defaultFooterBackgroundImage;
-  },
 
-  _getDarkPropertyByPersona: function(personaID) {
-    let personas = this._personaSvc.personas.wrappedJSObject;
-
-    for each (let persona in personas)
-      if (persona.id == personaID)
-        return typeof persona.dark != "undefined" && persona.dark == "true";
-
-    return false;
+    // Remove the text color rule.
+    for (let i = 0; i < document.styleSheets.length; i++) {
+      let styleSheet = document.styleSheets[i];
+      if (styleSheet.href == "chrome://personas/content/textColor.css") {
+        while (styleSheet.cssRules.length > 0)
+          styleSheet.deleteRule(0);
+        break;
+      }
+    }
   },
 
 
@@ -443,15 +465,8 @@ let PersonaController = {
     this._selectPersona("default", "");
   },
 
-  onSelectManual: function(event) {
-    let fp = Cc["@mozilla.org/filepicker;1"].createInstance(Ci.nsIFilePicker);
-    fp.init(window, "Select a File", Ci.nsIFilePicker.modeOpen);
-    let result = fp.show();
-    if (result == Ci.nsIFilePicker.returnOK) {
-      this._prefSvc.setCharPref("extensions.personas.custom.headerURL",
-                                fp.fileURL.spec);
-      this._selectPersona("manual", "");
-    }
+  onSelectCustom: function() {
+    window.openUILinkIn("chrome://personas/content/customPersonaEditor.xul", "tab");
   },
 
   onSelectAbout: function(event) {
@@ -519,8 +534,6 @@ let PersonaController = {
     while (openingSeparator.nextSibling && openingSeparator.nextSibling != closingSeparator)
       this._menu.removeChild(openingSeparator.nextSibling);
 
-    //document.getElementById("personas-default").disabled = (this.currentPersona == "default");
-
     let personaStatus = document.getElementById("persona-current");
     if (this._selectedPersona == "random") {
        personaStatus.setAttribute("class", "menuitem-iconic");
@@ -534,10 +547,6 @@ let PersonaController = {
        personaStatus.removeAttribute("image");
        personaStatus.setAttribute("label", this._getPersonaName(this._selectedPersona));
     }
-
-    document.getElementById("personas-manual-separator").hidden =
-    document.getElementById("personas-manual").hidden =
-      (this._getPref("extensions.personas.editor") != "manual");
 
     for each (let category in categories) {
       let menu = document.createElement("menu");

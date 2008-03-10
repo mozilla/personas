@@ -8,7 +8,6 @@ pref("extensions.personas.lastselected1", "(none)");
 pref("extensions.personas.lastselected2", "(none)");
 pref("extensions.personas.lastcategoryupdate", "");
 pref("extensions.personas.lastlistupdate", "");
-pref("extensions.personas.editor", "disabled");
 pref("extensions.personas.authorizedHosts", ".mozilla.com");
 
 // The interval between consecutive persona reloads.  Measured in minutes,
