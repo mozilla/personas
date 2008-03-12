@@ -14,11 +14,10 @@
  * The Original Code is Personas.
  *
  * The Initial Developer of the Original Code is Mozilla.
- * Portions created by the Initial Developer are Copyright (C) 2007
+ * Portions created by the Initial Developer are Copyright (C) 2008
  * the Initial Developer. All Rights Reserved.
  *
  * Contributor(s):
- *   Chris Beard <cbeard@mozilla.org>
  *   Myk Melez <myk@mozilla.org>
  *
  * Alternatively, the contents of this file may be used under the terms of
@@ -82,18 +81,26 @@ let CustomPersonaEditor = {
     return this._prefSvc;
   },
 
+  get _prefCache() {
+    let prefCache = new PersonasPrefCache("");
+    delete this._prefCache;
+    this._prefCache = prefCache;
+    return this._prefCache;
+  },
+
+  _getPref: function(aPrefName, aDefaultValue) {
+    return this._prefCache.getPref(aPrefName, aDefaultValue);
+  },
+
   init: function() {
     this._prefSvc.setCharPref("extensions.personas.selected", "manual");
 
     // XXX I wonder if it's really necessary to reset the category at this point.
     this._prefSvc.setCharPref("extensions.personas.category", "");
 
-    document.getElementById("headerURL").value = this._prefSvc.getCharPref("extensions.personas.custom.headerURL");
-    document.getElementById("footerURL").value = this._prefSvc.getCharPref("extensions.personas.custom.footerURL");
-    if (this._prefSvc.prefHasUserValue("extensions.personas.custom.textColor"))
-      this._textColorPicker.color = this._prefSvc.getCharPref("extensions.personas.custom.textColor");
-    else
-      this._textColorPicker.color = "#000000";
+    this._headerURL.value = this._getPref("extensions.personas.custom.headerURL", "");
+    this._footerURL.value = this._getPref("extensions.personas.custom.footerURL", "");
+    this._textColorPicker.color = this._getPref("extensions.personas.custom.textColor", "#000000");
   },
 
   onSelectHeader: function(aEvent) {

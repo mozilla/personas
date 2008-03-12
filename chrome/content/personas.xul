@@ -49,12 +49,15 @@
     <stringbundle id="personasStringBundle" src="chrome://personas/locale/personas.properties"/>
   </stringbundleset>
 
+  <script type="application/x-javascript;version=1.7" src="chrome://personas/content/init.js"/>
   <script type="application/x-javascript;version=1.7" src="chrome://personas/content/personas.js"/>
 
   <statusbar id="status-bar">
     <statusbarpanel id="personas-selector-button" class="statusbarpanel-menu-iconic"
-                    insertbefore="statusbar-display">
-      <menupopup id="personas-selector-menu" onpopupshowing="PersonaController.onPersonaPopupShowing(event)">
+                    insertbefore="statusbar-display" open="false">
+      <menupopup id="personas-selector-menu"
+                 onpopupshowing="PersonaController.onPersonaPopupShowing(event)"
+                 onpopuphidden="this.parentNode.setAttribute('open', 'false')">
         <menuitem id="persona-current" disabled="true"/>
         <menuseparator id="personasOpeningSeparator"/>
         <menuseparator id="personasClosingSeparator"/>

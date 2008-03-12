@@ -37,17 +37,6 @@
 
 const PERSONAS_EXTENSION_ID = "personas@christopher.beard";
 
-// In Firefox 3 we import modules using Components.utils.import, but in
-// Firefox 2, which doesn't support modules, we use the subscript loader
-// to load them as subscripts.
-if ("import" in Components.utils)
-  Components.utils.import("resource://personas/chrome/content/modules/PrefCache.js");
-else {
-  let subscriptLoader = Cc["@mozilla.org/moz/jssubscript-loader;1"].
-                        getService(Ci.mozIJSSubScriptLoader);
-  subscriptLoader.loadSubScript("resource://personas/chrome/content/modules/PrefCache.js");
-}
-
 let PersonaController = {
   _defaultHeaderBackgroundImage: null,
   _defaultFooterBackgroundImage: null,
@@ -499,12 +488,14 @@ let PersonaController = {
   },
 
   showThrobber: function(aPersonaID) {
+    document.getElementById("personas-selector-button").setAttribute("busy", "true");
     let items = this._menu.getElementsByAttribute("personaid", aPersonaID);
     for (let i = 0; i < items.length; i++)
-      items[i].setAttribute("busy", true);
+      items[i].setAttribute("busy", "true");
   },
 
   hideThrobber: function(aPersonaID) {
+    document.getElementById("personas-selector-button").removeAttribute("busy");
     let items = this._menu.getElementsByAttribute("personaid", aPersonaID);
     for (let i = 0; i < items.length; i++)
       items[i].removeAttribute("busy");
