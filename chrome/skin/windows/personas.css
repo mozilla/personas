@@ -39,6 +39,7 @@
 
 /* Anchor the image to the top-right corner of the window. */
 #main-window[persona] {
+  -moz-appearance: none;
   background-repeat: no-repeat;
   background-position: top right;
 }
@@ -46,13 +47,16 @@
 /* Make the toolbox and tabbox transparent so the image shines through them. */
 #main-window[persona] toolbox,
 #main-window[persona] .tabbrowser-tabs {
+  -moz-appearance: none;
   background-color: transparent;
+  border-top: 0;
 }
 
 /* Remove the borders from the toolbars so they don't mar the persona. */
 #main-window[persona] toolbar {
-  border-top: 0;
-  border-bottom: 0;
+  -moz-appearance: none;
+  border-bottom-color: transparent;
+  border-top-color: transparent;
 }
 
 /* Make some elements a little transparent so the persona flavors their look. */
