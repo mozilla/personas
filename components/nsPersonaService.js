@@ -86,7 +86,9 @@ function escapeXML(aString) {
 //****************************************************************************//
 // The Persona Service
 
-function PersonaService() {}
+function PersonaService() {
+  this._init();
+}
 
 PersonaService.prototype = {
   //**************************************************************************//
@@ -95,7 +97,8 @@ PersonaService.prototype = {
   classDescription:   "Persona Service",
   classID:            Components.ID("{efdd655c-51ac-4e5c-aa61-888b270436b8}"),
   contractID:         "@mozilla.org/personas/persona-service;1",
-  _xpcom_categories:  [{ category: "app-startup", service: true }],
+  // See note in PersonaController::startUp for why this is commented out.
+  //_xpcom_categories:  [{ category: "app-startup", service: true }],
   QueryInterface:     XPCOMUtils.generateQI([Ci.nsIPersonaService,
                                              Ci.nsIObserver,
                                              Ci.nsIDOMEventListener,
@@ -255,15 +258,15 @@ PersonaService.prototype = {
 
   observe: function(subject, topic, data) {
     switch (topic) {
-      case "app-startup":
-        this._obsSvc.addObserver(this, "final-ui-startup", false);
-        this._obsSvc.addObserver(this, "quit-application", false);
-        break;
-
-      case "final-ui-startup":
-        this._obsSvc.removeObserver(this, "final-ui-startup");
-        this._init();
-        break;
+      // See note in PersonaController::startUp for why these are commented out.
+      //case "app-startup":
+      //  this._obsSvc.addObserver(this, "final-ui-startup", false);
+      //  break;
+      //
+      //case "final-ui-startup":
+      //  this._obsSvc.removeObserver(this, "final-ui-startup");
+      //  this._init();
+      //  break;
 
       case "quit-application":
         this._obsSvc.removeObserver(this, "quit-application");
@@ -302,6 +305,8 @@ PersonaService.prototype = {
     // event for the persona loader itself, so ignore the events on the iframes
     // inside it.
     if (aEvent.target != this._personaLoader.contentDocument)
+    // Another way to do this (not sure which is better):
+    //if (aEvent.target.documentURI != "chrome://personas/content/personaLoader.xul")
       return;
 
     try {
@@ -340,6 +345,9 @@ PersonaService.prototype = {
   // Initialization & Destruction
 
   _init: function() {
+    // Observe quit so we can destroy ourselves.
+    this._obsSvc.addObserver(this, "quit-application", false);
+
     // Set up a resource alias to the extension directory and then import our
     // own modules, which we couldn't import earlier at parse time because the
     // components we needed to set up the alias were not yet available.
@@ -384,6 +392,8 @@ PersonaService.prototype = {
     // Delay initialization of the persona loader to give the application
     // time to finish loading the hidden window, which at this point still has
     // about:blank loaded in it.
+    // XXX Now that we delay initialization until PersonaController:startUp,
+    // do we still need to delay initialization of the persona loader?
     this._delayedInitTimer = Cc["@mozilla.org/timer;1"].createInstance(Ci.nsITimer);
     this._delayedInitTimer.initWithCallback(this, 0, Ci.nsITimer.TYPE_ONE_SHOT);
   },
@@ -391,6 +401,9 @@ PersonaService.prototype = {
   _delayedInit: function() {
     this._delayedInitTimer.cancel();
     this._delayedInitTimer = null;
+
+    // Load the persona loader.
+    this._loadPersonaLoader();
 
     // Load the lists of categories and personas, and define a timer
     // that periodically reloads them.
@@ -447,7 +460,40 @@ PersonaService.prototype = {
 
 
   //**************************************************************************//
-  // Data Loading
+  // Data and Persona Loader Loading
+
+  _personaLoaderLoaded: false,
+  _personasLoaded: false,
+
+  _loadPersonaLoader: function() {
+    // Create the persona loader and attach it to the hidden window.
+    this._personaLoader = this._hiddenWindow.document.createElement("iframe");
+    this._personaLoader.setAttribute("id", "personaLoader");
+    this._personaLoader.setAttribute("src", "chrome://personas/content/personaLoader.xul");
+    this._personaLoader.addEventListener("pageshow", this, false);
+    this._hiddenWindow.document.documentElement.appendChild(this._personaLoader);
+  },
+
+  onPersonaLoaderLoad: function() {
+    // Define the reload and snapshot timers.  We only do this once per session,
+    // after which we reuse the same timers for performance, reinitializing them
+    // as needed.
+    this._reloadPersonaTimer = Cc["@mozilla.org/timer;1"].createInstance(Ci.nsITimer);
+    this._snapshotPersonaTimer = Cc["@mozilla.org/timer;1"].createInstance(Ci.nsITimer);
+
+    // Initialize the header and footer background loaders.
+    let t = this;
+    let loadHeaderCallback = function() { t.onLoadedHeader() };
+    let loadFooterCallback = function() { t.onLoadedFooter() };
+    this._headerLoader = new HeaderLoader(loadHeaderCallback);
+    this._footerLoader = new FooterLoader(loadFooterCallback);
+
+    // We need both the JSON feed of personas and the persona loader
+    // to be loaded before we can load the persona.
+    this._personaLoaderLoaded = true;
+    if (this._personasLoaded)
+      this._onLoaderAndPersonasLoaded();
+  },
 
   _loadData: function() {
     let t = this;
@@ -500,40 +546,26 @@ PersonaService.prototype = {
     this._prefSvc.setCharPref("extensions.personas.lastlistupdate",
                               new Date().getTime());
 
-    // Now that the data is loaded, we load the persona loader.
-    // FIXME: store all relevant information about the persona in preferences
-    // so we don't need the data to reload the persona.
+    // We need both the JSON feed of personas and the persona loader
+    // to be loaded before we can load the selected persona and apply it
+    // to the browser windows.
+    this._personasLoaded = true;
+    if (this._personaLoaderLoaded)
+      this._onLoaderAndPersonasLoaded();
+  },
 
-    // Create the persona loader and attach it to the hidden window.
-    this._personaLoader = this._hiddenWindow.document.createElement("iframe");
-    this._personaLoader.setAttribute("id", "personaLoader");
-    this._personaLoader.setAttribute("src", "chrome://personas/content/personaLoader.xul");
-    this._personaLoader.addEventListener("pageshow", this, false);
-    this._hiddenWindow.document.documentElement.appendChild(this._personaLoader);
+  _onLoaderAndPersonasLoaded: function() {
+    // FIXME: store all relevant information about the persona in preferences
+    // so we don't need the personas data to load the persona.
+
+    // Now that the persona loader and the data is loaded, we load the persona.
+    let personaID = this._getPref("extensions.personas.selected", "default");
+    this._switchToPersona(personaID);
   },
 
 
   //**************************************************************************//
   // Persona Loading
-
-  onPersonaLoaderLoad: function() {
-    // Define the reload and snapshot timers.  We only do this once per session,
-    // after which we reuse the same timers for performance, reinitializing them
-    // as needed.
-    this._reloadPersonaTimer = Cc["@mozilla.org/timer;1"].createInstance(Ci.nsITimer);
-    this._snapshotPersonaTimer = Cc["@mozilla.org/timer;1"].createInstance(Ci.nsITimer);
-
-    // Initialize the header and footer background loaders.
-    let t = this;
-    let loadHeaderCallback = function() { t.onLoadedHeader() };
-    let loadFooterCallback = function() { t.onLoadedFooter() };
-    this._headerLoader = new HeaderLoader(loadHeaderCallback);
-    this._footerLoader = new FooterLoader(loadFooterCallback);
-
-    // Now apply the selected persona to the browser windows.
-    let personaID = this._getPref("extensions.personas.selected", "default");
-    this._switchToPersona(personaID);
-  },
 
   /**
    * Switch to the specified persona.  This happens on startup, when the user

@@ -35,8 +35,6 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-const PERSONAS_EXTENSION_ID = "personas@christopher.beard";
-
 let PersonaController = {
   _defaultHeaderBackgroundImage: null,
   _defaultFooterBackgroundImage: null,
@@ -173,6 +171,19 @@ let PersonaController = {
   // Initialization & Destruction
 
   startUp: function() {
+    // Access the persona service to initialize it.
+    this._personaSvc;
+
+    // Note: the persona service should initialize itself on startup
+    // by registering with the "app-startup" XPCOM category, but for some reason
+    // the persona loader iframe isn't always ready (i.e. its docShell, etc.
+    // properties aren't always defined) until a browser window has been loaded.
+
+    // Even if the service were to wait until "final-ui-startup", which happens
+    // right before browser windows get opened, that's not long enough.
+    // It could wait for "sessionstore-windows-restored", which would probably
+    // be long enough, but that notification isn't available in Firefox 2.
+
     // Make sure there's a bottombox element enclosing the items below
     // the browser widget.  Firefox 3 beta 4 and later have one, but earlier
     // releases of the browser don't, and that's what we style.
