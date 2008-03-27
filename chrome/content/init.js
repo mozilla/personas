@@ -39,7 +39,7 @@ const PERSONAS_EXTENSION_ID = "personas@christopher.beard";
 // In Firefox 3 we import modules using Components.utils.import, but in
 // Firefox 2, which doesn't support modules, we use the subscript loader
 // to load them as subscripts.
-if ("import" in Components.utils) {
+{
   let ioSvc = Components.classes["@mozilla.org/network/io-service;1"].
               getService(Components.interfaces.nsIIOService);
   let resProt = ioSvc.getProtocolHandler("resource").
@@ -52,10 +52,12 @@ if ("import" in Components.utils) {
     resProt.setSubstitution("personas", ioSvc.newFileURI(extD));
   }
 
-  Components.utils.import("resource://personas/chrome/content/modules/PrefCache.js");
-}
-else {
-  let subscriptLoader = Components.classes["@mozilla.org/moz/jssubscript-loader;1"].
-                        getService(Components.interfaces.mozIJSSubScriptLoader);
-  subscriptLoader.loadSubScript("resource://personas/chrome/content/modules/PrefCache.js");
+  if ("import" in Components.utils) {
+    Components.utils.import("resource://personas/chrome/content/modules/PrefCache.js");
+  }
+  else {
+    let subscriptLoader = Components.classes["@mozilla.org/moz/jssubscript-loader;1"].
+                          getService(Components.interfaces.mozIJSSubScriptLoader);
+    subscriptLoader.loadSubScript("resource://personas/chrome/content/modules/PrefCache.js");
+  }
 }
