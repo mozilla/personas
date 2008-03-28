@@ -36,6 +36,7 @@
    -
    - ***** END LICENSE BLOCK ***** -->
 
+<?xml-stylesheet href="chrome://browser/skin/" type="text/css"?>
 <?xml-stylesheet href="chrome://personas/content/customPersonaEditor.css" type="text/css"?>
 
 <!DOCTYPE overlay SYSTEM "chrome://personas/locale/personas.dtd">
@@ -64,20 +65,22 @@
           <hbox flex="1" pack="end">
             <label control="headerURL" value="&header.label;"/>
           </hbox>
-          <hbox>
-            <textbox id="headerURL"/>
+          <hbox pref="extensions.personas.custom.headerURL">
+            <textbox id="headerURL" 
+                     onchange="CustomPersonaEditor.onChangeBackground(event)"/>
             <button id="selectHeaderButton" label="&selectBackground.label;"
-                    oncommand="CustomPersonaEditor.onSelectHeader(event)"/>
+                    oncommand="CustomPersonaEditor.onSelectBackground(event)"/>
           </hbox>
         </row>
         <row align="center">
           <hbox flex="1" pack="end">
             <label control="footerURL" value="&footer.label;"/>
           </hbox>
-          <hbox>
-            <textbox id="footerURL"/>
+          <hbox pref="extensions.personas.custom.footerURL">
+            <textbox id="footerURL"
+                     onchange="CustomPersonaEditor.onChangeBackground(event)"/>
             <button id="selectFooterButton" label="&selectBackground.label;"
-                    oncommand="CustomPersonaEditor.onSelectFooter(event)"/>
+                    oncommand="CustomPersonaEditor.onSelectBackground(event)"/>
           </hbox>
         </row>
         <row align="center">
@@ -87,6 +90,8 @@
           <hbox pack="start">
             <colorpicker id="textColorPicker" type="button"
                          onchange="CustomPersonaEditor.onChangeColor(event)"/>
+            <checkbox id="useDefaultTextColorCheckbox" label="&useDefaultTextColor.label;"
+                      oncommand="CustomPersonaEditor.onChangeUseDefaultTextColor()"/>
           </hbox>
         </row>
       </rows>

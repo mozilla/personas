@@ -288,9 +288,13 @@ PersonaService.prototype = {
           case "extensions.personas.selected":
           case "extensions.personas.custom.headerURL":
           case "extensions.personas.custom.footerURL":
-          case "extensions.personas.custom.textColor":
           case "extensions.personas.category":
             this.resetPersona();
+            break;
+
+          case "extensions.personas.custom.textColor":
+          case "extensions.personas.custom.useDefaultTextColor":
+            this._onChangeCustomTextColor();
             break;
         }
         break;
@@ -576,6 +580,8 @@ PersonaService.prototype = {
     this._reloadPersonaTimer.cancel();
     this._headerLoader.reset();
     this._footerLoader.reset();
+    this.textColor = null;
+
     if (this._loadState == LOAD_STATE_LOADING) {
       // FIXME: cancel the requests currently in process in the header
       // and footer iframes.
@@ -617,7 +623,6 @@ PersonaService.prototype = {
     this._loadState = LOAD_STATE_LOADING;
     this._headerLoader.load(aPersonaID, this._getHeaderURL(aPersonaID));
     this._footerLoader.load(aPersonaID, this._getFooterURL(aPersonaID));
-    this.textColor = this._getTextColor(aPersonaID);
   },
 
   onLoadedHeader: function() {
@@ -647,6 +652,7 @@ PersonaService.prototype = {
   _snapshotPersona: function() {
     this.headerURL = this._headerLoader.getSnapshotURL();
     this.footerURL = this._footerLoader.getSnapshotURL();
+    this.textColor = this._getTextColor(this._activePersona);
 
     // Notify application windows so they update their appearance to reflect
     // the new versions of the background images.
@@ -769,20 +775,47 @@ PersonaService.prototype = {
 
   _getTextColor: function(aPersonaID) {
     // Custom persona whose text color is specified by the user in a preference.
-    if (aPersonaID == "manual")
-      return this._getPref("extensions.personas.custom.textColor", "#ffffff");
+    if (aPersonaID == "manual" &&
+        !this._getPref("extensions.personas.custom.useDefaultTextColor"))
+      return this._getPref("extensions.personas.custom.textColor");
 
+    // Persona whose JSON record specifies a text color or a "dark" property.
     let persona = this._getPersona(aPersonaID);
+    if (persona) {
+      if (persona.textColor)
+        return persona.textColor;
+  
+      if (typeof persona.dark != "undefined" && persona.dark == "true")
+        return "#ffffff";
+    }
 
-    if (persona.textColor)
-      return persona.textColor;
+    // Dynamic HTML/XML persona whose root element has a computed color.
+    // XXX Should we only use a color dynamically set via JS  (i.e. the value
+    // of docElement.style.color)?
+    let headerDoc = this._headerLoader._iframe.contentDocument;
+    if (headerDoc) {
+      let docElement = headerDoc.documentElement;
+      if (docElement) {
+        let style = headerDoc.defaultView.getComputedStyle(docElement, null);
+        let color = style.getPropertyValue("color");
+        if (color)
+          return color;
+      }
+    }
 
-    if (typeof persona.dark != "undefined" && persona.dark == "true")
-      return "#ffffff";
-
+    // The default text color: black.
     return "#000000";
+  },
+
+  _onChangeCustomTextColor: function() {
+    if (this._activePersona != "manual")
+      return;
+
+    this.textColor = this._getTextColor(this._activePersona);
+    this._obsSvc.notifyObservers(null, "personas:activePersonaUpdated", null);
   }
-}
+
+};
 
 
 function BackgroundLoader(aLoadCallback) {

@@ -71,6 +71,13 @@ let CustomPersonaEditor = {
     return this._textColorPicker;
   },
 
+  get _useDefaultTextColorCheckbox() {
+    let useDefaultTextColorCheckbox = document.getElementById("useDefaultTextColorCheckbox");
+    delete this._useDefaultTextColorCheckbox;
+    this._useDefaultTextColorCheckbox = useDefaultTextColorCheckbox;
+    return this._useDefaultTextColorCheckbox;
+  },
+
   // Preference Service
   get _prefSvc() {
     let prefSvc = Cc["@mozilla.org/preferences-service;1"].
@@ -82,7 +89,7 @@ let CustomPersonaEditor = {
   },
 
   get _prefCache() {
-    let prefCache = new PersonasPrefCache("");
+    let prefCache = new PersonasPrefCache("", this);
     delete this._prefCache;
     this._prefCache = prefCache;
     return this._prefCache;
@@ -101,30 +108,75 @@ let CustomPersonaEditor = {
     this._headerURL.value = this._getPref("extensions.personas.custom.headerURL", "");
     this._footerURL.value = this._getPref("extensions.personas.custom.footerURL", "");
     this._textColorPicker.color = this._getPref("extensions.personas.custom.textColor", "#000000");
+    this._applyPrefUseDefaultTextColor();
   },
 
-  onSelectHeader: function(aEvent) {
-    this._solicitBackground("extensions.personas.custom.headerURL", this._headerURL);
+  // Apply pref changes to the controls.
+  observe: function(aSubject, aTopic, aData) {
+    switch(aTopic) {
+      case "nsPref:changed":
+        switch (aData) {
+          case "extensions.personas.custom.headerURL":
+            this._headerURL.value = this._getPref("extensions.personas.custom.headerURL");
+            break;
+          case "extensions.personas.custom.footerURL":
+            this._footerURL.value = this._getPref("extensions.personas.custom.footerURL");
+            break;
+          case "extensions.personas.custom.textColor":
+            this._textColorPicker.color = this._getPref("extensions.personas.custom.textColor");
+            break;
+          case "extensions.personas.custom.useDefaultTextColor":
+            this._applyPrefUseDefaultTextColor();
+            break;
+        }
+        break;
+    }
   },
 
-  onSelectFooter: function(aEvent) {
-    this._solicitBackground("extensions.personas.custom.footerURL", this._footerURL);
+  _applyPrefUseDefaultTextColor: function() {
+    let useDefaultTextColor =
+      this._getPref("extensions.personas.custom.useDefaultTextColor");
+    // Disable the disabling of the colorpicker since it horks keyboard
+    // navigation.
+    //if (useDefaultTextColor)
+    //  this._textColorPicker.setAttribute("disabled", "true");
+    //else
+    //  this._textColorPicker.removeAttribute("disabled");
+    this._useDefaultTextColorCheckbox.checked = useDefaultTextColor;
   },
 
-  _solicitBackground: function(aPref, aControl) {
+  // Apply header and footer control changes to the prefs.
+  onChangeBackground: function(aEvent) {
+    let control = aEvent.target;
+    let pref = control.parentNode.getAttribute("pref");
+    let value = control.value;
+    this._prefSvc.setCharPref(pref, value);
+  },
+
+  onSelectBackground: function(aEvent) {
+    let control = aEvent.target;
+    let pref = control.parentNode.getAttribute("pref");
     let fp = Cc["@mozilla.org/filepicker;1"].createInstance(Ci.nsIFilePicker);
     fp.init(window,
             this._stringBundle.getString("backgroundPickerDialogTitle"),
             Ci.nsIFilePicker.modeOpen);
     let result = fp.show();
     if (result == Ci.nsIFilePicker.returnOK) {
-      this._prefSvc.setCharPref(aPref, fp.fileURL.spec);
-      aControl.value = fp.fileURL.spec;
+      this._prefSvc.setCharPref(pref, fp.fileURL.spec);
+      control.value = fp.fileURL.spec;
     }
   },
 
   onChangeColor: function(aEvent) {
-    this._prefSvc.setCharPref("extensions.personas.custom.textColor", this._textColorPicker.color);
+    this._prefSvc.setCharPref("extensions.personas.custom.textColor",
+                              this._textColorPicker.color);
+  },
+
+  onChangeUseDefaultTextColor: function(aEvent) {
+    // Setting the pref will trigger our pref observer, which will call
+    // _applyPrefUseDefaultTextColor to update the UI accordingly.
+    this._prefSvc.setBoolPref("extensions.personas.custom.useDefaultTextColor",
+                              this._useDefaultTextColorCheckbox.checked);
   }
 }
 

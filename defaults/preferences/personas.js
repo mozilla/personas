@@ -23,3 +23,10 @@ pref("extensions.personas.snapshotInterval", 60);
 // to set this pref, but it's useful for developers and testers to experiment
 // with it to figure out what is the best value for it.
 pref("extensions.personas.previewTimeout", 200);
+
+// Custom persona preferences.  These populate the fields in the custom persona
+// editor until the user specifies their own values.
+pref("extensions.personas.custom.headerURL", "");
+pref("extensions.personas.custom.footerURL", "");
+pref("extensions.personas.custom.textColor", "#000000");
+pref("extensions.personas.custom.useDefaultTextColor", true);
