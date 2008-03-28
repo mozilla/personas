@@ -230,6 +230,7 @@ PersonaService.prototype = {
   headerURL: null,
   footerURL: null,
   textColor: null,
+  accentColor: null,
 
   /**
    * Display the given persona without making it the selected persona.  Useful
@@ -296,6 +297,12 @@ PersonaService.prototype = {
           case "extensions.personas.custom.useDefaultTextColor":
             this._onChangeCustomTextColor();
             break;
+
+          case "extensions.personas.custom.accentColor":
+          case "extensions.personas.custom.useDefaultAccentColor":
+            this._onChangeCustomAccentColor();
+            break;
+
         }
         break;
     }
@@ -812,6 +819,28 @@ PersonaService.prototype = {
       return;
 
     this.textColor = this._getTextColor(this._activePersona);
+    this._obsSvc.notifyObservers(null, "personas:activePersonaUpdated", null);
+  },
+
+  _getAccentColor: function(aPersonaID) {
+    // Custom persona whose accent color is specified by the user in a preference.
+    if (aPersonaID == "manual")
+      return this._getPref("extensions.personas.custom.accentColor", "#C9C9C9");
+
+    let persona = this._getPersona(aPersonaID);
+
+    if (persona.accentColor)
+      return persona.accentColor;
+
+    // The default accent color: gray.
+    return "#C9C9C9";
+  },
+
+  _onChangeCustomAccentColor: function() {
+    if (this._activePersona != "manual")
+      return;
+
+    this.accentColor = this._getAccentColor(this._activePersona);
     this._obsSvc.notifyObservers(null, "personas:activePersonaUpdated", null);
   }
 

@@ -38,6 +38,7 @@
 let PersonaController = {
   _defaultHeaderBackgroundImage: null,
   _defaultFooterBackgroundImage: null,
+  _defaultTitlebarColor: null,
   _previewTimeoutID: null,
   _resetTimeoutID: null,
 
@@ -211,6 +212,9 @@ let PersonaController = {
     if (footer)
       this._defaultFooterBackgroundImage = footer.style.backgroundImage;
 
+    // Save the titlebar color.
+    this._defaultTitlebarColor = header.getAttribute("titlebarcolor");
+
     // Observe various changes that we should apply to the browser window.
     this._obsSvc.addObserver(this, "personas:activePersonaUpdated", false);
     this._obsSvc.addObserver(this, "personas:defaultPersonaSelected", false);
@@ -276,6 +280,12 @@ let PersonaController = {
     header.setAttribute("persona", personaID);
     header.style.backgroundImage = "url(" + escapeCSSURL(headerURL) + ")";
 
+    // Style the titlebar with accent color.
+    let titlebarColor = this._personaSvc.accentColor;
+    if(titlebarColor) {
+      header.setAttribute("titlebarcolor", titlebarColor);
+    }
+
     // Style the footer.
     let footerURL = this._personaSvc.footerURL;
     let footer = document.getElementById("browser-bottombox");
@@ -314,9 +324,13 @@ let PersonaController = {
   },
 
   _applyDefault: function() {
+
     let header = document.getElementById("main-window");
     header.removeAttribute("persona");
     header.style.backgroundImage = this._defaultHeaderBackgroundImage;
+
+    // Reset the titlebar to default color.
+    header.setAttribute("titlebarcolor", this._defaultTitlebarColor);
 
     let footer = document.getElementById("browser-bottombox");
     footer.removeAttribute("persona");

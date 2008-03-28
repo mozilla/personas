@@ -47,7 +47,7 @@ interface nsIPersonaService : nsISupports
   readonly attribute AString headerURL;
   readonly attribute AString footerURL;
   readonly attribute AString textColor;
-
+  readonly attribute AString accentColor;
   /**
    * Display the given persona without making it the selected persona.  Useful
    * for showing users who are browsing a directory of personas what a given
