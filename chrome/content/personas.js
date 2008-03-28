@@ -213,7 +213,7 @@ let PersonaController = {
       this._defaultFooterBackgroundImage = footer.style.backgroundImage;
 
     // Save the titlebar color.
-    this._defaultTitlebarColor = header.getAttribute("titlebarcolor");
+    this._defaultTitlebarColor = "#C9C9C9";
 
     // Observe various changes that we should apply to the browser window.
     this._obsSvc.addObserver(this, "personas:activePersonaUpdated", false);
@@ -287,8 +287,10 @@ let PersonaController = {
     } else {
       header.setAttribute("titlebarcolor", this._defaultTitlebarColor);
     }
-    
-
+    // Incredibly gross hack in order to force a window redraw event that ensures that the
+    // titlebar color change is applied.
+    window.resizeTo(window.outerWidth, parseInt(window.outerHeight)+1);
+    window.resizeTo(window.outerWidth, parseInt(window.outerHeight)-1);
 
     // Style the footer.
     let footerURL = this._personaSvc.footerURL;
@@ -335,6 +337,10 @@ let PersonaController = {
 
     // Reset the titlebar to default color.
     header.setAttribute("titlebarcolor", this._defaultTitlebarColor);
+    // Incredibly gross hack in order to force a window redraw event that ensures that the
+    // titlebar color change is applied.
+    window.resizeTo(window.outerWidth, parseInt(window.outerHeight)+1);
+    window.resizeTo(window.outerWidth, parseInt(window.outerHeight)-1);
 
     let footer = document.getElementById("browser-bottombox");
     footer.removeAttribute("persona");
@@ -533,6 +539,29 @@ let PersonaController = {
 
   //**************************************************************************//
   // Popup Construction
+
+  onMenuButtonMouseDown: function(event) {
+    var menuPopup = document.getElementById('personas-selector-menu');
+    var menuButton = document.getElementById("personas-selector-button");
+      
+    // If the menu popup isn't on the menu button, then move the popup onto
+    // the button so the popup appears when the user clicks the button.  We'll
+    // move the popup back to the Tools > Sync menu when the popup hides.
+    if (menuPopup.parentNode != menuButton)
+      menuButton.appendChild(menuPopup);
+  },
+
+  onMenuPopupHiding: function() {
+    var menuPopup = document.getElementById('personas-selector-menu');
+    var menu = document.getElementById('personas-menu');
+
+    // If the menu popup isn't on the Tools > Personas menu, then move the popup
+    // back onto that menu so the popup appears when the user selects the menu.
+    // We'll move the popup back to the menu button when the user clicks on
+    // the menu button.
+    if (menuPopup.parentNode != menu)
+      menu.appendChild(menuPopup);    
+  },
 
   onPersonaPopupShowing: function(event) {
     if (event.target != this._menu)

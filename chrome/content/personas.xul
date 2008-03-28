@@ -52,12 +52,12 @@
   <script type="application/x-javascript;version=1.7" src="chrome://personas/content/init.js"/>
   <script type="application/x-javascript;version=1.7" src="chrome://personas/content/personas.js"/>
 
-  <statusbar id="status-bar">
-    <statusbarpanel id="personas-selector-button" class="statusbarpanel-menu-iconic"
-                    insertbefore="statusbar-display" open="false">
-      <menupopup id="personas-selector-menu"
-                 onpopupshowing="PersonaController.onPersonaPopupShowing(event)"
-                 onpopuphidden="this.parentNode.setAttribute('open', 'false')">
+  <menupopup id="menu_ToolsPopup">
+    <menu id="personas-menu" class="menu-iconic" label="&personas_app_title;" 
+                insertafter="menu_openAddons">
+       <menupopup id="personas-selector-menu"
+                 onpopupshowing="if (event.target == this) PersonaController.onPersonaPopupShowing(event)"
+                 onpopuphidden="PersonaController.onMenuPopupHiding();">
         <menuitem id="persona-current" disabled="true"/>
         <menuseparator id="personasOpeningSeparator"/>
         <menuseparator id="personasClosingSeparator"/>
@@ -66,6 +66,12 @@
         <menuitem label="&useCustomPersona.label;"
                   oncommand="PersonaController.onSelectCustom(event)"/>
       </menupopup>
+    </menu>
+  </menupopup>
+
+  <statusbar id="status-bar">
+    <statusbarpanel id="personas-selector-button" class="statusbarpanel-menu-iconic"
+                    insertbefore="statusbar-display" onmousedown="PersonaController.onMenuButtonMouseDown();">
     </statusbarpanel>
   </statusbar>
 

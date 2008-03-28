@@ -36,9 +36,18 @@
  * ***** END LICENSE BLOCK ***** */
 
 window {
-  background-color: -moz-dialog;
+  -moz-appearance: none;
+  background-color: transparent;
+  background-image: url('chrome://personas/content/background.jpg');
   color: -moz-dialogtext;
   font: message-box;
+}
+
+#top {
+  background-image: url('chrome://personas/content/background-accent.jpg');
+  height: 200px;
+  padding-top: 15px;
+  padding-left: 50px;
 }
 
 #container {

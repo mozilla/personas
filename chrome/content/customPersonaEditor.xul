@@ -42,9 +42,7 @@
 <!DOCTYPE overlay SYSTEM "chrome://personas/locale/personas.dtd">
 
 <window id="customPersonaEditor"
-        xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
-        align="center"
-        pack="center">
+        xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
   <stringbundleset id="stringbundleset">
     <stringbundle id="personasStringBundle" src="chrome://personas/locale/personas.properties"/>
@@ -52,6 +50,12 @@
 
   <script type="application/x-javascript;version=1.7" src="chrome://personas/content/init.js"/>
   <script type="application/x-javascript;version=1.7" src="chrome://personas/content/customPersonaEditor.js"/>
+
+  <vbox id="top">
+    <hbox>
+      <image src="chrome://personas/content/personas-logo.jpg"/>
+    </hbox>
+  </vbox>
 
   <vbox id="container">
     <h1 xmlns="http://www.w3.org/1999/xhtml" id="title">&customPersona.label;</h1>

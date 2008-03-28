@@ -229,6 +229,7 @@ PersonaService.prototype = {
   // The latest header and footer URLs and text color.
   headerURL: null,
   footerURL: null,
+  firstrunURL: null,
   textColor: null,
   accentColor: null,
 
@@ -741,20 +742,7 @@ PersonaService.prototype = {
                            "chrome://personas/content/header-default.jpg");
 
     let persona = this._getPersona(aPersonaID);
-
-    // Let the persona override the default base URL so it can reference
-    // files on other servers.
-    let baseURL = (typeof persona.baseURL != "undefined") ? persona.baseURL
-                                                          : this._baseURL;
-
-    // New-style persona whose content (which might be dynamic) is located
-    // at the URL specified by a property.
-    if (persona.headerURL)
-      return baseURL + persona.headerURL;
-
-    // Old-style persona whose content (which must be static) is a JPG image
-    // located at a particular place on the personas server.
-    return baseURL + "skins/" + aPersonaID + "/tbox-" + aPersonaID + ".jpg";
+    return persona.baseURL + "?action=header";
   },
 
   _getFooterURL: function(aPersonaID) {
@@ -765,20 +753,7 @@ PersonaService.prototype = {
                            "chrome://personas/content/footer-default.jpg");
 
     let persona = this._getPersona(aPersonaID);
-
-    // Let the persona override the default base URL so it can reference
-    // files on other servers.
-    let baseURL = (typeof persona.baseURL != "undefined") ? persona.baseURL
-                                                          : this._baseURL;
-
-    // New-style persona whose content (which might be dynamic) is located
-    // at the URL specified by a property.
-    if (persona.footerURL)
-      return baseURL + persona.footerURL;
-
-    // Old-style persona whose content (which must be static) is a JPG image
-    // located at a particular place on the personas server.
-    return baseURL + "skins/" + aPersonaID + "/stbar-" + aPersonaID + ".jpg";
+    return persona.baseURL + "?action=footer";
   },
 
   _getTextColor: function(aPersonaID) {
@@ -825,13 +800,15 @@ PersonaService.prototype = {
 
   _getAccentColor: function(aPersonaID) {
     // Custom persona whose accent color is specified by the user in a preference.
-    if (aPersonaID == "manual")
-      return this._getPref("extensions.personas.custom.accentColor", "#C9C9C9");
+    if (aPersonaID == "manual" &&
+        !this._getPref("extensions.personas.custom.useDefaultAccentColor"))
+      return this._getPref("extensions.personas.custom.accentColor");
 
     let persona = this._getPersona(aPersonaID);
-
-    if (persona.accentColor)
-      return persona.accentColor;
+    if(persona) {
+      if (persona.accentColor) 
+        return persona.accentColor;
+    }
 
     // The default accent color: gray.
     return "#C9C9C9";
