@@ -735,24 +735,26 @@ PersonaService.prototype = {
   },
 
   _getHeaderURL: function(aPersonaID) {
+    let persona = this._getPersona(aPersonaID);
+
     // Custom persona whose header and footer are in local files specified by
     // the user in preferences.
-    if (aPersonaID == "manual")
+    if (aPersonaID == "manual" || !persona.baseURL)
       return this._getPref("extensions.personas.custom.headerURL",
                            "chrome://personas/content/header-default.jpg");
 
-    let persona = this._getPersona(aPersonaID);
     return persona.baseURL + "?action=header";
   },
 
   _getFooterURL: function(aPersonaID) {
+    let persona = this._getPersona(aPersonaID);
+
     // Custom persona whose header and footer are in local files specified by
     // the user in preferences.
-    if (aPersonaID == "manual")
+    if (aPersonaID == "manual" || !persona.baseURL)
       return this._getPref("extensions.personas.custom.footerURL",
                            "chrome://personas/content/footer-default.jpg");
 
-    let persona = this._getPersona(aPersonaID);
     return persona.baseURL + "?action=footer";
   },
 

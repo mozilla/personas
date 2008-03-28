@@ -57,7 +57,7 @@
                 insertafter="menu_openAddons">
        <menupopup id="personas-selector-menu"
                  onpopupshowing="if (event.target == this) PersonaController.onPersonaPopupShowing(event)"
-                 onpopuphidden="PersonaController.onMenuPopupHiding();">
+                 onpopuphiding="if (event.target == this) PersonaController.onMenuPopupHiding();">
         <menuitem id="persona-current" disabled="true"/>
         <menuseparator id="personasOpeningSeparator"/>
         <menuseparator id="personasClosingSeparator"/>

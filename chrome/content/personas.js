@@ -287,10 +287,10 @@ let PersonaController = {
     } else {
       header.setAttribute("titlebarcolor", this._defaultTitlebarColor);
     }
-    // Incredibly gross hack in order to force a window redraw event that ensures that the
+    // FIXME: Incredibly gross hack in order to force a window redraw event that ensures that the
     // titlebar color change is applied.
-    window.resizeTo(window.outerWidth, parseInt(window.outerHeight)+1);
-    window.resizeTo(window.outerWidth, parseInt(window.outerHeight)-1);
+    window.resizeTo(parseInt(window.outerWidth)+1, window.outerHeight);
+    window.resizeTo(parseInt(window.outerWidth)-1, window.outerHeight);
 
     // Style the footer.
     let footerURL = this._personaSvc.footerURL;
@@ -337,10 +337,10 @@ let PersonaController = {
 
     // Reset the titlebar to default color.
     header.setAttribute("titlebarcolor", this._defaultTitlebarColor);
-    // Incredibly gross hack in order to force a window redraw event that ensures that the
+    // FIXME: Incredibly gross hack in order to force a window redraw event that ensures that the
     // titlebar color change is applied.
-    window.resizeTo(window.outerWidth, parseInt(window.outerHeight)+1);
-    window.resizeTo(window.outerWidth, parseInt(window.outerHeight)-1);
+    window.resizeTo(parseInt(window.outerWidth)+1, window.outerHeight);
+    window.resizeTo(parseInt(window.outerWidth)-1, window.outerHeight);
 
     let footer = document.getElementById("browser-bottombox");
     footer.removeAttribute("persona");

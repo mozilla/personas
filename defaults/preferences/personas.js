@@ -2,7 +2,7 @@ pref("extensions.personas.selected", "default");
 pref("extensions.personas.category", "");
 pref("extensions.personas.lastrandom", "");
 pref("extensions.personas.lastversion", "firstrun");
-pref("extensions.personas.url", "http://personas.toolness.com/");
+pref("extensions.personas.url", "http://sm-labs01.mozilla.org/personas/");
 pref("extensions.personas.lastselected0", "(none)");
 pref("extensions.personas.lastselected1", "(none)");
 pref("extensions.personas.lastselected2", "(none)");
