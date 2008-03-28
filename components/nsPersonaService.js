@@ -662,6 +662,7 @@ PersonaService.prototype = {
     this.headerURL = this._headerLoader.getSnapshotURL();
     this.footerURL = this._footerLoader.getSnapshotURL();
     this.textColor = this._getTextColor(this._activePersona);
+    this.accentColor = this._getAccentColor(this._activePersona);
 
     // Notify application windows so they update their appearance to reflect
     // the new versions of the background images.
