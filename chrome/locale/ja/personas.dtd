@@ -12,4 +12,5 @@
 <!ENTITY selectBackground.label   "Browse...">
 <!ENTITY footer.label             "Footer:">
 <!ENTITY textColorPicker.label    "Text Color:">
-<!ENTITY accentColorPicker.label    "Accent Color:">
+<!ENTITY accentColorPicker.label  "Accent Color:">
+<!ENTITY useDefaultColor.label    "Use default">

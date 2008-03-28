@@ -1,13 +1,15 @@
-<!ENTITY personas_app_title 	  "Personas pour Firefox">
+<!ENTITY personas_app_title "Personas pour Firefox">
 
-<!ENTITY useDefaultPersona.label  "Revenir à l'original">
-<!ENTITY useCustomPersona.label   "En-tête personnalisé">
-<!ENTITY aboutPersonas.label      "À propos...">
+<!ENTITY useDefaultPersona.label "Par défaut">
+<!ENTITY useCustomPersona.label "Personnaliser…">
+<!ENTITY aboutPersonas.label "À propos…">
+
+<!ENTITY customPersona.label "Personnalisation">
+<!ENTITY header.label "En-tête :">
+<!ENTITY selectBackground.label "parcourir…">
+<!ENTITY footer.label "Bas de page :">
+<!ENTITY textColorPicker.label "Couleur du texte :">
 
 <!-- FIXME: translate these strings -->
-<!ENTITY customPersona.label      "Custom Persona">
-<!ENTITY header.label             "Header:">
-<!ENTITY selectBackground.label   "Browse...">
-<!ENTITY footer.label             "Footer:">
-<!ENTITY textColorPicker.label    "Text Color:">
-<!ENTITY accentColorPicker.label    "Accent Color:">
+<!ENTITY accentColorPicker.label  "Accent Color:">
+<!ENTITY useDefaultColor.label    "Use default">
