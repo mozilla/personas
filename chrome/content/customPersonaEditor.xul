@@ -94,6 +94,17 @@
                       oncommand="CustomPersonaEditor.onChangeUseDefaultTextColor()"/>
           </hbox>
         </row>
+        <row align="center">
+          <hbox flex="1" pack="end">
+            <label control="accentColorPicker" value="&accentColorPicker.label;"/>
+          </hbox>
+          <hbox pack="start">
+            <colorpicker id="accentColorPicker" type="button"
+                         onchange="CustomPersonaEditor.onChangeColor(event)"/>
+            <checkbox id="useDefaultAccentColorCheckbox" label="&useDefaultAccentColor.label;"
+                      oncommand="CustomPersonaEditor.onChangeUseDefaultAccentColor()"/>
+          </hbox>
+        </row>
       </rows>
     </grid>
   </vbox>
