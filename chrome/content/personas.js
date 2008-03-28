@@ -284,7 +284,11 @@ let PersonaController = {
     let titlebarColor = this._personaSvc.accentColor;
     if(titlebarColor) {
       header.setAttribute("titlebarcolor", titlebarColor);
+    } else {
+      header.setAttribute("titlebarcolor", this._defaultTitlebarColor);
     }
+    
+
 
     // Style the footer.
     let footerURL = this._personaSvc.footerURL;

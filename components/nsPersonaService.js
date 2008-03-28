@@ -588,6 +588,7 @@ PersonaService.prototype = {
     this._headerLoader.reset();
     this._footerLoader.reset();
     this.textColor = null;
+    this.accentColor = null;
 
     if (this._loadState == LOAD_STATE_LOADING) {
       // FIXME: cancel the requests currently in process in the header
