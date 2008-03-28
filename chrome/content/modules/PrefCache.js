@@ -126,8 +126,16 @@ PersonasPrefCache.prototype = {
   },
 
   _notifyObservers: function(aSubject, aTopic, aData) {
-    for (let i = 0; i < this._observers.length; i++)
-      this._observers[i].observe(aSubject, aTopic, aData);
+    for (let i = 0; i < this._observers.length; i++) {
+      // Don't let exceptions thrown by observers prevent other observers
+      // from receiving the notification.
+      try {
+        this._observers[i].observe(aSubject, aTopic, aData);
+      }
+      catch(ex) {
+        Components.utils.reportError(ex);
+      }
+    }
   },
 
   // nsISupports
