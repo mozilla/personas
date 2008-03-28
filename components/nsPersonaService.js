@@ -586,6 +586,7 @@ PersonaService.prototype = {
    */
   _switchToPersona: function(aPersonaID) {
     this._reloadPersonaTimer.cancel();
+    this._snapshotPersonaTimer.cancel();
     this._headerLoader.reset();
     this._footerLoader.reset();
     this.textColor = null;
