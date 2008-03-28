@@ -89,7 +89,7 @@
           </hbox>
           <hbox pack="start">
             <colorpicker id="textColorPicker" type="button"
-                         onchange="CustomPersonaEditor.onChangeColor(event)"/>
+                         onchange="CustomPersonaEditor.onChangeTextColor(event)"/>
             <checkbox id="useDefaultTextColorCheckbox" label="&useDefaultColor.label;"
                       oncommand="CustomPersonaEditor.onChangeUseDefaultTextColor()"/>
           </hbox>
@@ -100,7 +100,7 @@
           </hbox>
           <hbox pack="start">
             <colorpicker id="accentColorPicker" type="button"
-                         onchange="CustomPersonaEditor.onChangeColor(event)"/>
+                         onchange="CustomPersonaEditor.onChangeAccentColor(event)"/>
             <checkbox id="useDefaultAccentColorCheckbox" label="&useDefaultColor.label;"
                       oncommand="CustomPersonaEditor.onChangeUseDefaultAccentColor()"/>
           </hbox>
