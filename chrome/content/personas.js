@@ -105,6 +105,10 @@ let PersonaController = {
     return this._getPref("extensions.personas.url");
   },
 
+  get _siteURL() {
+    return this._getPref("extensions.personas.siteURL");
+  },
+
   get _previewTimeout() {
     return this._getPref("extensions.personas.previewTimeout");
   },
@@ -233,12 +237,16 @@ let PersonaController = {
                       getService(Ci.nsIExtensionManager).
                       getItemForID(PERSONAS_EXTENSION_ID).version;
     if (lastVersion == "firstrun") {
-      let firstRunURL = this._baseURL + this._locale + "/firstrun/?version=" + thisVersion;
+// FIXME: we'll need to add locale support for the static content pages.
+//      let firstRunURL = this._siteURL + this._locale + "/firstrun/?version=" + thisVersion;
+      let firstRunURL = this._siteURL +"/firstrun/?version=" + thisVersion;
       setTimeout(function() { window.openUILinkIn(firstRunURL, "tab") }, 500);
       this._prefSvc.setCharPref("extensions.personas.lastversion", thisVersion);
     }
     else if (lastVersion != thisVersion) {
-      let updatedURL = this._baseURL + this._locale + "/updated/?version=" + thisVersion;
+// FIXME: we'll need to add locale support for the static content pages.
+//      let updatedURL = this._siteURL + this._locale + "/updated/?version=" + thisVersion;
+      let updatedURL = this._siteURL + "/updated/?version=" + thisVersion;
       setTimeout(function() { window.openUILinkIn(updatedURL, "tab") }, 500);
       this._prefSvc.setCharPref("extensions.personas.lastversion", thisVersion);
     }
@@ -494,7 +502,7 @@ let PersonaController = {
   },
 
   onSelectAbout: function(event) {
-    window.openUILinkIn(this._baseURL + this._locale + "/about/?persona=" + this._selectedPersona, "tab");
+    window.openUILinkIn(this._siteURL + this._locale + "/about/?persona=" + this._selectedPersona, "tab");
   },
 
   /**
