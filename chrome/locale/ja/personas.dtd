@@ -14,5 +14,8 @@
 <!ENTITY textColorPicker.label    "Text Color:">
 <!ENTITY accentColorPicker.label  "Accent Color:">
 <!ENTITY useDefaultColor.label    "Use default">
-<!ENTITY useCustomPersonaButton.label    "Use Custom Persona">
-<!ENTITY closeCustomPersonaButton.label  "Close">
+
+<!ENTITY closeButton.label          "Close">
+<!ENTITY autoPreviewCheckbox.label  "Auto-preview">
+<!ENTITY previewButton.label        "Preview">
+<!ENTITY applyButton.label          "Apply">

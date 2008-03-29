@@ -92,6 +92,10 @@ let CustomPersonaEditor = {
     return this._useDefaultAccentColorCheckbox;
   },
 
+  get _autoPreview() {
+    return document.getElementById("autoPreviewCheckbox").checked;
+  },
+
   get _personaSvc() {
     let personaSvc = Cc["@mozilla.org/personas/persona-service;1"].
                      getService(Ci.nsIPersonaService);
@@ -142,8 +146,6 @@ let CustomPersonaEditor = {
   },
 
   init: function() {
-    this.enable();
-
     this._headerURL.value = this._getPref("extensions.personas.custom.headerURL", "");
     this._footerURL.value = this._getPref("extensions.personas.custom.footerURL", "");
     this._textColorPicker.color = this._getPref("extensions.personas.custom.textColor", "#000000");
@@ -151,6 +153,8 @@ let CustomPersonaEditor = {
 
     this._applyPrefUseDefaultTextColor();
     this._applyPrefUseDefaultAccentColor();
+
+    this.onAutoPreview();
   },
 
   // Apply pref changes to the controls.
@@ -209,37 +213,6 @@ let CustomPersonaEditor = {
     this._useDefaultAccentColorCheckbox.checked = useDefaultAccentColor;
   },
 
-  enable: function() {
-    this._prefSvc.setCharPref("extensions.personas.selected", "manual");
-    document.getElementById('disabledNotification').hidden = true;
-  },
-
-  _disable: function() {
-    let explanation = document.getElementById("customEditorDisabledExplanation");
-    while (explanation.hasChildNodes())
-      explanation.removeChild(explanation.firstChild);
-
-    let text;
-    if (this._selectedPersona == "default") {
-      text = this._stringBundle.getString("usingDefault");
-    }
-    else if (this._selectedPersona == "random") {
-      let categoryID = this._getPref("extensions.personas.category");
-      let category = this._getCategory(categoryID);
-      text = this._stringBundle.getFormattedString("usingRandom", [category.label]);
-    }
-    else {
-      let personaID = this._selectedPersona;
-      let persona = this._getPersona(personaID);
-      text = this._stringBundle.getFormattedString("usingPersona", [persona.label]);
-    }
-
-    let textNode = document.createTextNode(text);
-    explanation.appendChild(textNode);
-
-    document.getElementById('disabledNotification').hidden = false;
-  },
-
   // Apply header and footer control changes to the prefs.
   onChangeBackground: function(aEvent) {
     let control = aEvent.target;
@@ -250,6 +223,7 @@ let CustomPersonaEditor = {
       this._prefSvc.clearUserPref(pref);
     else
       this._prefSvc.setCharPref(pref, value);
+    this.maybeAutoPreview();
   },
 
   onSelectBackground: function(aEvent) {
@@ -263,12 +237,14 @@ let CustomPersonaEditor = {
     if (result == Ci.nsIFilePicker.returnOK) {
       this._prefSvc.setCharPref(pref, fp.fileURL.spec);
       control.value = fp.fileURL.spec;
+      this.maybeAutoPreview();
     }
   },
 
   onChangeTextColor: function(aEvent) {
     this._prefSvc.setCharPref("extensions.personas.custom.textColor",
                               this._textColorPicker.color);
+    this.maybeAutoPreview();
   },
 
   onChangeUseDefaultTextColor: function(aEvent) {
@@ -276,11 +252,13 @@ let CustomPersonaEditor = {
     // _applyPrefUseDefaultTextColor to update the UI accordingly.
     this._prefSvc.setBoolPref("extensions.personas.custom.useDefaultTextColor",
                               this._useDefaultTextColorCheckbox.checked);
+    this.maybeAutoPreview();
   },
 
   onChangeAccentColor: function(aEvent) {
     this._prefSvc.setCharPref("extensions.personas.custom.accentColor",
                               this._accentColorPicker.color);
+    this.maybeAutoPreview();
   },
 
   onChangeUseDefaultAccentColor: function(aEvent) {
@@ -288,7 +266,38 @@ let CustomPersonaEditor = {
     // _applyPrefUseDefaultAccentColor to update the UI accordingly.
     this._prefSvc.setBoolPref("extensions.personas.custom.useDefaultAccentColor",
                               this._useDefaultAccentColorCheckbox.checked);
+    this.maybeAutoPreview();
+  },
+
+  onClose: function() {
+    this._personaSvc.resetPersona();
+    window.close();
+  },
+
+  onAutoPreview: function() {
+    // Update the Preview button based on the auto-preview checkbox's state,
+    // and preview or reset the persona based on whether auto-preview has been
+    // enabled or disabled.
+    document.getElementById("preview").disabled = this._autoPreview;
+    if (this._autoPreview)
+      this._personaSvc.previewPersona("manual");
+    else
+      this._personaSvc.resetPersona();
+  },
+
+  onPreview: function() {
+    this._personaSvc.previewPersona("manual");
+  },
+
+  maybeAutoPreview: function() {
+    if (this._autoPreview)
+      this.onPreview();
+  },
+
+  onApply: function() {
+    this._prefSvc.setCharPref("extensions.personas.selected", "manual");
+    window.close();
   }
-}
+};
 
 window.addEventListener("load", function() { CustomPersonaEditor.init() }, false);

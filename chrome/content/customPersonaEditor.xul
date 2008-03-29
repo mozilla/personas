@@ -58,9 +58,8 @@
     </hbox>
   </vbox>
 
-  <stack id="stack">
   <vbox id="form">
-    <h1 xmlns="http://www.w3.org/1999/xhtml" class="title">&customPersona.label;</h1>
+    <description id="title" value="&customPersona.label;"/>
     <grid>
       <columns>
         <column/>
@@ -113,16 +112,15 @@
         </row>
       </rows>
     </grid>
-  </vbox>
-  <vbox id="disabledNotification" style="background-color: rgba(0, 0, 0, 0.9);">
-    <h1 xmlns="http://www.w3.org/1999/xhtml" class="title">&customPersona.label;</h1>
-    <description id="customEditorDisabledExplanation"/>
-    <spacer flex="1"/>
-    <hbox>
-      <button label="&closeCustomPersonaButton.label;" oncommand="window.close()"/>
+    <hbox style="margin-top: 2em">
+      <button label="Close" oncommand="CustomPersonaEditor.onClose()"/>
       <spacer flex="1"/>
-      <button label="&useCustomPersonaButton.label;" oncommand="CustomPersonaEditor.enable()"/>
+      <checkbox id="autoPreviewCheckbox" label="Auto-preview"
+                checked="true" persist="checked"
+                oncommand="CustomPersonaEditor.onAutoPreview(event)"/>
+      <button id="preview" label="Preview" disabled="true"
+              oncommand="CustomPersonaEditor.onPreview()"/>
+      <button label="Apply" oncommand="CustomPersonaEditor.onApply()"/>
     </hbox>
   </vbox>
-  </stack>
 </window>
