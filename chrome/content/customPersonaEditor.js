@@ -159,19 +159,19 @@ let CustomPersonaEditor = {
       case "nsPref:changed":
         switch (aData) {
           case "extensions.personas.custom.headerURL":
-            this._headerURL.value = this._getPref("extensions.personas.custom.headerURL");
+            this._headerURL.value = this._getPref("extensions.personas.custom.headerURL", "");
             break;
           case "extensions.personas.custom.footerURL":
-            this._footerURL.value = this._getPref("extensions.personas.custom.footerURL");
+            this._footerURL.value = this._getPref("extensions.personas.custom.footerURL", "");
             break;
           case "extensions.personas.custom.textColor":
-            this._textColorPicker.color = this._getPref("extensions.personas.custom.textColor");
+            this._textColorPicker.color = this._getPref("extensions.personas.custom.textColor", "#000000");
             break;
           case "extensions.personas.custom.useDefaultTextColor":
             this._applyPrefUseDefaultTextColor();
             break;
           case "extensions.personas.custom.accentColor":
-            this._accentColorPicker.color = this._getPref("extensions.personas.custom.accentColor");
+            this._accentColorPicker.color = this._getPref("extensions.personas.custom.accentColor", "#C9C9C9");
             break;
           case "extensions.personas.custom.useDefaultAccentColor":
             this._applyPrefUseDefaultAccentColor();
@@ -187,7 +187,7 @@ let CustomPersonaEditor = {
 
   _applyPrefUseDefaultTextColor: function() {
     let useDefaultTextColor =
-      this._getPref("extensions.personas.custom.useDefaultTextColor");
+      this._getPref("extensions.personas.custom.useDefaultTextColor", true);
     // Disable the disabling of the colorpicker since it horks keyboard
     // navigation.
     //if (useDefaultTextColor)
@@ -199,7 +199,7 @@ let CustomPersonaEditor = {
 
   _applyPrefUseDefaultAccentColor: function() {
     let useDefaultAccentColor =
-      this._getPref("extensions.personas.custom.useDefaultAccentColor");
+      this._getPref("extensions.personas.custom.useDefaultAccentColor", true);
     // Disable the disabling of the colorpicker since it horks keyboard
     // navigation.
     //if (useDefaultAccentColor)
@@ -244,8 +244,12 @@ let CustomPersonaEditor = {
   onChangeBackground: function(aEvent) {
     let control = aEvent.target;
     let pref = control.parentNode.getAttribute("pref");
-    let value = control.value;
-    this._prefSvc.setCharPref(pref, value);
+    // Trim leading and trailing whitespace.
+    let value = control.value.replace(/^\s*|\s*$/g, "");
+    if (value == "")
+      this._prefSvc.clearUserPref(pref);
+    else
+      this._prefSvc.setCharPref(pref, value);
   },
 
   onSelectBackground: function(aEvent) {
