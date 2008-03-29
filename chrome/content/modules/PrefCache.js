@@ -91,7 +91,7 @@ PersonasPrefCache.prototype = {
    * @returns the value of the pref, if any; otherwise the default value
    */
   getPref: function(aPrefName, aDefaultValue) {
-    if (!this._prefs[aPrefName]) {
+    if (!(aPrefName in this._prefs)) {
       try {
         switch (this._prefSvc.getPrefType(aPrefName)) {
           case Components.interfaces.nsIPrefBranch.PREF_STRING:
@@ -103,16 +103,15 @@ PersonasPrefCache.prototype = {
           case Components.interfaces.nsIPrefBranch.PREF_BOOL:
             this._prefs[aPrefName] = this._prefSvc.getBoolPref(aPrefName);
             break;
-          default:
-            return aDefaultValue;
         }
       }
       catch (ex) {
-        return aDefaultValue;
+        this._prefs[aPrefName] == undefined;
       }
     }
 
-    return this._prefs[aPrefName];
+    return (typeof this._prefs[aPrefName] != "undefined") ? this._prefs[aPrefName]
+                                                          : aDefaultValue;
   },
 
   addObserver: function(aObserver) {
