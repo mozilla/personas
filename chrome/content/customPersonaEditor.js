@@ -127,8 +127,8 @@ let CustomPersonaEditor = {
   // Preference Service
   get _prefSvc() {
     let prefSvc = Cc["@mozilla.org/preferences-service;1"].
-                  getService(Ci.nsIPrefBranch);
-    prefSvc.QueryInterface(Ci.nsIPrefBranch2);
+                  getService(Ci.nsIPrefService).
+                  getBranch("extensions.personas.");
     delete this._prefSvc;
     this._prefSvc = prefSvc;
     return this._prefSvc;
