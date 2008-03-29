@@ -43,32 +43,35 @@ EXPORTED_SYMBOLS = ["PersonasPrefCache"];
 // FIXME: we name this PersonasPrefCache to make sure we don't stomp on any
 // other object named PrefCache in Firefox 2, but once we stop supporting that
 // version we should rename this to simply PrefCache.
-function PersonasPrefCache(aPrefBranch, aObserver) {
-  // FIXME: return an existing cache for this pref branch, if any,
-  // instead of creating a new one from scratch (i.e. cache the caches).
+function PersonasPrefCache(aPrefRoot, aObserver) {
+  // FIXME: return an existing cache for this pref root, if any, instead of
+  // creating a new one from scratch (i.e. cache the caches).
 
-  this._prefBranch = aPrefBranch;
   this._prefs = {};
   this._observers = [];
+
+  if (aPrefRoot)
+    this._prefRoot = aPrefRoot;
 
   if (aObserver)
     this.addObserver(aObserver);
 
-  this._prefSvc.addObserver(this._prefBranch, this, true);
+  this._prefSvc.addObserver("", this, true);
   this._obsSvc.addObserver(this, "profile-after-change", true);
 }
 
 PersonasPrefCache.prototype = {
-  _prefBranch: null,
+  _prefRoot: "",
   _prefs: null,
   _observers: null,
 
   // Preference Service
   get _prefSvc() {
-    // Enable both the nsIPrefBranch and the nsIPrefBranch2 interfaces
+    // Query both the nsIPrefBranch and the nsIPrefBranch2 interfaces
     // so we can both retrieve preferences and add observers.
     let prefSvc = Components.classes["@mozilla.org/preferences-service;1"].
-                  getService(Components.interfaces.nsIPrefBranch).
+                  getService(Components.interfaces.nsIPrefService).
+                  getBranch(this._prefRoot).
                   QueryInterface(Components.interfaces.nsIPrefBranch2);
     this.__defineGetter__("_prefSvc", function() { return prefSvc });
     return this._prefSvc;
