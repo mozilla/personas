@@ -737,27 +737,33 @@ PersonaService.prototype = {
   },
 
   _getHeaderURL: function(aPersonaID) {
-    let persona = this._getPersona(aPersonaID);
-
     // Custom persona whose header and footer are in local files specified by
     // the user in preferences.
-    if (aPersonaID == "manual" || !persona.baseURL)
+    if (aPersonaID == "manual")
       return this._getPref("extensions.personas.custom.headerURL",
                            "chrome://personas/content/header-default.jpg");
 
-    return persona.baseURL + "?action=header";
+    let persona = this._getPersona(aPersonaID);
+
+    if (persona.baseURL)
+      return persona.baseURL + "?action=header";
+
+    return "chrome://personas/content/header-default.jpg";
   },
 
   _getFooterURL: function(aPersonaID) {
-    let persona = this._getPersona(aPersonaID);
-
     // Custom persona whose header and footer are in local files specified by
     // the user in preferences.
-    if (aPersonaID == "manual" || !persona.baseURL)
+    if (aPersonaID == "manual")
       return this._getPref("extensions.personas.custom.footerURL",
                            "chrome://personas/content/footer-default.jpg");
 
-    return persona.baseURL + "?action=footer";
+    let persona = this._getPersona(aPersonaID);
+
+    if (persona.baseURL)
+      return persona.baseURL + "?action=footer";
+
+    return "chrome://personas/content/footer-default.jpg";
   },
 
   _getTextColor: function(aPersonaID) {
