@@ -60,6 +60,9 @@
 
   <vbox id="form">
     <description id="title" value="&customPersona.label;"/>
+    <checkbox id="autoPreviewCheckbox" label="Auto-preview"
+              checked="true" persist="checked"
+              oncommand="CustomPersonaEditor.onAutoPreview(event)"/>
     <grid>
       <columns>
         <column/>
@@ -115,11 +118,6 @@
     <hbox style="margin-top: 2em">
       <button label="Close" oncommand="CustomPersonaEditor.onClose()"/>
       <spacer flex="1"/>
-      <checkbox id="autoPreviewCheckbox" label="Auto-preview"
-                checked="true" persist="checked"
-                oncommand="CustomPersonaEditor.onAutoPreview(event)"/>
-      <button id="preview" label="Preview" disabled="true"
-              oncommand="CustomPersonaEditor.onPreview()"/>
       <button label="Apply" oncommand="CustomPersonaEditor.onApply()"/>
     </hbox>
   </vbox>

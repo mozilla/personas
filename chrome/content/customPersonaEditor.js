@@ -145,6 +145,10 @@ let CustomPersonaEditor = {
     return this._prefCache.getPref(aPrefName, aDefaultValue);
   },
 
+
+  //**************************************************************************//
+  // Initialization
+
   init: function() {
     this._headerURL.value = this._getPref("extensions.personas.custom.headerURL", "");
     this._footerURL.value = this._getPref("extensions.personas.custom.footerURL", "");
@@ -154,13 +158,19 @@ let CustomPersonaEditor = {
     this._applyPrefUseDefaultTextColor();
     this._applyPrefUseDefaultAccentColor();
 
-    this.onAutoPreview();
+    this._maybeAutoPreview();
   },
 
-  // Apply pref changes to the controls.
+
+  //**************************************************************************//
+  // XPCOM Interfaces
+
+  // nsIObserver
+
   observe: function(aSubject, aTopic, aData) {
     switch(aTopic) {
       case "nsPref:changed":
+        // Apply pref changes to the controls.
         switch (aData) {
           case "extensions.personas.custom.headerURL":
             this._headerURL.value = this._getPref("extensions.personas.custom.headerURL", "");
@@ -180,14 +190,14 @@ let CustomPersonaEditor = {
           case "extensions.personas.custom.useDefaultAccentColor":
             this._applyPrefUseDefaultAccentColor();
             break;
-          case "extensions.personas.selected":
-          case "extensions.personas.category":
-            this._selectedPersona == "manual" ? this.enable() : this._disable();
-            break;
         }
         break;
     }
   },
+
+
+  //**************************************************************************//
+  // Settings -> Controls
 
   _applyPrefUseDefaultTextColor: function() {
     let useDefaultTextColor =
@@ -213,6 +223,25 @@ let CustomPersonaEditor = {
     this._useDefaultAccentColorCheckbox.checked = useDefaultAccentColor;
   },
 
+
+  //**************************************************************************//
+  // Controls -> Settings
+
+  onAutoPreview: function() {
+    // Update the Preview button based on the auto-preview checkbox's state,
+    // and preview or reset the persona based on whether auto-preview has been
+    // enabled or disabled.
+    if (this._autoPreview)
+      this._personaSvc.previewPersona("manual");
+    else
+      this._personaSvc.resetPersona();
+  },
+
+  _maybeAutoPreview: function() {
+    if (this._autoPreview)
+      this._personaSvc.previewPersona("manual");
+  },
+
   // Apply header and footer control changes to the prefs.
   onChangeBackground: function(aEvent) {
     let control = aEvent.target;
@@ -223,7 +252,7 @@ let CustomPersonaEditor = {
       this._prefSvc.clearUserPref(pref);
     else
       this._prefSvc.setCharPref(pref, value);
-    this.maybeAutoPreview();
+    this._maybeAutoPreview();
   },
 
   onSelectBackground: function(aEvent) {
@@ -237,14 +266,14 @@ let CustomPersonaEditor = {
     if (result == Ci.nsIFilePicker.returnOK) {
       this._prefSvc.setCharPref(pref, fp.fileURL.spec);
       control.value = fp.fileURL.spec;
-      this.maybeAutoPreview();
+      this._maybeAutoPreview();
     }
   },
 
   onChangeTextColor: function(aEvent) {
     this._prefSvc.setCharPref("extensions.personas.custom.textColor",
                               this._textColorPicker.color);
-    this.maybeAutoPreview();
+    this._maybeAutoPreview();
   },
 
   onChangeUseDefaultTextColor: function(aEvent) {
@@ -252,13 +281,13 @@ let CustomPersonaEditor = {
     // _applyPrefUseDefaultTextColor to update the UI accordingly.
     this._prefSvc.setBoolPref("extensions.personas.custom.useDefaultTextColor",
                               this._useDefaultTextColorCheckbox.checked);
-    this.maybeAutoPreview();
+    this._maybeAutoPreview();
   },
 
   onChangeAccentColor: function(aEvent) {
     this._prefSvc.setCharPref("extensions.personas.custom.accentColor",
                               this._accentColorPicker.color);
-    this.maybeAutoPreview();
+    this._maybeAutoPreview();
   },
 
   onChangeUseDefaultAccentColor: function(aEvent) {
@@ -266,32 +295,12 @@ let CustomPersonaEditor = {
     // _applyPrefUseDefaultAccentColor to update the UI accordingly.
     this._prefSvc.setBoolPref("extensions.personas.custom.useDefaultAccentColor",
                               this._useDefaultAccentColorCheckbox.checked);
-    this.maybeAutoPreview();
+    this._maybeAutoPreview();
   },
 
   onClose: function() {
     this._personaSvc.resetPersona();
     window.close();
-  },
-
-  onAutoPreview: function() {
-    // Update the Preview button based on the auto-preview checkbox's state,
-    // and preview or reset the persona based on whether auto-preview has been
-    // enabled or disabled.
-    document.getElementById("preview").disabled = this._autoPreview;
-    if (this._autoPreview)
-      this._personaSvc.previewPersona("manual");
-    else
-      this._personaSvc.resetPersona();
-  },
-
-  onPreview: function() {
-    this._personaSvc.previewPersona("manual");
-  },
-
-  maybeAutoPreview: function() {
-    if (this._autoPreview)
-      this.onPreview();
   },
 
   onApply: function() {
