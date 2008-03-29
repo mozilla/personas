@@ -50,7 +50,7 @@ window {
   padding-left: 50px;
 }
 
-#container {
+stack > * {
   border: 1px solid threedshadow;
   padding: 3em;
   -moz-border-radius: 10px;
@@ -58,7 +58,7 @@ window {
   color: -moz-fieldtext;
 }
 
-#title {
+.title {
   margin-bottom: 1em;
   margin-top: 0;
   border-bottom: 1px solid threedlightshadow;
@@ -70,4 +70,9 @@ textbox {
 
 colorpicker {
   margin: 2px 4px;
+}
+
+#customEditorDisabledExplanation {
+  font-size: large;
+  color: white;
 }

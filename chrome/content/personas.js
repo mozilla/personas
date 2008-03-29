@@ -416,8 +416,8 @@ let PersonaController = {
     }
 
     // Save the new selection to prefs.
-    this._prefSvc.setCharPref("extensions.personas.selected", personaID);
     this._prefSvc.setCharPref("extensions.personas.category", categoryID);
+    this._prefSvc.setCharPref("extensions.personas.selected", personaID);
   },
 
   /**

@@ -92,6 +92,34 @@ let CustomPersonaEditor = {
     return this._useDefaultAccentColorCheckbox;
   },
 
+  get _personaSvc() {
+    let personaSvc = Cc["@mozilla.org/personas/persona-service;1"].
+                     getService(Ci.nsIPersonaService);
+    delete this._personaSvc;
+    this._personaSvc = personaSvc;
+    return this._personaSvc;
+  },
+
+  _getPersona: function(aPersonaID) {
+    for each (let persona in this._personaSvc.personas.wrappedJSObject)
+      if (persona.id == aPersonaID)
+        return persona;
+
+    return null;
+  },
+
+  get _selectedPersona() {
+    return this._getPref("extensions.personas.selected", "default");
+  },
+
+  _getCategory: function(aCategoryID) {
+    for each (let category in this._personaSvc.categories.wrappedJSObject)
+      if (category.id == aCategoryID)
+        return category;
+
+    return null;
+  },
+
   // Preference Service
   get _prefSvc() {
     let prefSvc = Cc["@mozilla.org/preferences-service;1"].
@@ -114,10 +142,7 @@ let CustomPersonaEditor = {
   },
 
   init: function() {
-    this._prefSvc.setCharPref("extensions.personas.selected", "manual");
-
-    // XXX I wonder if it's really necessary to reset the category at this point.
-    this._prefSvc.setCharPref("extensions.personas.category", "");
+    this.enable();
 
     this._headerURL.value = this._getPref("extensions.personas.custom.headerURL", "");
     this._footerURL.value = this._getPref("extensions.personas.custom.footerURL", "");
@@ -151,6 +176,10 @@ let CustomPersonaEditor = {
           case "extensions.personas.custom.useDefaultAccentColor":
             this._applyPrefUseDefaultAccentColor();
             break;
+          case "extensions.personas.selected":
+          case "extensions.personas.category":
+            this._selectedPersona == "manual" ? this.enable() : this._disable();
+            break;
         }
         break;
     }
@@ -178,6 +207,37 @@ let CustomPersonaEditor = {
     //else
     //  this._accentColorPicker.removeAttribute("disabled");
     this._useDefaultAccentColorCheckbox.checked = useDefaultAccentColor;
+  },
+
+  enable: function() {
+    this._prefSvc.setCharPref("extensions.personas.selected", "manual");
+    document.getElementById('disabledNotification').hidden = true;
+  },
+
+  _disable: function() {
+    let explanation = document.getElementById("customEditorDisabledExplanation");
+    while (explanation.hasChildNodes())
+      explanation.removeChild(explanation.firstChild);
+
+    let text;
+    if (this._selectedPersona == "default") {
+      text = this._stringBundle.getString("usingDefault");
+    }
+    else if (this._selectedPersona == "random") {
+      let categoryID = this._getPref("extensions.personas.category");
+      let category = this._getCategory(categoryID);
+      text = this._stringBundle.getFormattedString("usingRandom", [category.label]);
+    }
+    else {
+      let personaID = this._selectedPersona;
+      let persona = this._getPersona(personaID);
+      text = this._stringBundle.getFormattedString("usingPersona", [persona.label]);
+    }
+
+    let textNode = document.createTextNode(text);
+    explanation.appendChild(textNode);
+
+    document.getElementById('disabledNotification').hidden = false;
   },
 
   // Apply header and footer control changes to the prefs.
