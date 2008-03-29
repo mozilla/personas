@@ -113,7 +113,7 @@ let CustomPersonaEditor = {
   },
 
   get _selectedPersona() {
-    return this._getPref("extensions.personas.selected", "default");
+    return this._getPref("selected", "default");
   },
 
   _getCategory: function(aCategoryID) {
@@ -135,7 +135,7 @@ let CustomPersonaEditor = {
   },
 
   get _prefCache() {
-    let prefCache = new PersonasPrefCache("", this);
+    let prefCache = new PersonasPrefCache("extensions.personas.", this);
     delete this._prefCache;
     this._prefCache = prefCache;
     return this._prefCache;
@@ -150,10 +150,10 @@ let CustomPersonaEditor = {
   // Initialization
 
   init: function() {
-    this._headerURL.value = this._getPref("extensions.personas.custom.headerURL", "");
-    this._footerURL.value = this._getPref("extensions.personas.custom.footerURL", "");
-    this._textColorPicker.color = this._getPref("extensions.personas.custom.textColor", "#000000");
-    this._accentColorPicker.color = this._getPref("extensions.personas.custom.accentColor", "#C9C9C9");
+    this._headerURL.value = this._getPref("custom.headerURL", "");
+    this._footerURL.value = this._getPref("custom.footerURL", "");
+    this._textColorPicker.color = this._getPref("custom.textColor", "#000000");
+    this._accentColorPicker.color = this._getPref("custom.accentColor", "#C9C9C9");
 
     this._applyPrefUseDefaultTextColor();
     this._applyPrefUseDefaultAccentColor();
@@ -172,22 +172,22 @@ let CustomPersonaEditor = {
       case "nsPref:changed":
         // Apply pref changes to the controls.
         switch (aData) {
-          case "extensions.personas.custom.headerURL":
-            this._headerURL.value = this._getPref("extensions.personas.custom.headerURL", "");
+          case "custom.headerURL":
+            this._headerURL.value = this._getPref("custom.headerURL", "");
             break;
-          case "extensions.personas.custom.footerURL":
-            this._footerURL.value = this._getPref("extensions.personas.custom.footerURL", "");
+          case "custom.footerURL":
+            this._footerURL.value = this._getPref("custom.footerURL", "");
             break;
-          case "extensions.personas.custom.textColor":
-            this._textColorPicker.color = this._getPref("extensions.personas.custom.textColor", "#000000");
+          case "custom.textColor":
+            this._textColorPicker.color = this._getPref("custom.textColor", "#000000");
             break;
-          case "extensions.personas.custom.useDefaultTextColor":
+          case "custom.useDefaultTextColor":
             this._applyPrefUseDefaultTextColor();
             break;
-          case "extensions.personas.custom.accentColor":
-            this._accentColorPicker.color = this._getPref("extensions.personas.custom.accentColor", "#C9C9C9");
+          case "custom.accentColor":
+            this._accentColorPicker.color = this._getPref("custom.accentColor", "#C9C9C9");
             break;
-          case "extensions.personas.custom.useDefaultAccentColor":
+          case "custom.useDefaultAccentColor":
             this._applyPrefUseDefaultAccentColor();
             break;
         }
@@ -201,7 +201,7 @@ let CustomPersonaEditor = {
 
   _applyPrefUseDefaultTextColor: function() {
     let useDefaultTextColor =
-      this._getPref("extensions.personas.custom.useDefaultTextColor", true);
+      this._getPref("custom.useDefaultTextColor", true);
     // Disable the disabling of the colorpicker since it horks keyboard
     // navigation.
     //if (useDefaultTextColor)
@@ -213,7 +213,7 @@ let CustomPersonaEditor = {
 
   _applyPrefUseDefaultAccentColor: function() {
     let useDefaultAccentColor =
-      this._getPref("extensions.personas.custom.useDefaultAccentColor", true);
+      this._getPref("custom.useDefaultAccentColor", true);
     // Disable the disabling of the colorpicker since it horks keyboard
     // navigation.
     //if (useDefaultAccentColor)
@@ -271,7 +271,7 @@ let CustomPersonaEditor = {
   },
 
   onChangeTextColor: function(aEvent) {
-    this._prefSvc.setCharPref("extensions.personas.custom.textColor",
+    this._prefSvc.setCharPref("custom.textColor",
                               this._textColorPicker.color);
     this._maybeAutoPreview();
   },
@@ -279,13 +279,13 @@ let CustomPersonaEditor = {
   onChangeUseDefaultTextColor: function(aEvent) {
     // Setting the pref will trigger our pref observer, which will call
     // _applyPrefUseDefaultTextColor to update the UI accordingly.
-    this._prefSvc.setBoolPref("extensions.personas.custom.useDefaultTextColor",
+    this._prefSvc.setBoolPref("custom.useDefaultTextColor",
                               this._useDefaultTextColorCheckbox.checked);
     this._maybeAutoPreview();
   },
 
   onChangeAccentColor: function(aEvent) {
-    this._prefSvc.setCharPref("extensions.personas.custom.accentColor",
+    this._prefSvc.setCharPref("custom.accentColor",
                               this._accentColorPicker.color);
     this._maybeAutoPreview();
   },
@@ -293,7 +293,7 @@ let CustomPersonaEditor = {
   onChangeUseDefaultAccentColor: function(aEvent) {
     // Setting the pref will trigger our pref observer, which will call
     // _applyPrefUseDefaultAccentColor to update the UI accordingly.
-    this._prefSvc.setBoolPref("extensions.personas.custom.useDefaultAccentColor",
+    this._prefSvc.setBoolPref("custom.useDefaultAccentColor",
                               this._useDefaultAccentColorCheckbox.checked);
     this._maybeAutoPreview();
   },
@@ -304,7 +304,7 @@ let CustomPersonaEditor = {
   },
 
   onApply: function() {
-    this._prefSvc.setCharPref("extensions.personas.selected", "manual");
+    this._prefSvc.setCharPref("selected", "manual");
     window.close();
   }
 };
