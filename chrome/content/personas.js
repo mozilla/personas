@@ -289,16 +289,23 @@ let PersonaController = {
     header.style.backgroundImage = "url(" + escapeCSSURL(headerURL) + ")";
 
     // Style the titlebar with accent color.
-    let titlebarColor = this._personaSvc.accentColor;
-    if(titlebarColor) {
-      header.setAttribute("titlebarcolor", titlebarColor);
-    } else {
-      header.setAttribute("titlebarcolor", this._defaultTitlebarColor);
+    // Note: we only do this on Mac, since it's the only OS that supports
+    // this capability.  It's only the only OS where our hack for applying
+    // the change doesn't cause the window to un-maximize.
+    let os = Cc["@mozilla.org/xre/app-info;1"].getService(Ci.nsIXULRuntime).OS;
+    if (os == "Darwin") {
+      let titlebarColor = this._personaSvc.accentColor || this._defaultTitlebarColor;
+      if (titlebarColor != header.getAttribute("titlebarcolor")) {
+        header.setAttribute("titlebarcolor", titlebarColor);
+        // FIXME: Incredibly gross hack in order to force a window redraw event
+        // that ensures that the titlebar color change is applied.  Note that
+        // this will unmaximize a maximized window on Windows and Linux, so we
+        // only do this on Mac (which is the only place the "titlebarcolor"
+        // attribute has any effect anyway at the moment).
+        window.resizeTo(parseInt(window.outerWidth)+1, window.outerHeight);
+        window.resizeTo(parseInt(window.outerWidth)-1, window.outerHeight);
+      }
     }
-    // FIXME: Incredibly gross hack in order to force a window redraw event that ensures that the
-    // titlebar color change is applied.
-    window.resizeTo(parseInt(window.outerWidth)+1, window.outerHeight);
-    window.resizeTo(parseInt(window.outerWidth)-1, window.outerHeight);
 
     // Style the footer.
     let footerURL = this._personaSvc.footerURL;
