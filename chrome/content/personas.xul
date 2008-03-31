@@ -60,11 +60,14 @@
                  onpopuphiding="if (event.target == this) PersonaController.onMenuPopupHiding();">
         <menuitem id="persona-current" disabled="true"/>
         <menuseparator id="personasOpeningSeparator"/>
-        <menuseparator id="personasClosingSeparator"/>
+        <menuseparator id="personasClosingSeparator" hidden="true"/>
         <menuitem label="&useDefaultPersona.label;" personaid="default"
                   oncommand="PersonaController.onSelectDefault(event)"/>
+        <menuseparator/>
+        <menuitem label="&preferences.label;"
+                   oncommand="PersonaController.onSelectPreferences(event)"/>
         <menuitem label="&useCustomPersona.label;"
-                  oncommand="PersonaController.onSelectCustom(event)"/>
+                  oncommand="PersonaController.onSelectCustom(event)" hidden="true"/>
       </menupopup>
     </menu>
   </menupopup>

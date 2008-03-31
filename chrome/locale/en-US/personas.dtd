@@ -3,6 +3,7 @@
 <!ENTITY useDefaultPersona.label  "Default">
 <!ENTITY useCustomPersona.label   "Custom...">
 <!ENTITY aboutPersonas.label      "About...">
+<!ENTITY preferences.label        "Preferences...">
 
 <!ENTITY customPersona.label      "Custom Persona">
 <!ENTITY header.label             "Header:">

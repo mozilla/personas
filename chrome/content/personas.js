@@ -504,6 +504,11 @@ let PersonaController = {
     this._selectPersona("default", "");
   },
 
+  onSelectPreferences: function() {
+    window.openDialog('chrome://personas/content/preferences.xul', '', 
+                         'chrome, dialog, centerscreen, resizable=yes', null);
+  },
+
   onSelectCustom: function() {
     window.openUILinkIn("chrome://personas/content/customPersonaEditor.xul", "tab");
   },
