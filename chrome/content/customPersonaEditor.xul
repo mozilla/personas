@@ -73,7 +73,7 @@
           <hbox flex="1" pack="end">
             <label control="headerURL" value="&header.label;"/>
           </hbox>
-          <hbox pref="extensions.personas.custom.headerURL">
+          <hbox pref="custom.headerURL">
             <textbox id="headerURL" 
                      onchange="CustomPersonaEditor.onChangeBackground(event)"/>
             <button id="selectHeaderButton" label="&selectBackground.label;"
@@ -84,7 +84,7 @@
           <hbox flex="1" pack="end">
             <label control="footerURL" value="&footer.label;"/>
           </hbox>
-          <hbox pref="extensions.personas.custom.footerURL">
+          <hbox pref="custom.footerURL">
             <textbox id="footerURL"
                      onchange="CustomPersonaEditor.onChangeBackground(event)"/>
             <button id="selectFooterButton" label="&selectBackground.label;"
