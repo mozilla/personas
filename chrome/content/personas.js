@@ -350,12 +350,23 @@ let PersonaController = {
     header.removeAttribute("persona");
     header.style.backgroundImage = this._defaultHeaderBackgroundImage;
 
-    // Reset the titlebar to default color.
-    header.setAttribute("titlebarcolor", this._defaultTitlebarColor);
-    // FIXME: Incredibly gross hack in order to force a window redraw event that ensures that the
-    // titlebar color change is applied.
-    window.resizeTo(parseInt(window.outerWidth)+1, window.outerHeight);
-    window.resizeTo(parseInt(window.outerWidth)-1, window.outerHeight);
+    // Reset the titlebar to the default color.
+    // Note: we only do this on Mac, since it's the only OS that supports
+    // this capability.  It's also the only OS where our hack for applying
+    // the change doesn't cause the window to un-maximize.
+    let os = Cc["@mozilla.org/xre/app-info;1"].getService(Ci.nsIXULRuntime).OS;
+    if (os == "Darwin") {
+      if (header.getAttribute("titlebarcolor") != this._defaultTitlebarColor) {
+        header.setAttribute("titlebarcolor", this._defaultTitlebarColor);
+        // FIXME: Incredibly gross hack in order to force a window redraw event
+        // that ensures that the titlebar color change is applied.  Note that
+        // this will unmaximize a maximized window on Windows and Linux, so we
+        // only do this on Mac (which is the only place the "titlebarcolor"
+        // attribute has any effect anyway at the moment).
+        window.resizeTo(parseInt(window.outerWidth)+1, window.outerHeight);
+        window.resizeTo(parseInt(window.outerWidth)-1, window.outerHeight);
+      }
+    }
 
     let footer = document.getElementById("browser-bottombox");
     footer.removeAttribute("persona");
