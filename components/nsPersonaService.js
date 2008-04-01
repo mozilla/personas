@@ -290,8 +290,12 @@ PersonaService.prototype = {
           case "extensions.personas.selected":
           case "extensions.personas.custom.headerURL":
           case "extensions.personas.custom.footerURL":
-          case "extensions.personas.category":
             this.resetPersona();
+            break;
+
+          case "extensions.personas.category":
+            if (this._getPref("extensions.personas.selected") == "random")
+              this.resetPersona();
             break;
 
           case "extensions.personas.custom.textColor":
