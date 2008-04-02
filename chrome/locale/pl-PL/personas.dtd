@@ -1,20 +1,16 @@
 <!ENTITY personas_app_title "Personas for Firefox">
-
 <!ENTITY useDefaultPersona.label "Użyj domyślnej">
 <!ENTITY useCustomPersona.label "Własna...">
 <!ENTITY aboutPersonas.label "O rozszerzeniu...">
-
+<!ENTITY preferences.label "Preferencje...">
 <!ENTITY customPersona.label "Własna Persona">
 <!ENTITY header.label "Nagłówek:">
 <!ENTITY selectBackground.label "Przeglądaj...">
 <!ENTITY footer.label "Stopka:">
 <!ENTITY textColorPicker.label "Kolor tekstu:">
-
-<!-- FIXME: translate these strings -->
-<!ENTITY accentColorPicker.label  "Accent Color:">
-<!ENTITY useDefaultColor.label    "Use default">
-
-<!ENTITY closeButton.label          "Close">
-<!ENTITY autoPreviewCheckbox.label  "Auto-preview">
-<!ENTITY previewButton.label        "Preview">
-<!ENTITY applyButton.label          "Apply">
+<!ENTITY accentColorPicker.label "Kolor akcentu:">
+<!ENTITY useDefaultColor.label "Użyj domyślnego">
+<!ENTITY closeButton.label "Zamknij">
+<!ENTITY autoPreviewCheckbox.label "Automatyczny podgląd">
+<!ENTITY previewButton.label "Podgląd">
+<!ENTITY applyButton.label "Zastosuj">
