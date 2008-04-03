@@ -1,0 +1,16 @@
+<!ENTITY personas_app_title "Personas pre Firefox">
+<!ENTITY useDefaultPersona.label "Predvolené">
+<!ENTITY useCustomPersona.label "Vlastné...">
+<!ENTITY aboutPersonas.label "O rozšírení Personas pre Firefox...">
+<!ENTITY preferences.label "Nastavenia...">
+<!ENTITY customPersona.label "Vlastný &quot;Persona&quot; editor">
+<!ENTITY header.label "Hlavička:">
+<!ENTITY selectBackground.label "Vybrať...">
+<!ENTITY footer.label "Päta:">
+<!ENTITY textColorPicker.label "Farba textu:">
+<!ENTITY accentColorPicker.label "Farba akcentu (len pre Mac OS):">
+<!ENTITY useDefaultColor.label "Použiť predvolené">
+<!ENTITY closeButton.label "Zavrieť">
+<!ENTITY autoPreviewCheckbox.label "Automatický náhľad">
+<!ENTITY previewButton.label "Náhľad">
+<!ENTITY applyButton.label "Použiť">
