@@ -32,3 +32,11 @@ pref("extensions.personas.previewEnabled", true);
 // on the selection of a new persona. Used to update the Popularity
 // fields in the directory.
 pref("extensions.personas.reportSelection", true);
+
+// User preference to enable/disable use of the accent color provided
+// by Persona in the feed.
+pref("extensions.personas.useAccentColor", true);
+
+// User preference to enable/disable use of the text color provided 
+// by Persona in the feed.
+pref("extensions.personas.useTextColor", true);

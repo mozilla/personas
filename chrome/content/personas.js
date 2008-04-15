@@ -292,18 +292,20 @@ let PersonaController = {
     // Note: we only do this on Mac, since it's the only OS that supports
     // this capability.  It's only the only OS where our hack for applying
     // the change doesn't cause the window to un-maximize.
-    let os = Cc["@mozilla.org/xre/app-info;1"].getService(Ci.nsIXULRuntime).OS;
-    if (os == "Darwin") {
-      let titlebarColor = this._personaSvc.accentColor || this._defaultTitlebarColor;
-      if (titlebarColor != header.getAttribute("titlebarcolor")) {
-        header.setAttribute("titlebarcolor", titlebarColor);
-        // FIXME: Incredibly gross hack in order to force a window redraw event
-        // that ensures that the titlebar color change is applied.  Note that
-        // this will unmaximize a maximized window on Windows and Linux, so we
-        // only do this on Mac (which is the only place the "titlebarcolor"
-        // attribute has any effect anyway at the moment).
-        window.resizeTo(parseInt(window.outerWidth)+1, window.outerHeight);
-        window.resizeTo(parseInt(window.outerWidth)-1, window.outerHeight);
+    if(this._getPref("extensions.personas.useAccentColor")) {
+      let os = Cc["@mozilla.org/xre/app-info;1"].getService(Ci.nsIXULRuntime).OS;
+      if (os == "Darwin") {
+        let titlebarColor = this._personaSvc.accentColor || this._defaultTitlebarColor;
+        if (titlebarColor != header.getAttribute("titlebarcolor")) {
+          header.setAttribute("titlebarcolor", titlebarColor);
+          // FIXME: Incredibly gross hack in order to force a window redraw event
+          // that ensures that the titlebar color change is applied.  Note that
+          // this will unmaximize a maximized window on Windows and Linux, so we
+          // only do this on Mac (which is the only place the "titlebarcolor"
+          // attribute has any effect anyway at the moment).
+          window.resizeTo(parseInt(window.outerWidth)+1, window.outerHeight);
+          window.resizeTo(parseInt(window.outerWidth)-1, window.outerHeight);
+        }
       }
     }
 
@@ -314,31 +316,33 @@ let PersonaController = {
     footer.style.backgroundImage = "url('" + escapeCSSURL(footerURL) + "')";
 
     // Style the text color.
-    let textColor = this._personaSvc.textColor;
-    if (textColor) {
-      for (let i = 0; i < document.styleSheets.length; i++) {
-        let styleSheet = document.styleSheets[i];
-        if (styleSheet.href == "chrome://personas/content/textColor.css") {
-          while (styleSheet.cssRules.length > 0)
-            styleSheet.deleteRule(0);
+    if(this._getPref("extensions.personas.useTextColor")) {
+      let textColor = this._personaSvc.textColor;
+      if (textColor) {
+        for (let i = 0; i < document.styleSheets.length; i++) {
+          let styleSheet = document.styleSheets[i];
+          if (styleSheet.href == "chrome://personas/content/textColor.css") {
+            while (styleSheet.cssRules.length > 0)
+              styleSheet.deleteRule(0);
 
-          styleSheet.insertRule(
-            "#navigator-toolbox menubar > menu, " +
-            "#navigator-toolbox toolbarbutton, " +
-            "#browser-bottombox, " +
-            "#browser-bottombox toolbarbutton { color: " + textColor + "}",
-            0
-          );
+            styleSheet.insertRule(
+              "#navigator-toolbox menubar > menu, " +
+              "#navigator-toolbox toolbarbutton, " +
+              "#browser-bottombox, " +
+              "#browser-bottombox toolbarbutton { color: " + textColor + "}",
+              0
+            );
 
-          // FIXME: figure out what to do about the disabled color.  Maybe we
-          // should let personas specify it independently and then apply it via
-          // a rule like this:
-          // #navigator-toolbox toolbarbutton[disabled="true"],
-          // #browser-toolbox toolbarbutton[disabled="true"],
-          // #browser-bottombox toolbarbutton[disabled="true"]
-          //   { color: #cccccc !important; }
+            // FIXME: figure out what to do about the disabled color.  Maybe we
+            // should let personas specify it independently and then apply it via
+            // a rule like this:
+            // #navigator-toolbox toolbarbutton[disabled="true"],
+            // #browser-toolbox toolbarbutton[disabled="true"],
+            // #browser-bottombox toolbarbutton[disabled="true"]
+            //   { color: #cccccc !important; } 
 
-          break;
+            break;
+          }
         }
       }
     }
@@ -625,7 +629,7 @@ let PersonaController = {
        personaStatus.setAttribute("class", "menuitem-iconic");
        personaStatus.setAttribute("image", "chrome://personas/content/random-feed-16x16.png");
        personaStatus.setAttribute("label", this._stringBundle.getString("useRandomPersona.label") + " " +
-                                           this._getCategoryName(this._getPref("extensions.personas.category")) + " : " +
+                                           this._getCategoryName(this._getPref("extensions.personas.category")) + " > " +
                                            this._getPersonaName(this._getPref("extensions.personas.lastrandom")));
     }
     else {

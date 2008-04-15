@@ -58,14 +58,19 @@
        <menupopup id="personas-selector-menu"
                   onpopupshowing="if (event.target == this) PersonaController.onPersonaPopupShowing(event)"
                   onpopuphiding="if (event.target == this) PersonaController.onMenuPopupHiding();">
-        <menuitem id="persona-current" disabled="true"/>
+        <menu id="persona-current" class="menu-iconic" label="Hello World">
+          <menupopup id="persona-context-menu">
+            <menuitem label="&contextHomePage.label;" disabled="true"/>
+            <menuitem label="&contextPreferences.label;" disabled="true"/>
+          </menupopup>
+        </menu>
         <menuseparator id="personasOpeningSeparator"/>
         <menuseparator id="personasClosingSeparator" hidden="true"/>
+        <menuseparator/>
         <menuitem label="&useDefaultPersona.label;" personaid="default"
                   oncommand="PersonaController.onSelectDefault(event)"/>
-        <menuseparator/>
         <menuitem label="&preferences.label;"
-                   oncommand="PersonaController.onSelectPreferences(event)"/>
+                   oncommand="PersonaController.onSelectPreferences(event)" hidden="true"/>
         <menuitem label="&useCustomPersona.label;"
                   oncommand="PersonaController.onSelectCustom(event)" hidden="true"/>
       </menupopup>
