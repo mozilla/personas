@@ -42,15 +42,39 @@
 
 <!DOCTYPE overlay SYSTEM "chrome://personas/locale/preferences.dtd">
 
-<dialog xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+<prefwindow xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+        xmlns:html="http://www.w3.org/1999/xhtml"
         id="personas-preferences-dialog"
         buttons="none"
         title="&preferences.title;">
 
   <script type="application/x-javascript;version=1.7" src="chrome://personas/content/preferences.js"/>
   
-  <vbox>
-      <button label="&customEditor.label;" oncommand="PersonasPreferences.onSelectCustom(event);"/>
-  </vbox>
+  <prefpane id="personas-preferences-pane" label="&preferences.title;">
 
-</dialog>
+    <preferences>
+      <preference id="preview" name="extensions.personas.previewEnabled" type="bool"/>
+      <preference id="reporting" name="extensions.personas.reportSelection" type="bool"/>
+    </preferences>
+
+    <groupbox>
+      <caption label="&displaySettings.label;"/>
+      <vbox>
+        <checkbox label="&previewEnabled.label;" preference="preview"/>
+        <hbox>
+          <checkbox label="&reportSelection.label;" preference="reporting"/> <html:a style="text-decoration:underline; color:rgb(0,0,255);" target="_top" href="#" onclick="window.open('http://sm-labs01.mozilla.org/projects/personas/popularity_tracking/');">&reportSelection.title;</html:a>
+        </hbox>
+      </vbox>
+    </groupbox>
+
+    <groupbox>
+      <caption label="&advancedSettings.label;"/>
+      <vbox>
+        <button label="&customEditor.label;" oncommand="PersonasPreferences.onSelectCustom(event);"/>
+        <html:a style="text-decoration:underline; color:rgb(0,0,255);" href="#" onclick="window.open('http://sm-labs01.mozilla.org/projects/personas/');">&submitPersona.label;</html:a>
+      </vbox>
+    </groupbox>
+
+  </prefpane>
+
+</prefwindow>

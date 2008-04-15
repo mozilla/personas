@@ -24,3 +24,11 @@ pref("extensions.personas.snapshotInterval", 60);
 // to set this pref, but it's useful for developers and testers to experiment
 // with it to figure out what is the best value for it.
 pref("extensions.personas.previewTimeout", 200);
+
+// User preference to enable/disable preview when hovering over popup items.
+pref("extensions.personas.previewEnabled", true);
+
+// User preference to enable/disable to pinging of the persona service
+// on the selection of a new persona. Used to update the Popularity
+// fields in the directory.
+pref("extensions.personas.reportSelection", true);

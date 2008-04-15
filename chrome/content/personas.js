@@ -464,15 +464,18 @@ let PersonaController = {
   onPreviewPersona: function(aEvent) {
     //this._previewPersona(aEvent.target.getAttribute("personaid"));
 
-    if (this._resetTimeoutID) {
-      window.clearTimeout(this._resetTimeoutID);
-      this._resetTimeoutID = null;
-    }
+    if(this._getPref("extensions.personas.previewEnabled")) {
 
-    let t = this;
-    let personaID = aEvent.target.getAttribute("personaid");
-    let callback = function() { t._previewPersona(personaID) };
-    this._previewTimeoutID = window.setTimeout(callback, this._previewTimeout);
+       if (this._resetTimeoutID) {
+         window.clearTimeout(this._resetTimeoutID);
+         this._resetTimeoutID = null;
+       }
+
+       let t = this;
+       let personaID = aEvent.target.getAttribute("personaid");
+       let callback = function() { t._previewPersona(personaID) };
+       this._previewTimeoutID = window.setTimeout(callback, this._previewTimeout);
+    }
   },
 
   _previewPersona: function(aPersonaID) {
@@ -496,15 +499,18 @@ let PersonaController = {
   onResetPersona: function(aEvent) {
     //this._resetPersona();
 
-    if (this._previewTimeoutID) {
-      window.clearTimeout(this._previewTimeoutID);
-      this._previewTimeoutID = null;
-    }
+    if(this._getPref("extensions.personas.previewEnabled")) {
 
-    let t = this;
-    let personaID = aEvent.target.getAttribute("personaid");
-    let callback = function() { t._resetPersona(personaID) };
-    this._resetTimeoutID = window.setTimeout(callback, this._previewTimeout);
+       if (this._previewTimeoutID) {
+         window.clearTimeout(this._previewTimeoutID);
+         this._previewTimeoutID = null;
+       }
+
+       let t = this;
+       let personaID = aEvent.target.getAttribute("personaid");
+       let callback = function() { t._resetPersona(personaID) };
+       this._resetTimeoutID = window.setTimeout(callback, this._previewTimeout);
+    }
   },
 
   _resetPersona: function() {
@@ -732,6 +738,7 @@ let PersonaController = {
     item.setAttribute("oncommand", "PersonaController.onSelectPersona(event)");
     item.addEventListener("DOMMenuItemActive", function(evt) { PersonaController.onPreviewPersona(evt) }, false);
     item.addEventListener("DOMMenuItemInactive", function(evt) { PersonaController.onResetPersona(evt) }, false);
+    
 
     return item;
   }

@@ -232,6 +232,7 @@ PersonaService.prototype = {
   firstrunURL: null,
   textColor: null,
   accentColor: null,
+  type: null,
 
   /**
    * Display the given persona without making it the selected persona.  Useful
@@ -254,6 +255,11 @@ PersonaService.prototype = {
   resetPersona: function() {
     let personaID = this._getPref("extensions.personas.selected", "default");
     this._switchToPersona(personaID);
+
+    // Ping the persona service to update popularity counts.
+    let reportSelection = this._getPref("extensions.personas.reportSelection");
+    if(reportSelection) 
+       this._makeRequest(this._baseURL + personaID + "/report_selection/", function(evt) {});
   },
 
   // nsIObserver
