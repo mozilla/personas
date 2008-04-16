@@ -255,11 +255,15 @@ PersonaService.prototype = {
   resetPersona: function() {
     let personaID = this._getPref("extensions.personas.selected", "default");
     this._switchToPersona(personaID);
+  },
 
-    // Ping the persona service to update popularity counts.
-    let reportSelection = this._getPref("extensions.personas.reportSelection");
-    if(reportSelection) 
-       this._makeRequest(this._baseURL + personaID + "/report_selection/", function(evt) {});
+  reportSelection: function() {
+    let personaID = this._getPref("extensions.personas.selected", "default");
+    if (personaID != "random") {
+      let reportSelection = this._getPref("extensions.personas.reportSelection");
+      if(reportSelection) 
+         this._makeRequest(this._baseURL + personaID + "/report_selection/", function(evt) {});
+    }
   },
 
   // nsIObserver
@@ -294,6 +298,8 @@ PersonaService.prototype = {
           // the selected persona is "disabled"), and finally we could set
           // the selected persona to the new value.
           case "extensions.personas.selected":
+            this.reportSelection();
+            // fall-thru
           case "extensions.personas.custom.headerURL":
           case "extensions.personas.custom.footerURL":
             this.resetPersona();
