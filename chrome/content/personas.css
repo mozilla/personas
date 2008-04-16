@@ -38,7 +38,8 @@
 
 /* Personas Selector Button/Menu */
 
-#personas-selector-button {
+#personas-selector-button,
+#personas-menu {
   list-style-image: url("chrome://personas/content/personas_16x16.png");
   -moz-image-region: rect(0, 16px, 16px, 0px);
   border: 0 !important;

@@ -430,6 +430,8 @@ let PersonaController = {
   _selectPersona: function(personaID, categoryID) {
     // Update the list of recent personas.
     if (personaID != "default" && personaID != this._selectedPersona && this._selectedPersona != "random") {
+      this._prefSvc.setCharPref("extensions.personas.lastselected3",
+                                this._getPref("extensions.personas.lastselected2"));
       this._prefSvc.setCharPref("extensions.personas.lastselected2",
                                 this._getPref("extensions.personas.lastselected1"));
       this._prefSvc.setCharPref("extensions.personas.lastselected1",
@@ -673,7 +675,7 @@ let PersonaController = {
           break;
 
         case "recent":
-          for (let i = 0; i < 3; i++) {
+          for (let i = 0; i < 4; i++) {
             let recentID = this._getPref("extensions.personas.lastselected" + i);
             if (!recentID)
               continue;

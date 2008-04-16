@@ -68,3 +68,12 @@
 #main-window[persona] .tabbrowser-tab {
   opacity: 0.8;
 }
+
+#main-window[persona] #home-button,
+#main-window[persona] #stop-button,
+#main-window[persona] #reload-button,
+#main-window[persona] toolbarbutton.bookmark-item {
+  -moz-appearance: none;
+  background-color: transparent;
+  opacity: 0.8;
+}
