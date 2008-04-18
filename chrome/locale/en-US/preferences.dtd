@@ -8,4 +8,4 @@
 <!ENTITY useAccentColor.label   "Use accent color">
 <!ENTITY advancedSettings.label "Advanced">
 <!ENTITY submitPersona.label    "Submit Persona to Directory">
-<!ENTITY customEditor.label     "Use Custom Editor (Experimental)">
+<!ENTITY customEditor.label     "Use Custom Editor">

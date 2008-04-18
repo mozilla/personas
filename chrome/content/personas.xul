@@ -58,7 +58,7 @@
        <menupopup id="personas-selector-menu"
                   onpopupshowing="if (event.target == this) PersonaController.onPersonaPopupShowing(event)"
                   onpopuphiding="if (event.target == this) PersonaController.onMenuPopupHiding();">
-        <menu id="persona-current" class="menu-iconic" label="Hello World">
+        <menu id="persona-current" class="menu-iconic">
           <menupopup id="persona-context-menu">
             <menuitem label="&contextHomePage.label;" disabled="true"/>
             <menuitem label="&contextPreferences.label;" disabled="true"/>

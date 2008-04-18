@@ -14,3 +14,5 @@
 <!ENTITY autoPreviewCheckbox.label "自動プレビュー">
 <!ENTITY previewButton.label "プレビュー">
 <!ENTITY applyButton.label "適用">
+<!ENTITY contextHomePage.label      "Home Page">
+<!ENTITY contextPreferences.label   "Settings">

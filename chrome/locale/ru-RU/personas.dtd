@@ -14,3 +14,5 @@
 <!ENTITY autoPreviewCheckbox.label "Автоматический предварительный просмотр">
 <!ENTITY previewButton.label "Предварительный просмотр">
 <!ENTITY applyButton.label "Применить">
+<!ENTITY contextHomePage.label      "Home Page">
+<!ENTITY contextPreferences.label   "Settings">
