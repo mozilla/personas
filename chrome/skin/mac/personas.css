@@ -61,6 +61,7 @@
 /* Make some elements a little transparent so the persona flavors their look. */
 #main-window[persona] #urlbar,
 #main-window[persona] #searchbar,
-#main-window[persona] .tabbrowser-tab {
+#main-window[persona] .tabbrowser-tab,
+#main-window[persona] #nav-bar toolbarbutton {
   opacity: 0.8;
 }
