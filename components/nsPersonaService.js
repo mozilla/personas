@@ -259,7 +259,7 @@ PersonaService.prototype = {
 
   reportSelection: function() {
     let personaID = this._getPref("extensions.personas.selected", "default");
-    if (personaID != "random") {
+    if (personaID != "random" && personaID != "default") {
       let reportSelection = this._getPref("extensions.personas.reportSelection");
       if(reportSelection) 
          this._makeRequest(this._baseURL + personaID + "/report_selection/", function(evt) {});
@@ -638,6 +638,11 @@ PersonaService.prototype = {
     // Cancel the snapshot timer.
     this._snapshotPersonaTimer.cancel();
 
+    // If the persona we selected is no longer available, set back to default.
+    let persona = this._getPersona(aPersonaID);
+    if (!aPersonaID)
+      aPersonaID = "default";
+
     // If we're loading the "random" persona, pick a persona at random
     // from the selected category.
     if (aPersonaID == "random")
@@ -645,10 +650,13 @@ PersonaService.prototype = {
 
     this._activePersona = aPersonaID;
 
-    this._obsSvc.notifyObservers(null, "personas:personaLoadStarted", aPersonaID);
-    this._loadState = LOAD_STATE_LOADING;
-    this._headerLoader.load(aPersonaID, this._getHeaderURL(aPersonaID));
-    this._footerLoader.load(aPersonaID, this._getFooterURL(aPersonaID));
+    if(aPersonaID != "default") {
+      this._obsSvc.notifyObservers(null, "personas:personaLoadStarted", aPersonaID);
+      this._loadState = LOAD_STATE_LOADING;
+      this._headerLoader.load(aPersonaID, this._getHeaderURL(aPersonaID));
+      this._footerLoader.load(aPersonaID, this._getFooterURL(aPersonaID));
+    }
+
   },
 
   onLoadedHeader: function() {
@@ -756,15 +764,13 @@ PersonaService.prototype = {
     // Custom persona whose header and footer are in local files specified by
     // the user in preferences.
     if (aPersonaID == "manual")
-      return this._getPref("extensions.personas.custom.headerURL",
-                           "chrome://personas/content/header-default.jpg");
+      return this._getPref("extensions.personas.custom.headerURL", "chrome://personas/content/header-default.jpg");
 
     let persona = this._getPersona(aPersonaID);
-
-    if (persona.baseURL)
+    if (persona && persona.baseURL)
       return persona.baseURL + "?action=header";
 
-    return "chrome://personas/content/header-default.jpg";
+    return null;
   },
 
   _getFooterURL: function(aPersonaID) {
@@ -775,11 +781,10 @@ PersonaService.prototype = {
                            "chrome://personas/content/footer-default.jpg");
 
     let persona = this._getPersona(aPersonaID);
-
-    if (persona.baseURL)
+    if (persona && persona.baseURL)
       return persona.baseURL + "?action=footer";
 
-    return "chrome://personas/content/footer-default.jpg";
+    return null;
   },
 
   _getTextColor: function(aPersonaID) {

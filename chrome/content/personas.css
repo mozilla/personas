@@ -60,6 +60,9 @@
   list-style-image: url("chrome://personas/content/Throbber-small.gif");
 }
 
+#personas-data-throbber[busy="true"] {
+  list-style-image: url("chrome://personas/content/Throbber-small.gif");
+}
 
 /* The header is styled in the version/platform-specific files in the skin. */
 

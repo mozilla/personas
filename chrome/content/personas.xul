@@ -69,10 +69,6 @@
         <menuseparator/>
         <menuitem label="&useDefaultPersona.label;" personaid="default"
                   oncommand="PersonaController.onSelectDefault(event)"/>
-        <menuitem label="&preferences.label;"
-                   oncommand="PersonaController.onSelectPreferences(event)" hidden="true"/>
-        <menuitem label="&useCustomPersona.label;"
-                  oncommand="PersonaController.onSelectCustom(event)" hidden="true"/>
       </menupopup>
     </menu>
   </menupopup>

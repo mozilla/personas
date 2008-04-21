@@ -579,7 +579,6 @@ let PersonaController = {
       items[i].removeAttribute("busy");
   },
 
-
   //**************************************************************************//
   // Popup Construction
 
@@ -616,6 +615,10 @@ let PersonaController = {
     let personas = this._personaSvc.personas.wrappedJSObject;
 
     this._rebuildMenu(categories, personas);
+
+    let submissionsMenu = document.getElementById("personas-submissions-menu");
+    if (!submissionsMenu.firstChild) 
+      submissionsMenu.parentNode.setAttribute("hidden", "true");
   },
 
   _rebuildMenu: function(categories, personas) {
@@ -643,7 +646,6 @@ let PersonaController = {
     for each (let category in categories) {
       let menu = document.createElement("menu");
       menu.setAttribute("label", category.label);
-
       let popupmenu = document.createElement("menupopup");
       popupmenu.setAttribute("id", category.id);
 
@@ -671,7 +673,6 @@ let PersonaController = {
             item.setAttribute("oncommand", "PersonaController.onSelectPersona(event);");
             popupmenu.appendChild(item);
           }
-
           break;
 
         case "recent":
@@ -699,6 +700,9 @@ let PersonaController = {
       else {
         let categoryMenu = document.getElementById(category.parent);
         categoryMenu.insertBefore(menu, categoryMenu.firstChild);
+      }
+    
+      if (category.id == "personas-submissions-menu") {
       }
     }
   },
@@ -745,7 +749,6 @@ let PersonaController = {
     item.addEventListener("DOMMenuItemActive", function(evt) { PersonaController.onPreviewPersona(evt) }, false);
     item.addEventListener("DOMMenuItemInactive", function(evt) { PersonaController.onResetPersona(evt) }, false);
     
-
     return item;
   }
 
