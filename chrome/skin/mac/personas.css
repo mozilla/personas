@@ -45,11 +45,43 @@
 }
 
 /* Make the toolbox and tabbox transparent so the image shines through them. */
-#main-window[persona] toolbar,
+#main-window[persona] toolbar {
+  -moz-appearance: none;
+  background-image: none; 
+  background-color: transparent; 
+}
+
 #main-window[persona] .tabbrowser-tabs {
   -moz-appearance: none;
-  background-image: none;
-  background-color: transparent;
+  background-image: none; 
+}
+
+#main-window[persona] .tabbrowser-tab {
+  opacity: 0.6;
+}
+
+#main-window[persona] .tabbrowser-tab:hover {
+  opacity: 0.8;
+}
+
+#main-window[persona] .tabbrowser-tab[selected="true"] {
+  opacity: 1.0 !important;
+}
+
+#main-window[persona] .tabbrowser-tab[selected="true"] > .tab-image-left {
+  background-image: url(chrome://browser/skin/tabbrowser/tab-left-bkgnd.png) !important;
+}
+
+#main-window[persona] .tabbrowser-tab[selected="true"] > .tab-image-middle {
+  background-image: url(chrome://browser/skin/tabbrowser/tab-middle-bkgnd.png) !important;
+}
+
+#main-window[persona] .tabbrowser-tab[selected="true"] > .tab-image-right {
+  background-image: url(chrome://browser/skin/tabbrowser/tab-right-bkgnd.png) !important;
+}
+
+#main-window[persona] .tabbrowser-tab[selected="true"] > .tab-close-button {
+  background-image: url(chrome://browser/skin/tabbrowser/tab-middle-bkgnd.png) !important;
 }
 
 /* Remove the borders from the toolbars so they don't mar the persona. */
@@ -61,7 +93,6 @@
 /* Make some elements a little transparent so the persona flavors their look. */
 #main-window[persona] #urlbar,
 #main-window[persona] #searchbar,
-#main-window[persona] .tabbrowser-tab,
 #main-window[persona] #nav-bar toolbarbutton {
   opacity: 0.8;
 }

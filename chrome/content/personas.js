@@ -326,6 +326,7 @@ let PersonaController = {
               styleSheet.deleteRule(0);
 
             styleSheet.insertRule(
+              "#main-window[persona] .tabbrowser-tab, " +
               "#navigator-toolbox menubar > menu, " +
               "#navigator-toolbox toolbarbutton, " +
               "#browser-bottombox, " +
