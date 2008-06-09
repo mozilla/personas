@@ -282,6 +282,8 @@ let PersonaController = {
       return aURLSpec.replace(/[(),\s'"]/g, "\$&");
     }
 
+    let os = Cc["@mozilla.org/xre/app-info;1"].getService(Ci.nsIXULRuntime).OS;
+
     // Style the header.
     let headerURL = this._personaSvc.headerURL;
     let header = document.getElementById("main-window");
@@ -293,10 +295,11 @@ let PersonaController = {
     // this capability.  It's only the only OS where our hack for applying
     // the change doesn't cause the window to un-maximize.
     if(this._getPref("extensions.personas.useAccentColor")) {
-      let os = Cc["@mozilla.org/xre/app-info;1"].getService(Ci.nsIXULRuntime).OS;
       if (os == "Darwin") {
         let titlebarColor = this._personaSvc.accentColor || this._defaultTitlebarColor;
         if (titlebarColor != header.getAttribute("titlebarcolor")) {
+          header.setAttribute("activetitlebarcolor", titlebarColor);
+          header.setAttribute("inactivetitlebarcolor", titlebarColor);
           header.setAttribute("titlebarcolor", titlebarColor);
           // FIXME: Incredibly gross hack in order to force a window redraw event
           // that ensures that the titlebar color change is applied.  Note that
@@ -325,15 +328,24 @@ let PersonaController = {
             while (styleSheet.cssRules.length > 0)
               styleSheet.deleteRule(0);
 
+      if (os == "Darwin") {
             styleSheet.insertRule(
               "#main-window[persona] .tabbrowser-tab, " +
+              "#navigator-toolbox menubar > menu, " +
+              "#navigator-toolbox toolbarbutton, " +
+              "#browser-bottombox, " +
+              "#browser-bottombox toolbarbutton { color: " + textColor + "; font-weight: normal; }",
+              0
+            );
+      } else {
+            styleSheet.insertRule(
               "#navigator-toolbox menubar > menu, " +
               "#navigator-toolbox toolbarbutton, " +
               "#browser-bottombox, " +
               "#browser-bottombox toolbarbutton { color: " + textColor + "}",
               0
             );
-
+      }
             // FIXME: figure out what to do about the disabled color.  Maybe we
             // should let personas specify it independently and then apply it via
             // a rule like this:
@@ -362,6 +374,8 @@ let PersonaController = {
     let os = Cc["@mozilla.org/xre/app-info;1"].getService(Ci.nsIXULRuntime).OS;
     if (os == "Darwin") {
       if (header.getAttribute("titlebarcolor") != this._defaultTitlebarColor) {
+        header.setAttribute("activetitlebarcolor", this._defaultTitlebarColor);
+        header.setAttribute("inactivetitlebarcolor", this._defaultTitlebarColor);
         header.setAttribute("titlebarcolor", this._defaultTitlebarColor);
         // FIXME: Incredibly gross hack in order to force a window redraw event
         // that ensures that the titlebar color change is applied.  Note that
@@ -530,7 +544,7 @@ let PersonaController = {
 
   onSelectPreferences: function() {
     window.openDialog('chrome://personas/content/preferences.xul', '', 
-                         'chrome, dialog, centerscreen, resizable=yes', null);
+		'chrome,titlebar,toolbar,centerscreen');
   },
 
   onSelectCustom: function() {
@@ -608,18 +622,33 @@ let PersonaController = {
 
   onPersonaPopupShowing: function(event) {
     if (event.target != this._menu)
-      return;
+      return false;
 
     // FIXME: make sure we have this data and display something meaningful
     // if we don't have it yet.
+    if(!this._personaSvc.categories || !this._personaSvc.personas) {
+        alert("Personas Data not available yet. Please check your network connection and restart Firefox, or try again in a few minutes.");
+	return false;
+    }
     let categories = this._personaSvc.categories.wrappedJSObject;
     let personas = this._personaSvc.personas.wrappedJSObject;
 
     this._rebuildMenu(categories, personas);
 
+    let customMenu = this._getPref("extensions.personas.showCustomMenu");
+    if (customMenu) {
+      let customMenu = document.getElementById("custom-menu");
+      customMenu.setAttribute("label", this._getPref("extensions.personas.custom.customName"));
+      customMenu.setAttribute("hidden", "false");
+    } else {
+      document.getElementById("custom-menu").setAttribute("hidden", "true");
+    }
+   
     let submissionsMenu = document.getElementById("personas-submissions-menu");
     if (!submissionsMenu.firstChild) 
       submissionsMenu.parentNode.setAttribute("hidden", "true");
+
+    return true;
   },
 
   _rebuildMenu: function(categories, personas) {
@@ -701,9 +730,6 @@ let PersonaController = {
       else {
         let categoryMenu = document.getElementById(category.parent);
         categoryMenu.insertBefore(menu, categoryMenu.firstChild);
-      }
-    
-      if (category.id == "personas-submissions-menu") {
       }
     }
   },

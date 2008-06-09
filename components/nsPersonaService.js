@@ -310,6 +310,13 @@ PersonaService.prototype = {
               this.resetPersona();
             break;
 
+          case "extensions.personas.useTextColor":
+	  case "extensions.personas.useAccentColor":
+	    let personaID = this._getPref("extensions.personas.selected", "default");
+            this._switchToPersona("default");
+            this._switchToPersona(personaID);
+            break;
+
           case "extensions.personas.custom.textColor":
           case "extensions.personas.custom.useDefaultTextColor":
             this._onChangeCustomTextColor();

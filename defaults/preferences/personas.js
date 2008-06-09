@@ -40,3 +40,6 @@ pref("extensions.personas.useAccentColor", true);
 // User preference to enable/disable use of the text color provided 
 // by Persona in the feed.
 pref("extensions.personas.useTextColor", true);
+pref("extensions.personas.showCustomMenu", false);
+pref("extensions.personas.custom.customName", "Custom Persona");
+

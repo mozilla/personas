@@ -7,5 +7,4 @@
 <!ENTITY useTextColor.label     "Use text color">
 <!ENTITY useAccentColor.label   "Use accent color">
 <!ENTITY advancedSettings.label "Advanced">
-<!ENTITY submitPersona.label    "Submit Persona to Directory">
-<!ENTITY customEditor.label     "Use Custom Editor">
+<!ENTITY showCustomMenu.label   "Show Custom Persona in menu">

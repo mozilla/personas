@@ -50,6 +50,13 @@ let CustomPersonaEditor = {
     return this._stringBundle;
   },
 
+  get _customName() {
+    let customName = document.getElementById("customName");
+    delete this._customName;
+    this._customName = customName;
+    return this._customName;
+  },
+
   get _headerURL() {
     let headerURL = document.getElementById("headerURL");
     delete this._headerURL;
@@ -76,24 +83,6 @@ let CustomPersonaEditor = {
     delete this._accentColorPicker;
     this._accentColorPicker = accentColorPicker;
     return this._accentColorPicker;
-  },
-
-  get _useDefaultTextColorCheckbox() {
-    let useDefaultTextColorCheckbox = document.getElementById("useDefaultTextColorCheckbox");
-    delete this._useDefaultTextColorCheckbox;
-    this._useDefaultTextColorCheckbox = useDefaultTextColorCheckbox;
-    return this._useDefaultTextColorCheckbox;
-  },
-
-  get _useDefaultAccentColorCheckbox() {
-    let useDefaultAccentColorCheckbox = document.getElementById("useDefaultAccentColorCheckbox");
-    delete this._useDefaultAccentColorCheckbox;
-    this._useDefaultAccentColorCheckbox = useDefaultAccentColorCheckbox;
-    return this._useDefaultAccentColorCheckbox;
-  },
-
-  get _autoPreview() {
-    return document.getElementById("autoPreviewCheckbox").checked;
   },
 
   get _personaSvc() {
@@ -152,13 +141,11 @@ let CustomPersonaEditor = {
   init: function() {
     this._headerURL.value = this._getPref("custom.headerURL", "");
     this._footerURL.value = this._getPref("custom.footerURL", "");
+    this._customName.value = this._getPref("custom.customName", "");
     this._textColorPicker.color = this._getPref("custom.textColor", "#000000");
     this._accentColorPicker.color = this._getPref("custom.accentColor", "#C9C9C9");
 
-    this._applyPrefUseDefaultTextColor();
-    this._applyPrefUseDefaultAccentColor();
-
-    this._maybeAutoPreview();
+    this._updatePreview();
   },
 
 
@@ -170,7 +157,6 @@ let CustomPersonaEditor = {
   observe: function(aSubject, aTopic, aData) {
     switch(aTopic) {
       case "nsPref:changed":
-        // Apply pref changes to the controls.
         switch (aData) {
           case "custom.headerURL":
             this._headerURL.value = this._getPref("custom.headerURL", "");
@@ -181,65 +167,29 @@ let CustomPersonaEditor = {
           case "custom.textColor":
             this._textColorPicker.color = this._getPref("custom.textColor", "#000000");
             break;
-          case "custom.useDefaultTextColor":
-            this._applyPrefUseDefaultTextColor();
-            break;
           case "custom.accentColor":
             this._accentColorPicker.color = this._getPref("custom.accentColor", "#C9C9C9");
-            break;
-          case "custom.useDefaultAccentColor":
-            this._applyPrefUseDefaultAccentColor();
             break;
         }
         break;
     }
   },
 
-
   //**************************************************************************//
-  // Settings -> Controls
 
-  _applyPrefUseDefaultTextColor: function() {
-    let useDefaultTextColor =
-      this._getPref("custom.useDefaultTextColor", true);
-    // Disable the disabling of the colorpicker since it horks keyboard
-    // navigation.
-    //if (useDefaultTextColor)
-    //  this._textColorPicker.setAttribute("disabled", "true");
-    //else
-    //  this._textColorPicker.removeAttribute("disabled");
-    this._useDefaultTextColorCheckbox.checked = useDefaultTextColor;
-  },
-
-  _applyPrefUseDefaultAccentColor: function() {
-    let useDefaultAccentColor =
-      this._getPref("custom.useDefaultAccentColor", true);
-    // Disable the disabling of the colorpicker since it horks keyboard
-    // navigation.
-    //if (useDefaultAccentColor)
-    //  this._accentColorPicker.setAttribute("disabled", "true");
-    //else
-    //  this._accentColorPicker.removeAttribute("disabled");
-    this._useDefaultAccentColorCheckbox.checked = useDefaultAccentColor;
-  },
-
-
-  //**************************************************************************//
-  // Controls -> Settings
-
-  onAutoPreview: function() {
-    // Update the Preview button based on the auto-preview checkbox's state,
-    // and preview or reset the persona based on whether auto-preview has been
-    // enabled or disabled.
-    if (this._autoPreview)
+  _updatePreview: function() {
       this._personaSvc.previewPersona("manual");
-    else
-      this._personaSvc.resetPersona();
   },
 
-  _maybeAutoPreview: function() {
-    if (this._autoPreview)
-      this._personaSvc.previewPersona("manual");
+  onChangeName: function(aEvent) {
+      let control = aEvent.target;
+      let pref = control.parentNode.getAttribute("pref");
+      // Trim leading and trailing whitespace.
+      let value = control.value.replace(/^\s*|\s*$/g, "");
+      if (value == "")
+	  this._prefSvc.setCharPref(pref, "Custom Persona");
+      else
+          this._prefSvc.setCharPref(pref, value);
   },
 
   // Apply header and footer control changes to the prefs.
@@ -252,7 +202,7 @@ let CustomPersonaEditor = {
       this._prefSvc.clearUserPref(pref);
     else
       this._prefSvc.setCharPref(pref, value);
-    this._maybeAutoPreview();
+    this._updatePreview();
   },
 
   onSelectBackground: function(aEvent) {
@@ -266,36 +216,30 @@ let CustomPersonaEditor = {
     if (result == Ci.nsIFilePicker.returnOK) {
       this._prefSvc.setCharPref(pref, fp.fileURL.spec);
       control.value = fp.fileURL.spec;
-      this._maybeAutoPreview();
+      this._updatePreview();
     }
   },
 
   onChangeTextColor: function(aEvent) {
-    this._prefSvc.setCharPref("custom.textColor",
-                              this._textColorPicker.color);
-    this._maybeAutoPreview();
+    this._prefSvc.setCharPref("custom.textColor", this._textColorPicker.color);
+    this._personaSvc.resetPersona();
+    this._updatePreview();
   },
 
-  onChangeUseDefaultTextColor: function(aEvent) {
-    // Setting the pref will trigger our pref observer, which will call
-    // _applyPrefUseDefaultTextColor to update the UI accordingly.
-    this._prefSvc.setBoolPref("custom.useDefaultTextColor",
-                              this._useDefaultTextColorCheckbox.checked);
-    this._maybeAutoPreview();
+  onSetDefaultTextColor: function(aEvent) {
+    this._prefSvc.setCharPref("custom.textColor", "#000000");
+    this.onChangeTextColor();
   },
 
   onChangeAccentColor: function(aEvent) {
-    this._prefSvc.setCharPref("custom.accentColor",
-                              this._accentColorPicker.color);
-    this._maybeAutoPreview();
+    this._prefSvc.setCharPref("custom.accentColor", this._accentColorPicker.color);
+    this._personaSvc.resetPersona();
+    this._updatePreview();
   },
 
-  onChangeUseDefaultAccentColor: function(aEvent) {
-    // Setting the pref will trigger our pref observer, which will call
-    // _applyPrefUseDefaultAccentColor to update the UI accordingly.
-    this._prefSvc.setBoolPref("custom.useDefaultAccentColor",
-                              this._useDefaultAccentColorCheckbox.checked);
-    this._maybeAutoPreview();
+  onSetDefaultAccentColor: function(aEvent) {
+    this._prefSvc.setCharPref("custom.accentColor", "#C9C9C9");
+    this.onChangeAccentColor();
   },
 
   onClose: function() {

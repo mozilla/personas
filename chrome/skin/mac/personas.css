@@ -44,28 +44,42 @@
   background-position: top right;
 }
 
-/* Make the toolbox and tabbox transparent so the image shines through them. */
+/* Make the toolbox and tabs transparent so the image shines through them. */
+#main-window[persona] .tabbrowser-tabs,
 #main-window[persona] toolbar {
   -moz-appearance: none;
   background-image: none; 
   background-color: transparent; 
 }
 
-#main-window[persona] .tabbrowser-tabs {
+/* Gray out the window slightly when it's not active. */
+#main-window[persona]:not([active="true"]) > #navigator-toolbox > toolbar,
+#main-window[persona]:not([active="true"]) > #navigator-toolbox > #nav-bar,
+#main-window[persona]:not([active="true"]) > #navigator-toolbox > #PersonalToolbar {
   -moz-appearance: none;
   background-image: none; 
+  background-color: transparent; 
+}
+#main-window[persona]:not([active="true"]) .tabbrowser-strip {
+  opacity: 0.8; 
 }
 
+/* Style the tabs. */
+#main-window[persona] .tabbrowser-strip {
+  -moz-appearance: none;
+  background-image: url(chrome://personas/skin/tabbrowser-tabs-bkgnd.png);
+  background-color: transparent; 
+}
 #main-window[persona] .tabbrowser-tab {
   opacity: 0.6;
 }
-
+#main-window[persona] .tabbrowser-tab[selected="true"],
 #main-window[persona] .tabbrowser-tab:hover {
-  opacity: 0.8;
+  opacity: 1.0;
 }
-
-#main-window[persona] .tabbrowser-tab[selected="true"] {
-  opacity: 1.0 !important;
+#main-window[persona] .tab-text,
+#main-window[persona] .tab-text-shadow {
+  font-weight: normal !important;
 }
 
 #main-window[persona] .tabbrowser-tab[selected="true"] > .tab-image-left {
@@ -92,7 +106,15 @@
 
 /* Make some elements a little transparent so the persona flavors their look. */
 #main-window[persona] #urlbar,
-#main-window[persona] #searchbar,
-#main-window[persona] #nav-bar toolbarbutton {
+#main-window[persona] #searchbar {
   opacity: 0.8;
+}
+
+#main-window[persona] .toolbarbutton-1, #back-forward-dropmarker {
+  opacity: 0.9;
+}
+
+#main-window[persona] toolbarbutton.bookmark-item {
+  -moz-appearance: none;
+  background-color: transparent;
 }

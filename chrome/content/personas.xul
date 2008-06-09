@@ -56,19 +56,24 @@
     <menu id="personas-menu" class="menu-iconic" label="&personas_app_title;" 
                 insertafter="menu_openAddons">
        <menupopup id="personas-selector-menu"
-                  onpopupshowing="if (event.target == this) PersonaController.onPersonaPopupShowing(event)"
+                  onpopupshowing="if (event.target == this) return PersonaController.onPersonaPopupShowing(event)"
                   onpopuphiding="if (event.target == this) PersonaController.onMenuPopupHiding();">
-        <menu id="persona-current" class="menu-iconic">
-          <menupopup id="persona-context-menu">
-            <menuitem label="&contextHomePage.label;" disabled="true"/>
-            <menuitem label="&contextPreferences.label;" disabled="true"/>
-          </menupopup>
-        </menu>
+        <menuitem id="persona-current" class="menu-iconic"/>
         <menuseparator id="personasOpeningSeparator"/>
         <menuseparator id="personasClosingSeparator" hidden="true"/>
+        <menu id="custom-menu">
+          <menupopup id="custom-context-menu">
+            <menuitem label="&contextApply.label;" personaid="manual" oncommand="PersonaController.onSelectPersona(event)" id="custom-menu-apply"/>
+            <menuitem label="&contextEdit.label;" oncommand="PersonaController.onSelectCustom(event)"/>
+          </menupopup>
+        </menu>
         <menuseparator/>
-        <menuitem label="&useDefaultPersona.label;" personaid="default"
+        <menuitem label="&useDefaultPersona.label;" 
+                  personaid="default"
                   oncommand="PersonaController.onSelectDefault(event)"/>
+        <menuseparator/>
+        <menuitem label="&preferences.label;" 
+                  oncommand="PersonaController.onSelectPreferences(event)"/>
       </menupopup>
     </menu>
   </menupopup>

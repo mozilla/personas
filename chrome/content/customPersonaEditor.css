@@ -37,17 +37,14 @@
 
 window {
   -moz-appearance: none;
-  background-color: transparent;
   background-image: url('chrome://personas/content/background.jpg');
+  background-color: transparent;
   color: -moz-dialogtext;
   font: message-box;
 }
 
 #top {
-  background-image: url('chrome://personas/content/background-accent.jpg');
-  height: 200px;
-  padding-top: 15px;
-  padding-left: 50px;
+  padding: 10px;
 }
 
 #form {
@@ -60,7 +57,7 @@ window {
 
 #title {
   font-size: 2em;
-  margin-top: 0;
+  margin-top: 15px;
   margin-bottom: 0.5em;
   border-bottom: 1px solid threedlightshadow;
 }

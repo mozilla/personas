@@ -62,10 +62,13 @@
 /* Make some elements a little transparent so the persona flavors their look. */
 #main-window[persona] .tabbrowser-tab {
   background-color: -moz-dialog;
+  opacity: 0.6;
+}
+#main-window[persona] .tabbrowser-tab[selected="true"] {
+  opacity: 0.8;
 }
 #main-window[persona] #urlbar,
-#main-window[persona] #searchbar,
-#main-window[persona] .tabbrowser-tab {
+#main-window[persona] #searchbar {
   opacity: 0.8;
 }
 
@@ -75,7 +78,6 @@
 #main-window[persona] toolbarbutton.bookmark-item {
   -moz-appearance: none;
   background-color: transparent;
-  opacity: 0.8;
 }
 
 #personas-menu {

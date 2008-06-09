@@ -15,24 +15,4 @@ skin  personas  classic/1.0  chrome/skin/linux/    appversion>=3.0b1  os=Linux
 #resource personas              modules/
 
 # localizations in alphabetical order
-locale   personas   cs-CZ       chrome/locale/cs-CZ/
-locale   personas   de-DE       chrome/locale/de-DE/
-locale   personas   el-GR       chrome/locale/el-GR/
 locale   personas   en-US       chrome/locale/en-US/
-locale   personas   es-ES       chrome/locale/es-ES/
-locale   personas   es-VE       chrome/locale/es-VE/
-locale   personas   fr-FR       chrome/locale/fr-FR/
-locale   personas   he-IL       chrome/locale/he-IL/
-locale   personas   hr-HR       chrome/locale/hr-HR/
-locale   personas   ja-JP       chrome/locale/ja-JP/
-locale   personas   ko-KR       chrome/locale/ko-KR/
-locale   personas   nb-NO       chrome/locale/nb-NO/
-locale   personas   nl-NL       chrome/locale/nl-NL/
-locale   personas   pl-PL       chrome/locale/pl-PL/
-locale   personas   pt-BR       chrome/locale/pt-BR/
-locale   personas   ru-RU       chrome/locale/ru-RU/
-locale   personas   sk-SK       chrome/locale/sk-SK/
-locale   personas   sv-SE       chrome/locale/sv-SE/
-locale   personas   tr-TR       chrome/locale/tr-TR/
-locale   personas   zh-CN       chrome/locale/zh-CN/
-locale   personas   zh-TW       chrome/locale/zh-TW/
