@@ -42,7 +42,6 @@ let PersonaController = {
   _previewTimeoutID: null,
   _resetTimeoutID: null,
 
-
   //**************************************************************************//
   // Convenience Getters
 
@@ -119,7 +118,6 @@ let PersonaController = {
       case 'ja-JP-mac':
         return "ja";
     }
-
     return "en-US";
   },
 
@@ -156,7 +154,6 @@ let PersonaController = {
   },
 
   // nsIDOMEventListener
-
   handleEvent: function(aEvent) {
     switch (aEvent.type) {
       case "SelectPersona":
@@ -237,16 +234,12 @@ let PersonaController = {
                       getService(Ci.nsIExtensionManager).
                       getItemForID(PERSONAS_EXTENSION_ID).version;
     if (lastVersion == "firstrun") {
-// FIXME: we'll need to add locale support for the static content pages.
-//      let firstRunURL = this._siteURL + this._locale + "/firstrun/?version=" + thisVersion;
-      let firstRunURL = this._siteURL +"/firstrun/?version=" + thisVersion;
+      let firstRunURL = this._siteURL + this._locale + "/firstrun/?version=" + thisVersion;
       setTimeout(function() { window.openUILinkIn(firstRunURL, "tab") }, 500);
       this._prefSvc.setCharPref("extensions.personas.lastversion", thisVersion);
     }
     else if (lastVersion != thisVersion) {
-// FIXME: we'll need to add locale support for the static content pages.
-//      let updatedURL = this._siteURL + this._locale + "/updated/?version=" + thisVersion;
-      let updatedURL = this._siteURL + "/updated/?version=" + thisVersion;
+      let updatedURL = this._siteURL + this._locale + "/updated/?version=" + thisVersion;
       setTimeout(function() { window.openUILinkIn(updatedURL, "tab") }, 500);
       this._prefSvc.setCharPref("extensions.personas.lastversion", thisVersion);
     }
