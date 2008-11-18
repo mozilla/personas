@@ -614,6 +614,7 @@ PersonaService.prototype = {
     this._footerLoader.reset();
     this.textColor = null;
     this.accentColor = null;
+    this.type = null;
 
     if (this._loadState == LOAD_STATE_LOADING) {
       // FIXME: cancel the requests currently in process in the header
@@ -690,15 +691,18 @@ PersonaService.prototype = {
                                                 Ci.nsITimer.TYPE_REPEATING_SLACK);
   },
 
-  _snapshotPersona: function() {
-    this.headerURL = this._headerLoader.getSnapshotURL();
-    this.footerURL = this._footerLoader.getSnapshotURL();
-    this.textColor = this._getTextColor(this._activePersona);
-    this.accentColor = this._getAccentColor(this._activePersona);
-
-    // Notify application windows so they update their appearance to reflect
-    // the new versions of the background images.
-    this._obsSvc.notifyObservers(null, "personas:activePersonaUpdated", null);
+  _snapshotPersona: function() {   
+   let personaType = this._getPersonaType(this._activePersona);
+   if (personaType== "dynamic") {
+      this.headerURL = this._headerLoader.getSnapshotURL();
+      this.footerURL = this._footerLoader.getSnapshotURL();
+   } else {
+      this.headerURL = this._getHeaderURL(this._activePersona);
+      this.footerURL = this._getFooterURL(this._activePersona);
+   }   
+   this.textColor = this._getTextColor(this._activePersona);
+   this.accentColor = this._getAccentColor(this._activePersona);
+   this._obsSvc.notifyObservers(null, "personas:activePersonaUpdated", null);
   },
 
   _getRandomPersona: function() {
@@ -775,7 +779,7 @@ PersonaService.prototype = {
 
     let persona = this._getPersona(aPersonaID);
     if (persona && persona.baseURL)
-      return persona.baseURL + "?action=header";
+      return persona.baseURL + "-header.jpg";
 
     return null;
   },
@@ -789,9 +793,22 @@ PersonaService.prototype = {
 
     let persona = this._getPersona(aPersonaID);
     if (persona && persona.baseURL)
-      return persona.baseURL + "?action=footer";
+      return persona.baseURL + "-footer.jpg";
 
     return null;
+  },
+
+  _getPersonaType: function(aPersonaID) {
+    if (aPersonaID == "manual")
+      return "manual";
+
+    let persona = this._getPersona(aPersonaID);
+    if (persona) {
+      if (persona.type)
+        return persona.type;
+    }
+
+    return "unknown";
   },
 
   _getTextColor: function(aPersonaID) {
