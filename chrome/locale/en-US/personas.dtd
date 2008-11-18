@@ -1,7 +1,7 @@
 <!ENTITY personas_app_title 	  "Personas for Firefox">
 
 <!ENTITY useDefaultPersona.label  "Default">
-<!ENTITY preferences.label        "Preferences">
+<!ENTITY preferences.label        "Preferences...">
 
 <!ENTITY customPersona.label      "Custom Persona">
 <!ENTITY customName.label         "Name:">
