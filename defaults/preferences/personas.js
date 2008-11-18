@@ -12,12 +12,12 @@ pref("extensions.personas.lastlistupdate", "");
 pref("extensions.personas.authorizedHosts", ".mozilla.com");
 
 // The interval between consecutive persona reloads.  Measured in minutes,
-// with a default of 60 minutes and a minimum of one minute.
-pref("extensions.personas.reloadInterval", 60);
+// with a default of 24 hours and a minimum of one minute.
+pref("extensions.personas.reloadInterval", 1440); 
 
 // The interval between consecutive persona snapshots.  Measured in seconds,
-// with a default of 60 seconds and a minimum of one second.
-pref("extensions.personas.snapshotInterval", 60);
+// with a default of 1 hour and a minimum of one second.
+pref("extensions.personas.snapshotInterval", 3600);
 
 // How long to wait onmouseover/out before triggering a persona preview
 // or reset, in milliseconds.  It's not particularly useful for users to be able
