@@ -46,22 +46,18 @@ const LOAD_STATE_EMPTY = 0;
 const LOAD_STATE_LOADING = 1;
 const LOAD_STATE_LOADED = 2;
 
-// In Firefox 3 we import modules using Cu.import, but in Firefox 2, which does
-// not support modules, we use the subscript loader to load them as subscripts.
-if ("import" in Cu) {
-  Cu.import("resource://gre/modules/XPCOMUtils.jsm");
-  Cu.import("resource://gre/modules/JSON.jsm");
-}
-else {
-  let subscriptLoader = Cc["@mozilla.org/moz/jssubscript-loader;1"].
-                        getService(Ci.mozIJSSubScriptLoader);
-  // These have to be loaded using chrome: URLs to files inside one of the
-  // chrome directories because the "personas" resource: alias isn't available
-  // yet and can't be registered until later in the process, but we need the
-  // XPCOMUtils module immediately.
-  subscriptLoader.loadSubScript("chrome://personas/content/modules/XPCOMUtils.jsm");
-  subscriptLoader.loadSubScript("chrome://personas/content/modules/JSON.jsm");
-  subscriptLoader.loadSubScript("chrome://personas/content/modules/PrefCache.js");
+Cu.import("resource://gre/modules/XPCOMUtils.jsm");
+
+// Firefox 3.1 includes a native JSON API.  For 3.0, we import the JSON module
+// and wrap it in an interface compatible with the native JSON API in 3.1.
+if (Cc["@mozilla.org/xre/app-info;1"].getService(Ci.nsIXULAppInfo).
+    version.indexOf("3.0") == 0) {
+  var JSON = {
+    JSON: null,
+    parse: function(jsonString) { return this.JSON.fromString(jsonString) },
+    stringify: function(jsObject) { return this.JSON.toString(jsObject) }
+  }
+  Cu.import("resource://gre/modules/JSON.jsm", JSON);
 }
 
 
@@ -556,7 +552,7 @@ PersonaService.prototype = {
     if (request.status != 200)
       throw("problem loading categories: " + request.status + " - " + request.statusText);
 
-    let categories = JSON.fromString(request.responseText).categories;
+    let categories = JSON.parse(request.responseText).categories;
     this.categories = { wrappedJSObject: categories };
 
     this._prefSvc.setCharPref("extensions.personas.lastcategoryupdate",
@@ -572,7 +568,7 @@ PersonaService.prototype = {
 
     // The "personas" member of the JSON response object is an array of hashes
     // where each hash represents one persona.
-    let personas = JSON.fromString(request.responseText).personas;
+    let personas = JSON.parse(request.responseText).personas;
 
     // To share this with (JavaScript) XPCOM consumers without having to create
     // an complex XPCOM interface to it, we just pass it as a wrapped JS object.
@@ -693,13 +689,13 @@ PersonaService.prototype = {
 
   _snapshotPersona: function() {   
    let personaType = this._getPersonaType(this._activePersona);
-   if (personaType== "dynamic") {
+   //if (personaType == "dynamic") {
       this.headerURL = this._headerLoader.getSnapshotURL();
       this.footerURL = this._footerLoader.getSnapshotURL();
-   } else {
-      this.headerURL = this._getHeaderURL(this._activePersona);
-      this.footerURL = this._getFooterURL(this._activePersona);
-   }   
+   //} else {
+      //this.headerURL = this._getHeaderURL(this._activePersona);
+      //this.footerURL = this._getFooterURL(this._activePersona);
+   //}
    this.textColor = this._getTextColor(this._activePersona);
    this.accentColor = this._getAccentColor(this._activePersona);
    this._obsSvc.notifyObservers(null, "personas:activePersonaUpdated", null);
@@ -779,7 +775,8 @@ PersonaService.prototype = {
 
     let persona = this._getPersona(aPersonaID);
     if (persona && persona.baseURL)
-      return persona.baseURL + "-header.jpg";
+      //return persona.baseURL + "-header.jpg";
+      return persona.baseURL + "?action=header";
 
     return null;
   },
@@ -793,7 +790,8 @@ PersonaService.prototype = {
 
     let persona = this._getPersona(aPersonaID);
     if (persona && persona.baseURL)
-      return persona.baseURL + "-footer.jpg";
+      //return persona.baseURL + "-footer.jpg";
+      return persona.baseURL + "?action=footer";
 
     return null;
   },
