@@ -1,0 +1,16 @@
+<!ENTITY personas_app_title "Firefox için Personas">
+<!ENTITY useDefaultPersona.label "Varsayılan">
+<!ENTITY useCustomPersona.label "Özel...">
+<!ENTITY aboutPersonas.label "Hakkında...">
+<!ENTITY preferences.label "Seçenekler...">
+<!ENTITY customPersona.label "Özel Persona">
+<!ENTITY header.label "Başlık:">
+<!ENTITY selectBackground.label "Gözat...">
+<!ENTITY footer.label "Altbilgi:">
+<!ENTITY textColorPicker.label "Yazı Rengi:">
+<!ENTITY accentColorPicker.label "Vurgu Rengi:">
+<!ENTITY useDefaultColor.label "Varsayılanı kullan">
+<!ENTITY closeButton.label "Kapat">
+<!ENTITY autoPreviewCheckbox.label "Otomatik-önizleme">
+<!ENTITY previewButton.label "Önizleme">
+<!ENTITY applyButton.label "Uygula">
