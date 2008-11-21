@@ -689,13 +689,13 @@ PersonaService.prototype = {
 
   _snapshotPersona: function() {   
    let personaType = this._getPersonaType(this._activePersona);
-   if (personaType== "dynamic") {
+   //if (personaType == "dynamic") {
       this.headerURL = this._headerLoader.getSnapshotURL();
       this.footerURL = this._footerLoader.getSnapshotURL();
-   } else {
-      this.headerURL = this._getHeaderURL(this._activePersona);
-      this.footerURL = this._getFooterURL(this._activePersona);
-   }   
+   //} else {
+      //this.headerURL = this._getHeaderURL(this._activePersona);
+      //this.footerURL = this._getFooterURL(this._activePersona);
+   //}
    this.textColor = this._getTextColor(this._activePersona);
    this.accentColor = this._getAccentColor(this._activePersona);
    this._obsSvc.notifyObservers(null, "personas:activePersonaUpdated", null);
@@ -775,7 +775,8 @@ PersonaService.prototype = {
 
     let persona = this._getPersona(aPersonaID);
     if (persona && persona.baseURL)
-      return persona.baseURL + "-header.jpg";
+      //return persona.baseURL + "-header.jpg";
+      return persona.baseURL + "?action=header";
 
     return null;
   },
@@ -789,7 +790,8 @@ PersonaService.prototype = {
 
     let persona = this._getPersona(aPersonaID);
     if (persona && persona.baseURL)
-      return persona.baseURL + "-footer.jpg";
+      //return persona.baseURL + "-footer.jpg";
+      return persona.baseURL + "?action=footer";
 
     return null;
   },
