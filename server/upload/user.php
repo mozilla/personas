@@ -13,6 +13,11 @@
 		
 		try
 		{
+			if (!preg_match('/^[A-Z0-9._-]+/i', $username)) 
+			{
+				throw new Exception("Illegal characters in username");
+			}
+
 			if ($password != $passwordconf)
 			{
 				throw new Exception("Password does not match confirmation");
@@ -21,7 +26,7 @@
 			$db = new PersonaStorage();
 			if ($db->user_exists($username))
 			{
-				report_problem("User already exists", 400);
+				throw new Exception("User already exists");
 			}
 			
 			$db->create_user($username, $password, $email);
