@@ -64,6 +64,11 @@
   list-style-image: url("chrome://personas/content/Throbber-small.gif");
 }
 
+#personas-selector-menu menuitem[header] {
+  font-weight: bold;
+  color: black;
+}
+
 /* The header is styled in the version/platform-specific files in the skin. */
 
 
@@ -71,7 +76,7 @@
 
 #browser-bottombox[persona] {
   background-repeat: no-repeat;
-  background-position: bottom left;
+  background-position: bottom right;
   background-color: transparent;
 }
 

@@ -425,8 +425,8 @@ let PersonaController = {
 
   onSelectPersona: function(aEvent) {
     let personaID = aEvent.target.getAttribute("personaid");
-    let categoryID = aEvent.target.getAttribute("categoryid");
-    this._selectPersona(personaID, categoryID);
+    let categoryName = aEvent.target.getAttribute("categoryname");
+    this._selectPersona(personaID, categoryName);
   },
 
   /**
@@ -435,7 +435,7 @@ let PersonaController = {
    * @param personaID the ID of the persona to select
    * @param categoryID the ID of the category to which persona belongs
    */
-  _selectPersona: function(personaID, categoryID) {
+  _selectPersona: function(personaID, categoryName) {
     // Update the list of recent personas.
     if (personaID != "default" && personaID != this._selectedPersona && this._selectedPersona != "random") {
       this._prefSvc.setCharPref("extensions.personas.lastselected3",
@@ -448,7 +448,7 @@ let PersonaController = {
     }
 
     // Save the new selection to prefs.
-    this._prefSvc.setCharPref("extensions.personas.category", categoryID);
+    this._prefSvc.setCharPref("extensions.personas.category", categoryName);
     this._prefSvc.setCharPref("extensions.personas.selected", personaID);
   },
 
@@ -636,10 +636,6 @@ let PersonaController = {
     } else {
       document.getElementById("custom-menu").setAttribute("hidden", "true");
     }
-   
-    let submissionsMenu = document.getElementById("personas-submissions-menu");
-    if (!submissionsMenu.firstChild) 
-      submissionsMenu.parentNode.setAttribute("hidden", "true");
 
     return true;
   },
@@ -656,8 +652,9 @@ let PersonaController = {
     if (this._selectedPersona == "random") {
        personaStatus.setAttribute("class", "menuitem-iconic");
        personaStatus.setAttribute("image", "chrome://personas/content/random-feed-16x16.png");
+       // FIXME: make this a formatted string using %S in the properties file.
        personaStatus.setAttribute("label", this._stringBundle.getString("useRandomPersona.label") + " " +
-                                           this._getCategoryName(this._getPref("extensions.personas.category")) + " > " +
+                                           this._getPref("extensions.personas.category") + " > " +
                                            this._getPersonaName(this._getPref("extensions.personas.lastrandom")));
     }
     else {
@@ -666,64 +663,66 @@ let PersonaController = {
        personaStatus.setAttribute("label", this._getPersonaName(this._selectedPersona));
     }
 
-    for each (let category in categories) {
+    // FIXME: factor out all the common code below.
+
+    // Create the "Recent Personas" menu.
+    {
       let menu = document.createElement("menu");
-      menu.setAttribute("label", category.label);
+      menu.setAttribute("label", this._stringBundle.getString("recent.label"));
       let popupmenu = document.createElement("menupopup");
-      popupmenu.setAttribute("id", category.id);
+  
+      for each (let persona in this._personaSvc.recent.wrappedJSObject)
+        popupmenu.appendChild(this._createPersonaItem(persona, null));
+  
+      popupmenu.appendChild(this._createSubcategoryHeader("yourRecent"));
 
-      switch (category.type) {
-        case "list":
-          for each (let persona in personas) {
-            let needle = category.id;
-            let haystack = persona.menu;
-            if (haystack.search(needle) == -1)
-              continue;
-
-            let item = this._createPersonaItem(persona, category.id);
-            popupmenu.appendChild(item);
-          }
-
-          // Create an item that picks a random persona from the category.
-          popupmenu.appendChild(document.createElement("menuseparator"));
-
-          let (item = document.createElement("menuitem")) {
-            item.setAttribute("personaid", "random");
-            item.setAttribute("categoryid", category.id);
-            item.setAttribute("class", "menuitem-iconic");
-            item.setAttribute("image", "chrome://personas/content/random-feed-16x16.png");
-            item.setAttribute("label", this._stringBundle.getString("useRandomPersona.label") + " " + category.label);
-            item.setAttribute("oncommand", "PersonaController.onSelectPersona(event);");
-            popupmenu.appendChild(item);
-          }
-          break;
-
-        case "recent":
-          for (let i = 0; i < 4; i++) {
-            let recentID = this._getPref("extensions.personas.lastselected" + i);
-            if (!recentID)
-              continue;
-
-            // Find the persona whose ID matches the one in the preference.
-            for each (let persona in personas) {
-              if (persona.id == recentID) {
-                let item = this._createPersonaItem(persona, "");
-                popupmenu.appendChild(item);
-                break;
-              }
-            }
-          }
-          break;
+      for (let i = 0; i < 4; i++) {
+        let recentID = this._getPref("extensions.personas.lastselected" + i);
+        if (!recentID)
+          continue;
+  
+        let persona = this._getPersona(recentID);
+        if (persona)
+          popupmenu.appendChild(this._createPersonaItem(persona, ""));
       }
 
       menu.appendChild(popupmenu);
+      this._menu.insertBefore(menu, closingSeparator);
+    }
 
-      if (category.parent == "top")
-        this._menu.insertBefore(menu, closingSeparator);
-      else {
-        let categoryMenu = document.getElementById(category.parent);
-        categoryMenu.insertBefore(menu, categoryMenu.firstChild);
+    // Create the "Popular Personas" menu.
+    {
+      let menu = document.createElement("menu");
+      menu.setAttribute("label", this._stringBundle.getString("popular.label"));
+      let popupmenu = document.createElement("menupopup");
+  
+      for each (let persona in this._personaSvc.popular.wrappedJSObject)
+        popupmenu.appendChild(this._createPersonaItem(persona, null));
+
+      menu.appendChild(popupmenu);
+      this._menu.insertBefore(menu, closingSeparator);
+    }
+
+    this._menu.insertBefore(document.createElement("menuseparator"), closingSeparator);
+
+    for (let categoryName in categories) {
+      let category = categories[categoryName];
+      let menu = document.createElement("menu");
+      menu.setAttribute("label", categoryName);
+      let popupmenu = document.createElement("menupopup");
+
+      for each (let subcategory in ["popular", "recent"]) {
+        popupmenu.appendChild(this._createSubcategoryHeader(subcategory));
+        for each (let persona in category[subcategory])
+          popupmenu.appendChild(this._createPersonaItem(persona, category.id));
       }
+
+      // Create an item that picks a random persona from the category.
+      popupmenu.appendChild(document.createElement("menuseparator"));
+      popupmenu.appendChild(this._createRandomItem(categoryName));
+
+      menu.appendChild(popupmenu);
+      this._menu.insertBefore(menu, closingSeparator);
     }
   },
 
@@ -746,29 +745,53 @@ let PersonaController = {
 
     for each (let persona in personas)
       if (persona.id == personaID)
-        return persona.label;
+        return persona.name;
 
     return defaultString;
   },
 
-  _createPersonaItem: function(persona, categoryid) {
+  _createSubcategoryHeader: function(subcategory) {
+    let header = document.createElement("menuitem");
+
+    header.setAttribute("header", "true");
+    header.setAttribute("disabled", true);
+    header.setAttribute("label", this._stringBundle.getString(subcategory + ".label"));
+
+    return header;
+  },
+
+  _createPersonaItem: function(persona, categoryName) {
     let item = document.createElement("menuitem");
 
     // We store the ID of the persona in the "personaid" attribute instead of
     // the "id" attribute because "id" has to be unique, and personas sometimes
-    // are associated with multiple menuitems (f.e. one in the Recent menu
-    // and another in a category menu).
+    // are associated with multiple menuitems (f.e. when they are both popular
+    // and recent).
     item.setAttribute("class", "menuitem-iconic");
     item.setAttribute("personaid", persona.id);
-    item.setAttribute("label", persona.label);
+    item.setAttribute("label", persona.name);
     item.setAttribute("type", "checkbox");
     item.setAttribute("checked", (persona.id == this._selectedPersona));
     item.setAttribute("autocheck", "false");
-    item.setAttribute("categoryid", categoryid);
+    item.setAttribute("categoryname", categoryName);
     item.setAttribute("oncommand", "PersonaController.onSelectPersona(event)");
     item.addEventListener("DOMMenuItemActive", function(evt) { PersonaController.onPreviewPersona(evt) }, false);
     item.addEventListener("DOMMenuItemInactive", function(evt) { PersonaController.onResetPersona(evt) }, false);
     
+    return item;
+  },
+
+  _createRandomItem: function(categoryName) {
+    let item = document.createElement("menuitem");
+
+    item.setAttribute("personaid", "random");
+    item.setAttribute("categoryname", categoryName);
+    item.setAttribute("class", "menuitem-iconic");
+    item.setAttribute("image", "chrome://personas/content/random-feed-16x16.png");
+    // FIXME: insert categoryName into the localized string via getFormattedString.
+    item.setAttribute("label", this._stringBundle.getString("useRandomPersona.label") + " " + categoryName);
+    item.setAttribute("oncommand", "PersonaController.onSelectPersona(event);");
+
     return item;
   }
 

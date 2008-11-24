@@ -219,8 +219,10 @@ PersonaService.prototype = {
   // The lists of categories and personas retrieved from the server via JSON,
   // as nsISupports objects whose wrappedJSObject property contains the data.
   // Loaded upon service initialization and reloaded periodically thereafter.
-  categories: null,
   personas: null,
+  popular: null,
+  recent: null,
+  categories: null,
 
   // The latest header and footer URLs and text color.
   headerURL: null,
@@ -434,7 +436,9 @@ PersonaService.prototype = {
     this._delayedInitTimer = null;
 
     // Load the persona loader.
-    this._loadPersonaLoader();
+    // Disabled because we currently don't support dynamic personas,
+    // and we load static personas via a much simpler technique.
+    //this._loadPersonaLoader();
 
     // Load the lists of categories and personas, and define a timer
     // that periodically reloads them.
@@ -528,10 +532,8 @@ PersonaService.prototype = {
 
   _loadData: function() {
     let t = this;
-    this._makeRequest(this._baseURL + this._locale + "/personas_categories.dat",
-                      function(evt) { t.onCategoriesLoad(evt) });
-    this._makeRequest(this._baseURL + this._locale + "/personas_all.dat",
-                      function(evt) { t.onPersonasLoad(evt) });
+    this._makeRequest(this._baseURL + "store/index.json",
+                      function(evt) { t.onDataLoadComplete(evt) });
   },
 
   _makeRequest: function(aURL, aLoadCallback) {
@@ -545,44 +547,55 @@ PersonaService.prototype = {
     request.send(null);
   },
 
-  onCategoriesLoad: function(aEvent) {
+  onDataLoadComplete: function(aEvent) {
     let request = aEvent.target;
 
     // XXX Try to reload again sooner?
     if (request.status != 200)
-      throw("problem loading categories: " + request.status + " - " + request.statusText);
+      throw("problem loading data: " + request.status + " - " + request.statusText);
 
-    let categories = JSON.parse(request.responseText).categories;
-    this.categories = { wrappedJSObject: categories };
+    let data = JSON.parse(request.responseText);
 
-    this._prefSvc.setCharPref("extensions.personas.lastcategoryupdate",
-                              new Date().getTime());
-  },
+    // To share these with (JavaScript) XPCOM consumers without having to create
+    // complex XPCOM interfaces to them, we just pass them as wrapped JS objects.
+    this.popular = { wrappedJSObject: data.popular };
+    this.recent = { wrappedJSObject: data.recent };
+    this.categories = { wrappedJSObject: data.categories };
 
-  onPersonasLoad: function(aEvent) {
-    let request = aEvent.target;
+    // Invert the dataset, building a collection of uncategorized personas.
+    // FIXME: stop doing this once the server starts feeding us a flat list
+    // of personas from which we build the collections of categorized ones.
+    let personas = {};
+    let flattenCategory = function(categoryName, category) {
+      for each (let persona in category.popular) {
+        persona.category = categoryName;
+        personas[persona.id] = persona;
+      }
+      for each (let persona in category.recent) {
+        persona.category = categoryName;
+        personas[persona.id] = persona;
+      }
+    };
+    flattenCategory("", data);
+    for (let categoryName in data.categories)
+      flattenCategory(categoryName, data.categories[categoryName]);
+    this.personas = { wrappedJSObject: [personas[id] for (id in personas)] };
 
-    // XXX Try to reload again sooner?
-    if (request.status != 200)
-      throw("problem loading personas: " + request.status + " - " + request.statusText);
-
-    // The "personas" member of the JSON response object is an array of hashes
-    // where each hash represents one persona.
-    let personas = JSON.parse(request.responseText).personas;
-
-    // To share this with (JavaScript) XPCOM consumers without having to create
-    // an complex XPCOM interface to it, we just pass it as a wrapped JS object.
-    this.personas = { wrappedJSObject: personas };
-
-    this._prefSvc.setCharPref("extensions.personas.lastlistupdate",
-                              new Date().getTime());
+    // XXX We don't actually use this anywhere; should we get rid of it?
+    this._prefSvc.setCharPref("extensions.personas.lastupdate", new Date().getTime());
 
     // We need both the JSON feed of personas and the persona loader
     // to be loaded before we can load the selected persona and apply it
     // to the browser windows.
+    // Note: actually, we don't now that we don't support dynamic personas,
+    // so we ignore this code and load the selected persona below.
     this._personasLoaded = true;
     if (this._personaLoaderLoaded)
       this._onLoaderAndPersonasLoaded();
+
+    // Now that the sthe data is loaded, we load the persona.
+    let personaID = this._getPref("extensions.personas.selected", "default");
+    this._switchToPersona(personaID);
   },
 
   _onLoaderAndPersonasLoaded: function() {
@@ -602,6 +615,7 @@ PersonaService.prototype = {
    * Switch to the specified persona.  This happens on startup, when the user
    * selects a persona, and when the user previews a persona or resets to the
    * elected persona.
+   * Note: this is overridden by the version of this method below it.
    */
   _switchToPersona: function(aPersonaID) {
     this._reloadPersonaTimer.cancel();
@@ -630,6 +644,35 @@ PersonaService.prototype = {
     this._reloadPersonaTimer.initWithCallback(this,
                                               this._reloadInterval * 60 * 1000,
                                               Ci.nsITimer.TYPE_REPEATING_SLACK);
+  },
+
+  /**
+   * Switch to the specified static persona.  This version doesn't support
+   * dynamic personas.  It overrides the version of this method above it.
+   */
+  _switchToPersona: function(aPersonaID) {
+    // If the persona we selected is no longer available, set back to default.
+    let persona = this._getPersona(aPersonaID);
+    if (!aPersonaID)
+      aPersonaID = "default";
+
+    if (aPersonaID == "default") {
+      this._obsSvc.notifyObservers(null, "personas:defaultPersonaSelected", null);
+      return;
+    }
+
+    // If we're loading the "random" persona, pick a persona at random
+    // from the selected category.
+    if (aPersonaID == "random")
+      aPersonaID = this._getRandomPersona();
+
+    this._activePersona = aPersonaID;
+
+    this.headerURL = this._getHeaderURL(this._activePersona);
+    this.footerURL = this._getFooterURL(this._activePersona);
+    this.textColor = this._getTextColor(this._activePersona);
+    this.accentColor = this._getAccentColor(this._activePersona);
+    this._obsSvc.notifyObservers(null, "personas:activePersonaUpdated", null);
   },
 
   /**
@@ -709,8 +752,8 @@ PersonaService.prototype = {
     // If we have the list of personas, use it to pick a random persona
     // from the selected category.
     if (this.personas) {
-      let categoryID = this._getPref("extensions.personas.category");
-      personaID = this._getRandomPersonaByCategory(categoryID, lastRandomID);
+      let category = this._getPref("extensions.personas.category");
+      personaID = this._getRandomPersonaByCategory(category, lastRandomID);
     }
 
     // If we were able to pick a random persona from the selected category,
@@ -724,21 +767,18 @@ PersonaService.prototype = {
     return personaID;
   },
 
-  _getRandomPersonaByCategory: function(categoryID, lastRandomID) {
+  _getRandomPersonaByCategory: function(categoryName, lastRandomID) {
     let personas = this.personas.wrappedJSObject;
-    let subList = new Array();
-    let k = 0;
+    let personasInCategory = [];
 
-    // Build the list of possible personas to select from
-    for each (let persona in personas) {
-      let needle = categoryID;
-      let haystack = persona.menu;
+    // Build a list of all personas in the category.
+    // FIXME: do this once when we process the data.
+    for each (let persona in personas)
+      if (persona.category == categoryName)
+        personasInCategory.push(persona);
 
-      if (haystack.search(needle) == -1)
-        continue;
-
-      subList[k++] = persona;
-    }
+    if (personasInCategory.length == 0)
+      return null;
 
     // Get a random item, trying up to five times to get one that is different
     // from the currently-selected item in the category (if any).
@@ -747,8 +787,8 @@ PersonaService.prototype = {
     // <http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Math:random#Examples>.
     let randomIndex, randomItem;
     for (let i = 0; i < 5; i++) {
-      randomIndex = Math.floor(Math.random() * subList.length);
-      randomItem = subList[randomIndex];
+      randomIndex = Math.floor(Math.random() * personasInCategory.length);
+      randomItem = personasInCategory[randomIndex];
       if (randomItem.id != lastRandomID)
         break;
     }
@@ -774,9 +814,8 @@ PersonaService.prototype = {
       return this._getPref("extensions.personas.custom.headerURL", "chrome://personas/content/header-default.jpg");
 
     let persona = this._getPersona(aPersonaID);
-    if (persona && persona.baseURL)
-      //return persona.baseURL + "-header.jpg";
-      return persona.baseURL + "?action=header";
+    if (persona)
+      return this._baseURL + persona.header;
 
     return null;
   },
@@ -789,9 +828,8 @@ PersonaService.prototype = {
                            "chrome://personas/content/footer-default.jpg");
 
     let persona = this._getPersona(aPersonaID);
-    if (persona && persona.baseURL)
-      //return persona.baseURL + "-footer.jpg";
-      return persona.baseURL + "?action=footer";
+    if (persona)
+      return this._baseURL + persona.footer;
 
     return null;
   },
@@ -828,16 +866,17 @@ PersonaService.prototype = {
     // Dynamic HTML/XML persona whose root element has a computed color.
     // XXX Should we only use a color dynamically set via JS  (i.e. the value
     // of docElement.style.color)?
-    let headerDoc = this._headerLoader._iframe.contentDocument;
-    if (headerDoc) {
-      let docElement = headerDoc.documentElement;
-      if (docElement) {
-        let style = headerDoc.defaultView.getComputedStyle(docElement, null);
-        let color = style.getPropertyValue("color");
-        if (color)
-          return color;
-      }
-    }
+    // Note: disabled because we don't support dynamic personas anymore.
+    //let headerDoc = this._headerLoader._iframe.contentDocument;
+    //if (headerDoc) {
+    //  let docElement = headerDoc.documentElement;
+    //  if (docElement) {
+    //    let style = headerDoc.defaultView.getComputedStyle(docElement, null);
+    //    let color = style.getPropertyValue("color");
+    //    if (color)
+    //      return color;
+    //  }
+    //}
 
     // The default text color: black.
     return "#000000";
