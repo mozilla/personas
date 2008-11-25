@@ -1,12 +1,13 @@
 <!ENTITY personas_app_title 	  "Personas for Firefox">
 
 <!ENTITY useDefaultPersona.label  "Default">
-<!ENTITY preferences.label        "Preferences...">
+<!ENTITY preferences.label        "Preferences…">
+<!ENTITY viewDirectory.label      "View Directory…">
 
 <!ENTITY customPersona.label      "Custom Persona">
 <!ENTITY customName.label         "Name:">
 <!ENTITY header.label             "Header:">
-<!ENTITY selectBackground.label   "Browse...">
+<!ENTITY selectBackground.label   "Browse…">
 <!ENTITY footer.label             "Footer:">
 <!ENTITY textColorPicker.label    "Text Color:">
 <!ENTITY accentColorPicker.label  "Accent Color:">

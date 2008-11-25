@@ -72,8 +72,10 @@
                   personaid="default"
                   oncommand="PersonaController.onSelectDefault(event)"/>
         <menuseparator/>
-        <menuitem label="&preferences.label;" 
+        <menuitem label="&preferences.label;"
                   oncommand="PersonaController.onSelectPreferences(event)"/>
+        <menuitem label="&viewDirectory.label;" 
+                  oncommand="PersonaController.onViewDirectory(event)"/>
       </menupopup>
     </menu>
   </menupopup>

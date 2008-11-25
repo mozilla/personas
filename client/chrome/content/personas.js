@@ -540,6 +540,10 @@ let PersonaController = {
 		'chrome,titlebar,toolbar,centerscreen');
   },
 
+  onViewDirectory: function() {
+    window.openUILinkIn(this._siteURL, "tab");
+  },
+
   onSelectCustom: function() {
     window.openUILinkIn("chrome://personas/content/customPersonaEditor.xul", "tab");
   },
@@ -665,32 +669,7 @@ let PersonaController = {
 
     // FIXME: factor out all the common code below.
 
-    // Create the "Recent Personas" menu.
-    {
-      let menu = document.createElement("menu");
-      menu.setAttribute("label", this._stringBundle.getString("recent.label"));
-      let popupmenu = document.createElement("menupopup");
-  
-      for each (let persona in this._personaSvc.recent.wrappedJSObject)
-        popupmenu.appendChild(this._createPersonaItem(persona, null));
-  
-      popupmenu.appendChild(this._createSubcategoryHeader("yourRecent"));
-
-      for (let i = 0; i < 4; i++) {
-        let recentID = this._getPref("extensions.personas.lastselected" + i);
-        if (!recentID)
-          continue;
-  
-        let persona = this._getPersona(recentID);
-        if (persona)
-          popupmenu.appendChild(this._createPersonaItem(persona, ""));
-      }
-
-      menu.appendChild(popupmenu);
-      this._menu.insertBefore(menu, closingSeparator);
-    }
-
-    // Create the "Popular Personas" menu.
+    // Create the "Most Popular" menu.
     {
       let menu = document.createElement("menu");
       menu.setAttribute("label", this._stringBundle.getString("popular.label"));
@@ -703,8 +682,45 @@ let PersonaController = {
       this._menu.insertBefore(menu, closingSeparator);
     }
 
-    this._menu.insertBefore(document.createElement("menuseparator"), closingSeparator);
+    // Create the "New" menu.
+    {
+      let menu = document.createElement("menu");
+      menu.setAttribute("label", this._stringBundle.getString("new.label"));
+      let popupmenu = document.createElement("menupopup");
+  
+      for each (let persona in this._personaSvc.recent.wrappedJSObject)
+        popupmenu.appendChild(this._createPersonaItem(persona, null));
+  
+      menu.appendChild(popupmenu);
+      this._menu.insertBefore(menu, closingSeparator);
+    }
 
+    // Create the "Recently Selected" menu.
+    {
+      let menu = document.createElement("menu");
+      menu.setAttribute("label", this._stringBundle.getString("recent.label"));
+      let popupmenu = document.createElement("menupopup");
+
+      for (let i = 0; i < 4; i++) {
+        let recentID = this._getPref("extensions.personas.lastselected" + i);
+        if (!recentID)
+          continue;
+
+        let persona = this._getPersona(recentID);
+        if (persona)
+          popupmenu.appendChild(this._createPersonaItem(persona, ""));
+      }
+
+      menu.appendChild(popupmenu);
+      this._menu.insertBefore(menu, closingSeparator);
+    }
+
+    // Create the "Categories" menu hierarchy.
+    let categoriesMenu = document.createElement("menu");
+    categoriesMenu.setAttribute("label", this._stringBundle.getString("categories.label"));
+    let categoriesPopup = document.createElement("menupopup");
+    categoriesMenu.appendChild(categoriesPopup);
+    this._menu.insertBefore(categoriesMenu, closingSeparator);
     for (let categoryName in categories) {
       let category = categories[categoryName];
       let menu = document.createElement("menu");
@@ -722,7 +738,7 @@ let PersonaController = {
       popupmenu.appendChild(this._createRandomItem(categoryName));
 
       menu.appendChild(popupmenu);
-      this._menu.insertBefore(menu, closingSeparator);
+      categoriesPopup.appendChild(menu);
     }
   },
 
