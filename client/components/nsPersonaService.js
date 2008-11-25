@@ -651,9 +651,14 @@ PersonaService.prototype = {
    * dynamic personas.  It overrides the version of this method above it.
    */
   _switchToPersona: function(aPersonaID) {
-    // If the persona we selected is no longer available, set back to default.
+    this.headerURL = null;
+    this.footerURL = null;
+    this.textColor = null;
+    this.accentColor = null;
+
+    // If the persona is no longer available, switch to the default persona.
     let persona = this._getPersona(aPersonaID);
-    if (!aPersonaID)
+    if (!persona)
       aPersonaID = "default";
 
     if (aPersonaID == "default") {
@@ -672,6 +677,7 @@ PersonaService.prototype = {
     this.footerURL = this._getFooterURL(this._activePersona);
     this.textColor = this._getTextColor(this._activePersona);
     this.accentColor = this._getAccentColor(this._activePersona);
+
     this._obsSvc.notifyObservers(null, "personas:activePersonaUpdated", null);
   },
 
