@@ -657,8 +657,10 @@ PersonaService.prototype = {
     this.accentColor = null;
 
     // If the persona is no longer available, switch to the default persona.
-    let persona = this._getPersona(aPersonaID);
-    if (!persona)
+    if (aPersonaID != "manual" &&
+        aPersonaID != "random" &&
+        aPersonaID != "default" &&
+        !this._getPersona(aPersonaID))
       aPersonaID = "default";
 
     if (aPersonaID == "default") {
