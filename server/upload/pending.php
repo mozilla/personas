@@ -1,4 +1,5 @@
 <?php
+	require_once 'constants.inc';
 	require_once 'storage.inc';
 
 	$db = new PersonaStorage();
@@ -89,10 +90,12 @@
 	}
 	
 	$result = $results[0];
-	$second_folder = $result{'id'}%10;
-	$first_folder = ($result{'id'}%100 - $second_folder)/10;
+	$second_folder = $result['id']%10;
+	$first_folder = ($result['id']%100 - $second_folder)/10;
 	$path = getenv('PERSONAS_URL_PREFIX') . '/' .  $first_folder . '/' . $second_folder . '/' . $result{'id'};
 	$preview_url =  $path . "/preview.jpg";
+	$header_url =  $path . "/" . $result['header'];
+	$footer_url =  $path . "/" . $result['footer'];
 ?>
 <html>
 <body>
@@ -116,7 +119,9 @@ Category: <select name="category">
 <p>
 Preview:
 <br>
-<img src="<?= $preview_url ?>"></iframe>
+<img src="<?= $preview_url ?>"><br>
+<img src="<?= $header_url ?>"><br>
+<img src="<?= $footer_url ?>"><br>
 <p>
 <input type="submit" name="verdict" value="accept">
 <input type="submit" name="verdict" value="reject">

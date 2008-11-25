@@ -1,54 +1,61 @@
 <?php
+	require_once 'constants.inc';
 	
-#create table personas
-#(
-# id integer primary key autoincrement,
-# name varchar(32) unique,
-# header text,
-# footer text,
-# category varchar(32),
-# status integer,
-# submit varchar(32),
-# approve varchar(32),
-# author varchar(32),
-# popularity integer
-#);
-
-#create table categories
-#(
-# id integer primary key autoincrement,
-# name varchar(32)
-#);
-
-#create table users
-#(
-# username varchar(32) primary key,
-# md5 varchar(32)
-# email varchar(64)
-#);
-
-#create table admin
-#(
-# username varchar(32) primary key,
-# md5 varchar(32)
-#);
-
+# create table personas
+# (
+#  id integer primary key not null auto_increment,
+#  name varchar(32) unique,
+#  header varchar(64),
+#  footer varchar(64),
+#  category varchar(32),
+#  status tinyint,
+#  submit varchar(32),
+#  approve varchar(32),
+#  author varchar(32),
+#  accentcolor varchar(10),
+#  textcolor varchar(10),
+#  popularity integer
+# );
+#
+# create table categories
+# (
+#  id integer primary key not null auto_increment,
+#  name varchar(32)
+# );
+#
+# create table users
+# (
+#  username varchar(32) primary key,
+#  md5 varchar(32),
+#  email varchar(64)
+# );
+#
+# create table admin
+# (
+#  username varchar(32) primary key,
+#  md5 varchar(32)
+# );
+#
 class PersonaStorage
 {
 	var $_dbh;
 
-	function __construct($dbfile = null) 
+	function __construct($username = null, $password = null, $hostname = null, $dbname = null) 
 	{
-		if (!$dbfile) { $dbfile = getenv('PERSONAS_DB_FILE'); }
+		if (!$hostname) {$hostname = getenv('PERSONAS_HOST');}
+		if (!$dbname) {$dbname = getenv('PERSONAS_DB');}
+		if (!$username) {$username = getenv('PERSONAS_USERNAME');}
+		if (!$password) {$password = getenv('PERSONAS_PASSWORD');}
+
 		try
 		{
-			$this->_dbh = new PDO('sqlite:' . $dbfile);
+			$this->_dbh = new PDO('mysql:host=' . $hostname . ';dbname=' . $dbname, $username, $password);
 			$this->_dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		}
 		catch( PDOException $exception )
 		{
-			error_log($exception->getMessage());
-			throw new Exception("Database unavailable", 503);
+				error_log($exception->getMessage());
+				throw new Exception("Database unavailable", 503);
 		}
 	}
 	
@@ -303,17 +310,19 @@ class PersonaStorage
 	}
 	
 	
-	function submit_persona($name, $category, $header, $footer, $author, $email)
+	function submit_persona($name, $category, $header, $footer, $author, $accent, $text)
 	{
 		try
 		{
-			$statement = 'insert into personas (name, status, header, footer, category, submit, author) values (:name, 0, :header, :footer, :category, current_timestamp, :author)';
+			$statement = 'insert into personas (name, status, header, footer, category, submit, author, accentcolor, textcolor) values (:name, 0, :header, :footer, :category, current_timestamp, :author, :accentcolor, :textcolor)';
 			$sth = $this->_dbh->prepare($statement);
 			$sth->bindParam(':name', $name);
 			$sth->bindParam(':header', $header);
 			$sth->bindParam(':footer', $footer);
 			$sth->bindParam(':category', $category);
 			$sth->bindParam(':author', $author);
+			$sth->bindParam(':accentcolor', $accent);
+			$sth->bindParam(':textcolor', $text);
 			$sth->execute();
 			return $this->_dbh->lastInsertId();
 		}
