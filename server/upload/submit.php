@@ -1,4 +1,5 @@
 <?php
+	require_once 'constants.inc';
 	require_once 'storage.inc';
 	$error = "";
 	$auth_user = null;
@@ -19,7 +20,7 @@
 				include 'auth_form.inc';
 				exit;
 			}
-			setcookie('PERSONA_USER', $auth_user . " " . md5($auth_user . $db->get_password_md5($auth_user) . getenv('PERSONAS_LOGIN_SALT') . $_SERVER['REMOTE_ADDR']));
+			setcookie('PERSONA_USER', $auth_user . " " . md5($auth_user . $db->get_password_md5($auth_user) . getenv('PERSONAS_LOGIN_SALT') . $_SERVER['REMOTE_ADDR']), time() + 60*60*24*365);
 		}
 		else if (!array_key_exists('PERSONA_USER', $_COOKIE))
 		{
@@ -61,6 +62,21 @@
 				throw new Exception("Missing Category");
 			}
 	
+			$accentcolor = ini_get('magic_quotes_gpc') ? stripslashes($_POST['accentcolor']) : $_POST['accentcolor'];
+			$accentcolor = preg_replace('/[^a-f0-9]/i', '', strtolower($accentcolor));
+			if ($accentcolor && strlen($accentcolor) != 3 && strlen($accentcolor) != 6)
+			{
+				throw new Exception("Unrecognized Accent Color");
+			}
+			
+			$textcolor = ini_get('magic_quotes_gpc') ? stripslashes($_POST['textcolor']) : $_POST['textcolor'];
+			$textcolor = preg_replace('/[^a-f0-9]/i', '', strtolower($textcolor));
+			if ($textcolor && strlen($textcolor) != 3 && strlen($textcolor) != 6)
+			{
+				throw new Exception("Unrecognized Text Color");
+			}
+			
+
 			#check to see if the name is already in use
 			$name = ini_get('magic_quotes_gpc') ? stripslashes($_POST['name']) : $_POST['name'];
 			$name = preg_replace('/[^A-Za-z0-9_\-\. ]/', '', $name);
@@ -82,8 +98,6 @@
 			#sanitized for your protection
 			$h_name = preg_replace('/[^A-Za-z0-9_\-\.]/', '', $h_name);
 			$f_name = preg_replace('/[^A-Za-z0-9_\-\.]/', '', $f_name);
-			
-			
 			if ($h_name == $f_name)
 			{
 				throw new Exception("The two files need different names");
@@ -98,8 +112,8 @@
 			{
 				throw new Exception("Footer file too large");
 			}
-
-			$persona_id = $db->submit_persona($name, $category, $h_name, $f_name, $auth_user);
+			
+			$persona_id = $db->submit_persona($name, $category, $h_name, $f_name, $auth_user, $accentcolor, $textcolor);
 
 			
 			$second_folder = $persona_id%10;
@@ -125,7 +139,6 @@
 			}
 		
 			$imgcommand = "convert \( " . $persona_path . "/" . $h_name . " -gravity NorthEast -crop 600x200+0+0 \) \( " . $persona_path . "/" . $f_name . " -gravity NorthEast -crop 600x100+0+0 \)  -append -scale 200x100 " . $persona_path . "/preview.jpg";
-			error_log($imgcommand);
 			exec($imgcommand);
 		}
 	}
@@ -139,12 +152,45 @@
 <html>
   <head>
     <title>Personas for Firefox</title>
-    <style type="text/css" media="screen">
-      @import "personas.css";
-    </style>
-  </head>
+	<script type="text/javascript" src="include/jquery.js"></script>
+	<script type="text/javascript" src="include/farbtastic.js"></script>
+	<link rel="stylesheet" href="include/farbtastic.css" type="text/css" />
+</head>
 
   <body>
+<script type="text/javascript">
+$(document).ready(
+	function()
+	{
+    	$('#colorpicker').farbtastic('#textcolor');
+    	$('#colorpicker2').farbtastic('#accentcolor');
+  	
+  		$('#cp1').toggle(function() 
+  		{
+    		$('#colorpicker').slideDown("slow");
+    		return false;
+  		},
+  		function() 
+  		{
+    		$('#colorpicker').slideUp("slow");
+    		return false;
+  		});
+
+  		$('#cp2').toggle(function() 
+  		{
+    		$('#colorpicker2').slideDown("slow");
+    		return false;
+  		},
+  		function() 
+  		{
+    		$('#colorpicker2').slideUp("slow");
+    		return false;
+  		});
+  	}
+);
+
+</script>
+
 
 <h1>Designing Personas - Persona Submission</h1>
 <?php if ($error) { echo "<div class=\"error\">$error</div>"; } ?>
@@ -164,6 +210,14 @@ Category: <select name="category">
 ?>
 </select>
 <p>
+Text Color (optional): <input type="text" id="textcolor" name="textcolor" value=" ">
+<input type="submit" id="cp1" value="toggle text color picker" />
+<div id="colorpicker" align="left" style="display:none;"></div>
+<p>
+Accent Color (optional): <input type="text" id="accentcolor" name="accentcolor" value=" ">
+<input type="submit" id="cp2" value="toggle accent color picker" />
+<div id="colorpicker2" align="left" style="display:none"></div>
+<p>
 Header: <input type=file name=header>
 <p>
 Footer: <input type=file name=footer>
@@ -171,6 +225,26 @@ Footer: <input type=file name=footer>
 <input type=submit>
 
 </form>
+<p>By uploading your Persona to this site, you agree that
+ the following are true:</p>
+ <ul>
+   <li>you have the right to distribute this Persona,
+   including any rights required for material that may be
+   trademarked or copyrighted by someone else; and</li>
+   <li>if any information about the user or usage of this
+   Persona is collected or transmitted outside of the user's
+   computer, the details of this collection will be provided
+   in the description of the software, and you will provide a
+   link to a privacy policy detailing how the information is
+   managed and protected; and</li>
+   <li>your Persona may be removed from the site,
+   re-categorized, have its description or other information
+   changed, or otherwise have its listing changed or removed,
+   at the sole discretion of Mozilla and its authorized
+   agents; and</li>
+   <li>the descriptions and other data you provide about the
+   Persona are true to the best of your knowledge.</li>
+ </ul>
   </body>
 
 </html>
