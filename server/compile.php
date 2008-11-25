@@ -1,18 +1,18 @@
 <?php
-	require_once '/Users/telliott/mozilla/personas/upload/storage.inc';
-	
-	$PERSONAS_STORAGE_PREFIX = '/Users/telliott/mozilla/personas/store';
+	require_once 'upload/constants.inc';	
+	require_once 'upload/storage.inc';
 
-	$db = new PersonaStorage('/Library/Webserver/dbs/personas');
+	$db = new PersonaStorage();
 	$categories = $db->get_categories();
 
 	function extract_data($item)
 	{
-		$PERSONAS_URL_PREFIX = '/personas/store';
 		$padded_id = $item{'id'} < 10 ? '0' . $item{'id'} : $item{'id'};
-		$url_prefix = $PERSONAS_URL_PREFIX . '/' . $padded_id[0] . '/' . $padded_id[1] .  '/'. $item{'id'} . '/';
+		$url_prefix = getenv('PERSONAS_URL_PREFIX') . '/' . $padded_id[0] . '/' . $padded_id[1] .  '/'. $item{'id'} . '/';
 		$extracted = array('id' => $item{'id'}, 
 		                'name' => $item{'name'},
+		                'accentcolor' => $item{'accentcolor'} ? $item{'accentcolor'} : "",
+		                'textcolor' => $item{'textcolor'} ? $item{'textcolor'} : "",
 						'header' => $url_prefix . $item{'header'}, 
 						'footer' => $url_prefix . $item{'footer'});
 		return $extracted;	
@@ -20,14 +20,20 @@
 	
 	function extract_html($item)
 	{
-		$PERSONAS_URL_PREFIX = '/personas/store';
 		$second_folder = $item{'id'}%10;
 		$first_folder = ($item{'id'}%100 - $second_folder)/10;
-		$url_prefix = $PERSONAS_URL_PREFIX . '/' . $first_folder . '/' . $second_folder .  '/'. $item{'id'} . '/';
+		$url_prefix = getenv('PERSONAS_URL_PREFIX') . '/' . $first_folder . '/' . $second_folder .  '/'. $item{'id'} . '/';
 
 		$extracted = "<div class=\"persona\">
 		<div class=\"name\">" . $item{'name'} . "</div>";
-		$extracted .= "<div class=\"preview\"><img src=\"" . $url_prefix . "preview.jpg\" ></div>";
+		$extracted .= "<div class=\"preview\">";
+		$extracted .= "<img onclick=\"dispatchPersonaEvent('SelectPersona', this)\" onmouseover=\"dispatchPersonaEvent('PreviewPersona', this)\" onmouseout=\"dispatchPersonaEvent('ResetPersona', this)\"";
+		$extracted .= ' persona="' . $item{'id'} . '"';
+		$extracted .= ' header="' . $url_prefix . $item{'header'} . '"';
+		$extracted .= ' footer="' . $url_prefix . $item{'footer'} . '"';
+		$extracted .= ' textcolor="' . $item{'textcolor'} . '"';
+		$extracted .= ' accentcolor="' . $item{'accentcolor'} . '"';
+		$extracted .= " src=\"" . $url_prefix . "preview.jpg\" class=\"preview-image\"></div>";
 		if ($item{'author'})
 		{
 			$extracted .= "<div class=\"creator\">Creator: " . $item{'author'} . "</div>";
@@ -49,8 +55,8 @@
 		$popular_html_top .= extract_html($item);
 	}
 	$master_array["popular"] = $json;
-	file_put_contents($PERSONAS_STORAGE_PREFIX . '/popular.json', json_encode($json));
-	file_put_contents($PERSONAS_STORAGE_PREFIX . '/popular.html', build_file('popular', '', $popular_html_top));
+	file_put_contents(getenv('PERSONAS_STORAGE_PREFIX') . '/popular.json', json_encode($json));
+	file_put_contents(getenv('PERSONAS_STORAGE_PREFIX') . '/popular.html', build_file('popular', '', $popular_html_top));
 	
 	#recompile recent general
 	$recent_list = $db->get_recent_personas(null, 20);
@@ -62,15 +68,15 @@
 		$recent_html_top .= extract_html($item);
 	}
 	$master_array["recent"] = $json;
-	file_put_contents($PERSONAS_STORAGE_PREFIX . '/recent.json', json_encode($json));
-	file_put_contents($PERSONAS_STORAGE_PREFIX . '/recent.html', build_file('recent', '', $recent_html_top));
+	file_put_contents(getenv('PERSONAS_STORAGE_PREFIX') . '/recent.json', json_encode($json));
+	file_put_contents(getenv('PERSONAS_STORAGE_PREFIX') . '/recent.html', build_file('recent', '', $recent_html_top));
 
 
 	$master_array['categories'] = array();
 	#new popular & recent file for each category.
 	foreach ($categories as $category)
 	{		
-		$storage_path = $PERSONAS_STORAGE_PREFIX . '/' . preg_replace('/ /', '_', $category);
+		$storage_path = getenv('PERSONAS_STORAGE_PREFIX') . '/' . preg_replace('/ /', '_', $category);
 		if (!is_dir($storage_path))
 		{
 			mkdir($storage_path);
@@ -124,7 +130,7 @@
 		$master_array['categories'][$category]  = array('popular' => $popular_json, 'recent' => $recent_json);
 	}
 	
-	file_put_contents($PERSONAS_STORAGE_PREFIX . '/index.json', json_encode($master_array));
+	file_put_contents(getenv('PERSONAS_STORAGE_PREFIX') . '/index.json', json_encode($master_array));
 	
 	
 	function build_file($type, $category, $contents)
@@ -204,6 +210,14 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>Personas</title>
     <link rel="stylesheet" type="text/css" href="/personas/store/personas.css" />
+	<script language="JavaScript">
+		function dispatchPersonaEvent(aType, aNode) 
+		{
+			var event = document.createEvent("Events");
+			event.initEvent(aType, true, false);
+			aNode.dispatchEvent(event);
+		}
+	</script>
     </head>';
 		return $string;
 	}
