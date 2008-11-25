@@ -727,10 +727,12 @@ let PersonaController = {
       menu.setAttribute("label", categoryName);
       let popupmenu = document.createElement("menupopup");
 
-      for each (let subcategory in ["popular", "recent"]) {
-        popupmenu.appendChild(this._createSubcategoryHeader(subcategory));
-        for each (let persona in category[subcategory])
-          popupmenu.appendChild(this._createPersonaItem(persona, category.id));
+      let recentIDs = [persona.id for each (persona in category.recent)];
+      for each (let persona in category.popular) {
+        let menuItem = this._createPersonaItem(persona, category.id);
+        if (recentIDs.indexOf(persona.id) != -1)
+          menuItem.setAttribute("recent", "true");
+        popupmenu.appendChild(menuItem);
       }
 
       // Create an item that picks a random persona from the category.

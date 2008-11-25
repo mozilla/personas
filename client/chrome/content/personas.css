@@ -69,6 +69,10 @@
   color: black;
 }
 
+#personas-selector-menu menuitem[recent] {
+  list-style-image: url("chrome://personas/content/new.png");
+}
+
 /* The header is styled in the version/platform-specific files in the skin. */
 
 
