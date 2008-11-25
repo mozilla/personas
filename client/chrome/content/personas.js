@@ -418,9 +418,12 @@ let PersonaController = {
     if (!this._getPersona(personaID))
       throw "unknown persona " + personaID;
 
-    let categoryID = aEvent.target.getAttribute("category");
+    // Optional; the node might not identify the category to which the persona
+    // belongs.  It only matters when the user selects "random persona from this
+    // category" (which at the moment the personas directory doesn't expose).
+    let categoryName = aEvent.target.getAttribute("category");
 
-    this._selectPersona(personaID, categoryID);
+    this._selectPersona(personaID, categoryName);
   },
 
   onSelectPersona: function(aEvent) {
@@ -432,8 +435,11 @@ let PersonaController = {
   /**
    * Select the persona with the specified ID.
    *
-   * @param personaID the ID of the persona to select
-   * @param categoryID the ID of the category to which persona belongs
+   * @param personaID     {integer} the ID of the persona to select
+   * @param categoryName  {string}
+   *        (optional) the name of the category to which the persona belongs;
+   *        this only matters when the user selects "random persona from this
+   *        category"
    */
   _selectPersona: function(personaID, categoryName) {
     // Update the list of recent personas.
@@ -448,7 +454,11 @@ let PersonaController = {
     }
 
     // Save the new selection to prefs.
-    this._prefSvc.setCharPref("extensions.personas.category", categoryName);
+    // We save the category first, since the moment we set personaID to "random",
+    // the persona service will select a random persona from the current category.
+    // FIXME: implement batch setting of preferences to fix this problem.
+    if (categoryName)
+      this._prefSvc.setCharPref("extensions.personas.category", categoryName);
     this._prefSvc.setCharPref("extensions.personas.selected", personaID);
   },
 
@@ -742,16 +752,6 @@ let PersonaController = {
       menu.appendChild(popupmenu);
       categoriesPopup.appendChild(menu);
     }
-  },
-
-  _getCategoryName: function(categoryID) {
-    let categories = this._personaSvc.categories.wrappedJSObject;
-
-    for each (let category in categories)
-      if (category.id == categoryID)
-        return category.label;
-
-    return "(unknown)";
   },
 
   _getPersonaName: function(personaID) {
