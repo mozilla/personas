@@ -40,7 +40,7 @@
 				$second_folder = $persona_id%10;
 				$first_folder = ($persona_id%100 - $second_folder)/10;	
 				$persona_path = getenv('PERSONAS_STORAGE_PREFIX') . "/" . $first_folder;
-				$persona_path .= "/" . $second_folder . "/" . $persona_id . "/preview.jpg;
+				$persona_path .= "/" . $second_folder . "/" . $persona_id . "/preview.jpg";
 				unlink($persona_path);
 				$db->reject_persona($persona{'id'});
 				break;
