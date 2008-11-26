@@ -1,6 +1,44 @@
 <?php
-	require_once 'upload/constants.inc';	
-	require_once 'upload/storage.inc';
+
+# ***** BEGIN LICENSE BLOCK *****
+# Version: MPL 1.1/GPL 2.0/LGPL 2.1
+#
+# The contents of this file are subject to the Mozilla Public License Version
+# 1.1 (the "License"); you may not use this file except in compliance with
+# the License. You may obtain a copy of the License at
+# http://www.mozilla.org/MPL/
+#
+# Software distributed under the License is distributed on an "AS IS" basis,
+# WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License
+# for the specific language governing rights and limitations under the
+# License.
+#
+# The Original Code is Weave Basic Object Server
+#
+# The Initial Developer of the Original Code is
+# Mozilla Labs.
+# Portions created by the Initial Developer are Copyright (C) 2008
+# the Initial Developer. All Rights Reserved.
+#
+# Contributor(s):
+#	Toby Elliott (telliott@mozilla.com)
+#
+# Alternatively, the contents of this file may be used under the terms of
+# either the GNU General Public License Version 2 or later (the "GPL"), or
+# the GNU Lesser General Public License Version 2.1 or later (the "LGPL"),
+# in which case the provisions of the GPL or the LGPL are applicable instead
+# of those above. If you wish to allow use of your version of this file only
+# under the terms of either the GPL or the LGPL, and not to allow others to
+# use your version of this file under the terms of the MPL, indicate your
+# decision by deleting the provisions above and replace them with the notice
+# and other provisions required by the GPL or the LGPL. If you do not delete
+# the provisions above, a recipient may use your version of this file under
+# the terms of any one of the MPL, the GPL or the LGPL.
+#
+# ***** END LICENSE BLOCK *****
+	
+	require_once 'personas_constants.inc';	
+	require_once 'upload/libs/storage.inc';
 
 	$db = new PersonaStorage();
 	$categories = $db->get_categories();
@@ -8,7 +46,7 @@
 	function extract_data($item)
 	{
 		$padded_id = $item{'id'} < 10 ? '0' . $item{'id'} : $item{'id'};
-		$url_prefix = getenv('PERSONAS_URL_PREFIX') . '/' . $padded_id[0] . '/' . $padded_id[1] .  '/'. $item{'id'} . '/';
+		$url_prefix = PERSONAS_URL_PREFIX . '/' . $padded_id[0] . '/' . $padded_id[1] .  '/'. $item{'id'} . '/';
 		$extracted = array('id' => $item{'id'}, 
 		                'name' => $item{'name'},
 		                'accentcolor' => $item{'accentcolor'} ? $item{'accentcolor'} : "",
@@ -22,7 +60,7 @@
 	{
 		$second_folder = $item{'id'}%10;
 		$first_folder = ($item{'id'}%100 - $second_folder)/10;
-		$url_prefix = getenv('PERSONAS_URL_PREFIX') . '/' . $first_folder . '/' . $second_folder .  '/'. $item{'id'} . '/';
+		$url_prefix = PERSONAS_URL_PREFIX . '/' . $first_folder . '/' . $second_folder .  '/'. $item{'id'} . '/';
 
 		$extracted = "<div class=\"persona\">
 		<div class=\"name\">" . $item{'name'} . "</div>";
@@ -55,8 +93,8 @@
 		$popular_html_top .= extract_html($item);
 	}
 	$master_array["popular"] = $json;
-	file_put_contents(getenv('PERSONAS_STORAGE_PREFIX') . '/popular.json', json_encode($json));
-	file_put_contents(getenv('PERSONAS_STORAGE_PREFIX') . '/popular.html', build_file('popular', '', $popular_html_top));
+	file_put_contents(PERSONAS_STORAGE_PREFIX . '/popular.json', json_encode($json));
+	file_put_contents(PERSONAS_STORAGE_PREFIX . '/popular.html', build_file('popular', '', $popular_html_top));
 	
 	#recompile recent general
 	$recent_list = $db->get_recent_personas(null, 20);
@@ -68,15 +106,15 @@
 		$recent_html_top .= extract_html($item);
 	}
 	$master_array["recent"] = $json;
-	file_put_contents(getenv('PERSONAS_STORAGE_PREFIX') . '/recent.json', json_encode($json));
-	file_put_contents(getenv('PERSONAS_STORAGE_PREFIX') . '/recent.html', build_file('recent', '', $recent_html_top));
+	file_put_contents(PERSONAS_STORAGE_PREFIX . '/recent.json', json_encode($json));
+	file_put_contents(PERSONAS_STORAGE_PREFIX . '/recent.html', build_file('recent', '', $recent_html_top));
 
 
 	$master_array['categories'] = array();
 	#new popular & recent file for each category.
 	foreach ($categories as $category)
 	{		
-		$storage_path = getenv('PERSONAS_STORAGE_PREFIX') . '/' . preg_replace('/ /', '_', $category);
+		$storage_path = PERSONAS_STORAGE_PREFIX . '/' . preg_replace('/ /', '_', $category);
 		if (!is_dir($storage_path))
 		{
 			mkdir($storage_path);
@@ -130,7 +168,7 @@
 		$master_array['categories'][$category]  = array('popular' => $popular_json, 'recent' => $recent_json);
 	}
 	
-	file_put_contents(getenv('PERSONAS_STORAGE_PREFIX') . '/index.json', json_encode($master_array));
+	file_put_contents(PERSONAS_STORAGE_PREFIX . '/index.json', json_encode($master_array));
 	
 	
 	function build_file($type, $category, $contents)
