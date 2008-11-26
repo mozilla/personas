@@ -30,48 +30,18 @@
 		switch ($_POST['verdict'])
 		{
 			case 'accept':
-				$db->approve_persona($persona{'id'});
-				
-				#rebuild category summary
-				if (!is_dir(getenv('PERSONAS_STORAGE_PREFIX') . '/' . $persona{'category'})) { mkdir(getenv('PERSONAS_STORAGE_PREFIX') . '/' . $persona{'category'}); }
-
-				$category_list = $db->get_personas_by_category($persona{'category'});
-				$json = array();
-				foreach ($category_list as $item)
-				{
-					$padded_id = $item{'id'} < 10 ? '0' . $item{'id'} : $item{'id'};
-					$json[] = array('id' => $item{'id'}, 'header' => getenv('PERSONAS_URL_PREFIX') . '/' . $padded_id[0] . '/' . $padded_id[1] .  '/'. $item{'id'} . '/' . $item{'header'}, 'footer' => getenv('PERSONAS_URL_PREFIX') . '/' . $padded_id[0] . '/' . $padded_id[1] .  '/'. $item{'id'} . '/' . $item{'footer'});
-				}
-				file_put_contents(getenv('PERSONAS_STORAGE_PREFIX') . '/' . $persona{'category'} . '/all.json', json_encode($json));
-				
-				#rebuild recent for category
-				$recent_list = $db->get_recent_personas($persona{'category'});
-				$json = array();
-				foreach ($recent_list as $item)
-				{
-					$padded_id = $item{'id'} < 10 ? '0' . $item{'id'} : $item{'id'};
-					$json[] = array('id' => $item{'id'}, 'header' => getenv('PERSONAS_URL_PREFIX') . '/' . $padded_id[0] . '/' . $padded_id[1] .  '/'. $item{'id'} . '/' . $item{'header'}, 'footer' => getenv('PERSONAS_URL_PREFIX') . '/' . $padded_id[0] . '/' . $padded_id[1] .  '/'. $item{'id'} . '/' . $item{'footer'});
-				}
-				file_put_contents(getenv('PERSONAS_STORAGE_PREFIX') . '/' . $persona{'category'} . '/recent.json', json_encode($json));
-
-				#rebuild recent
-				$recent_list = $db->get_recent_personas();
-				$json = array();
-				foreach ($recent_list as $item)
-				{
-					$padded_id = $item{'id'} < 10 ? '0' . $item{'id'} : $item{'id'};
-					$json[] = array('id' => $item{'id'}, 'header' => getenv('PERSONAS_URL_PREFIX') . '/' . $padded_id[0] . '/' . $padded_id[1] .  '/'. $item{'id'} . '/' . $item{'header'}, 'footer' => getenv('PERSONAS_URL_PREFIX') . '/' . $padded_id[0] . '/' . $padded_id[1] .  '/'. $item{'id'} . '/' . $item{'footer'});
-				}
-				file_put_contents(getenv('PERSONAS_STORAGE_PREFIX') . '/recent.json', json_encode($json));
-				
+				$db->approve_persona($persona{'id'});				
 				break;
 			case 'change':
 				$category = ini_get('magic_quotes_gpc') ? stripslashes($_POST['category']) : $_POST['category'];
 				$db->change_persona_category($persona{'id'}, $category);
 				break;			
 			case 'reject':
-				#unlink($header_path);
-				#unlink($footer_path);
+				$second_folder = $persona_id%10;
+				$first_folder = ($persona_id%100 - $second_folder)/10;	
+				$persona_path = getenv('PERSONAS_STORAGE_PREFIX') . "/" . $first_folder;
+				$persona_path .= "/" . $second_folder . "/" . $persona_id . "/preview.jpg;
+				unlink($persona_path);
 				$db->reject_persona($persona{'id'});
 				break;
 			default:
