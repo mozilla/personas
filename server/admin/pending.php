@@ -127,9 +127,11 @@ Category: <select name="category">
 <p>
 Preview:
 <br>
-<img src="<?= $preview_url ?>"><br>
-<img src="<?= $header_url ?>"><br>
-<img src="<?= $footer_url ?>"><br>
+<img src="<?= $preview_url ?>"><p>
+Header:<br>
+<img src="<?= $header_url ?>"><p>
+Footer:<br>
+<img src="<?= $footer_url ?>"><p>
 <p>
 <input type="submit" name="verdict" value="accept">
 <input type="submit" name="verdict" value="reject">
