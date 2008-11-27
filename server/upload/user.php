@@ -1,5 +1,5 @@
 <?php
-	require_once 'storage.inc';
+	require_once 'personas_libs/storage.inc';
 
 	$error = '';
 	

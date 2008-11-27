@@ -64,17 +64,12 @@
 # (
 #  username varchar(32) primary key,
 #  md5 varchar(32),
-#  email varchar(64)
-# );
-#
-# create table admin
-# (
-#  username varchar(32) primary key,
-#  md5 varchar(32)
+#  email varchar(64),
+#  admin tinyint default 0
 # );
 #
 
-require_once 'personas_constants.inc';
+require_once 'personas_libs/personas_constants.inc';
 
 class PersonaStorage
 {
@@ -465,7 +460,7 @@ class PersonaStorage
 	{
 		try
 		{
-			$select_stmt = 'select count(*) from admin where username = :username and md5 = :md5';
+			$select_stmt = 'select admin from users where username = :username and md5 = :md5';
 			$sth = $this->_dbh->prepare($select_stmt);
 			$sth->bindParam(':username', $username);
 			$sth->bindParam(':md5', md5($password));
@@ -564,24 +559,28 @@ class PersonaStorage
 		return 1;
 	}
 
-	function create_user_table()
+	function promote_admin($username)
 	{
+		if (!$username)
+		{
+			return 0;
+		}
+
 		try
 		{
-			$create_statement = "create table users (username text primary key, md5 text, email text)";
-		
-			$sth = $this->_dbh->prepare($create_statement);
+			$stmt = 'update users set admin = 1 where username = :username';
+			$sth = $this->_dbh->prepare($delete_stmt);
+			$sth->bindParam(':username', $username);
 			$sth->execute();
+
 		}
 		catch( PDOException $exception )
 		{
-			error_log("create_user_table:" . $exception->getMessage());
-			throw new Exception("Database unavailable", 503);
+			error_log("promote_admin: " . $exception->getMessage());
+			throw new Exception("Database unavailable");
 		}
-		
+		return 1;
 	}
-
-
 	
 }
 ?>
