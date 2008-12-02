@@ -37,8 +37,8 @@
 #
 # ***** END LICENSE BLOCK *****
 	
-	require_once 'personas_libs/personas_constants.inc';
-	require_once 'personas_libs/storage.inc';
+	require_once 'personas_libs/personas_constants.php';
+	require_once 'personas_libs/storage.php';
 	$error = "";
 	$auth_user = null;
 	
@@ -55,7 +55,7 @@
 			{
 				#print auth page with bad login warning
 				$error = "We were unable to locate your account. Please try again or register.";
-				include 'auth_form.inc';
+				include 'personas_libs/auth_form.php';
 				exit;
 			}
 			setcookie('PERSONA_USER', $auth_user . " " . md5($auth_user . $db->get_password_md5($auth_user) . PERSONAS_LOGIN_SALT . $_SERVER['REMOTE_ADDR']), time() + 60*60*24*365);
@@ -63,7 +63,7 @@
 		else if (!array_key_exists('PERSONA_USER', $_COOKIE))
 		{
 			#print auth page
-			include 'auth_form.inc';
+			include 'personas_libs/auth_form.php';
 			exit;
 		}
 
@@ -76,7 +76,7 @@
 			if (md5($auth_user . $db->get_password_md5($auth_user) . PERSONAS_LOGIN_SALT . $_SERVER['REMOTE_ADDR']) != $token)
 			{
 				#print auth page
-				include 'auth_form.inc';
+				include 'personas_libs/auth_form.php';
 				exit;
 			}
 		}

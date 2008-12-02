@@ -37,7 +37,7 @@
 #
 # ***** END LICENSE BLOCK *****
 	
-	require_once 'personas_libs/storage.inc';
+	require_once 'personas_libs/storage.php';
 
 	$db = new PersonaStorage();
 	
