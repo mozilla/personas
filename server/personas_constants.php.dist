@@ -1,0 +1,26 @@
+<?php
+
+#db access
+if (!defined(PERSONAS_USERNAME)) { define('PERSONAS_USERNAME', 'personas'); }
+if (!defined(PERSONAS_PASSWORD)) { define('PERSONAS_PASSWORD', 'personas'); }
+if (!defined(PERSONAS_HOST)) { define('PERSONAS_HOST', 'localhost'); }
+if (!defined(PERSONAS_DB)) { define('PERSONAS_DB', 'personas'); }
+
+
+#path to the generated html/json/images tree
+if (!defined(PERSONAS_STORAGE_PREFIX)) 
+{ 
+	define('PERSONAS_STORAGE_PREFIX', '/Users/telliott/mozilla/personas/server/store'); 
+}
+
+#html path to the root of the html/json/images tree
+putenv('PERSONAS_URL_PREFIX=http://localhost/personas/store');
+if (!defined(PERSONAS_URL_PREFIX)) 
+{ 
+	define('PERSONAS_URL_PREFIX', 'http://localhost/personas/store'); 
+}
+
+#salt for login cookie generation
+if (!defined(PERSONAS_LOGIN_SALT)) { define('PERSONAS_LOGIN_SALT', 'OurSalt'); }
+
+?>
