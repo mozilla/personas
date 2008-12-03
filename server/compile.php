@@ -37,8 +37,8 @@
 #
 # ***** END LICENSE BLOCK *****
 	
-	require_once 'personas_constants.inc';	
-	require_once 'upload/libs/storage.inc';
+	require_once 'personas_constants.php';	
+	require_once 'storage.php';
 
 	$db = new PersonaStorage();
 	$categories = $db->get_categories();
