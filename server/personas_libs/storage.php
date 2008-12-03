@@ -89,29 +89,6 @@ class PersonaStorage
 		}
 	}
 	
-	function get_categories()
-	{
-		try
-		{
-			$statement = 'select name from categories order by name';
-			$sth = $this->_dbh->prepare($statement);
-			$sth->execute();
-		}
-		catch( PDOException $exception )
-		{
-			error_log($exception->getMessage());
-			throw new Exception("Database unavailable", 503);
-		}
-		
-		$categories = array();
-		
-		while ($result = $sth->fetch())
-		{
-			$categories[] = $result[0];
-		}		
-		return $categories;
-	}
-	
 	function approve_persona($id)
 	{
 		if (!$id) { return 0; }
@@ -581,6 +558,99 @@ class PersonaStorage
 		}
 		return 1;
 	}
+	
+	function get_categories()
+	{
+		try
+		{
+			$statement = 'select name from categories order by name';
+			$sth = $this->_dbh->prepare($statement);
+			$sth->execute();
+		}
+		catch( PDOException $exception )
+		{
+			error_log($exception->getMessage());
+			throw new Exception("Database unavailable", 503);
+		}
+		
+		$categories = array();
+		
+		while ($result = $sth->fetch())
+		{
+			$categories[] = $result[0];
+		}		
+		return $categories;
+	}
+	
+	function add_category($cname)
+	{
+		if (!$cname)
+		{
+			return 0;
+		}
+
+		try
+		{
+			$stmt = 'insert into categories (name) values (:category)';
+			$sth = $this->_dbh->prepare($stmt);
+			$sth->bindParam(':category', $cname);
+			$sth->execute();
+
+		}
+		catch( PDOException $exception )
+		{
+			error_log("add_category: " . $exception->getMessage());
+			throw new Exception("Database unavailable");
+		}
+		return 1;
+		
+	}
+
+	function category_exists($category) 
+	{
+		try
+		{
+			$select_stmt = 'select count(*) from categories where name = :category';
+			$sth = $this->_dbh->prepare($select_stmt);
+			$sth->bindParam(':category', $category);
+			$sth->execute();
+		}
+		catch( PDOException $exception )
+		{
+			error_log("category_exists: " . $exception->getMessage());
+			throw new Exception("Database unavailable", 503);
+		}
+
+		$result = $sth->fetchColumn();
+		return $result ? 1 : 0;
+	}
+	
+	
+	function delete_category($cname)
+	{
+		if (!$cname)
+		{
+			return 0;
+		}
+
+		try
+		{
+			$stmt = 'delete from categories where name = :cname';
+			$sth = $this->_dbh->prepare($stmt);
+			$sth->bindParam(':cname', $cname);
+			$sth->execute();
+
+		}
+		catch( PDOException $exception )
+		{
+			error_log("delete category: " . $exception->getMessage());
+			throw new Exception("Database unavailable");
+		}
+		return 1;
+	}
+	
+	
+	
 	
 }
 ?>
