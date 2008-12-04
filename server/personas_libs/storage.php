@@ -89,26 +89,6 @@ class PersonaStorage
 		}
 	}
 	
-	function approve_persona($id)
-	{
-		if (!$id) { return 0; }
-
-		try
-		{
-			$statement = 'update personas set status = 1, approve = current_timestamp where id = :id';
-			$sth = $this->_dbh->prepare($statement);
-			$sth->bindParam(':id', $id);
-			$sth->execute();
-		}
-		catch( PDOException $exception )
-		{
-			error_log($exception->getMessage());
-			throw new Exception("Database unavailable", 503);
-		}
-		return 1;
-		
-	}
-
 	function add_popularity($id)
 	{
 		if (!$name) { return 0; }
@@ -129,6 +109,27 @@ class PersonaStorage
 		
 	}
 	
+	
+	function approve_persona($id)
+	{
+		if (!$id) { return 0; }
+
+		try
+		{
+			$statement = 'update personas set status = 1, approve = current_timestamp where id = :id';
+			$sth = $this->_dbh->prepare($statement);
+			$sth->bindParam(':id', $id);
+			$sth->execute();
+		}
+		catch( PDOException $exception )
+		{
+			error_log($exception->getMessage());
+			throw new Exception("Database unavailable", 503);
+		}
+		return 1;
+		
+	}
+
 	function reject_persona($id)
 	{
 		if (!$id) { return 0; }
@@ -297,7 +298,7 @@ class PersonaStorage
 		return $personas;
 	}
 	
-	
+	#see f we're going to get a namespace collision with a persona
 	function check_persona_name($name)
 	{
 		try
@@ -432,27 +433,6 @@ class PersonaStorage
 	
 	}
 
-	#assume admin accounts are hand-set.
-	function authenticate_admin($username, $password) 
-	{
-		try
-		{
-			$select_stmt = 'select admin from users where username = :username and md5 = :md5';
-			$sth = $this->_dbh->prepare($select_stmt);
-			$sth->bindParam(':username', $username);
-			$sth->bindParam(':md5', md5($password));
-			$sth->execute();
-		}
-		catch( PDOException $exception )
-		{
-			error_log("authenticate_user: " . $exception->getMessage());
-			throw new Exception("Database unavailable", 503);
-		}
-
-		$result = $sth->fetchColumn();
-		return $result;
-	}
-	
 
 	function authenticate_user($username, $password) 
 	{
@@ -536,6 +516,27 @@ class PersonaStorage
 		return 1;
 	}
 
+	#admin is a flag in the user db that can be set by other admins
+	function authenticate_admin($username, $password) 
+	{
+		try
+		{
+			$select_stmt = 'select admin from users where username = :username and md5 = :md5';
+			$sth = $this->_dbh->prepare($select_stmt);
+			$sth->bindParam(':username', $username);
+			$sth->bindParam(':md5', md5($password));
+			$sth->execute();
+		}
+		catch( PDOException $exception )
+		{
+			error_log("authenticate_user: " . $exception->getMessage());
+			throw new Exception("Database unavailable", 503);
+		}
+
+		$result = $sth->fetchColumn();
+		return $result;
+	}
+	
 	function promote_admin($username)
 	{
 		if (!$username)
