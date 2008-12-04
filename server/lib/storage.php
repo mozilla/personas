@@ -69,7 +69,7 @@
 # );
 #
 
-require_once 'personas_libs/personas_constants.php';
+require_once 'personas_constants.php';
 
 class PersonaStorage
 {

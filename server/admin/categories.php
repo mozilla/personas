@@ -37,15 +37,17 @@
 #
 # ***** END LICENSE BLOCK *****
 	
-	require_once 'personas_libs/personas_constants.php';
-	require_once 'personas_libs/storage.php';
+	require_once '../lib/personas_constants.php';
+	require_once '../lib/storage.php';
 
 	$db = new PersonaStorage();
 	$categories = $db->get_categories();
 	
 	$auth_user = array_key_exists('PHP_AUTH_USER', $_SERVER) ? $_SERVER['PHP_AUTH_USER'] : null;
 	$auth_pw = array_key_exists('PHP_AUTH_PW', $_SERVER) ? $_SERVER['PHP_AUTH_PW'] : null;
-		
+	
+	$result = "";
+	
 	#Auth the user
 	try 
 	{

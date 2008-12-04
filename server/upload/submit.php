@@ -37,8 +37,8 @@
 #
 # ***** END LICENSE BLOCK *****
 	
-	require_once 'personas_libs/personas_constants.php';
-	require_once 'personas_libs/storage.php';
+	require_once '../lib/personas_constants.php';
+	require_once '../lib/storage.php';
 	$error = "";
 	$auth_user = null;
 	

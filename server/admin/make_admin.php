@@ -37,7 +37,7 @@
 #
 # ***** END LICENSE BLOCK *****
 	
-	require_once 'personas_libs/storage.php';
+	require_once '../lib/storage.php';
 
 	$db = new PersonaStorage();
 	
@@ -47,7 +47,7 @@
 	#Auth the user
 	try 
 	{
-	`if (!$db->authenticate_admin($auth_user, $auth_pw))
+		if (!$db->authenticate_admin($auth_user, $auth_pw))
 		{
 			header('HTTP/1.1 Unauthorized',true,401);
 			header('WWW-Authenticate: Basic realm="PersonasAdmin"');
@@ -57,7 +57,7 @@
 		{
 			if ($db->user_exists($_GET['username']))
 			{
-				$echo $db->promote_admin($_GET['username']);
+				echo $db->promote_admin($_GET['username']);
 				exit;
 			}
 		}

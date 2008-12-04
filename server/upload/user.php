@@ -37,7 +37,7 @@
 #
 # ***** END LICENSE BLOCK *****
 	
-	require_once 'personas_libs/storage.php';
+	require_once '../lib/storage.php';
 
 	$error = '';
 	
