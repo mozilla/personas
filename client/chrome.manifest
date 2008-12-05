@@ -10,9 +10,7 @@ skin  personas  classic/1.0  chrome/skin/windows/  appversion>=3.0b1  os=WINNT
 skin  personas  classic/1.0  chrome/skin/mac/      appversion>=3.0b1  os=Darwin
 skin  personas  classic/1.0  chrome/skin/linux/    appversion>=3.0b1  os=Linux
 
-# We can't use this because it requires Firefox 3, and we support Firefox 2.
-# Instead we register the alias programmatically on startup in the service.
-#resource personas              modules/
+resource personas   ./
 
 # localizations in alphabetical order
 locale   personas   en-US       chrome/locale/en-US/

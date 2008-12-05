@@ -34,6 +34,24 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-const PERSONAS_EXTENSION_ID = "personas@christopher.beard";
+const Cc = Components.classes;
+const Ci = Components.interfaces;
+const Cr = Components.results;
+const Cu = Components.utils;
 
-Components.utils.import("resource://personas/modules/PrefCache.js");
+let EXPORTED_SYMBOLS = ["JSON"];
+
+// This module wraps the inconsistent Firefox 3.0 and 3.1 JSON APIs,
+// presenting the 3.1 API on both versions.  We only need this until
+// we stop supporting Firefox 3.0.
+
+if (Cc["@mozilla.org/xre/app-info;1"].
+    getService(Ci.nsIXULAppInfo).
+    version.indexOf("3.0") == 0) {
+  var JSON = {
+    JSON: null,
+    parse: function(jsonString) { return this.JSON.fromString(jsonString) },
+    stringify: function(jsObject) { return this.JSON.toString(jsObject) }
+  }
+  Cu.import("resource://gre/modules/JSON.jsm", JSON);
+}

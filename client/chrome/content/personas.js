@@ -36,6 +36,9 @@
  * ***** END LICENSE BLOCK ***** */
 
 let PersonaController = {
+  // We import our JSON module (modules/JSON.js) into this.
+  JSON: null,
+
   _defaultHeaderBackgroundImage: null,
   _defaultFooterBackgroundImage: null,
   _defaultTitlebarColor: null,
@@ -816,6 +819,8 @@ let PersonaController = {
   }
 
 };
+
+Cu.import("resource://personas/modules/JSON.js", JSON);
 
 window.addEventListener("load", function(e) { PersonaController.startUp(e) }, false);
 window.addEventListener("unload", function(e) { PersonaController.shutDown(e) }, false);

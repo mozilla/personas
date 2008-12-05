@@ -47,18 +47,8 @@ const LOAD_STATE_LOADING = 1;
 const LOAD_STATE_LOADED = 2;
 
 Cu.import("resource://gre/modules/XPCOMUtils.jsm");
-
-// Firefox 3.1 includes a native JSON API.  For 3.0, we import the JSON module
-// and wrap it in an interface compatible with the native JSON API in 3.1.
-if (Cc["@mozilla.org/xre/app-info;1"].getService(Ci.nsIXULAppInfo).
-    version.indexOf("3.0") == 0) {
-  var JSON = {
-    JSON: null,
-    parse: function(jsonString) { return this.JSON.fromString(jsonString) },
-    stringify: function(jsObject) { return this.JSON.toString(jsObject) }
-  }
-  Cu.import("resource://gre/modules/JSON.jsm", JSON);
-}
+Cu.import("resource://personas/modules/PrefCache.js");
+Cu.import("resource://personas/modules/JSON.js");
 
 
 //****************************************************************************//
@@ -381,13 +371,6 @@ PersonaService.prototype = {
     // Observe quit so we can destroy ourselves.
     this._obsSvc.addObserver(this, "quit-application", false);
 
-    // Set up a resource alias to the extension directory and then import our
-    // own modules, which we couldn't import earlier at parse time because the
-    // components we needed to set up the alias were not yet available.
-    this._registerResourceAlias();
-    if ("import" in Cu)
-      Cu.import("resource://personas/chrome/content/modules/PrefCache.js");
-
     // For backwards compatibility, migrate the old manualPath preference
     // to the new custom.headerURL preference.
     // FIXME: remove this once enough users have updated to a version newer
@@ -472,25 +455,6 @@ PersonaService.prototype = {
     this._personaLoader = null;
 
     this._prefSvc.removeObserver("extensions.personas.", this);
-  },
-
-  /**
-   * Register the resource://personas/ alias if it isn't already registered.
-   * We make it point to the top-level directory for the extension, so we can
-   * access files anywhere in the extension.
-   */
-  _registerResourceAlias: function() {
-    let ioSvc = Cc["@mozilla.org/network/io-service;1"].
-                getService(Ci.nsIIOService);
-    let resProt = ioSvc.getProtocolHandler("resource").
-                  QueryInterface(Ci.nsIResProtocolHandler);
-    if (!resProt.hasSubstitution("personas")) {
-      let extMgr = Cc["@mozilla.org/extensions/manager;1"].
-                   getService(Ci.nsIExtensionManager);
-      let loc = extMgr.getInstallLocation(PERSONAS_EXTENSION_ID);
-      let extD = loc.getItemLocation(PERSONAS_EXTENSION_ID);
-      resProt.setSubstitution("personas", ioSvc.newFileURI(extD));
-    }
   },
 
 
