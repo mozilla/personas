@@ -36,7 +36,7 @@
  * ***** END LICENSE BLOCK ***** */
 
 let PersonaController = {
-  // We import our JSON module (modules/JSON.js) into this.
+  // We import our JSON module wrapper (modules/JSON.js) into this.
   JSON: null,
 
   _defaultHeaderBackgroundImage: null,
