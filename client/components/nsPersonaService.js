@@ -47,8 +47,6 @@ const LOAD_STATE_LOADING = 1;
 const LOAD_STATE_LOADED = 2;
 
 Cu.import("resource://gre/modules/XPCOMUtils.jsm");
-Cu.import("resource://personas/modules/PrefCache.js");
-Cu.import("resource://personas/modules/JSON.js");
 
 
 //****************************************************************************//
@@ -368,6 +366,13 @@ PersonaService.prototype = {
   // Initialization & Destruction
 
   _init: function() {
+    // Import modules the personas extension provides.  We have to do this here
+    // instead of at component registration because Cu.import throws
+    // NS_ERROR_NOT_AVAILABLE when we do this at registration
+    // (perhaps the "personas" resource protocol alias isn't created then).
+    Cu.import("resource://personas/modules/JSON.js");
+    Cu.import("resource://personas/modules/PrefCache.js");
+
     // Observe quit so we can destroy ourselves.
     this._obsSvc.addObserver(this, "quit-application", false);
 
