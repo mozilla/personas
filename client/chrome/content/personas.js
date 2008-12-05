@@ -435,11 +435,11 @@ let PersonaController = {
   /**
    * Select the persona with the specified ID.
    *
-   * @param personaID     {integer} the ID of the persona to select
-   * @param categoryName  {string}
-   *        (optional) the name of the category to which the persona belongs;
-   *        this only matters when the user selects "random persona from this
-   *        category"
+   * @param personaID     {integer}
+   *        the ID of the persona to select
+   * @param categoryName  {string}  [optional]
+   *        the name of the category to which the persona belongs; this only
+   *        matters when the user selects "random persona from this category"
    */
   _selectPersona: function(personaID, categoryName) {
     // Update the list of recent personas.
@@ -633,6 +633,8 @@ let PersonaController = {
 
     // FIXME: make sure we have this data and display something meaningful
     // if we don't have it yet.
+    // FIXME: only check one of these now that we load both categories
+    // and personas from a single data feed, so we'll never have only one.
     if(!this._personaSvc.categories || !this._personaSvc.personas) {
         alert("Personas Data not available yet. Please check your network connection and restart Firefox, or try again in a few minutes.");
 	return false;
@@ -679,7 +681,7 @@ let PersonaController = {
 
     // FIXME: factor out all the common code below.
 
-    // Create the "Most Popular" menu.
+    // Create the Most Popular menu.
     {
       let menu = document.createElement("menu");
       menu.setAttribute("label", this._stringBundle.getString("popular.label"));
@@ -692,7 +694,7 @@ let PersonaController = {
       this._menu.insertBefore(menu, closingSeparator);
     }
 
-    // Create the "New" menu.
+    // Create the New menu.
     {
       let menu = document.createElement("menu");
       menu.setAttribute("label", this._stringBundle.getString("new.label"));
@@ -725,29 +727,25 @@ let PersonaController = {
       this._menu.insertBefore(menu, closingSeparator);
     }
 
-    // Create the "Categories" menu hierarchy.
+    // Create the Categories menu.
     let categoriesMenu = document.createElement("menu");
     categoriesMenu.setAttribute("label", this._stringBundle.getString("categories.label"));
     let categoriesPopup = document.createElement("menupopup");
     categoriesMenu.appendChild(categoriesPopup);
     this._menu.insertBefore(categoriesMenu, closingSeparator);
-    for (let categoryName in categories) {
-      let category = categories[categoryName];
+
+    // Create the category-specific submenus.
+    for each (let category in categories) {
       let menu = document.createElement("menu");
-      menu.setAttribute("label", categoryName);
+      menu.setAttribute("label", category.name);
       let popupmenu = document.createElement("menupopup");
 
-      let recentIDs = [persona.id for each (persona in category.recent)];
-      for each (let persona in category.popular) {
-        let menuItem = this._createPersonaItem(persona, category.id);
-        if (recentIDs.indexOf(persona.id) != -1)
-          menuItem.setAttribute("recent", "true");
-        popupmenu.appendChild(menuItem);
-      }
+      for each (let persona in category.personas)
+        popupmenu.appendChild(this._createPersonaItem(persona, category.name));
 
       // Create an item that picks a random persona from the category.
       popupmenu.appendChild(document.createElement("menuseparator"));
-      popupmenu.appendChild(this._createRandomItem(categoryName));
+      popupmenu.appendChild(this._createRandomItem(category.name));
 
       menu.appendChild(popupmenu);
       categoriesPopup.appendChild(menu);
@@ -791,8 +789,11 @@ let PersonaController = {
     item.setAttribute("type", "checkbox");
     item.setAttribute("checked", (persona.id == this._selectedPersona));
     item.setAttribute("autocheck", "false");
+    // FIXME: simply call this "category".
+    // XXX: do we actually need this anymore?
     item.setAttribute("categoryname", categoryName);
     item.setAttribute("oncommand", "PersonaController.onSelectPersona(event)");
+    item.setAttribute("recent", persona.recent ? "true" : "false");
     item.addEventListener("DOMMenuItemActive", function(evt) { PersonaController.onPreviewPersona(evt) }, false);
     item.addEventListener("DOMMenuItemInactive", function(evt) { PersonaController.onResetPersona(evt) }, false);
     
@@ -803,6 +804,7 @@ let PersonaController = {
     let item = document.createElement("menuitem");
 
     item.setAttribute("personaid", "random");
+    // FIXME: simply call this "category".
     item.setAttribute("categoryname", categoryName);
     item.setAttribute("class", "menuitem-iconic");
     item.setAttribute("image", "chrome://personas/content/random-feed-16x16.png");
