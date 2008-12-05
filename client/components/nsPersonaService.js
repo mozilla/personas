@@ -532,7 +532,7 @@ PersonaService.prototype = {
 
   _loadData: function() {
     let t = this;
-    this._makeRequest(this._baseURL + "store/index.json",
+    this._makeRequest(this._baseURL + "index.json",
                       function(evt) { t.onDataLoadComplete(evt) });
   },
 
@@ -562,23 +562,22 @@ PersonaService.prototype = {
     this.recent = { wrappedJSObject: data.recent };
     this.categories = { wrappedJSObject: data.categories };
 
-    // Invert the dataset, building a collection of uncategorized personas.
-    // FIXME: stop doing this once the server starts feeding us a flat list
-    // of personas from which we build the collections of categorized ones.
+    // Build a collection of uncategorized personas.
+    // FIXME: stop doing this once we record all data about selected personas,
+    // so we don't have to refer back to this data structure when the user
+    // selects one.
     let personas = {};
-    let flattenCategory = function(categoryName, category) {
-      for each (let persona in category.popular) {
-        persona.category = categoryName;
+    for each (let persona in data.popular)
+      personas[persona.id] = persona;
+    for each (let persona in data.recent)
+      personas[persona.id] = persona;
+    for each (let category in data.categories)
+      for each (let persona in category.personas)
         personas[persona.id] = persona;
-      }
-      for each (let persona in category.recent) {
-        persona.category = categoryName;
-        personas[persona.id] = persona;
-      }
-    };
-    flattenCategory("", data);
-    for (let categoryName in data.categories)
-      flattenCategory(categoryName, data.categories[categoryName]);
+
+    // FIXME: provide the indexed hash instead of an array, since it's easy
+    // to iterate over an indexed hash, but it's expensive to find a persona
+    // in the array.
     this.personas = { wrappedJSObject: [personas[id] for (id in personas)] };
 
     // XXX We don't actually use this anywhere; should we get rid of it?
@@ -757,11 +756,36 @@ PersonaService.prototype = {
 
     let lastRandomID = this._getPref("extensions.personas.lastrandom");
 
-    // If we have the list of personas, use it to pick a random persona
+    // If we have the list of categories, use it to pick a random persona
     // from the selected category.
-    if (this.personas) {
-      let category = this._getPref("extensions.personas.category");
-      personaID = this._getRandomPersonaByCategory(category, lastRandomID);
+    if (this.categories) {
+      // Get a list of the personas in the category.
+      let categoryName = this._getPref("extensions.personas.category");
+      let personas;
+      for each (let category in this.categories.wrappedJSObject) {
+        if (categoryName == category.name) {
+          personas = category.personas;
+          break;
+        }
+      }
+
+      // Get a random item from the list, trying up to five times to get one
+      // that is different from the currently-selected item in the category
+      // (if any).  We use Math.floor instead of Math.round to pick a random
+      // number because the JS reference says Math.round returns a non-uniform
+      // distribution
+      // <http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Math:random#Examples>.
+      if (personas && personas.length > 0) {
+        let randomIndex, randomItem;
+        for (let i = 0; i < 5; i++) {
+          randomIndex = Math.floor(Math.random() * personas.length);
+          randomItem = personas[randomIndex];
+          if (randomItem.id != lastRandomID)
+            break;
+        }
+  
+        personaID = randomItem.id;
+      }
     }
 
     // If we were able to pick a random persona from the selected category,
@@ -773,35 +797,6 @@ PersonaService.prototype = {
       personaID = lastRandomID;
 
     return personaID;
-  },
-
-  _getRandomPersonaByCategory: function(categoryName, lastRandomID) {
-    let personas = this.personas.wrappedJSObject;
-    let personasInCategory = [];
-
-    // Build a list of all personas in the category.
-    // FIXME: do this once when we process the data.
-    for each (let persona in personas)
-      if (persona.category == categoryName)
-        personasInCategory.push(persona);
-
-    if (personasInCategory.length == 0)
-      return null;
-
-    // Get a random item, trying up to five times to get one that is different
-    // from the currently-selected item in the category (if any).
-    // We use Math.floor instead of Math.round to pick a random number because
-    // the JS reference says Math.round returns a non-uniform distribution
-    // <http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Math:random#Examples>.
-    let randomIndex, randomItem;
-    for (let i = 0; i < 5; i++) {
-      randomIndex = Math.floor(Math.random() * personasInCategory.length);
-      randomItem = personasInCategory[randomIndex];
-      if (randomItem.id != lastRandomID)
-        break;
-    }
-
-    return randomItem.id; 
   },
 
   // FIXME: index personas after retrieving them and make the index (or a method
