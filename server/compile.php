@@ -47,7 +47,7 @@
 	{
 		$second_folder = $id%10;
 		$first_folder = ($id%100 - $second_folder)/10;
-		return PERSONAS_URL_PREFIX . '/' . $first_folder . '/' . $second_folder .  '/'. $id . '/';
+		return  $first_folder . '/' . $second_folder .  '/'. $id . '/';
 	}
 
 	function extract_record_data($item)
@@ -175,7 +175,7 @@
 	
 	function html_box($item)
 	{
-		$preview_url = url_prefix($item{'id'}) . "preview.jpg";
+		$preview_url = PERSONAS_URL_PREFIX . '/' . url_prefix($item{'id'}) . "preview.jpg";
 		
 		$text = <<< End_of_block
 		<div class="persona">
