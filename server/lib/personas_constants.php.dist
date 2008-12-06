@@ -12,12 +12,21 @@ if (!defined('PERSONAS_STORAGE_PREFIX'))
 { 
 	define('PERSONAS_STORAGE_PREFIX', '/Users/telliott/mozilla/personas/server/store'); 
 }
+if (!defined('PERSONAS_PENDING_PREFIX')) 
+{ 
+	define('PERSONAS_PENDING_PREFIX', '/Users/telliott/mozilla/personas/server/pending'); 
+}
 
-#html path to the root of the html/json/images tree
-putenv('PERSONAS_URL_PREFIX=http://localhost/personas/store');
+
+#html path to the root of the html/json/images tree for approvals
 if (!defined('PERSONAS_URL_PREFIX')) 
 { 
-	define('PERSONAS_URL_PREFIX', 'http://localhost/personas/store'); 
+	define('PERSONAS_URL_PREFIX', 'http://localhost/personas/pending'); 
+}
+#html path to the root of the html/json/images tree for display
+if (!defined('PERSONAS_LIVE_PREFIX')) 
+{ 
+	define('PERSONAS_LIVE_PREFIX', '/personas/store'); 
 }
 
 #salt for login cookie generation

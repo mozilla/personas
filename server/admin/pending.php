@@ -1,3 +1,5 @@
+<html>
+<body>
 <?php
 
 # ***** BEGIN LICENSE BLOCK *****
@@ -68,73 +70,92 @@
 		switch ($_POST['verdict'])
 		{
 			case 'accept':
-				$db->approve_persona($persona{'id'});				
+				$persona_id = $persona['id'];
+				$second_folder = $persona_id%10;
+				$first_folder = ($persona_id%100 - $second_folder)/10;	
+				$persona_path = "/" . $first_folder;
+				if (!is_dir(PERSONAS_STORAGE_PREFIX . $persona_path)) { mkdir(PERSONAS_STORAGE_PREFIX . $persona_path); }
+				$persona_path .= "/" . $second_folder;
+				if (!is_dir(PERSONAS_STORAGE_PREFIX . $persona_path)) { mkdir(PERSONAS_STORAGE_PREFIX . $persona_path); }
+				$persona_path .= "/" . $persona_id;
+				rename (PERSONAS_PENDING_PREFIX . $persona_path, PERSONAS_STORAGE_PREFIX . $persona_path);
+				$db->approve_persona($persona{'id'});
 				break;
 			case 'change':
 				$category = ini_get('magic_quotes_gpc') ? stripslashes($_POST['category']) : $_POST['category'];
 				$db->change_persona_category($persona{'id'}, $category);
 				break;			
 			case 'reject':
-				$second_folder = $persona_id%10;
-				$first_folder = ($persona_id%100 - $second_folder)/10;	
-				$persona_path = PERSONAS_STORAGE_PREFIX . "/" . $first_folder;
-				$persona_path .= "/" . $second_folder . "/" . $persona_id . "/preview.jpg";
-				unlink($persona_path);
 				$db->reject_persona($persona{'id'});
 				break;
+			case 'pull':
+				$persona_id = $persona['id'];
+				$second_folder = $persona_id%10;
+				$first_folder = ($persona_id%100 - $second_folder)/10;	
+				$persona_path = "/" . $first_folder . "/" . $second_folder . "/" . $persona_id;
+				rename (PERSONAS_STORAGE_PREFIX . $persona_path, PERSONAS_PENDING_PREFIX . $persona_path);
+				$db->reject_persona($persona{'id'});
+				print "<div>Persona $persona_id pulled</div>";
+				break;				
 			default:
-				print "<html><body>Could not understand the verdict</body></html>";	
+				print "Could not understand the verdict";	
 				exit;
 		}
 	}
 	
 	
 	$results = $db->get_pending_personas();
-	
 	if (!$count = count($results))
 	{
-		print "<html><body>There are no more pending personas</body></html>";
-		exit;
+		print "There are no more pending personas";
 	}
-	
-	$result = $results[0];
-	$second_folder = $result['id']%10;
-	$first_folder = ($result['id']%100 - $second_folder)/10;
-	$path = PERSONAS_URL_PREFIX . '/' .  $first_folder . '/' . $second_folder . '/' . $result{'id'};
-	$preview_url =  $path . "/preview.jpg";
-	$header_url =  $path . "/" . $result['header'];
-	$footer_url =  $path . "/" . $result['footer'];
-?>
-<html>
-<body>
-<form action="pending.php" method="POST">
-<input type=hidden name=id value=<?= $result{'id'} ?>>
-Internal ID: <?= $result{'id'} ?>
-<br>
-Name: <?= $result{'name'} ?>
-<br>
-User: <?= $result{'user'} ?>
-<br>
-Category: <select name="category">
-<?php
-	foreach ($categories as $category)
+	else
 	{
-		print "<option" . ($result{'category'} == $category ? ' selected="selected"' : "") . ">$category</option>";
+	
+		$result = $results[0];
+		$second_folder = $result['id']%10;
+		$first_folder = ($result['id']%100 - $second_folder)/10;
+		$path = PERSONAS_URL_PREFIX . '/' .  $first_folder . '/' . $second_folder . '/' . $result['id'];
+		$preview_url =  $path . "/preview.jpg";
+		$header_url =  $path . "/" . $result['header'];
+		$footer_url =  $path . "/" . $result['footer'];
+?>
+		<form action="pending.php" method="POST">
+		<input type=hidden name=id value=<?= $result{'id'} ?>>
+		Internal ID: <?= $result{'id'} ?>
+		<br>
+		Name: <?= $result['name'] ?>
+		<br>
+		User: <?= $result['user'] ?>
+		<br>
+		Category: <select name="category">
+		<?php
+			foreach ($categories as $category)
+			{
+				print "<option" . ($result{'category'} == $category ? ' selected="selected"' : "") . ">$category</option>";
+			}
+		?>
+		</select><input type="submit" name="verdict" value="change">
+		<br>
+		<p>
+		Preview:
+		<br>
+		<img src="<?= $preview_url ?>"><p>
+		Header:<br>
+		<img src="<?= $header_url ?>"><p>
+		Footer:<br>
+		<img src="<?= $footer_url ?>"><p>
+		<p>
+		<input type="submit" name="verdict" value="accept">
+		<input type="submit" name="verdict" value="reject">
+		</form>
+<?php
 	}
 ?>
-</select><input type="submit" name="verdict" value="change">
-<br>
-<p>
-Preview:
-<br>
-<img src="<?= $preview_url ?>"><p>
-Header:<br>
-<img src="<?= $header_url ?>"><p>
-Footer:<br>
-<img src="<?= $footer_url ?>"><p>
-<p>
-<input type="submit" name="verdict" value="accept">
-<input type="submit" name="verdict" value="reject">
+<hr>
+<form action="pending.php" method="POST">
+Pull persona id: <input type=text name=id>
+<input type="submit" name="verdict" value="pull">
 </form>
 </body>
 </html>

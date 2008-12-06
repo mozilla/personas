@@ -175,21 +175,14 @@
 	
 	function html_box($item)
 	{
-		$preview_url = PERSONAS_URL_PREFIX . '/' . url_prefix($item{'id'}) . "preview.jpg";
-		
+		$preview_url = PERSONAS_LIVE_PREFIX . '/' . url_prefix($item{'id'}) . "preview.jpg";
+		$persona = htmlentities(json_encode(extract_record_data($item)));
 		$text = <<< End_of_block
 		<div class="persona">
 			<div class="name">${item['name']}</div>
 			<div class="preview">
-				<img closs="preview-image"
-					 onclick="dispatchPersonaEvent('SelectPersona', this)" 
-					 onmouseover="dispatchPersonaEvent('PreviewPersona', this)" 
-					 onmouseout="dispatchPersonaEvent('ResetPersona', this)"
-					 persona="${item['id']}"
-					 header="${item['header']}"
-					 footer="${item['footer']}"
-					 textcolor="${item['textcolor']}"
-					 accentcolor="${item['accentcolor']}"
+				<img class="preview-image"
+					 persona="$persona"
 					 src="$preview_url">
 			</div>
 			<div class="creator">Creator: ${item['author']}</div>
@@ -213,6 +206,8 @@ End_of_block;
 				<script language="JavaScript">
 					function dispatchPersonaEvent(aType, aNode) 
 					{
+						if (!aNode.hasAttribute("persona"))
+							return;
 						var event = document.createEvent("Events");
 						event.initEvent(aType, true, false);
 						aNode.dispatchEvent(event);
@@ -228,12 +223,17 @@ End_of_block;
 				$sidelist
 			</div>
 End_of_block;
-			$text .= '<div id="contents">';
+			$text .= <<< End_of_block
+			<div id="contents" onclick="dispatchPersonaEvent('SelectPersona', event.originalTarget)"
+              onmouseover="dispatchPersonaEvent('PreviewPersona', event.originalTarget)"
+              onmouseout="dispatchPersonaEvent('ResetPersona', event.originalTarget)">
+End_of_block;
+
 			foreach ($boxes as $contents)
 			{
 				$text .= html_box($contents);
 			}
-			$text .= '</div></body>';
+			$text .= '</div></body></html>';
 			return $text;
 	}
 
