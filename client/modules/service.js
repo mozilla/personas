@@ -186,12 +186,11 @@ dump("onDataLoadComplete\n");
   set category(newVal)  {        this._prefs.set("category", newVal) },
 
   /**
-   * The active persona.  Normally this is the same as the selected persona,
+   * The active persona.  Normally this is the same as the current persona,
    * but it is the persona being previewed while the user is previewing one.
-   * Most code should access 
    */
   get activePersona() {
-    return this._previewedPersona || this.currentPersona;
+    return this._previewingPersona || this.currentPersona;
   },
 
   // XXX Do we still need this now that we store the last random persona
@@ -306,7 +305,7 @@ dump("this.selected" + this.selected + "\n");
     Observers.notify(null, "personas:persona:changed", null);
   },
 
-  _previewedPersona: null,
+  _previewingPersona: null,
 
   /**
    * Display the given persona temporarily.  Useful for showing users who are
@@ -316,7 +315,7 @@ dump("this.selected" + this.selected + "\n");
    */
   previewPersona: function(persona) {
 dump("previewPersona: " + JSON.stringify(persona) + "\n");
-    this._previewedPersona = persona;
+    this._previewingPersona = persona;
     Observers.notify(null, "personas:persona:changed", null);
   },
 
@@ -325,7 +324,7 @@ dump("previewPersona: " + JSON.stringify(persona) + "\n");
    */
   resetPersona: function() {
 dump("resetPersona\n");
-    this._previewedPersona = null;
+    this._previewingPersona = null;
     Observers.notify(null, "personas:persona:changed", null);
   },
 
