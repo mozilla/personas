@@ -35,10 +35,15 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-let PersonaController = {
-  // We import our JSON module wrapper (modules/JSON.js) into this.
-  JSON: null,
+// Generic modules get imported into the persona controller rather than
+// the global namespace after the controller definition below so they don't
+// conflict with modules with the same names imported by other extensions.
 
+// It's OK to import the service module into the global namespace because it
+// only imports a symbol with a personas-specific name (PersonaService).
+Cu.import("resource://personas/modules/service.js");
+
+let PersonaController = {
   _defaultHeaderBackgroundImage: null,
   _defaultFooterBackgroundImage: null,
   _defaultTitlebarColor: null,
@@ -46,39 +51,27 @@ let PersonaController = {
   _resetTimeoutID: null,
 
   //**************************************************************************//
-  // Convenience Getters
+  // Shortcuts
 
-  // Preference Service
-  get _prefSvc() {
-    let prefSvc = Cc["@mozilla.org/preferences-service;1"].
-                  getService(Ci.nsIPrefBranch);
-    delete this._prefSvc;
-    this._prefSvc = prefSvc;
-    return this._prefSvc;
+  // Generic modules get imported into these properties rather than
+  // the global namespace so they don't conflict with modules with the same
+  // names imported by other extensions.
+  JSON:         null,
+  Observers:    null,
+  Preferences:  null,
+  StringBundle: null,
+  URI:          null,
+
+  // Access to extensions.personas.* preferences.  To access other preferences,
+  // call the Preferences module directly.
+  get _prefs() {
+    delete this._prefs;
+    return this._prefs = new this.Preferences("extensions.personas.");
   },
 
-  // Observer Service
-  get _obsSvc() {
-    let obsSvc = Cc["@mozilla.org/observer-service;1"].
-                 getService(Ci.nsIObserverService);
-    delete this._obsSvc;
-    this._obsSvc = obsSvc;
-    return this._obsSvc;
-  },
-
-  get _personaSvc() {
-    let personaSvc = Cc["@mozilla.org/personas/persona-service;1"].
-                     getService(Ci.nsIPersonaService);
-    delete this._personaSvc;
-    this._personaSvc = personaSvc;
-    return this._personaSvc;
-  },
-
-  get _stringBundle() {
-    let stringBundle = document.getElementById("personasStringBundle");
-    delete this._stringBundle;
-    this._stringBundle = stringBundle;
-    return this._stringBundle;
+  get _strings() {
+    delete this._strings;
+    return this._strings = new this.StringBundle("chrome://personas/locale/personas.properties");
   },
 
   get _menu() {
@@ -88,41 +81,37 @@ let PersonaController = {
     return this._menu;
   },
 
-  get _prefCache() {
-    let prefCache = new PersonasPrefCache("");
-    delete this._prefCache;
-    this._prefCache = prefCache;
-    return this._prefCache;
+  get _defaultPersona() {
+    delete this._defaultPersona;
+    return this._defaultPersona = { id: "default" };
   },
 
-  _getPref: function(aPrefName, aDefaultValue) {
-    return this._prefCache.getPref(aPrefName, aDefaultValue);
-  },
-
-  get _selectedPersona() {
-    return this._getPref("extensions.personas.selected", "default");
-  },
-
-  get _baseURL() {
-    return this._getPref("extensions.personas.url");
+  get _baseURI() {
+    return this.URI.get(this._prefs.get("url"));
   },
 
   get _siteURL() {
-    return this._getPref("extensions.personas.siteURL");
+    return this._prefs.get("siteURL");
   },
 
   get _previewTimeout() {
-    return this._getPref("extensions.personas.previewTimeout");
+    return this._prefs.get("previewTimeout");
   },
 
   get _locale() {
-    switch (this._getPref("general.useragent.locale", "en-US")) {
+    switch (this.Preferences.get("general.useragent.locale", "en-US")) {
       case 'ja':
       case 'ja-JP-mac':
         return "ja";
     }
     return "en-US";
   },
+
+  /**
+   * Escape CSS special characters in unquoted URLs,
+   * per http://www.w3.org/TR/CSS21/syndata.html#uri.
+   */
+  _escapeURLForCSS: function(url) url.replace(/[(),\s'"]/g, "\$&"),
 
 
   //**************************************************************************//
@@ -140,11 +129,12 @@ let PersonaController = {
 
   // nsIObserver
   observe: function(subject, topic, data) {
+dump("observe: " + topic + "\n");
     switch (topic) {
-      case "personas:activePersonaUpdated":
+      case "personas:persona:changed":
         this._applyPersona();
         break;
-      case "personas:defaultPersonaSelected":
+      case "personas:persona:disabled":
         this._applyDefault();
         break;
       case "personas:personaLoadStarted":
@@ -176,19 +166,6 @@ let PersonaController = {
   // Initialization & Destruction
 
   startUp: function() {
-    // Access the persona service to initialize it.
-    this._personaSvc;
-
-    // Note: the persona service should initialize itself on startup
-    // by registering with the "app-startup" XPCOM category, but for some reason
-    // the persona loader iframe isn't always ready (i.e. its docShell, etc.
-    // properties aren't always defined) until a browser window has been loaded.
-
-    // Even if the service were to wait until "final-ui-startup", which happens
-    // right before browser windows get opened, that's not long enough.
-    // It could wait for "sessionstore-windows-restored", which would probably
-    // be long enough, but that notification isn't available in Firefox 2.
-
     // Make sure there's a bottombox element enclosing the items below
     // the browser widget.  Firefox 3 beta 4 and later have one, but earlier
     // releases of the browser don't, and that's what we style.
@@ -220,10 +197,10 @@ let PersonaController = {
     this._defaultTitlebarColor = "#C9C9C9";
 
     // Observe various changes that we should apply to the browser window.
-    this._obsSvc.addObserver(this, "personas:activePersonaUpdated", false);
-    this._obsSvc.addObserver(this, "personas:defaultPersonaSelected", false);
-    this._obsSvc.addObserver(this, "personas:personaLoadStarted", false);
-    this._obsSvc.addObserver(this, "personas:personaLoadFinished", false);
+    this.Observers.add(this, "personas:persona:changed");
+    this.Observers.add(this, "personas:persona:disabled");
+    this.Observers.add(this, "personas:personaLoadStarted");
+    this.Observers.add(this, "personas:personaLoadFinished");
 
     // Listen for various persona-related events that can bubble up from content.
     document.addEventListener("SelectPersona", this, false, true);
@@ -232,24 +209,23 @@ let PersonaController = {
 
     // Check for a first-run or updated extension and display some additional
     // information to users.
-    let lastVersion = this._getPref("extensions.personas.lastversion"); 
+    let lastVersion = this._prefs.get("lastversion"); 
     let thisVersion = Cc["@mozilla.org/extensions/manager;1"].
                       getService(Ci.nsIExtensionManager).
                       getItemForID(PERSONAS_EXTENSION_ID).version;
     if (lastVersion == "firstrun") {
       let firstRunURL = this._siteURL + this._locale + "/firstrun/?version=" + thisVersion;
       setTimeout(function() { window.openUILinkIn(firstRunURL, "tab") }, 500);
-      this._prefSvc.setCharPref("extensions.personas.lastversion", thisVersion);
+      this._prefs.set("lastversion", thisVersion);
     }
     else if (lastVersion != thisVersion) {
       let updatedURL = this._siteURL + this._locale + "/updated/?version=" + thisVersion;
       setTimeout(function() { window.openUILinkIn(updatedURL, "tab") }, 500);
-      this._prefSvc.setCharPref("extensions.personas.lastversion", thisVersion);
+      this._prefs.set("lastversion", thisVersion);
     }
 
-    // If the persona is already available, apply it.  Otherwise we'll apply it
-    // when notified that it's ready.
-    if (this._personaSvc.headerURL && this._personaSvc.footerURL)
+    // Apply the selected persona (if any) to the window.
+    if (PersonaService.activePersona)
       this._applyPersona();
   },
 
@@ -258,10 +234,10 @@ let PersonaController = {
     document.removeEventListener("PreviewPersona", this, false);
     document.removeEventListener("ResetPersona", this, false);
 
-    this._obsSvc.removeObserver(this, "personas:activePersonaUpdated");
-    this._obsSvc.removeObserver(this, "personas:defaultPersonaSelected");
-    this._obsSvc.removeObserver(this, "personas:personaLoadStarted", false);
-    this._obsSvc.removeObserver(this, "personas:personaLoadFinished", false);
+    this.Observers.remove(this, "personas:persona:disabled");
+    this.Observers.remove(this, "personas:persona:changed");
+    this.Observers.remove(this, "personas:personaLoadFinished");
+    this.Observers.remove(this, "personas:personaLoadStarted");
   },
 
 
@@ -269,99 +245,115 @@ let PersonaController = {
   // Appearance Updates
 
   _applyPersona: function() {
-    let personaID = this._selectedPersona;
+dump("_applyPersona: " + this.JSON.stringify(PersonaService.activePersona) + "\n");
 
-    // FIXME: figure out where to locate this function and put it there.
-    // Escape CSS special characters in unquoted URLs
-    // per http://www.w3.org/TR/CSS21/syndata.html#uri
-    function escapeCSSURL(aURLSpec) {
-      return aURLSpec.replace(/[(),\s'"]/g, "\$&");
-    }
+    // Style the header.
+    let header = document.getElementById("main-window");
+    header.setAttribute("persona", PersonaService.activePersona.id);
+    let headerURI = this.URI.get(PersonaService.activePersona.header, null, this._baseURI);
+    header.style.backgroundImage = "url(" + this._escapeURLForCSS(headerURI.spec) + ")";
+
+    // Style the footer.
+    let footer = document.getElementById("browser-bottombox");
+    footer.setAttribute("persona", PersonaService.activePersona.id);
+    let footerURI = this.URI.get(PersonaService.activePersona.footer, null, this._baseURI);
+    footer.style.backgroundImage = "url(" + this._escapeURLForCSS(footerURI.spec) + ")";
 
     let os = Cc["@mozilla.org/xre/app-info;1"].getService(Ci.nsIXULRuntime).OS;
 
-    // Style the header.
-    let headerURL = this._personaSvc.headerURL;
-    let header = document.getElementById("main-window");
-    header.setAttribute("persona", personaID);
-    header.style.backgroundImage = "url(" + escapeCSSURL(headerURL) + ")";
+    // Style the text color.
+    if (this._prefs.get("useTextColor")) {
+      // FIXME: fall back on the default text color instead of "black".
+      let textColor = PersonaService.activePersona.textcolor || "black";
+      for (let i = 0; i < document.styleSheets.length; i++) {
+        let styleSheet = document.styleSheets[i];
+        if (styleSheet.href == "chrome://personas/content/textColor.css") {
+          while (styleSheet.cssRules.length > 0)
+            styleSheet.deleteRule(0);
 
-    // Style the titlebar with accent color.
+          if (os == "Darwin") {
+            styleSheet.insertRule(
+              "#main-window[persona] .tabbrowser-tab, " +
+              "#navigator-toolbox menubar > menu, " +
+              "#navigator-toolbox toolbarbutton, " +
+              "#browser-bottombox, " +
+              "#browser-bottombox toolbarbutton " +
+              "{ color: " + textColor + "; font-weight: normal; }",
+              0
+            );
+          }
+          else {
+            styleSheet.insertRule(
+              "#navigator-toolbox menubar > menu, " +
+              "#navigator-toolbox toolbarbutton, " +
+              "#browser-bottombox, " +
+              "#browser-bottombox toolbarbutton " +
+              "{ color: " + textColor + "}",
+              0
+            );
+          }
+
+          // FIXME: figure out what to do about the disabled color.  Maybe we
+          // should let personas specify it independently and then apply it via
+          // a rule like this:
+          // #navigator-toolbox toolbarbutton[disabled="true"],
+          // #browser-toolbox toolbarbutton[disabled="true"],
+          // #browser-bottombox toolbarbutton[disabled="true"]
+          //   { color: #cccccc !important; } 
+
+          // Stop iterating through stylesheets.
+          break;
+        }
+      }
+    }
+
+    // Style the titlebar with the accent color.
     // Note: we only do this on Mac, since it's the only OS that supports
-    // this capability.  It's only the only OS where our hack for applying
+    // this capability.  It's also the only OS where our hack for applying
     // the change doesn't cause the window to un-maximize.
-    if(this._getPref("extensions.personas.useAccentColor")) {
+    if (this._prefs.get("useAccentColor")) {
       if (os == "Darwin") {
-        let titlebarColor = this._personaSvc.accentColor || this._defaultTitlebarColor;
+        let titlebarColor = PersonaService.activePersona.accentcolor || this._defaultTitlebarColor;
         if (titlebarColor != header.getAttribute("titlebarcolor")) {
           header.setAttribute("activetitlebarcolor", titlebarColor);
           header.setAttribute("inactivetitlebarcolor", titlebarColor);
           header.setAttribute("titlebarcolor", titlebarColor);
           // FIXME: Incredibly gross hack in order to force a window redraw event
           // that ensures that the titlebar color change is applied.  Note that
-          // this will unmaximize a maximized window on Windows and Linux, so we
-          // only do this on Mac (which is the only place the "titlebarcolor"
-          // attribute has any effect anyway at the moment).
+          // this will unmaximize a maximized window on Windows and Linux, but
+          // we only do this on Mac (which is the only place the "titlebarcolor"
+          // attribute has any effect anyway at the moment), so it's ok for now.
+          // If we ever make this work on Windows and Linux, we'll have to
+          // determine the maximized state of the window beforehand and restore
+          // it to that state afterwards.
           window.resizeTo(parseInt(window.outerWidth)+1, window.outerHeight);
           window.resizeTo(parseInt(window.outerWidth)-1, window.outerHeight);
         }
       }
     }
 
-    // Style the footer.
-    let footerURL = this._personaSvc.footerURL;
-    let footer = document.getElementById("browser-bottombox");
-    footer.setAttribute("persona", personaID);
-    footer.style.backgroundImage = "url('" + escapeCSSURL(footerURL) + "')";
-
-    // Style the text color.
-    if(this._getPref("extensions.personas.useTextColor")) {
-      let textColor = this._personaSvc.textColor;
-      if (textColor) {
-        for (let i = 0; i < document.styleSheets.length; i++) {
-          let styleSheet = document.styleSheets[i];
-          if (styleSheet.href == "chrome://personas/content/textColor.css") {
-            while (styleSheet.cssRules.length > 0)
-              styleSheet.deleteRule(0);
-
-      if (os == "Darwin") {
-            styleSheet.insertRule(
-              "#main-window[persona] .tabbrowser-tab, " +
-              "#navigator-toolbox menubar > menu, " +
-              "#navigator-toolbox toolbarbutton, " +
-              "#browser-bottombox, " +
-              "#browser-bottombox toolbarbutton { color: " + textColor + "; font-weight: normal; }",
-              0
-            );
-      } else {
-            styleSheet.insertRule(
-              "#navigator-toolbox menubar > menu, " +
-              "#navigator-toolbox toolbarbutton, " +
-              "#browser-bottombox, " +
-              "#browser-bottombox toolbarbutton { color: " + textColor + "}",
-              0
-            );
-      }
-            // FIXME: figure out what to do about the disabled color.  Maybe we
-            // should let personas specify it independently and then apply it via
-            // a rule like this:
-            // #navigator-toolbox toolbarbutton[disabled="true"],
-            // #browser-toolbox toolbarbutton[disabled="true"],
-            // #browser-bottombox toolbarbutton[disabled="true"]
-            //   { color: #cccccc !important; } 
-
-            break;
-          }
-        }
-      }
-    }
   },
 
   _applyDefault: function() {
-
+    // Reset the header.
     let header = document.getElementById("main-window");
     header.removeAttribute("persona");
     header.style.backgroundImage = this._defaultHeaderBackgroundImage;
+
+    // Reset the footer.
+    let footer = document.getElementById("browser-bottombox");
+    footer.removeAttribute("persona");
+    footer.style.backgroundImage = this._defaultFooterBackgroundImage;
+
+    // Reset the text color.
+    for (let i = 0; i < document.styleSheets.length; i++) {
+      let styleSheet = document.styleSheets[i];
+      if (styleSheet.href == "chrome://personas/content/textColor.css") {
+        while (styleSheet.cssRules.length > 0)
+          styleSheet.deleteRule(0);
+        break;
+      }
+    }
 
     // Reset the titlebar to the default color.
     // Note: we only do this on Mac, since it's the only OS that supports
@@ -370,30 +362,22 @@ let PersonaController = {
     let os = Cc["@mozilla.org/xre/app-info;1"].getService(Ci.nsIXULRuntime).OS;
     if (os == "Darwin") {
       if (header.getAttribute("titlebarcolor") != this._defaultTitlebarColor) {
+        // FIXME: set the active and inactive titlebar colors back to their
+        // original values rather than the original value of the plain titlebar
+        // color.
         header.setAttribute("activetitlebarcolor", this._defaultTitlebarColor);
         header.setAttribute("inactivetitlebarcolor", this._defaultTitlebarColor);
         header.setAttribute("titlebarcolor", this._defaultTitlebarColor);
-        // FIXME: Incredibly gross hack in order to force a window redraw event
-        // that ensures that the titlebar color change is applied.  Note that
-        // this will unmaximize a maximized window on Windows and Linux, so we
-        // only do this on Mac (which is the only place the "titlebarcolor"
-        // attribute has any effect anyway at the moment).
+          // FIXME: Incredibly gross hack in order to force a window redraw event
+          // that ensures that the titlebar color change is applied.  Note that
+          // this will unmaximize a maximized window on Windows and Linux, but
+          // we only do this on Mac (which is the only place the "titlebarcolor"
+          // attribute has any effect anyway at the moment), so it's ok for now.
+          // If we ever make this work on Windows and Linux, we'll have to
+          // determine the maximized state of the window beforehand and restore
+          // it to that state afterwards.
         window.resizeTo(parseInt(window.outerWidth)+1, window.outerHeight);
         window.resizeTo(parseInt(window.outerWidth)-1, window.outerHeight);
-      }
-    }
-
-    let footer = document.getElementById("browser-bottombox");
-    footer.removeAttribute("persona");
-    footer.style.backgroundImage = this._defaultFooterBackgroundImage;
-
-    // Remove the text color rule.
-    for (let i = 0; i < document.styleSheets.length; i++) {
-      let styleSheet = document.styleSheets[i];
-      if (styleSheet.href == "chrome://personas/content/textColor.css") {
-        while (styleSheet.cssRules.length > 0)
-          styleSheet.deleteRule(0);
-        break;
       }
     }
   },
@@ -403,149 +387,115 @@ let PersonaController = {
   // Persona Selection, Preview, and Reset
 
   /**
-   * Select a persona from content via a SelectPersona event.  Checks to ensure
-   * the page is hosted on a server authorized to select personas and the persona
-   * is in the list of personas known to the persona service.  Retrieves the ID
-   * of the persona from the "persona" attribute on the target of the event.
+   * Select the persona specified by a web page via a SelectPersona event.
+   * Checks to ensure the page is hosted on a server authorized to select personas.
    *
-   * @param aEvent {Event} the SelectPersona DOM event
+   * @param event   {Event}
+   *        the SelectPersona DOM event
    */
-  onSelectPersonaFromContent: function(aEvent) {
-    this._authorizeHost(aEvent);
-
-    if (!aEvent.target.hasAttribute("persona"))
-      throw "node does not have 'persona' attribute";
-
-    let personaID = aEvent.target.getAttribute("persona");
-
-    if (!this._getPersona(personaID))
-      throw "unknown persona " + personaID;
-
-    // Optional; the node might not identify the category to which the persona
-    // belongs.  It only matters when the user selects "random persona from this
-    // category" (which at the moment the personas directory doesn't expose).
-    let categoryName = aEvent.target.getAttribute("category");
-
-    this._selectPersona(personaID, categoryName);
-  },
-
-  onSelectPersona: function(aEvent) {
-    let personaID = aEvent.target.getAttribute("personaid");
-    let categoryName = aEvent.target.getAttribute("categoryname");
-    this._selectPersona(personaID, categoryName);
+  onSelectPersonaFromContent: function(event) {
+    this._authorizeHost(event);
+    this.onSelectPersona(event);
   },
 
   /**
-   * Select the persona with the specified ID.
+   * Select the persona specified by the DOM node target of the given event.
    *
-   * @param personaID     {integer}
-   *        the ID of the persona to select
-   * @param categoryName  {string}  [optional]
-   *        the name of the category to which the persona belongs; this only
-   *        matters when the user selects "random persona from this category"
+   * @param event   {Event}
+   *        the SelectPersona DOM event
    */
-  _selectPersona: function(personaID, categoryName) {
-    // Update the list of recent personas.
-    if (personaID != "default" && personaID != this._selectedPersona && this._selectedPersona != "random") {
-      this._prefSvc.setCharPref("extensions.personas.lastselected3",
-                                this._getPref("extensions.personas.lastselected2"));
-      this._prefSvc.setCharPref("extensions.personas.lastselected2",
-                                this._getPref("extensions.personas.lastselected1"));
-      this._prefSvc.setCharPref("extensions.personas.lastselected1",
-                                this._getPref("extensions.personas.lastselected0"));
-      this._prefSvc.setCharPref("extensions.personas.lastselected0", this._selectedPersona);
-    }
+  onSelectPersona: function(event) {
+    let node = event.target;
 
-    // Save the new selection to prefs.
-    // We save the category first, since the moment we set personaID to "random",
-    // the persona service will select a random persona from the current category.
-    // FIXME: implement batch setting of preferences to fix this problem.
-    if (categoryName)
-      this._prefSvc.setCharPref("extensions.personas.category", categoryName);
-    this._prefSvc.setCharPref("extensions.personas.selected", personaID);
+    if (!node.hasAttribute("persona"))
+      throw "node does not have 'persona' attribute";
+
+    let persona = node.getAttribute("persona");
+
+    // The persona attribute is either a JSON string specifying the persona
+    // to apply or a string identifying a special persona (default, random).
+    switch (persona) {
+      case "default":
+        PersonaService.changeToDefaultPersona();
+        break;
+      case "random":
+        PersonaService.changeToRandomPersona(node.getAttribute("category"));
+        break;
+      case "custom":
+        PersonaService.changeToPersona(PersonaService.customPersona);
+        break;
+      default:
+        PersonaService.changeToPersona(this.JSON.parse(persona));
+        break;
+    }
   },
 
   /**
    * Preview the persona specified by a web page via a PreviewPersona event.
-   * Checks to ensure the page is hosted on a server authorized to set personas
-   * and the persona is in the list of personas known to the persona service.
-   * Retrieves the ID of the persona from the "persona" attribute on the target
-   * of the event.
+   * Checks to ensure the page is hosted on a server authorized to set personas.
    * 
-   * @param aEvent {Event} the PreviewPersona DOM event
+   * @param   event   {Event}
+   *          the PreviewPersona DOM event
    */
-  onPreviewPersonaFromContent: function(aEvent) {
-    this._authorizeHost(aEvent);
+  onPreviewPersonaFromContent: function(event) {
+    this._authorizeHost(event);
+    this.onPreviewPersona(event);
+  },
 
-    if (!aEvent.target.hasAttribute("persona"))
+  onPreviewPersona: function(event) {
+    if (!this._prefs.get("previewEnabled"))
+      return;
+
+    if (!event.target.hasAttribute("persona"))
       throw "node does not have 'persona' attribute";
 
-    let personaID = aEvent.target.getAttribute("persona");
+    //this._previewPersona(event.target.getAttribute("persona"));
 
-    if (!this._getPersona(personaID))
-      throw "unknown persona " + personaID;
-
-    this._previewPersona(personaID);
-  },
-
-  onPreviewPersona: function(aEvent) {
-    //this._previewPersona(aEvent.target.getAttribute("personaid"));
-
-    if(this._getPref("extensions.personas.previewEnabled")) {
-
-       if (this._resetTimeoutID) {
-         window.clearTimeout(this._resetTimeoutID);
-         this._resetTimeoutID = null;
-       }
-
-       let t = this;
-       let personaID = aEvent.target.getAttribute("personaid");
-       let callback = function() { t._previewPersona(personaID) };
-       this._previewTimeoutID = window.setTimeout(callback, this._previewTimeout);
+    if (this._resetTimeoutID) {
+      window.clearTimeout(this._resetTimeoutID);
+      this._resetTimeoutID = null;
     }
+
+    let t = this;
+    let persona = this.JSON.parse(event.target.getAttribute("persona"));
+    let callback = function() { t._previewPersona(persona) };
+    this._previewTimeoutID = window.setTimeout(callback, this._previewTimeout);
   },
 
-  _previewPersona: function(aPersonaID) {
-    this._personaSvc.previewPersona(aPersonaID);
+  _previewPersona: function(persona) {
+    PersonaService.previewPersona(persona);
   },
 
   /**
-   * Reset the displayed persona to the selected persona via a ResetPersona event.
-   * Checks to ensure the page is hosted on a server authorized to modify personas
-   * and the persona is in the list of personas known to the persona service.
-   * Retrieves the ID of the persona from the "persona" attribute on the target
-   * of the event.
+   * Reset the persona as specified by a web page via a ResetPersona event.
+   * Checks to ensure the page is hosted on a server authorized to reset personas.
    * 
-   * @param aEvent {Event} the ResetPersona DOM event
+   * @param event   {Event}
+   *        the ResetPersona DOM event
    */
-  onResetPersonaFromContent: function(aEvent) {
-    this._authorizeHost(aEvent);
-    this._resetPersona();
+  onResetPersonaFromContent: function(event) {
+    this._authorizeHost(event);
+    this.onResetPersona();
   },
 
-  onResetPersona: function(aEvent) {
+  onResetPersona: function(event) {
+    if (!this._prefs.get("previewEnabled"))
+      return;
+
     //this._resetPersona();
 
-    if(this._getPref("extensions.personas.previewEnabled")) {
-
-       if (this._previewTimeoutID) {
-         window.clearTimeout(this._previewTimeoutID);
-         this._previewTimeoutID = null;
-       }
-
-       let t = this;
-       let personaID = aEvent.target.getAttribute("personaid");
-       let callback = function() { t._resetPersona(personaID) };
-       this._resetTimeoutID = window.setTimeout(callback, this._previewTimeout);
+    if (this._previewTimeoutID) {
+      window.clearTimeout(this._previewTimeoutID);
+      this._previewTimeoutID = null;
     }
+
+    let t = this;
+    let callback = function() { t._resetPersona() };
+    this._resetTimeoutID = window.setTimeout(callback, this._previewTimeout);
   },
 
   _resetPersona: function() {
-    this._personaSvc.resetPersona();
-  },
-
-  onSelectDefault: function() {
-    this._selectPersona("default", "");
+    PersonaService.resetPersona();
   },
 
   onSelectPreferences: function() {
@@ -557,12 +507,12 @@ let PersonaController = {
     window.openUILinkIn(this._siteURL, "tab");
   },
 
-  onSelectCustom: function() {
+  onEditCustomPersona: function() {
     window.openUILinkIn("chrome://personas/content/customPersonaEditor.xul", "tab");
   },
 
   onSelectAbout: function(event) {
-    window.openUILinkIn(this._siteURL + this._locale + "/about/?persona=" + this._selectedPersona, "tab");
+    window.openUILinkIn(this._siteURL + this._locale + "/about/?persona=" + PersonaService.selectedPersona.id, "tab");
   },
 
   /**
@@ -577,17 +527,9 @@ let PersonaController = {
   _authorizeHost: function(aEvent) {
     let host = aEvent.target.ownerDocument.location.hostname;
     let hostBackwards = host.split('').reverse().join('');
-    let authorizedHosts = this._getPref("extensions.personas.authorizedHosts").split(/[, ]+/);
+    let authorizedHosts = this._prefs.get("authorizedHosts").split(/[, ]+/);
     if (!authorizedHosts.some(function(v) { return hostBackwards.indexOf(v.split('').reverse().join('')) == 0 }))
       throw host + " not authorized to modify personas";
-  },
-
-  _getPersona: function(aPersonaID) {
-    for each (let persona in this._personaSvc.personas.wrappedJSObject)
-      if (persona.id == aPersonaID)
-        return persona;
-
-    return null;
   },
 
   showThrobber: function(aPersonaID) {
@@ -634,32 +576,30 @@ let PersonaController = {
     if (event.target != this._menu)
       return false;
 
-    // FIXME: make sure we have this data and display something meaningful
-    // if we don't have it yet.
-    // FIXME: only check one of these now that we load both categories
-    // and personas from a single data feed, so we'll never have only one.
-    if(!this._personaSvc.categories || !this._personaSvc.personas) {
-        alert("Personas Data not available yet. Please check your network connection and restart Firefox, or try again in a few minutes.");
-	return false;
+    // FIXME: make this localizable.
+    if (!PersonaService.personas) {
+      alert("Personas data is not available yet. Please check your network connection and restart Firefox, or try again in a few minutes.");
+      return false;
     }
-    let categories = this._personaSvc.categories.wrappedJSObject;
-    let personas = this._personaSvc.personas.wrappedJSObject;
 
-    this._rebuildMenu(categories, personas);
+    this._rebuildMenu();
 
-    let customMenu = this._getPref("extensions.personas.showCustomMenu");
-    if (customMenu) {
+    if (this._prefs.get("showCustomMenu")) {
       let customMenu = document.getElementById("custom-menu");
-      customMenu.setAttribute("label", this._getPref("extensions.personas.custom.customName"));
+      // FIXME: make this localizable.
+      let name = PersonaService.customPersona ? PersonaService.customPersona.name
+                                              : "Custom Persona";
+      customMenu.setAttribute("label", name);
       customMenu.setAttribute("hidden", "false");
-    } else {
+    }
+    else {
       document.getElementById("custom-menu").setAttribute("hidden", "true");
     }
 
     return true;
   },
 
-  _rebuildMenu: function(categories, personas) {
+  _rebuildMenu: function() {
     let openingSeparator = document.getElementById("personasOpeningSeparator");
     let closingSeparator = document.getElementById("personasClosingSeparator");
 
@@ -667,31 +607,33 @@ let PersonaController = {
     while (openingSeparator.nextSibling && openingSeparator.nextSibling != closingSeparator)
       this._menu.removeChild(openingSeparator.nextSibling);
 
+    // Add the item that identifies the selected persona by name.
     let personaStatus = document.getElementById("persona-current");
-    if (this._selectedPersona == "random") {
-       personaStatus.setAttribute("class", "menuitem-iconic");
-       personaStatus.setAttribute("image", "chrome://personas/content/random-feed-16x16.png");
-       // FIXME: make this a formatted string using %S in the properties file.
-       personaStatus.setAttribute("label", this._stringBundle.getString("useRandomPersona.label") + " " +
-                                           this._getPref("extensions.personas.category") + " > " +
-                                           this._getPersonaName(this._getPref("extensions.personas.lastrandom")));
+    if (PersonaService.selected == "random") {
+      personaStatus.setAttribute("class", "menuitem-iconic");
+      personaStatus.setAttribute("image", "chrome://personas/content/random-feed-16x16.png");
+      // FIXME: make this a formatted string using %S in the properties file
+      // so it is localizable.
+      personaStatus.setAttribute("label", this._strings.get("useRandomPersona.label") + " " +
+                                          PersonaService.category + " > " +
+                                          PersonaService.selectedPersona.name);
     }
     else {
-       personaStatus.removeAttribute("class");
-       personaStatus.removeAttribute("image");
-       personaStatus.setAttribute("label", this._getPersonaName(this._selectedPersona));
+      personaStatus.removeAttribute("class");
+      personaStatus.removeAttribute("image");
+      personaStatus.setAttribute("label", PersonaService.selectedPersona.name);
     }
 
-    // FIXME: factor out all the common code below.
+    // FIXME: factor out the duplicate code below.
 
     // Create the Most Popular menu.
     {
       let menu = document.createElement("menu");
-      menu.setAttribute("label", this._stringBundle.getString("popular.label"));
+      menu.setAttribute("label", this._strings.get("popular.label"));
       let popupmenu = document.createElement("menupopup");
   
-      for each (let persona in this._personaSvc.popular.wrappedJSObject)
-        popupmenu.appendChild(this._createPersonaItem(persona, null));
+      for each (let persona in PersonaService.personas.popular)
+        popupmenu.appendChild(this._createPersonaItem(persona));
 
       menu.appendChild(popupmenu);
       this._menu.insertBefore(menu, closingSeparator);
@@ -700,12 +642,12 @@ let PersonaController = {
     // Create the New menu.
     {
       let menu = document.createElement("menu");
-      menu.setAttribute("label", this._stringBundle.getString("new.label"));
+      menu.setAttribute("label", this._strings.get("new.label"));
       let popupmenu = document.createElement("menupopup");
   
-      for each (let persona in this._personaSvc.recent.wrappedJSObject)
-        popupmenu.appendChild(this._createPersonaItem(persona, null));
-  
+      for each (let persona in PersonaService.personas.recent)
+        popupmenu.appendChild(this._createPersonaItem(persona));
+
       menu.appendChild(popupmenu);
       this._menu.insertBefore(menu, closingSeparator);
     }
@@ -713,17 +655,18 @@ let PersonaController = {
     // Create the "Recently Selected" menu.
     {
       let menu = document.createElement("menu");
-      menu.setAttribute("label", this._stringBundle.getString("recent.label"));
+      menu.setAttribute("label", this._strings.get("recent.label"));
       let popupmenu = document.createElement("menupopup");
 
       for (let i = 0; i < 4; i++) {
-        let recentID = this._getPref("extensions.personas.lastselected" + i);
-        if (!recentID)
+        let persona = this._prefs.get("lastselected" + i);
+        if (!persona)
           continue;
 
-        let persona = this._getPersona(recentID);
-        if (persona)
-          popupmenu.appendChild(this._createPersonaItem(persona, ""));
+        try { persona = this.JSON.parse(persona) }
+        catch(ex) { continue }
+
+        popupmenu.appendChild(this._createPersonaItem(persona));
       }
 
       menu.appendChild(popupmenu);
@@ -732,19 +675,19 @@ let PersonaController = {
 
     // Create the Categories menu.
     let categoriesMenu = document.createElement("menu");
-    categoriesMenu.setAttribute("label", this._stringBundle.getString("categories.label"));
+    categoriesMenu.setAttribute("label", this._strings.get("categories.label"));
     let categoriesPopup = document.createElement("menupopup");
     categoriesMenu.appendChild(categoriesPopup);
     this._menu.insertBefore(categoriesMenu, closingSeparator);
 
     // Create the category-specific submenus.
-    for each (let category in categories) {
+    for each (let category in PersonaService.personas.categories) {
       let menu = document.createElement("menu");
       menu.setAttribute("label", category.name);
       let popupmenu = document.createElement("menupopup");
 
       for each (let persona in category.personas)
-        popupmenu.appendChild(this._createPersonaItem(persona, category.name));
+        popupmenu.appendChild(this._createPersonaItem(persona));
 
       // Create an item that picks a random persona from the category.
       popupmenu.appendChild(document.createElement("menuseparator"));
@@ -755,72 +698,48 @@ let PersonaController = {
     }
   },
 
-  _getPersonaName: function(personaID) {
-    let personas = this._personaSvc.personas.wrappedJSObject;
-    let defaultString = this._stringBundle.getString("Default");
-
-    if (personaID == "default")
-      return defaultString;
-
-    for each (let persona in personas)
-      if (persona.id == personaID)
-        return persona.name;
-
-    return defaultString;
-  },
-
-  _createSubcategoryHeader: function(subcategory) {
-    let header = document.createElement("menuitem");
-
-    header.setAttribute("header", "true");
-    header.setAttribute("disabled", true);
-    header.setAttribute("label", this._stringBundle.getString(subcategory + ".label"));
-
-    return header;
-  },
-
-  _createPersonaItem: function(persona, categoryName) {
+  _createPersonaItem: function(persona) {
     let item = document.createElement("menuitem");
 
-    // We store the ID of the persona in the "personaid" attribute instead of
-    // the "id" attribute because "id" has to be unique, and personas sometimes
-    // are associated with multiple menuitems (f.e. when they are both popular
-    // and recent).
     item.setAttribute("class", "menuitem-iconic");
-    item.setAttribute("personaid", persona.id);
     item.setAttribute("label", persona.name);
     item.setAttribute("type", "checkbox");
-    item.setAttribute("checked", (persona.id == this._selectedPersona));
+    item.setAttribute("checked", (persona.id == PersonaService.selectedPersona.id));
     item.setAttribute("autocheck", "false");
-    // FIXME: simply call this "category".
-    // XXX: do we actually need this anymore?
-    item.setAttribute("categoryname", categoryName);
     item.setAttribute("oncommand", "PersonaController.onSelectPersona(event)");
     item.setAttribute("recent", persona.recent ? "true" : "false");
+    item.setAttribute("persona", this.JSON.stringify(persona));
     item.addEventListener("DOMMenuItemActive", function(evt) { PersonaController.onPreviewPersona(evt) }, false);
     item.addEventListener("DOMMenuItemInactive", function(evt) { PersonaController.onResetPersona(evt) }, false);
     
     return item;
   },
 
-  _createRandomItem: function(categoryName) {
+  _createRandomItem: function(category) {
     let item = document.createElement("menuitem");
 
-    item.setAttribute("personaid", "random");
-    // FIXME: simply call this "category".
-    item.setAttribute("categoryname", categoryName);
     item.setAttribute("class", "menuitem-iconic");
     item.setAttribute("image", "chrome://personas/content/random-feed-16x16.png");
-    // FIXME: insert categoryName into the localized string via getFormattedString.
-    item.setAttribute("label", this._stringBundle.getString("useRandomPersona.label") + " " + categoryName);
-    item.setAttribute("oncommand", "PersonaController.onSelectPersona(event);");
+    // FIXME: insert the category into the localized string via getFormattedString.
+    item.setAttribute("label", this._strings.get("useRandomPersona.label") + " " + category);
+    item.setAttribute("oncommand", "PersonaController.onSelectPersona(event)");
+    item.setAttribute("persona", "random");
+    item.setAttribute("category", category);
 
     return item;
   }
 
 };
 
-Cu.import("resource://personas/modules/JSON.js", JSON);
+// Import generic modules into the persona controller rather than
+// the global namespace so they don't conflict with modules with the same names
+// imported by other extensions.
+Cu.import("resource://personas/modules/JSON.js",          PersonaController);
+Cu.import("resource://personas/modules/Observers.js",     PersonaController);
+Cu.import("resource://personas/modules/Preferences.js",   PersonaController);
+Cu.import("resource://personas/modules/StringBundle.js",  PersonaController);
+Cu.import("resource://personas/modules/URI.js",           PersonaController);
+
 
 window.addEventListener("load", function(e) { PersonaController.startUp(e) }, false);
 window.addEventListener("unload", function(e) { PersonaController.shutDown(e) }, false);

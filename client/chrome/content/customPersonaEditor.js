@@ -39,6 +39,13 @@ const Ci = Components.interfaces;
 const Cr = Components.results;
 const Cu = Components.utils;
 
+// modules that are generic
+Cu.import("resource://personas/modules/JSON.js");
+Cu.import("resource://personas/modules/Preferences.js");
+
+// modules that are Personas-specific
+Cu.import("resource://personas/modules/service.js");
+
 let CustomPersonaEditor = {
   //**************************************************************************//
   // Convenience Getters
@@ -85,67 +92,19 @@ let CustomPersonaEditor = {
     return this._accentColorPicker;
   },
 
-  get _personaSvc() {
-    let personaSvc = Cc["@mozilla.org/personas/persona-service;1"].
-                     getService(Ci.nsIPersonaService);
-    delete this._personaSvc;
-    this._personaSvc = personaSvc;
-    return this._personaSvc;
+  get _prefs() {
+    delete this._prefs;
+    return this._prefs = new Preferences("extensions.personas.");
   },
 
-  _getPersona: function(aPersonaID) {
-    for each (let persona in this._personaSvc.personas.wrappedJSObject)
-      if (persona.id == aPersonaID)
-        return persona;
-
-    return null;
-  },
-
-  get _selectedPersona() {
-    return this._getPref("selected", "default");
-  },
-
-  _getCategory: function(aCategoryID) {
-    for each (let category in this._personaSvc.categories.wrappedJSObject)
-      if (category.id == aCategoryID)
-        return category;
-
-    return null;
-  },
-
-  // Preference Service
-  get _prefSvc() {
-    let prefSvc = Cc["@mozilla.org/preferences-service;1"].
-                  getService(Ci.nsIPrefService).
-                  getBranch("extensions.personas.");
-    delete this._prefSvc;
-    this._prefSvc = prefSvc;
-    return this._prefSvc;
-  },
-
-  get _prefCache() {
-    let prefCache = new PersonasPrefCache("extensions.personas.", this);
-    delete this._prefCache;
-    this._prefCache = prefCache;
-    return this._prefCache;
-  },
-
-  _getPref: function(aPrefName, aDefaultValue) {
-    return this._prefCache.getPref(aPrefName, aDefaultValue);
-  },
+  customPersona: null,
 
 
   //**************************************************************************//
   // Initialization
 
   init: function() {
-    this._headerURL.value = this._getPref("custom.headerURL", "");
-    this._footerURL.value = this._getPref("custom.footerURL", "");
-    this._customName.value = this._getPref("custom.customName", "");
-    this._textColorPicker.color = this._getPref("custom.textColor", "#000000");
-    this._accentColorPicker.color = this._getPref("custom.accentColor", "#C9C9C9");
-
-    this._updatePreview();
+    this._restore();
   },
 
 
@@ -158,97 +117,108 @@ let CustomPersonaEditor = {
     switch(aTopic) {
       case "nsPref:changed":
         switch (aData) {
-          case "custom.headerURL":
-            this._headerURL.value = this._getPref("custom.headerURL", "");
-            break;
-          case "custom.footerURL":
-            this._footerURL.value = this._getPref("custom.footerURL", "");
-            break;
-          case "custom.textColor":
-            this._textColorPicker.color = this._getPref("custom.textColor", "#000000");
-            break;
-          case "custom.accentColor":
-            this._accentColorPicker.color = this._getPref("custom.accentColor", "#C9C9C9");
+          case "custom":
+            this._restore();
             break;
         }
         break;
     }
   },
 
-  //**************************************************************************//
 
-  _updatePreview: function() {
-      this._personaSvc.previewPersona("manual");
+  //**************************************************************************//
+  // Implementation
+
+  _save: function() {
+    this._prefs.set("custom", JSON.stringify(this.customPersona));
+    PersonaService.previewPersona(this.customPersona);
+  },
+
+  _restore: function() {
+    try {
+      this.customPersona = JSON.parse(this._prefs.get("custom"));
+      this.customPersona.custom = true;
+    }
+    catch(ex) {
+      this.customPersona = { custom: true };
+    }
+
+    this._headerURL.value = this.customPersona.header || "";
+    this._footerURL.value = this.customPersona.footer || "";
+    this._customName.value = this.customPersona.name || "";
+    this._textColorPicker.color = this.customPersona.textColor || "#000000";
+    this._accentColorPicker.color = this.customPersona.accentColor || "#C9C9C9";
+
+    PersonaService.previewPersona(this.customPersona);
   },
 
   onChangeName: function(aEvent) {
-      let control = aEvent.target;
-      let pref = control.parentNode.getAttribute("pref");
-      // Trim leading and trailing whitespace.
-      let value = control.value.replace(/^\s*|\s*$/g, "");
-      if (value == "")
-	  this._prefSvc.setCharPref(pref, "Custom Persona");
-      else
-          this._prefSvc.setCharPref(pref, value);
+    let control = aEvent.target;
+    // Trim leading and trailing whitespace.
+    let value = control.value.replace(/^\s*|\s*$/g, "");
+    this.customPersona.name = value ? value : "Custom Persona";
+    this._save();
   },
 
   // Apply header and footer control changes to the prefs.
   onChangeBackground: function(aEvent) {
     let control = aEvent.target;
-    let pref = control.parentNode.getAttribute("pref");
+    let attr = control.parentNode.getAttribute("attr");
     // Trim leading and trailing whitespace.
     let value = control.value.replace(/^\s*|\s*$/g, "");
     if (value == "")
-      this._prefSvc.clearUserPref(pref);
+      this.customPersona[attr] = null;
     else
-      this._prefSvc.setCharPref(pref, value);
-    this._updatePreview();
+      this.customPersona[attr] = value;
+    this._save();
   },
 
-  onSelectBackground: function(aEvent) {
-    let control = aEvent.target;
-    let pref = control.parentNode.getAttribute("pref");
+  onSelectBackground: function(event) {
+    let control = event.target;
+    let attr = control.parentNode.getAttribute("attr");
     let fp = Cc["@mozilla.org/filepicker;1"].createInstance(Ci.nsIFilePicker);
     fp.init(window,
             this._stringBundle.getString("backgroundPickerDialogTitle"),
             Ci.nsIFilePicker.modeOpen);
     let result = fp.show();
     if (result == Ci.nsIFilePicker.returnOK) {
-      this._prefSvc.setCharPref(pref, fp.fileURL.spec);
       control.value = fp.fileURL.spec;
-      this._updatePreview();
+      this.customPersona[attr] = fp.fileURL.spec;
+      this._save();
     }
   },
 
   onChangeTextColor: function(aEvent) {
-    this._prefSvc.setCharPref("custom.textColor", this._textColorPicker.color);
-    this._personaSvc.resetPersona();
-    this._updatePreview();
+    this.customPersona.textColor = this._textColorPicker.color;
+    PersonaService.resetPersona();
+    this._save();
   },
 
   onSetDefaultTextColor: function(aEvent) {
-    this._prefSvc.setCharPref("custom.textColor", "#000000");
+    this.customPersona.textColor = "#000000";
     this.onChangeTextColor();
   },
 
   onChangeAccentColor: function(aEvent) {
-    this._prefSvc.setCharPref("custom.accentColor", this._accentColorPicker.color);
-    this._personaSvc.resetPersona();
-    this._updatePreview();
+    this.customPersona.textColor = this._textColorPicker.color;
+    PersonaService.resetPersona();
+    this._save();
   },
 
   onSetDefaultAccentColor: function(aEvent) {
-    this._prefSvc.setCharPref("custom.accentColor", "#C9C9C9");
+    this.customPersona.textColor = "#C9C9C9";
     this.onChangeAccentColor();
   },
 
   onClose: function() {
-    this._personaSvc.resetPersona();
+    PersonaService.resetPersona();
     window.close();
   },
 
   onApply: function() {
-    this._prefSvc.setCharPref("selected", "manual");
+    PersonaService.resetPersona();
+    PersonaService.selectedPersona = this.customPersona;
+    PersonaService.selected = "specific";
     window.close();
   }
 };

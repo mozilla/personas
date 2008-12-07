@@ -68,16 +68,15 @@
          <hbox flex="1" pack="end">
            <label control="customName" value="&customName.label;"/>
          </hbox>
-         <hbox pref="custom.customName">
-           <textbox id="customName"
-             onchange="CustomPersonaEditor.onChangeName(event)"/>
+         <hbox>
+           <textbox id="customName" onchange="CustomPersonaEditor.onChangeName(event)"/>
          </hbox>
         </row>
         <row align="center">
           <hbox flex="1" pack="end">
             <label control="headerURL" value="&header.label;"/>
           </hbox>
-          <hbox pref="custom.headerURL">
+          <hbox attr="header">
             <textbox id="headerURL" 
                      onchange="CustomPersonaEditor.onChangeBackground(event)"/>
             <button id="selectHeaderButton" label="&selectBackground.label;"
@@ -88,7 +87,7 @@
           <hbox flex="1" pack="end">
             <label control="footerURL" value="&footer.label;"/>
           </hbox>
-          <hbox pref="custom.footerURL">
+          <hbox attr="footer">
             <textbox id="footerURL"
                      onchange="CustomPersonaEditor.onChangeBackground(event)"/>
             <button id="selectFooterButton" label="&selectBackground.label;"

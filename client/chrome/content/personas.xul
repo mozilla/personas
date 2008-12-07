@@ -45,10 +45,6 @@
 <overlay id="personas-overlay"
          xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
-  <stringbundleset id="stringbundleset">
-    <stringbundle id="personasStringBundle" src="chrome://personas/locale/personas.properties"/>
-  </stringbundleset>
-
   <script type="application/x-javascript;version=1.7" src="chrome://personas/content/init.js"/>
   <script type="application/x-javascript;version=1.7" src="chrome://personas/content/personas.js"/>
 
@@ -63,14 +59,17 @@
         <menuseparator id="personasClosingSeparator" hidden="true"/>
         <menu id="custom-menu">
           <menupopup id="custom-context-menu">
-            <menuitem label="&contextApply.label;" personaid="manual" oncommand="PersonaController.onSelectPersona(event)" id="custom-menu-apply"/>
-            <menuitem label="&contextEdit.label;" oncommand="PersonaController.onSelectCustom(event)"/>
+            <menuitem id="custom-menu-apply" label="&contextApply.label;"
+                      persona="custom"
+                      oncommand="PersonaController.onSelectPersona(event)"/>
+            <menuitem label="&contextEdit.label;"
+                      oncommand="PersonaController.onEditCustomPersona(event)"/>
           </menupopup>
         </menu>
         <menuseparator/>
         <menuitem label="&useDefaultPersona.label;" 
-                  personaid="default"
-                  oncommand="PersonaController.onSelectDefault(event)"/>
+                  persona="default"
+                  oncommand="PersonaController.onSelectPersona(event)"/>
         <menuseparator/>
         <menuitem label="&preferences.label;"
                   oncommand="PersonaController.onSelectPreferences(event)"/>

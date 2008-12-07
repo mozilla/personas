@@ -11,7 +11,7 @@
  * for the specific language governing rights and limitations under the
  * License.
  *
- * The Original Code is Personas.
+ * The Original Code is URI.
  *
  * The Initial Developer of the Original Code is Mozilla.
  * Portions created by the Initial Developer are Copyright (C) 2008
@@ -34,22 +34,39 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-let EXPORTED_SYMBOLS = ["JSON"];
+const EXPORTED_SYMBOLS = ["URI"];
 
 const Cc = Components.classes;
 const Ci = Components.interfaces;
 const Cr = Components.results;
 const Cu = Components.utils;
 
-// This module wraps the inconsistent Firefox 3.0 and 3.1 JSON APIs, presenting
-// the 3.1 API on both versions.  We only need this while we support Firefox 3.0
-// so we don't have to branch each time we want to do JSON work.
-
-if (Cc["@mozilla.org/xre/app-info;1"].getService(Ci.nsIXULAppInfo).version.indexOf("3.0") == 0) {
-  var JSON = {
-    JSON: null,
-    parse: function(jsonString) { return this.JSON.fromString(jsonString) },
-    stringify: function(jsObject) { return this.JSON.toString(jsObject) }
-  }
-  Cu.import("resource://gre/modules/JSON.jsm", JSON);
+/**
+ * A URI.  For now, this returns an nsIURI rather than an instance of this
+ * class, but in the future it might return an instance of this class and have
+ * a more JS-friendly API for accessing and manipulating the URI.
+ */
+function URI(spec, charset, baseURI) {
+  return URI.ioSvc.newURI(spec, charset, baseURI);
 }
+
+/**
+ * Get a URI.  Similar to the constructor, but returns null instead of throwing
+ * an exception if the URI object could not be constructed.
+ */
+URI.get = function(spec, charset, baseURI) {
+  try {
+    return new URI(spec, charset, baseURI);
+  }
+  catch(ex) {
+    return null;
+  }
+};
+
+URI.__defineGetter__("ioSvc",
+  function() {
+    delete this.ioSvc;
+    return this.ioSvc = Cc["@mozilla.org/network/io-service;1"].
+                        getService(Ci.nsIIOService);
+  }
+);

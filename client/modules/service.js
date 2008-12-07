@@ -35,10 +35,21 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
+let EXPORTED_SYMBOLS = ["PersonaService"];
+
 const Cc = Components.classes;
 const Ci = Components.interfaces;
 const Cr = Components.results;
 const Cu = Components.utils;
+
+// modules that come with Firefox
+Cu.import("resource://gre/modules/XPCOMUtils.jsm");
+
+// modules that are generic
+Cu.import("resource://personas/modules/JSON.js");
+Cu.import("resource://personas/modules/Observers.js");
+Cu.import("resource://personas/modules/Preferences.js");
+Cu.import("resource://personas/modules/URI.js");
 
 const PERSONAS_EXTENSION_ID = "personas@christopher.beard";
 
@@ -46,16 +57,17 @@ const LOAD_STATE_EMPTY = 0;
 const LOAD_STATE_LOADING = 1;
 const LOAD_STATE_LOADED = 2;
 
-Cu.import("resource://gre/modules/XPCOMUtils.jsm");
+const DEFAULT_HEADER = new URI("chrome://personas/content/header-default.jpg");
+const DEFAULT_FOOTER = new URI("chrome://personas/content/footer-default.jpg");
 
 
 //****************************************************************************//
 // Helper Utilities
 
 // Escape CSS special characters in unquoted URLs
-// per http://www.w3.org/TR/CSS21/syndata.html#uri
-function escapeCSSURL(aURLSpec) {
-  return aURLSpec.replace(/[(),\s'"]/g, "\$&");
+// per http://www.w3.org/TR/CSS21/syndata.html#uri.
+function escapeURLForCSS(url) {
+  return url.replace(/[(),\s'"]/g, "\$&");
 }
 
 // Escape XML special characters.
@@ -70,56 +82,422 @@ function escapeXML(aString) {
 //****************************************************************************//
 // The Persona Service
 
-function PersonaService() {
-  this._init();
-}
+let PersonaService = {
+  //**************************************************************************//
+  // Initialization & Destruction
 
-PersonaService.prototype = {
+  _init: function() {
+    // Observe quit so we can destroy ourselves.
+    Observers.add(this, "quit-application");
+
+    // Observe changes to personas preferences.
+    this._observePrefChanges = true;
+
+    this._loadData();
+
+    // Initialize the persona loader.
+    // XXX Commented out because dynamic personas have been disabled.
+    //this._initPersonaLoader();
+  },
+
+  _destroy: function() {
+    //this._destroyPersonaLoader();
+    this._observePrefChanges = false;
+    Observers.remove(this, "quit-application");
+  },
+
+
   //**************************************************************************//
   // XPCOM Plumbing
 
-  classDescription:   "Persona Service",
-  classID:            Components.ID("{efdd655c-51ac-4e5c-aa61-888b270436b8}"),
-  contractID:         "@mozilla.org/personas/persona-service;1",
-  // See note in PersonaController::startUp for why this is commented out.
-  //_xpcom_categories:  [{ category: "app-startup", service: true }],
-  QueryInterface:     XPCOMUtils.generateQI([Ci.nsIPersonaService,
-                                             Ci.nsIObserver,
-                                             Ci.nsIDOMEventListener,
-                                             Ci.nsITimerCallback]),
+  QueryInterface: XPCOMUtils.generateQI([Ci.nsIObserver,
+                                         Ci.nsIDOMEventListener,
+                                         Ci.nsITimerCallback]),
 
 
   //**************************************************************************//
-  // Convenience Getters
+  // Shortcuts
 
-  // Observer Service
-  get _obsSvc() {
-    let obsSvc = Cc["@mozilla.org/observer-service;1"].
-                 getService(Ci.nsIObserverService);
-    this.__defineGetter__("_obsSvc", function() { return obsSvc });
-    return this._obsSvc;
+  // Access to extensions.personas.* preferences.  To access other preferences,
+  // call the Preferences module directly.
+  get _prefs() {
+    delete this._prefs;
+    return this._prefs = new Preferences("extensions.personas.");
   },
 
-  // Preference Service
-  get _prefSvc() {
-    // Enable both the nsIPrefBranch and the nsIPrefBranch2 interfaces
-    // so we can both retrieve preferences and add observers.
-    let prefSvc = Cc["@mozilla.org/preferences-service;1"].
-                  getService(Ci.nsIPrefBranch).
-                  QueryInterface(Ci.nsIPrefBranch2);
-    this.__defineGetter__("_prefSvc", function() { return prefSvc });
-    return this._prefSvc;
+
+  //**************************************************************************//
+  // Data Retrieval
+
+  _makeRequest: function(aURL, aLoadCallback) {
+    let request = Cc["@mozilla.org/xmlextras/xmlhttprequest;1"].createInstance();
+
+    request = request.QueryInterface(Ci.nsIDOMEventTarget);
+    request.addEventListener("load", aLoadCallback, false);
+
+    request = request.QueryInterface(Ci.nsIXMLHttpRequest);
+    request.open("GET", aURL, true);
+    request.send(null);
   },
 
-  get _prefCache() {
-    let prefCache = new PersonasPrefCache("");
-    this.__defineGetter__("_prefCache", function() { return prefCache });
-    return this._prefCache;
+  _loadData: function() {
+dump("_loadData\n");
+    let t = this;
+    this._makeRequest(this.baseURI.spec + "index.json",
+                      function(evt) { t.onDataLoadComplete(evt) });
   },
 
-  _getPref: function(aPrefName, aDefaultValue) {
-    return this._prefCache.getPref(aPrefName, aDefaultValue);
+  onDataLoadComplete: function(aEvent) {
+dump("onDataLoadComplete\n");
+    let request = aEvent.target;
+
+    // XXX Try to reload again sooner?
+    if (request.status != 200)
+      throw("problem loading data: " + request.status + " - " + request.statusText);
+
+    this.personas = JSON.parse(request.responseText);
+
+    // Now that we have data, pick a new random persona.  Currently, this is
+    // the only time we pick a random persona besides when the user selects
+    // the "Random From [category]" menuitem, which means the user gets a new
+    // random persona each time they start the browser.
+    // FIXME: depending on how long it takes data to load, this might cause
+    // the old randomly selected persona to appear briefly before the new one
+    // gets selected, which is ugly, so delay displaying the old random persona
+    // until we reach this point; or cache the feed across sessions, so we have
+    // at least an older version of the data available to us the moment
+    // the browser starts, and pick a new random persona from the cached data.
+    if (this.selected == "random")
+      this.changeToRandomPersona(this.category);
   },
+
+
+  //**************************************************************************//
+  // Implementation
+
+  // The JSON feed of personas retrieved from the server.
+  // Loaded upon service initialization and reloaded periodically thereafter.
+  personas: null,
+
+  get selected()        { return this._prefs.get("selected") },
+  set selected(newVal)  {        this._prefs.set("selected", newVal) },
+
+  get category()        { return this._prefs.get("category") },
+  set category(newVal)  {        this._prefs.set("category", newVal) },
+
+  /**
+   * The active persona.  Normally this is the same as the selected persona,
+   * but it is the persona being previewed while the user is previewing one.
+   * Most code should access 
+   */
+  get activePersona() {
+    return this._previewedPersona || this.selectedPersona;
+  },
+
+  // XXX Do we still need this now that we store the last random persona
+  // in selectedPersona?
+  get lastRandom() {
+    try {
+      return JSON.parse(this._prefs.get("lastRandom"));
+    }
+    catch(ex) {
+      Cu.reportError("error getting last random persona: " + ex);
+      return null;
+    }
+  },
+
+  get baseURI() {
+    return URI.get(this._prefs.get("url"));
+  },
+
+  get customPersona() {
+    try       { return JSON.parse(this._prefs.get("custom")) }
+    catch(ex) { Cu.reportError("error getting custom persona: " + ex) }
+    return null;
+  },
+  set customPersona(newVal) {
+    try       { this._prefs.set("custom", JSON.stringify(newVal)) }
+    catch(ex) { Cu.reportError("error setting custom persona: " + ex) }
+  },
+
+  /**
+   * The selected persona.  This is the generally the persona that the user
+   * has selected from a menu in the extension or from the web directory of
+   * personas.  But if the user has selected "random persona from category",
+   * this is the persona we randomly selected from the category.  And if the
+   * user has selected a custom persona, this is the custom persona.
+   */
+  get selectedPersona() {
+    try       { return JSON.parse(this._prefs.get("persona")) }
+    catch(ex) { Cu.reportError("error getting persona: " + ex) }
+    return {};
+  },
+  set selectedPersona(newVal) {
+    try       { this._prefs.set("persona", JSON.stringify(newVal)) }
+    catch(ex) { Cu.reportError("error setting persona: " + ex) }
+  },
+
+  changeToDefaultPersona: function() {
+    this._observePrefChanges = false;
+    try {
+      this.selected = "default";
+    }
+    finally {
+      this._observePrefChanges = true;
+    }
+
+    this._onChangeToDefaultPersona();
+  },
+
+  changeToRandomPersona: function(category) {
+    this._observePrefChanges = false;
+    try {
+      this.category = category;
+      this.selectedPersona = this._getRandomPersona(this.category);
+      this.selected = "random";
+    }
+    finally {
+      this._observePrefChanges = true;
+    }
+
+    this._onChangeToPersona();
+  },
+
+  changeToPersona: function(persona) {
+    this._observePrefChanges = false;
+    try {
+      // Update the list of recent personas.
+      if (this.selectedPersona && persona.id != this.selectedPersona.id) {
+        this._prefs.set("lastselected3", this._prefs.get("lastselected2"));
+        this._prefs.set("lastselected2", this._prefs.get("lastselected1"));
+        this._prefs.set("lastselected1", this._prefs.get("lastselected0"));
+        this._prefs.set("lastselected0", JSON.stringify(this.selectedPersona));
+      }
+  
+      this.selectedPersona = persona;
+      this.selected = "specific";
+    }
+    finally {
+      this._observePrefChanges = true;
+    }
+
+    this.reportSelection(persona);
+    this._onChangeToPersona();
+  },
+
+  _onPersonaChanged: function() {
+dump("this.selected" + this.selected + "\n");
+    switch (this.selected) {
+      case "default":
+        this._onChangeToDefaultPersona();
+        break;
+      case "random":
+      case "specific":
+      default:
+        this._onChangeToPersona();
+        break;
+    }
+  },
+
+  _onChangeToDefaultPersona: function() {
+    Observers.notify(null, "personas:persona:disabled", null);
+  },
+
+  _onChangeToPersona: function() {
+    Observers.notify(null, "personas:persona:changed", null);
+  },
+
+  _previewedPersona: null,
+
+  /**
+   * Display the given persona temporarily.  Useful for showing users who are
+   * browsing the directory of personas what a given persona will look like
+   * when selected, f.e. on mouseover.  Consumers who call this method should
+   * call resetPersona when the preview ends, f.e. on mouseout.
+   */
+  previewPersona: function(persona) {
+dump("previewPersona: " + JSON.stringify(persona) + "\n");
+    this._previewedPersona = persona;
+    Observers.notify(null, "personas:persona:changed", null);
+  },
+
+  /**
+   * Stop previewing a persona.
+   */
+  resetPersona: function() {
+dump("resetPersona\n");
+    this._previewedPersona = null;
+    Observers.notify(null, "personas:persona:changed", null);
+  },
+
+  /**
+   * Report which persona was selected.  This only gets called when the user
+   * selects a persona from the menu or the web directory, and it doesn't report
+   * about custom personas.  It can be disabled by setting the preference
+   * extensions.personas.reportSelection to false.
+   */
+  reportSelection: function(persona) {
+    if (persona.custom || !this._prefs.get("reportSelection"))
+      return;
+    this._makeRequest(this.baseURI.spec + persona.id + "/report_selection/",
+                      function(evt) {});
+  },
+
+  /**
+   * Whether or not to ignore changes to personas preferences.
+   * Sometimes changing the persona requires changing more than one pref
+   * (or making a pref change that triggers another pref change), and we don't
+   * want the service to act on the pref change until the last pref is changed
+   * (nor to recursively act on the pref change, creating an endless loop).
+   * In those situations, we make the service ignore pref changes temporarily
+   * by setting this to false.
+   */
+  set _observePrefChanges(newVal) {
+    if (newVal)
+      this._prefs.addObserver(this);
+    else
+      this._prefs.removeObserver(this);
+  },
+
+  // nsIObserver
+
+  observe: function(subject, topic, data) {
+    switch (topic) {
+      case "quit-application":
+        Observers.remove(this, "quit-application");
+        this._destroy();
+        break;
+
+      case "nsPref:changed":
+        switch (data) {
+          case "extensions.personas.persona":
+          case "extensions.personas.selected":
+            this._onPersonaChanged();
+            break;
+
+          // If the user has enabled/disabled the text or accent color,
+          // pretend the selected persona has changed so observers reapply
+          // the current persona, updating the use of text and accent colors
+          // in the process.
+          case "extensions.personas.useTextColor":
+	  case "extensions.personas.useAccentColor":
+            this._onPersonaChanged();
+            break;
+        }
+        break;
+    }
+  },
+
+
+
+  //**************************************************************************//
+  // Dynamic Personas
+
+  // The rest of this object definition contains the old dynamic personas
+  // implementation.  We aren't current using any of it, and it has become
+  // out-of-date, so it would need to be updated in order for us to use it
+  // again.  However, I am leaving it here for now in case we decide to use it
+  // in the future.  If we decide that we aren't going to use it again, though,
+  // then we should remove it from this file.  We can always recover it later
+  // from version control if we change our minds.
+
+  _initPersonaLoader: function() {
+    // Delay initialization of the persona loader to give the application
+    // time to finish loading the hidden window, which at this point still has
+    // about:blank loaded in it.
+    // XXX Now that we delay initialization until PersonaController:startUp,
+    // do we still need to delay initialization of the persona loader?
+    this._delayedInitTimer = Cc["@mozilla.org/timer;1"].createInstance(Ci.nsITimer);
+    this._delayedInitTimer.initWithCallback(this, 0, Ci.nsITimer.TYPE_ONE_SHOT);
+  },
+
+  _delayedInit: function() {
+    this._delayedInitTimer.cancel();
+    this._delayedInitTimer = null;
+
+    // Load the persona loader.
+    // Disabled because we currently don't support dynamic personas,
+    // and we load static personas via a much simpler technique.
+    //this._loadPersonaLoader();
+
+    // Load the lists of categories and personas, and define a timer
+    // that periodically reloads them.
+    this._loadData();
+    this._reloadDataTimer = Cc["@mozilla.org/timer;1"].createInstance(Ci.nsITimer);
+    this._reloadDataTimer.initWithCallback(this,
+                                           30 * 60 * 1000, // 30 minutes
+                                           Ci.nsITimer.TYPE_REPEATING_SLACK);
+  },
+
+  _destroyPersonaLoader: function() {
+    if (this._headerLoader)
+      this._headerLoader.reset();
+    this._headerLoader = null;
+
+    if (this._footerLoader)
+      this._footerLoader.reset();
+    this._footerLoader = null;
+
+    if (this._reloadPersonaTimer)
+      this._reloadPersonaTimer.cancel();
+    this._reloadPersonaTimer = null;
+
+    if (this._snapshotPersonaTimer)
+      this._snapshotPersonaTimer.cancel();
+    this._snapshotPersonaTimer = null;
+
+    this._reloadDataTimer.cancel();
+    this._reloadDataTimer = null;
+
+    this._personaLoader = null;
+  },
+
+  // nsIDOMEventListener
+
+  handleEvent: function(aEvent) {
+    // The iframes inside the persona loader document also generate pageshow
+    // events, but the persona loader isn't loaded until we get the pageshow
+    // event for the persona loader itself, so ignore the events on the iframes
+    // inside it.
+    if (aEvent.target != this._personaLoader.contentDocument)
+    // Another way to do this (not sure which is better):
+    //if (aEvent.target.documentURI != "chrome://personas/content/personaLoader.xul")
+      return;
+
+    try {
+      this.onPersonaLoaderLoad(aEvent);
+    }
+    finally {
+      this._personaLoader.removeEventListener("pageshow", this, false);
+    }
+  },
+
+  // nsITimerCallback
+
+  notify: function(aTimer) {
+    switch(aTimer) {
+      case this._delayedInitTimer:
+        this._delayedInit();
+        break;
+      case this._reloadDataTimer:
+        this._loadData();
+        break;
+      case this._reloadPersonaTimer:
+        let personaID = this._prefs.get("selected", "default");
+        this._loadPersona(personaID);
+        break;
+      case this._snapshotPersonaTimer:
+        this._snapshotPersona();
+        break;
+      case this._onLoadDelayedTimer:
+        this._onLoadDelayed();
+        break;
+    }
+  },
+
+
+  //**************************************************************************//
+  // Shortcuts
 
   get _hiddenWindow() {
     let hiddenWindow = Cc["@mozilla.org/appshell/appShellService;1"].
@@ -132,7 +510,7 @@ PersonaService.prototype = {
   // with a default of 60 minutes (defined in defaults/preferences/personas.js)
   // and a minimum of one minute.
   get _reloadInterval() {
-    let val = this._getPref("extensions.personas.reloadInterval");
+    let val = this._prefs.get("reloadInterval");
     return val < 1 ? 1 : val;
   },
 
@@ -140,24 +518,9 @@ PersonaService.prototype = {
   // with a default of 60 seconds (defined in defaults/preferences/personas.js)
   // and a minimum of one second.
   get _snapshotInterval() {
-    let val = this._getPref("extensions.personas.snapshotInterval");
+    let val = this._prefs.get("snapshotInterval");
     return val < 1 ? 1 : val;
   },
-
-  get _baseURL() {
-    return this._getPref("extensions.personas.url");
-  },
-
-  get _locale() {
-    switch(this._getPref("general.useragent.locale", "en-US")) {
-      case 'ja':
-      case 'ja-JP-mac':
-        return "ja";
-      default:
-        return "en-US";
-    }
-  },
-
 
   //**************************************************************************//
   // Private Properties
@@ -200,270 +563,6 @@ PersonaService.prototype = {
 
 
   //**************************************************************************//
-  // XPCOM Interfaces
-
-  // nsIPersonaService
-
-  // The lists of categories and personas retrieved from the server via JSON,
-  // as nsISupports objects whose wrappedJSObject property contains the data.
-  // Loaded upon service initialization and reloaded periodically thereafter.
-  personas: null,
-  popular: null,
-  recent: null,
-  categories: null,
-
-  // The latest header and footer URLs and text color.
-  headerURL: null,
-  footerURL: null,
-  firstrunURL: null,
-  textColor: null,
-  accentColor: null,
-  type: null,
-
-  /**
-   * Display the given persona without making it the selected persona.  Useful
-   * for showing users who are browsing a directory of personas what a given
-   * persona will look like when selected, f.e. on mouseover.  Consumers who
-   * call this method should call resetPersona when the user stops previewing
-   * the persona, f.e. on mouseout.  Otherwise the displayed persona will revert
-   * to the selected persona when it is reloaded, the browser is restarted,
-   * or the user selects another persona.
-   */
-  previewPersona: function(aPersonaID) {
-    this._switchToPersona(aPersonaID);
-  },
-
-  /**
-   * Reset the displayed persona to the selected persona.  Useful for returning
-   * to the selected persona after previewing personas.  Also called by the pref
-   * observer when the selected persona changes.
-   */
-  resetPersona: function() {
-    let personaID = this._getPref("extensions.personas.selected", "default");
-    this._switchToPersona(personaID);
-  },
-
-  reportSelection: function() {
-    let personaID = this._getPref("extensions.personas.selected", "default");
-    if (personaID != "random" && personaID != "default") {
-      let reportSelection = this._getPref("extensions.personas.reportSelection");
-      if(reportSelection) 
-         this._makeRequest(this._baseURL + personaID + "/report_selection/", function(evt) {});
-    }
-  },
-
-  // nsIObserver
-
-  observe: function(subject, topic, data) {
-    switch (topic) {
-      // See note in PersonaController::startUp for why these are commented out.
-      //case "app-startup":
-      //  this._obsSvc.addObserver(this, "final-ui-startup", false);
-      //  break;
-      //
-      //case "final-ui-startup":
-      //  this._obsSvc.removeObserver(this, "final-ui-startup");
-      //  this._init();
-      //  break;
-
-      case "quit-application":
-        this._obsSvc.removeObserver(this, "quit-application");
-        this._destroy();
-        break;
-
-      case "nsPref:changed":
-        switch (data) {
-          // If any of the prefs that determine which persona is selected
-          // have changed, then switch to the selected persona.
-          // FIXME: figure out how to call resetPersona only once when both
-          // "selected" and "category" preferences are set one after the other
-          // by PersonaController._setPersona.  Maybe, when we're setting both
-          // the selected persona and some other preferences, we could first
-          // set the selected persona to "disabled", then we could make
-          // the other necessary changes (which this observer ignores while
-          // the selected persona is "disabled"), and finally we could set
-          // the selected persona to the new value.
-          case "extensions.personas.selected":
-            this.reportSelection();
-            // fall-thru
-          case "extensions.personas.custom.headerURL":
-          case "extensions.personas.custom.footerURL":
-            this.resetPersona();
-            break;
-
-          case "extensions.personas.category":
-            if (this._getPref("extensions.personas.selected") == "random")
-              this.resetPersona();
-            break;
-
-          case "extensions.personas.useTextColor":
-	  case "extensions.personas.useAccentColor":
-	    let personaID = this._getPref("extensions.personas.selected", "default");
-            this._switchToPersona("default");
-            this._switchToPersona(personaID);
-            break;
-
-          case "extensions.personas.custom.textColor":
-          case "extensions.personas.custom.useDefaultTextColor":
-            this._onChangeCustomTextColor();
-            break;
-
-          case "extensions.personas.custom.accentColor":
-          case "extensions.personas.custom.useDefaultAccentColor":
-            this._onChangeCustomAccentColor();
-            break;
-
-        }
-        break;
-    }
-  },
-
-  // nsIDOMEventListener
-
-  handleEvent: function(aEvent) {
-    // The iframes inside the persona loader document also generate pageshow
-    // events, but the persona loader isn't loaded until we get the pageshow
-    // event for the persona loader itself, so ignore the events on the iframes
-    // inside it.
-    if (aEvent.target != this._personaLoader.contentDocument)
-    // Another way to do this (not sure which is better):
-    //if (aEvent.target.documentURI != "chrome://personas/content/personaLoader.xul")
-      return;
-
-    try {
-      this.onPersonaLoaderLoad(aEvent);
-    }
-    finally {
-      this._personaLoader.removeEventListener("pageshow", this, false);
-    }
-  },
-
-  // nsITimerCallback
-
-  notify: function(aTimer) {
-    switch(aTimer) {
-      case this._delayedInitTimer:
-        this._delayedInit();
-        break;
-      case this._reloadDataTimer:
-        this._loadData();
-        break;
-      case this._reloadPersonaTimer:
-        let personaID = this._getPref("extensions.personas.selected", "default");
-        this._loadPersona(personaID);
-        break;
-      case this._snapshotPersonaTimer:
-        this._snapshotPersona();
-        break;
-      case this._onLoadDelayedTimer:
-        this._onLoadDelayed();
-        break;
-    }
-  },
-
-
-  //**************************************************************************//
-  // Initialization & Destruction
-
-  _init: function() {
-    // Import modules the personas extension provides.  We have to do this here
-    // instead of at component registration because Cu.import throws
-    // NS_ERROR_NOT_AVAILABLE when we do this at registration
-    // (perhaps the "personas" resource protocol alias isn't created then).
-    Cu.import("resource://personas/modules/JSON.js");
-    Cu.import("resource://personas/modules/PrefCache.js");
-
-    // Observe quit so we can destroy ourselves.
-    this._obsSvc.addObserver(this, "quit-application", false);
-
-    // For backwards compatibility, migrate the old manualPath preference
-    // to the new custom.headerURL preference.
-    // FIXME: remove this once enough users have updated to a version newer
-    // than 0.9.2.
-    if (this._prefSvc.prefHasUserValue("extensions.personas.manualPath")) {
-      let path = this._getPref("extensions.personas.manualPath");
-      this._prefSvc.setCharPref("extensions.personas.custom.headerURL", "file://" + path);
-      this._prefSvc.clearUserPref("extensions.personas.manualPath");
-    }
-
-    // For backwards compatibility, migrate the old custom.toolbarURL preference
-    // to the new custom.headerURL preference.
-    // FIXME: remove this once enough users have updated to a version newer
-    // than 0.9.4.
-    if (this._prefSvc.prefHasUserValue("extensions.personas.custom.toolbarURL")) {
-      let url = this._getPref("extensions.personas.custom.toolbarURL");
-      this._prefSvc.setCharPref("extensions.personas.custom.headerURL", url);
-      this._prefSvc.clearUserPref("extensions.personas.custom.toolbarURL");
-    }
-
-    // For backwards compatibility, migrate the old custom.statusbarURL preference
-    // to the new custom.footerURL preference.
-    // FIXME: remove this once enough users have updated to a version newer
-    // than 0.9.4.
-    if (this._prefSvc.prefHasUserValue("extensions.personas.custom.statusbarURL")) {
-      let url = this._getPref("extensions.personas.custom.statusbarURL");
-      this._prefSvc.setCharPref("extensions.personas.custom.footerURL", url);
-      this._prefSvc.clearUserPref("extensions.personas.custom.statusbarURL");
-    }
-
-    // Observe changes to the selected persona that happen in other windows
-    // or by users twiddling the preferences directly.
-    this._prefSvc.addObserver("extensions.personas.", this, false);
-
-    // Delay initialization of the persona loader to give the application
-    // time to finish loading the hidden window, which at this point still has
-    // about:blank loaded in it.
-    // XXX Now that we delay initialization until PersonaController:startUp,
-    // do we still need to delay initialization of the persona loader?
-    this._delayedInitTimer = Cc["@mozilla.org/timer;1"].createInstance(Ci.nsITimer);
-    this._delayedInitTimer.initWithCallback(this, 0, Ci.nsITimer.TYPE_ONE_SHOT);
-  },
-
-  _delayedInit: function() {
-    this._delayedInitTimer.cancel();
-    this._delayedInitTimer = null;
-
-    // Load the persona loader.
-    // Disabled because we currently don't support dynamic personas,
-    // and we load static personas via a much simpler technique.
-    //this._loadPersonaLoader();
-
-    // Load the lists of categories and personas, and define a timer
-    // that periodically reloads them.
-    this._loadData();
-    this._reloadDataTimer = Cc["@mozilla.org/timer;1"].createInstance(Ci.nsITimer);
-    this._reloadDataTimer.initWithCallback(this,
-                                           30 * 60 * 1000, // 30 minutes
-                                           Ci.nsITimer.TYPE_REPEATING_SLACK);
-  },
-
-  _destroy: function() {
-    if (this._headerLoader)
-      this._headerLoader.reset();
-    this._headerLoader = null;
-
-    if (this._footerLoader)
-      this._footerLoader.reset();
-    this._footerLoader = null;
-
-    if (this._reloadPersonaTimer)
-      this._reloadPersonaTimer.cancel();
-    this._reloadPersonaTimer = null;
-
-    if (this._snapshotPersonaTimer)
-      this._snapshotPersonaTimer.cancel();
-    this._snapshotPersonaTimer = null;
-
-    this._reloadDataTimer.cancel();
-    this._reloadDataTimer = null;
-
-    this._personaLoader = null;
-
-    this._prefSvc.removeObserver("extensions.personas.", this);
-  },
-
-
-  //**************************************************************************//
   // Data and Persona Loader Loading
 
   _personaLoaderLoaded: false,
@@ -499,80 +598,12 @@ PersonaService.prototype = {
       this._onLoaderAndPersonasLoaded();
   },
 
-  _loadData: function() {
-    let t = this;
-    this._makeRequest(this._baseURL + "index.json",
-                      function(evt) { t.onDataLoadComplete(evt) });
-  },
-
-  _makeRequest: function(aURL, aLoadCallback) {
-    let request = Cc["@mozilla.org/xmlextras/xmlhttprequest;1"].createInstance();
-
-    request = request.QueryInterface(Ci.nsIDOMEventTarget);
-    request.addEventListener("load", aLoadCallback, false);
-
-    request = request.QueryInterface(Ci.nsIXMLHttpRequest);
-    request.open("GET", aURL, true);
-    request.send(null);
-  },
-
-  onDataLoadComplete: function(aEvent) {
-    let request = aEvent.target;
-
-    // XXX Try to reload again sooner?
-    if (request.status != 200)
-      throw("problem loading data: " + request.status + " - " + request.statusText);
-
-    let data = JSON.parse(request.responseText);
-
-    // To share these with (JavaScript) XPCOM consumers without having to create
-    // complex XPCOM interfaces to them, we just pass them as wrapped JS objects.
-    this.popular = { wrappedJSObject: data.popular };
-    this.recent = { wrappedJSObject: data.recent };
-    this.categories = { wrappedJSObject: data.categories };
-
-    // Build a collection of uncategorized personas.
-    // FIXME: stop doing this once we record all data about selected personas,
-    // so we don't have to refer back to this data structure when the user
-    // selects one.
-    let personas = {};
-    for each (let persona in data.popular)
-      personas[persona.id] = persona;
-    for each (let persona in data.recent)
-      personas[persona.id] = persona;
-    for each (let category in data.categories)
-      for each (let persona in category.personas)
-        personas[persona.id] = persona;
-
-    // FIXME: provide the indexed hash instead of an array, since it's easy
-    // to iterate over an indexed hash, but it's expensive to find a persona
-    // in the array.
-    this.personas = { wrappedJSObject: [personas[id] for (id in personas)] };
-
-    // XXX We don't actually use this anywhere; should we get rid of it?
-    this._prefSvc.setCharPref("extensions.personas.lastupdate", new Date().getTime());
-
-    // We need both the JSON feed of personas and the persona loader
-    // to be loaded before we can load the selected persona and apply it
-    // to the browser windows.
-    // Note: actually, we don't now that we don't support dynamic personas,
-    // so we ignore this code and load the selected persona below.
-    this._personasLoaded = true;
-    if (this._personaLoaderLoaded)
-      this._onLoaderAndPersonasLoaded();
-
-    // Now that the sthe data is loaded, we load the persona.
-    let personaID = this._getPref("extensions.personas.selected", "default");
-    this._switchToPersona(personaID);
-  },
-
   _onLoaderAndPersonasLoaded: function() {
     // FIXME: store all relevant information about the persona in preferences
     // so we don't need the personas data to load the persona.
 
     // Now that the persona loader and the data is loaded, we load the persona.
-    let personaID = this._getPref("extensions.personas.selected", "default");
-    this._switchToPersona(personaID);
+    this._switchToPersona(this._selectedPersona);
   },
 
 
@@ -582,8 +613,9 @@ PersonaService.prototype = {
   /**
    * Switch to the specified persona.  This happens on startup, when the user
    * selects a persona, and when the user previews a persona or resets to the
-   * elected persona.
+   * selected persona.
    * Note: this is overridden by the version of this method below it.
+   * XXX This implementation hasn't been updated to work with persona objects.
    */
   _switchToPersona: function(aPersonaID) {
     this._reloadPersonaTimer.cancel();
@@ -597,14 +629,14 @@ PersonaService.prototype = {
     if (this._loadState == LOAD_STATE_LOADING) {
       // FIXME: cancel the requests currently in process in the header
       // and footer iframes.
-      this._obsSvc.notifyObservers(null,
-                                   "personas:personaLoadFinished",
-                                   this._activePersona);
+      Observers.notify(null,
+                       "personas:personaLoadFinished",
+                       this._activePersona);
     }
     this._activePersona = null;
 
     if (aPersonaID == "default") {
-      this._obsSvc.notifyObservers(null, "personas:defaultPersonaSelected", null);
+      Observers.notify(null, "personas:defaultPersonaSelected", null);
       return;
     }
 
@@ -612,43 +644,6 @@ PersonaService.prototype = {
     this._reloadPersonaTimer.initWithCallback(this,
                                               this._reloadInterval * 60 * 1000,
                                               Ci.nsITimer.TYPE_REPEATING_SLACK);
-  },
-
-  /**
-   * Switch to the specified static persona.  This version doesn't support
-   * dynamic personas.  It overrides the version of this method above it.
-   */
-  _switchToPersona: function(aPersonaID) {
-    this.headerURL = null;
-    this.footerURL = null;
-    this.textColor = null;
-    this.accentColor = null;
-
-    // If the persona is no longer available, switch to the default persona.
-    if (aPersonaID != "manual" &&
-        aPersonaID != "random" &&
-        aPersonaID != "default" &&
-        !this._getPersona(aPersonaID))
-      aPersonaID = "default";
-
-    if (aPersonaID == "default") {
-      this._obsSvc.notifyObservers(null, "personas:defaultPersonaSelected", null);
-      return;
-    }
-
-    // If we're loading the "random" persona, pick a persona at random
-    // from the selected category.
-    if (aPersonaID == "random")
-      aPersonaID = this._getRandomPersona();
-
-    this._activePersona = aPersonaID;
-
-    this.headerURL = this._getHeaderURL(this._activePersona);
-    this.footerURL = this._getFooterURL(this._activePersona);
-    this.textColor = this._getTextColor(this._activePersona);
-    this.accentColor = this._getAccentColor(this._activePersona);
-
-    this._obsSvc.notifyObservers(null, "personas:activePersonaUpdated", null);
   },
 
   /**
@@ -674,7 +669,7 @@ PersonaService.prototype = {
     this._activePersona = aPersonaID;
 
     if(aPersonaID != "default") {
-      this._obsSvc.notifyObservers(null, "personas:personaLoadStarted", aPersonaID);
+      Observers.notify(null, "personas:personaLoadStarted", aPersonaID);
       this._loadState = LOAD_STATE_LOADING;
       this._headerLoader.load(aPersonaID, this._getHeaderURL(aPersonaID));
       this._footerLoader.load(aPersonaID, this._getFooterURL(aPersonaID));
@@ -694,9 +689,9 @@ PersonaService.prototype = {
 
   _onLoadedPersona: function() {
     this._loadState = LOAD_STATE_LOADED;
-    this._obsSvc.notifyObservers(null,
-                                 "personas:personaLoadFinished",
-                                 this._activePersona);
+    Observers.notify(null,
+                     "personas:personaLoadFinished",
+                     this._activePersona);
 
     this._snapshotPersona();
 
@@ -717,21 +712,17 @@ PersonaService.prototype = {
    //}
    this.textColor = this._getTextColor(this._activePersona);
    this.accentColor = this._getAccentColor(this._activePersona);
-   this._obsSvc.notifyObservers(null, "personas:activePersonaUpdated", null);
+   Observers.notify(null, "personas:activePersonaUpdated", null);
   },
 
-  _getRandomPersona: function() {
-    let personaID;
-
-    let lastRandomID = this._getPref("extensions.personas.lastrandom");
+  _getRandomPersona: function(categoryName) {
+    let persona;
 
     // If we have the list of categories, use it to pick a random persona
     // from the selected category.
-    if (this.categories) {
-      // Get a list of the personas in the category.
-      let categoryName = this._getPref("extensions.personas.category");
+    if (this.personas.categories) {
       let personas;
-      for each (let category in this.categories.wrappedJSObject) {
+      for each (let category in this.personas.categories) {
         if (categoryName == category.name) {
           personas = category.personas;
           break;
@@ -749,61 +740,55 @@ PersonaService.prototype = {
         for (let i = 0; i < 5; i++) {
           randomIndex = Math.floor(Math.random() * personas.length);
           randomItem = personas[randomIndex];
-          if (randomItem.id != lastRandomID)
+          if (!this.lastRandom || randomItem.id != this.lastRandom.id)
             break;
         }
   
-        personaID = randomItem.id;
+        persona = randomItem;
       }
     }
 
     // If we were able to pick a random persona from the selected category,
     // then save that to preferences as the last random persona.  Otherwise
-    // just reuse the last random persona.
-    if (personaID)
-      this._prefSvc.setCharPref("extensions.personas.lastrandom", personaID);
+    // just reuse the last random persona (or the default if there is no
+    // last random persona).
+    if (persona)
+      this._prefs.set("lastRandom", JSON.stringify(persona));
     else
-      personaID = lastRandomID;
+      persona = this.lastRandom;
 
-    return personaID;
+    return persona;
   },
 
   // FIXME: index personas after retrieving them and make the index (or a method
   // for accessing it) available to chrome JS in addition to this service's code
   // so we don't have to iterate through personas all the time.
   _getPersona: function(aPersonaID) {
-    for each (let persona in this.personas.wrappedJSObject)
+    for each (let persona in this.selectedPersonas.wrappedJSObject)
       if (persona.id == aPersonaID)
         return persona;
 
     return null;
   },
 
-  _getHeaderURL: function(aPersonaID) {
+  _getHeaderURL: function(persona) {
     // Custom persona whose header and footer are in local files specified by
     // the user in preferences.
-    if (aPersonaID == "manual")
-      return this._getPref("extensions.personas.custom.headerURL", "chrome://personas/content/header-default.jpg");
+    if (persona.id == "custom") {
+      return this._prefs.get("custom.headerURL", "chrome://personas/content/header-default.jpg");
+    }
 
-    let persona = this._getPersona(aPersonaID);
-    if (persona)
-      return this._baseURL + persona.header;
-
-    return null;
+    return this.baseURI.spec + persona.header;
   },
 
-  _getFooterURL: function(aPersonaID) {
+  _getFooterURL: function(persona) {
     // Custom persona whose header and footer are in local files specified by
     // the user in preferences.
-    if (aPersonaID == "manual")
-      return this._getPref("extensions.personas.custom.footerURL",
-                           "chrome://personas/content/footer-default.jpg");
+    if (persona.id == "manual") {
+      return this._prefs.get("custom.headerURL", "chrome://personas/content/footer-default.jpg");
+    }
 
-    let persona = this._getPersona(aPersonaID);
-    if (persona)
-      return this._baseURL + persona.footer;
-
-    return null;
+    return this.baseURI.spec + persona.footer;
   },
 
   _getPersonaType: function(aPersonaID) {
@@ -819,21 +804,15 @@ PersonaService.prototype = {
     return "unknown";
   },
 
-  _getTextColor: function(aPersonaID) {
+  _getTextColor: function(persona) {
     // Custom persona whose text color is specified by the user in a preference.
-    if (aPersonaID == "manual" &&
-        !this._getPref("extensions.personas.custom.useDefaultTextColor"))
-      return this._getPref("extensions.personas.custom.textColor");
+    if (persona == "manual" &&
+        !this._prefs.get("custom.useDefaultTextColor"))
+      return this._prefs.get("custom.textColor");
 
     // Persona whose JSON record specifies a text color or a "dark" property.
-    let persona = this._getPersona(aPersonaID);
-    if (persona) {
-      if (persona.textColor)
-        return persona.textColor;
-  
-      if (typeof persona.dark != "undefined" && persona.dark == "true")
-        return "#ffffff";
-    }
+    if (persona.textColor)
+      return persona.textColor;
 
     // Dynamic HTML/XML persona whose root element has a computed color.
     // XXX Should we only use a color dynamically set via JS  (i.e. the value
@@ -859,20 +838,17 @@ PersonaService.prototype = {
       return;
 
     this.textColor = this._getTextColor(this._activePersona);
-    this._obsSvc.notifyObservers(null, "personas:activePersonaUpdated", null);
+    Observers.notify(null, "personas:activePersonaUpdated", null);
   },
 
-  _getAccentColor: function(aPersonaID) {
+  _getAccentColor: function(persona) {
     // Custom persona whose accent color is specified by the user in a preference.
-    if (aPersonaID == "manual" &&
-        !this._getPref("extensions.personas.custom.useDefaultAccentColor"))
-      return this._getPref("extensions.personas.custom.accentColor");
+    if (persona.id == "manual" &&
+        !this._prefs.get("custom.useDefaultAccentColor"))
+      return this._prefs.get("custom.accentColor");
 
-    let persona = this._getPersona(aPersonaID);
-    if(persona) {
-      if (persona.accentColor) 
-        return persona.accentColor;
-    }
+    if (persona.accentColor) 
+      return persona.accentColor;
 
     // The default accent color: gray.
     return "#C9C9C9";
@@ -883,11 +859,12 @@ PersonaService.prototype = {
       return;
 
     this.accentColor = this._getAccentColor(this._activePersona);
-    this._obsSvc.notifyObservers(null, "personas:activePersonaUpdated", null);
+    Observers.notify(null, "personas:activePersonaUpdated", null);
   }
 
 };
 
+PersonaService._init();
 
 function BackgroundLoader(aLoadCallback) {
   this._loadCallback = aLoadCallback;
@@ -981,7 +958,7 @@ BackgroundLoader.prototype = {
       else
         url = 'data:application/vnd.mozilla.xul+xml,' +
               '<window id="window" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"\n' +
-              '        onload="document.documentElement.style.backgroundImage = \'url(' + escapeXML(escapeCSSURL(url)) + ')\'"\n' +
+              '        onload="document.documentElement.style.backgroundImage = \'url(' + escapeXML(escapeURLForCSS(url)) + ')\'"\n' +
               '        style="background-repeat: no-repeat;\n' +
               '               background-position: ' + this._position + ';" flex="1">\n' +
               '  <image collapsed="true" src="' + escapeXML(url) + '"/>\n' +
@@ -1109,11 +1086,3 @@ FooterLoader.prototype = {
     return this._personaLoader.contentDocument.getElementById("footerCanvas");
   }
 };
-
-
-//****************************************************************************//
-// More XPCOM Plumbing
-
-function NSGetModule(compMgr, fileSpec) {
-  return XPCOMUtils.generateModule([PersonaService]);
-}
