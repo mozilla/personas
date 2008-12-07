@@ -35,7 +35,7 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-let EXPORTED_SYMBOLS = ["PersonaService"];
+let EXPORTED_SYMBOLS = ["PersonaService", "PERSONAS_EXTENSION_ID"];
 
 const Cc = Components.classes;
 const Ci = Components.interfaces;

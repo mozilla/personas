@@ -39,8 +39,8 @@
 // the global namespace after the controller definition below so they don't
 // conflict with modules with the same names imported by other extensions.
 
-// It's OK to import the service module into the global namespace because it
-// only imports a symbol with a personas-specific name (PersonaService).
+// It's OK to import the service module into the global namespace because its
+// exported symbols all contain the word "persona" (f.e. PersonaService).
 Cu.import("resource://personas/modules/service.js");
 
 let PersonaController = {
