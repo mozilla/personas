@@ -507,7 +507,8 @@ dump("_applyPersona: " + this.JSON.stringify(PersonaService.activePersona) + "\n
   },
 
   onSelectAbout: function(event) {
-    window.openUILinkIn(this._siteURL + this._locale + "/about/?persona=" + PersonaService.currentPersona.id, "tab");
+    if (PersonaService.currentPersona && PersonaService.currentPersona.id)
+      window.openUILinkIn(this._siteURL + this._locale + "/about/?persona=" + PersonaService.currentPersona.id, "tab");
   },
 
   /**
@@ -604,19 +605,20 @@ dump("_applyPersona: " + this.JSON.stringify(PersonaService.activePersona) + "\n
 
     // Add the item that identifies the selected persona by name.
     let personaStatus = document.getElementById("persona-current");
+    let name = PersonaService.currentPersona ? PersonaService.currentPersona.name
+                                             : this._strings.get("unnamedPersona");
     if (PersonaService.selected == "random") {
       personaStatus.setAttribute("class", "menuitem-iconic");
       personaStatus.setAttribute("image", "chrome://personas/content/random-feed-16x16.png");
       // FIXME: make this a formatted string using %S in the properties file
       // so it is localizable.
       personaStatus.setAttribute("label", this._strings.get("useRandomPersona.label") + " " +
-                                          PersonaService.category + " > " +
-                                          PersonaService.currentPersona.name);
+                                          PersonaService.category + " > " + name);
     }
     else {
       personaStatus.removeAttribute("class");
       personaStatus.removeAttribute("image");
-      personaStatus.setAttribute("label", PersonaService.currentPersona.name);
+      personaStatus.setAttribute("label", name);
     }
 
     // FIXME: factor out the duplicate code below.
@@ -699,7 +701,7 @@ dump("_applyPersona: " + this.JSON.stringify(PersonaService.activePersona) + "\n
     item.setAttribute("class", "menuitem-iconic");
     item.setAttribute("label", persona.name);
     item.setAttribute("type", "checkbox");
-    item.setAttribute("checked", (persona.id == PersonaService.currentPersona.id));
+    item.setAttribute("checked", (PersonaService.currentPersona && PersonaService.currentPersona.id == persona.id));
     item.setAttribute("autocheck", "false");
     item.setAttribute("oncommand", "PersonaController.onSelectPersona(event)");
     item.setAttribute("recent", persona.recent ? "true" : "false");

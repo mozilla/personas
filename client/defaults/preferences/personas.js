@@ -9,7 +9,7 @@ pref("extensions.personas.selected", "default");
 // the user selected "random persona from [category]", then this is the persona
 // we randomly selected from the category.  And if the user selected a custom
 // persona, then this is that persona.
-pref("extensions.personas.current", "{}");
+pref("extensions.personas.current", "");
 
 // The category from which we pick a random persona, when the user selects
 // "random persona from [category]".

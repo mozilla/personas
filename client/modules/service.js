@@ -179,30 +179,50 @@ dump("onDataLoadComplete\n");
   // Loaded upon service initialization and reloaded periodically thereafter.
   personas: null,
 
+  /**
+   * extensions.personas.selected
+   */
   get selected()        { return this._prefs.get("selected") },
   set selected(newVal)  {        this._prefs.set("selected", newVal) },
 
+  /**
+   * extensions.personas.category
+   */
   get category()        { return this._prefs.get("category") },
   set category(newVal)  {        this._prefs.set("category", newVal) },
 
   /**
-   * The active persona.  Normally this is the same as the current persona,
-   * but it is the persona being previewed while the user is previewing one.
+   * extensions.personas.url as an nsIURI.
    */
-  get activePersona() {
-    return this._previewingPersona || this.currentPersona;
-  },
-
   get baseURI() {
     return URI.get(this._prefs.get("url"));
+  },
+
+  /**
+   * extensions.personas.current
+   */
+  get currentPersona() {
+    let current = this._prefs.get("current");
+    if (current) {
+      try       { return JSON.parse(current) }
+      catch(ex) { Cu.reportError("error getting current persona: " + ex) }
+    }
+    return null;
+  },
+  set currentPersona(newVal) {
+    try       { this._prefs.set("current", JSON.stringify(newVal)) }
+    catch(ex) { Cu.reportError("error setting current persona: " + ex) }
   },
 
   /**
    * extensions.personas.custom
    */
   get customPersona() {
-    try       { return JSON.parse(this._prefs.get("custom")) }
-    catch(ex) { Cu.reportError("error getting custom persona: " + ex) }
+    let custom = this._prefs.get("custom");
+    if (custom) {
+      try       { return JSON.parse(custom) }
+      catch(ex) { Cu.reportError("error getting custom persona: " + ex) }
+    }
     return null;
   },
   set customPersona(newVal) {
@@ -211,16 +231,11 @@ dump("onDataLoadComplete\n");
   },
 
   /**
-   * extensions.personas.current
+   * The active persona.  Normally this is the same as the current persona,
+   * but it is the persona being previewed while the user is previewing one.
    */
-  get currentPersona() {
-    try       { return JSON.parse(this._prefs.get("current")) }
-    catch(ex) { Cu.reportError("error getting current persona: " + ex) }
-    return {};
-  },
-  set currentPersona(newVal) {
-    try       { this._prefs.set("current", JSON.stringify(newVal)) }
-    catch(ex) { Cu.reportError("error setting current persona: " + ex) }
+  get activePersona() {
+    return this._previewingPersona || this.currentPersona;
   },
 
   changeToDefaultPersona: function() {
@@ -729,7 +744,7 @@ dump("resetPersona\n");
         for (let i = 0; i < 5; i++) {
           randomIndex = Math.floor(Math.random() * personas.length);
           randomItem = personas[randomIndex];
-          if (randomItem.id != this.currentPersona.id)
+          if (randomItem.id != this.selectedPersona.id)
             break;
         }
 
