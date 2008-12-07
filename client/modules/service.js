@@ -53,6 +53,10 @@ Cu.import("resource://personas/modules/URI.js");
 
 const PERSONAS_EXTENSION_ID = "personas@christopher.beard";
 
+// FIXME: use these where appropriate or remove them.
+const DEFAULT_HEADER = new URI("chrome://personas/content/header-default.jpg");
+const DEFAULT_FOOTER = new URI("chrome://personas/content/footer-default.jpg");
+
 let PersonaService = {
   //**************************************************************************//
   // Initialization & Destruction
