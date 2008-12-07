@@ -1,16 +1,17 @@
 overlay chrome://browser/content/browser.xul chrome://personas/content/personas.xul
 
+# Register a resource: protocol alias so we can refer to files in this package
+# with URLs of the form resource://personas/path/to/file,
+# f.e. resource://personas/modules/service.js.
+resource personas   ./
+
 content  personas             chrome/content/
 
 # Register separate skins for each primary platform so we can fit personas
-# into each one's very different skin.  We can't do this for Firefox 2 because
-# it doesn't recognize the "os" manifest flag.
-skin  personas  classic/1.0  chrome/skin/fx2/      appversion<3.0b1
-skin  personas  classic/1.0  chrome/skin/windows/  appversion>=3.0b1  os=WINNT
-skin  personas  classic/1.0  chrome/skin/mac/      appversion>=3.0b1  os=Darwin
-skin  personas  classic/1.0  chrome/skin/linux/    appversion>=3.0b1  os=Linux
-
-resource personas   ./
+# into each one's very different skin.
+skin  personas  classic/1.0  chrome/skin/windows/  appversion>=3.0  os=WINNT
+skin  personas  classic/1.0  chrome/skin/mac/      appversion>=3.0  os=Darwin
+skin  personas  classic/1.0  chrome/skin/linux/    appversion>=3.0  os=Linux
 
 # localizations in alphabetical order
 locale   personas   en-US       chrome/locale/en-US/
