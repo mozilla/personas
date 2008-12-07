@@ -143,7 +143,7 @@ let PersonaService = {
   _loadData: function() {
 dump("_loadData\n");
     let t = this;
-    this._makeRequest(this.baseURI.spec + "index.json",
+    this._makeRequest(this.baseURI + "index.json",
                       function(evt) { t.onDataLoadComplete(evt) });
   },
 
@@ -208,10 +208,10 @@ dump("onDataLoadComplete\n");
   set category(newVal)  {        this._prefs.set("category", newVal) },
 
   /**
-   * extensions.personas.url as an nsIURI.
+   * extensions.personas.url
    */
   get baseURI() {
-    return URI.get(this._prefs.get("url"));
+    return this._prefs.get("url");
   },
 
   /**
@@ -343,7 +343,7 @@ dump("resetPersona\n");
   reportSelection: function(persona) {
     if (persona.custom || !this._prefs.get("reportSelection"))
       return;
-    this._makeRequest(this.baseURI.spec + persona.id + "/report_selection/",
+    this._makeRequest(this.baseURI + persona.id + "/report_selection/",
                       function(evt) {});
   },
 
@@ -773,7 +773,7 @@ dump("resetPersona\n");
       return this._prefs.get("custom.headerURL", "chrome://personas/content/header-default.jpg");
     }
 
-    return this.baseURI.spec + persona.header;
+    return this.baseURI + persona.header;
   },
 
   _getFooterURL: function(persona) {
@@ -783,7 +783,7 @@ dump("resetPersona\n");
       return this._prefs.get("custom.headerURL", "chrome://personas/content/footer-default.jpg");
     }
 
-    return this.baseURI.spec + persona.footer;
+    return this.baseURI + persona.footer;
   },
 
   _getPersonaType: function(aPersonaID) {

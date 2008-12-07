@@ -81,10 +81,6 @@ let PersonaController = {
     return this._menu;
   },
 
-  get _baseURI() {
-    return this.URI.get(this._prefs.get("url"));
-  },
-
   get _siteURL() {
     return this._prefs.get("siteURL");
   },
@@ -245,13 +241,19 @@ dump("_applyPersona: " + this.JSON.stringify(PersonaService.activePersona) + "\n
     // Style the header.
     let header = document.getElementById("main-window");
     header.setAttribute("persona", PersonaService.activePersona.id);
-    let headerURI = this.URI.get(PersonaService.activePersona.header, null, this._baseURI);
+    // Use the URI module to resolve the possibly relative URI to an absolute one.
+    let headerURI = this.URI.get(PersonaService.activePersona.header,
+                                 null,
+                                 this.URI.get(PersonaService.baseURI));
     header.style.backgroundImage = "url(" + this._escapeURLForCSS(headerURI.spec) + ")";
 
     // Style the footer.
     let footer = document.getElementById("browser-bottombox");
     footer.setAttribute("persona", PersonaService.activePersona.id);
-    let footerURI = this.URI.get(PersonaService.activePersona.footer, null, this._baseURI);
+    // Use the URI module to resolve the possibly relative URI to an absolute one.
+    let footerURI = this.URI.get(PersonaService.activePersona.footer,
+                                 null,
+                                 this.URI.get(PersonaService.baseURI));
     footer.style.backgroundImage = "url(" + this._escapeURLForCSS(footerURI.spec) + ")";
 
     let os = Cc["@mozilla.org/xre/app-info;1"].getService(Ci.nsIXULRuntime).OS;
