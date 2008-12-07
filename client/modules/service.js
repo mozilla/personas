@@ -53,35 +53,6 @@ Cu.import("resource://personas/modules/URI.js");
 
 const PERSONAS_EXTENSION_ID = "personas@christopher.beard";
 
-const LOAD_STATE_EMPTY = 0;
-const LOAD_STATE_LOADING = 1;
-const LOAD_STATE_LOADED = 2;
-
-const DEFAULT_HEADER = new URI("chrome://personas/content/header-default.jpg");
-const DEFAULT_FOOTER = new URI("chrome://personas/content/footer-default.jpg");
-
-
-//****************************************************************************//
-// Helper Utilities
-
-// Escape CSS special characters in unquoted URLs
-// per http://www.w3.org/TR/CSS21/syndata.html#uri.
-function escapeURLForCSS(url) {
-  return url.replace(/[(),\s'"]/g, "\$&");
-}
-
-// Escape XML special characters.
-function escapeXML(aString) {
-  aString = aString.replace(/\&/g, "&amp;");
-  aString = aString.replace(/</g, "&lt;");
-  aString = aString.replace(/>/g, "&gt;");
-  return aString;
-}
-
-
-//****************************************************************************//
-// The Persona Service
-
 let PersonaService = {
   //**************************************************************************//
   // Initialization & Destruction
@@ -860,6 +831,33 @@ dump("resetPersona\n");
 };
 
 PersonaService._init();
+
+
+
+const LOAD_STATE_EMPTY = 0;
+const LOAD_STATE_LOADING = 1;
+const LOAD_STATE_LOADED = 2;
+
+//****************************************************************************//
+// Helper Utilities for the Persona Loader
+
+// Escape CSS special characters in unquoted URLs
+// per http://www.w3.org/TR/CSS21/syndata.html#uri.
+function escapeURLForCSS(url) {
+  return url.replace(/[(),\s'"]/g, "\$&");
+}
+
+// Escape XML special characters.
+function escapeXML(aString) {
+  aString = aString.replace(/\&/g, "&amp;");
+  aString = aString.replace(/</g, "&lt;");
+  aString = aString.replace(/>/g, "&gt;");
+  return aString;
+}
+
+
+//****************************************************************************//
+// Background, Header, and Footer Loaders
 
 function BackgroundLoader(aLoadCallback) {
   this._loadCallback = aLoadCallback;
