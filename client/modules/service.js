@@ -186,19 +186,6 @@ dump("onDataLoadComplete\n");
   set selected(newVal)  {        this._prefs.set("selected", newVal) },
 
   /**
-   * extensions.personas.category
-   */
-  get category()        { return this._prefs.get("category") },
-  set category(newVal)  {        this._prefs.set("category", newVal) },
-
-  /**
-   * extensions.personas.url as an nsIURI.
-   */
-  get baseURI() {
-    return URI.get(this._prefs.get("url"));
-  },
-
-  /**
    * extensions.personas.current
    */
   get currentPersona() {
@@ -212,6 +199,19 @@ dump("onDataLoadComplete\n");
   set currentPersona(newVal) {
     try       { this._prefs.set("current", JSON.stringify(newVal)) }
     catch(ex) { Cu.reportError("error setting current persona: " + ex) }
+  },
+
+  /**
+   * extensions.personas.category
+   */
+  get category()        { return this._prefs.get("category") },
+  set category(newVal)  {        this._prefs.set("category", newVal) },
+
+  /**
+   * extensions.personas.url as an nsIURI.
+   */
+  get baseURI() {
+    return URI.get(this._prefs.get("url"));
   },
 
   /**
