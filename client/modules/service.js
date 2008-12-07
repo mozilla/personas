@@ -193,18 +193,6 @@ dump("onDataLoadComplete\n");
     return this._previewingPersona || this.currentPersona;
   },
 
-  // XXX Do we still need this now that we store the last random persona
-  // in currentPersona?
-  get lastRandom() {
-    try {
-      return JSON.parse(this._prefs.get("lastRandom"));
-    }
-    catch(ex) {
-      Cu.reportError("error getting last random persona: " + ex);
-      return null;
-    }
-  },
-
   get baseURI() {
     return URI.get(this._prefs.get("url"));
   },
@@ -251,7 +239,9 @@ dump("onDataLoadComplete\n");
     this._observePrefChanges = false;
     try {
       this.category = category;
-      this.currentPersona = this._getRandomPersona(this.category);
+      let persona = this._getRandomPersona(this.category);
+      if (persona)
+        this.currentPersona = persona;
       this.selected = "random";
     }
     finally {
@@ -719,7 +709,7 @@ dump("resetPersona\n");
 
     // If we have the list of categories, use it to pick a random persona
     // from the selected category.
-    if (this.personas.categories) {
+    if (this.personas && this.personas.categories) {
       let personas;
       for each (let category in this.personas.categories) {
         if (categoryName == category.name) {
@@ -739,22 +729,13 @@ dump("resetPersona\n");
         for (let i = 0; i < 5; i++) {
           randomIndex = Math.floor(Math.random() * personas.length);
           randomItem = personas[randomIndex];
-          if (!this.lastRandom || randomItem.id != this.lastRandom.id)
+          if (randomItem.id != this.currentPersona.id)
             break;
         }
-  
+
         persona = randomItem;
       }
     }
-
-    // If we were able to pick a random persona from the selected category,
-    // then save that to preferences as the last random persona.  Otherwise
-    // just reuse the last random persona (or the default if there is no
-    // last random persona).
-    if (persona)
-      this._prefs.set("lastRandom", JSON.stringify(persona));
-    else
-      persona = this.lastRandom;
 
     return persona;
   },

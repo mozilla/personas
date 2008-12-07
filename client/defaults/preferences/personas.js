@@ -15,7 +15,6 @@ pref("extensions.personas.current", "{}");
 // "random persona from [category]".
 pref("extensions.personas.category", "");
 
-pref("extensions.personas.lastRandom", "");
 pref("extensions.personas.lastversion", "firstrun");
 pref("extensions.personas.url", "http://people.mozilla.com/~cbeard/personas/en-US/store/");
 pref("extensions.personas.siteURL", "http://people.mozilla.com/~cbeard/personas/en-US/store/");
@@ -56,5 +55,3 @@ pref("extensions.personas.useAccentColor", true);
 // by Persona in the feed.
 pref("extensions.personas.useTextColor", true);
 pref("extensions.personas.showCustomMenu", false);
-pref("extensions.personas.custom.customName", "Custom Persona");
-
