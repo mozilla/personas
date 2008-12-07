@@ -265,7 +265,8 @@ dump("onDataLoadComplete\n");
     this._observePrefChanges = false;
     try {
       // Update the list of recent personas.
-      if (this.currentPersona && persona.id != this.currentPersona.id) {
+      if (this.currentPersona && this.currentPersona.name &&
+          persona.id != this.currentPersona.id) {
         this._prefs.set("lastselected3", this._prefs.get("lastselected2"));
         this._prefs.set("lastselected2", this._prefs.get("lastselected1"));
         this._prefs.set("lastselected1", this._prefs.get("lastselected0"));
