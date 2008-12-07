@@ -189,24 +189,24 @@ let CustomPersonaEditor = {
   },
 
   onChangeTextColor: function(aEvent) {
-    this.customPersona.textColor = this._textColorPicker.color;
+    this.customPersona.textcolor = this._textColorPicker.color;
     PersonaService.resetPersona();
     this._save();
   },
 
   onSetDefaultTextColor: function(aEvent) {
-    this.customPersona.textColor = "#000000";
+    this.customPersona.textcolor = "#000000";
     this.onChangeTextColor();
   },
 
   onChangeAccentColor: function(aEvent) {
-    this.customPersona.textColor = this._textColorPicker.color;
+    this.customPersona.accentcolor = this._textColorPicker.color;
     PersonaService.resetPersona();
     this._save();
   },
 
   onSetDefaultAccentColor: function(aEvent) {
-    this.customPersona.textColor = "#C9C9C9";
+    this.customPersona.accentcolor = "#C9C9C9";
     this.onChangeAccentColor();
   },
 
@@ -217,8 +217,7 @@ let CustomPersonaEditor = {
 
   onApply: function() {
     PersonaService.resetPersona();
-    PersonaService.selectedPersona = this.customPersona;
-    PersonaService.selected = "specific";
+    PersonaService.changeToPersona(this.customPersona);
     window.close();
   }
 };
