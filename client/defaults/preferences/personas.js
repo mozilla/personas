@@ -1,6 +1,20 @@
+// The type of persona the user selected.  Valid values:
+//   default: the default Firefox skin
+//    random: a random persona from extensions.personas.category
+//   current: the persona in extensions.personas.current
 pref("extensions.personas.selected", "default");
-pref("extensions.personas.persona", "");
+
+// The current persona.  Generally, this is the persona that the user selected
+// from a menu in the extension or from the web directory of personas.  But if
+// the user selected "random persona from [category]", then this is the persona
+// we randomly selected from the category.  And if the user selected a custom
+// persona, then this is that persona.
+pref("extensions.personas.current", "{}");
+
+// The category from which we pick a random persona, when the user selects
+// "random persona from [category]".
 pref("extensions.personas.category", "");
+
 pref("extensions.personas.lastRandom", "");
 pref("extensions.personas.lastversion", "firstrun");
 pref("extensions.personas.url", "http://people.mozilla.com/~cbeard/personas/en-US/store/");

@@ -191,11 +191,11 @@ dump("onDataLoadComplete\n");
    * Most code should access 
    */
   get activePersona() {
-    return this._previewedPersona || this.selectedPersona;
+    return this._previewedPersona || this.currentPersona;
   },
 
   // XXX Do we still need this now that we store the last random persona
-  // in selectedPersona?
+  // in currentPersona?
   get lastRandom() {
     try {
       return JSON.parse(this._prefs.get("lastRandom"));
@@ -210,6 +210,9 @@ dump("onDataLoadComplete\n");
     return URI.get(this._prefs.get("url"));
   },
 
+  /**
+   * extensions.personas.custom
+   */
   get customPersona() {
     try       { return JSON.parse(this._prefs.get("custom")) }
     catch(ex) { Cu.reportError("error getting custom persona: " + ex) }
@@ -221,20 +224,16 @@ dump("onDataLoadComplete\n");
   },
 
   /**
-   * The selected persona.  This is the generally the persona that the user
-   * has selected from a menu in the extension or from the web directory of
-   * personas.  But if the user has selected "random persona from category",
-   * this is the persona we randomly selected from the category.  And if the
-   * user has selected a custom persona, this is the custom persona.
+   * extensions.personas.current
    */
-  get selectedPersona() {
-    try       { return JSON.parse(this._prefs.get("persona")) }
-    catch(ex) { Cu.reportError("error getting persona: " + ex) }
+  get currentPersona() {
+    try       { return JSON.parse(this._prefs.get("current")) }
+    catch(ex) { Cu.reportError("error getting current persona: " + ex) }
     return {};
   },
-  set selectedPersona(newVal) {
-    try       { this._prefs.set("persona", JSON.stringify(newVal)) }
-    catch(ex) { Cu.reportError("error setting persona: " + ex) }
+  set currentPersona(newVal) {
+    try       { this._prefs.set("current", JSON.stringify(newVal)) }
+    catch(ex) { Cu.reportError("error setting current persona: " + ex) }
   },
 
   changeToDefaultPersona: function() {
@@ -253,7 +252,7 @@ dump("onDataLoadComplete\n");
     this._observePrefChanges = false;
     try {
       this.category = category;
-      this.selectedPersona = this._getRandomPersona(this.category);
+      this.currentPersona = this._getRandomPersona(this.category);
       this.selected = "random";
     }
     finally {
@@ -267,15 +266,15 @@ dump("onDataLoadComplete\n");
     this._observePrefChanges = false;
     try {
       // Update the list of recent personas.
-      if (this.selectedPersona && persona.id != this.selectedPersona.id) {
+      if (this.currentPersona && persona.id != this.currentPersona.id) {
         this._prefs.set("lastselected3", this._prefs.get("lastselected2"));
         this._prefs.set("lastselected2", this._prefs.get("lastselected1"));
         this._prefs.set("lastselected1", this._prefs.get("lastselected0"));
-        this._prefs.set("lastselected0", JSON.stringify(this.selectedPersona));
+        this._prefs.set("lastselected0", JSON.stringify(this.currentPersona));
       }
   
-      this.selectedPersona = persona;
-      this.selected = "specific";
+      this.currentPersona = persona;
+      this.selected = "current";
     }
     finally {
       this._observePrefChanges = true;
@@ -292,7 +291,7 @@ dump("this.selected" + this.selected + "\n");
         this._onChangeToDefaultPersona();
         break;
       case "random":
-      case "specific":
+      case "current":
       default:
         this._onChangeToPersona();
         break;
@@ -603,7 +602,7 @@ dump("resetPersona\n");
     // so we don't need the personas data to load the persona.
 
     // Now that the persona loader and the data is loaded, we load the persona.
-    this._switchToPersona(this._selectedPersona);
+    this._switchToPersona(this._currentPersona);
   },
 
 

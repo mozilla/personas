@@ -507,7 +507,7 @@ dump("_applyPersona: " + this.JSON.stringify(PersonaService.activePersona) + "\n
   },
 
   onSelectAbout: function(event) {
-    window.openUILinkIn(this._siteURL + this._locale + "/about/?persona=" + PersonaService.selectedPersona.id, "tab");
+    window.openUILinkIn(this._siteURL + this._locale + "/about/?persona=" + PersonaService.currentPersona.id, "tab");
   },
 
   /**
@@ -611,12 +611,12 @@ dump("_applyPersona: " + this.JSON.stringify(PersonaService.activePersona) + "\n
       // so it is localizable.
       personaStatus.setAttribute("label", this._strings.get("useRandomPersona.label") + " " +
                                           PersonaService.category + " > " +
-                                          PersonaService.selectedPersona.name);
+                                          PersonaService.currentPersona.name);
     }
     else {
       personaStatus.removeAttribute("class");
       personaStatus.removeAttribute("image");
-      personaStatus.setAttribute("label", PersonaService.selectedPersona.name);
+      personaStatus.setAttribute("label", PersonaService.currentPersona.name);
     }
 
     // FIXME: factor out the duplicate code below.
@@ -699,7 +699,7 @@ dump("_applyPersona: " + this.JSON.stringify(PersonaService.activePersona) + "\n
     item.setAttribute("class", "menuitem-iconic");
     item.setAttribute("label", persona.name);
     item.setAttribute("type", "checkbox");
-    item.setAttribute("checked", (persona.id == PersonaService.selectedPersona.id));
+    item.setAttribute("checked", (persona.id == PersonaService.currentPersona.id));
     item.setAttribute("autocheck", "false");
     item.setAttribute("oncommand", "PersonaController.onSelectPersona(event)");
     item.setAttribute("recent", persona.recent ? "true" : "false");
