@@ -81,11 +81,6 @@ let PersonaController = {
     return this._menu;
   },
 
-  get _defaultPersona() {
-    delete this._defaultPersona;
-    return this._defaultPersona = { id: "default" };
-  },
-
   get _baseURI() {
     return this.URI.get(this._prefs.get("url"));
   },
@@ -500,7 +495,7 @@ dump("_applyPersona: " + this.JSON.stringify(PersonaService.activePersona) + "\n
 
   onSelectPreferences: function() {
     window.openDialog('chrome://personas/content/preferences.xul', '', 
-		'chrome,titlebar,toolbar,centerscreen');
+                      'chrome,titlebar,toolbar,centerscreen');
   },
 
   onViewDirectory: function() {
