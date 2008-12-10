@@ -215,7 +215,7 @@ let PersonaController = {
     }
 
     // Apply the selected persona (if any) to the window.
-    if (PersonaService.activePersona)
+    if (PersonaService.selected == "current")
       this._applyPersona();
   },
 
