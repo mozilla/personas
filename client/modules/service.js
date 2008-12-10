@@ -203,14 +203,6 @@ let PersonaService = {
     catch(ex) { Cu.reportError("error setting custom persona: " + ex) }
   },
 
-  /**
-   * The active persona.  Normally this is the same as the current persona,
-   * but it is the persona being previewed while the user is previewing one.
-   */
-  get activePersona() {
-    return this._previewingPersona || this.currentPersona;
-  },
-
   changeToDefaultPersona: function() {
     this._observePrefChanges = false;
     try {
@@ -276,14 +268,14 @@ let PersonaService = {
   },
 
   _onChangeToDefaultPersona: function() {
-    Observers.notify(null, "personas:persona:disabled", null);
+    Observers.notify(null, "personas:persona:changed", null);
   },
 
   _onChangeToPersona: function() {
     Observers.notify(null, "personas:persona:changed", null);
   },
 
-  _previewingPersona: null,
+  previewingPersona: null,
 
   /**
    * Display the given persona temporarily.  Useful for showing users who are
@@ -292,7 +284,7 @@ let PersonaService = {
    * call resetPersona when the preview ends, f.e. on mouseout.
    */
   previewPersona: function(persona) {
-    this._previewingPersona = persona;
+    this.previewingPersona = persona;
     Observers.notify(null, "personas:persona:changed", null);
   },
 
@@ -300,7 +292,7 @@ let PersonaService = {
    * Stop previewing a persona.
    */
   resetPersona: function() {
-    this._previewingPersona = null;
+    this.previewingPersona = null;
     Observers.notify(null, "personas:persona:changed", null);
   },
 

@@ -122,10 +122,12 @@ let PersonaController = {
   observe: function(subject, topic, data) {
     switch (topic) {
       case "personas:persona:changed":
-        this._applyPersona();
-        break;
-      case "personas:persona:disabled":
-        this._applyDefault();
+        if (PersonaService.previewingPersona)
+          this._applyPersona(PersonaService.previewingPersona);
+        else if (PersonaService.selected == "default")
+          this._applyDefault();
+        else
+          this._applyPersona(PersonaService.currentPersona);
         break;
       case "personas:personaLoadStarted":
         this.showThrobber(data);
@@ -188,7 +190,6 @@ let PersonaController = {
 
     // Observe various changes that we should apply to the browser window.
     this.Observers.add(this, "personas:persona:changed");
-    this.Observers.add(this, "personas:persona:disabled");
     this.Observers.add(this, "personas:personaLoadStarted");
     this.Observers.add(this, "personas:personaLoadFinished");
 
@@ -214,9 +215,10 @@ let PersonaController = {
       this._prefs.set("lastversion", thisVersion);
     }
 
-    // Apply the selected persona (if any) to the window.
-    if (PersonaService.selected == "current")
-      this._applyPersona();
+    // Apply the current persona to the window.
+    // We don't apply the default persona because Firefox starts with that.
+    if (PersonaService.selected != "default")
+      this._applyPersona(PersonaService.currentPersona);
   },
 
   shutDown: function() {
@@ -224,7 +226,6 @@ let PersonaController = {
     document.removeEventListener("PreviewPersona", this, false);
     document.removeEventListener("ResetPersona", this, false);
 
-    this.Observers.remove(this, "personas:persona:disabled");
     this.Observers.remove(this, "personas:persona:changed");
     this.Observers.remove(this, "personas:personaLoadFinished");
     this.Observers.remove(this, "personas:personaLoadStarted");
@@ -234,21 +235,21 @@ let PersonaController = {
   //**************************************************************************//
   // Appearance Updates
 
-  _applyPersona: function() {
+  _applyPersona: function(persona) {
     // Style the header.
     let header = document.getElementById("main-window");
-    header.setAttribute("persona", PersonaService.activePersona.id);
+    header.setAttribute("persona", persona.id);
     // Use the URI module to resolve the possibly relative URI to an absolute one.
-    let headerURI = this.URI.get(PersonaService.activePersona.header,
+    let headerURI = this.URI.get(persona.header,
                                  null,
                                  this.URI.get(PersonaService.baseURI));
     header.style.backgroundImage = "url(" + this._escapeURLForCSS(headerURI.spec) + ")";
 
     // Style the footer.
     let footer = document.getElementById("browser-bottombox");
-    footer.setAttribute("persona", PersonaService.activePersona.id);
+    footer.setAttribute("persona", persona.id);
     // Use the URI module to resolve the possibly relative URI to an absolute one.
-    let footerURI = this.URI.get(PersonaService.activePersona.footer,
+    let footerURI = this.URI.get(persona.footer,
                                  null,
                                  this.URI.get(PersonaService.baseURI));
     footer.style.backgroundImage = "url(" + this._escapeURLForCSS(footerURI.spec) + ")";
@@ -258,7 +259,7 @@ let PersonaController = {
     // Style the text color.
     if (this._prefs.get("useTextColor")) {
       // FIXME: fall back on the default text color instead of "black".
-      let textColor = PersonaService.activePersona.textcolor || "black";
+      let textColor = persona.textcolor || "black";
       for (let i = 0; i < document.styleSheets.length; i++) {
         let styleSheet = document.styleSheets[i];
         if (styleSheet.href == "chrome://personas/content/textColor.css") {
@@ -307,7 +308,7 @@ let PersonaController = {
     // the change doesn't cause the window to un-maximize.
     if (this._prefs.get("useAccentColor")) {
       if (os == "Darwin") {
-        let titlebarColor = PersonaService.activePersona.accentcolor || this._defaultTitlebarColor;
+        let titlebarColor = persona.accentcolor || this._defaultTitlebarColor;
         if (titlebarColor != header.getAttribute("titlebarcolor")) {
           header.setAttribute("activetitlebarcolor", titlebarColor);
           header.setAttribute("inactivetitlebarcolor", titlebarColor);
