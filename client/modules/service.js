@@ -706,7 +706,7 @@ let PersonaService = {
         for (let i = 0; i < 5; i++) {
           randomIndex = Math.floor(Math.random() * personas.length);
           randomItem = personas[randomIndex];
-          if (randomItem.id != this.selectedPersona.id)
+          if (randomItem.id != this.currentPersona.id)
             break;
         }
 
