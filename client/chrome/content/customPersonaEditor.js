@@ -64,18 +64,18 @@ let CustomPersonaEditor = {
     return this._customName;
   },
 
-  get _headerURL() {
-    let headerURL = document.getElementById("headerURL");
-    delete this._headerURL;
-    this._headerURL = headerURL;
-    return this._headerURL;
+  get _header() {
+    let header = document.getElementById("header");
+    delete this._header;
+    this._header = header;
+    return this._header;
   },
 
-  get _footerURL() {
-    let footerURL = document.getElementById("footerURL");
-    delete this._footerURL;
-    this._footerURL = footerURL;
-    return this._footerURL;
+  get _footer() {
+    let footer = document.getElementById("footer");
+    delete this._footer;
+    this._footer = footer;
+    return this._footer;
   },
 
   get _textColorPicker() {
@@ -143,8 +143,8 @@ let CustomPersonaEditor = {
       this.customPersona = { custom: true };
     }
 
-    this._headerURL.value = this.customPersona.header || "";
-    this._footerURL.value = this.customPersona.footer || "";
+    this._header.value = this.customPersona.header || "";
+    this._footer.value = this.customPersona.footer || "";
     this._customName.value = this.customPersona.name || "";
     this._textColorPicker.color = this.customPersona.textColor || "#000000";
     this._accentColorPicker.color = this.customPersona.accentColor || "#C9C9C9";
@@ -161,29 +161,34 @@ let CustomPersonaEditor = {
   },
 
   // Apply header and footer control changes to the prefs.
-  onChangeBackground: function(aEvent) {
-    let control = aEvent.target;
-    let attr = control.parentNode.getAttribute("attr");
+  onChangeBackground: function(event) {
+    let control = event.target;
+    let property = control.id;
+
     // Trim leading and trailing whitespace.
     let value = control.value.replace(/^\s*|\s*$/g, "");
+
     if (value == "")
-      this.customPersona[attr] = null;
+      this.customPersona[property] = null;
     else
-      this.customPersona[attr] = value;
+      this.customPersona[property] = value;
+
     this._save();
   },
 
   onSelectBackground: function(event) {
-    let control = event.target;
-    let attr = control.parentNode.getAttribute("attr");
+    let button = event.target;
+    let control = button.previousSibling;
+    let property = control.id;
+
     let fp = Cc["@mozilla.org/filepicker;1"].createInstance(Ci.nsIFilePicker);
     fp.init(window,
             this._stringBundle.getString("backgroundPickerDialogTitle"),
             Ci.nsIFilePicker.modeOpen);
     let result = fp.show();
+
     if (result == Ci.nsIFilePicker.returnOK) {
-      control.value = fp.fileURL.spec;
-      this.customPersona[attr] = fp.fileURL.spec;
+      control.value = this.customPersona[property] = fp.fileURL.spec;
       this._save();
     }
   },

@@ -74,10 +74,10 @@
         </row>
         <row align="center">
           <hbox flex="1" pack="end">
-            <label control="headerURL" value="&header.label;"/>
+            <label control="header" value="&header.label;"/>
           </hbox>
-          <hbox attr="header">
-            <textbox id="headerURL" 
+          <hbox>
+            <textbox id="header"
                      onchange="CustomPersonaEditor.onChangeBackground(event)"/>
             <button id="selectHeaderButton" label="&selectBackground.label;"
                     oncommand="CustomPersonaEditor.onSelectBackground(event)"/>
@@ -85,10 +85,10 @@
         </row>
         <row align="center">
           <hbox flex="1" pack="end">
-            <label control="footerURL" value="&footer.label;"/>
+            <label control="footer" value="&footer.label;"/>
           </hbox>
-          <hbox attr="footer">
-            <textbox id="footerURL"
+          <hbox>
+            <textbox id="footer"
                      onchange="CustomPersonaEditor.onChangeBackground(event)"/>
             <button id="selectFooterButton" label="&selectBackground.label;"
                     oncommand="CustomPersonaEditor.onSelectBackground(event)"/>
