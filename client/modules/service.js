@@ -116,14 +116,12 @@ let PersonaService = {
   },
 
   _loadData: function() {
-dump("_loadData\n");
     let t = this;
     this._makeRequest(this.baseURI + "index.json",
                       function(evt) { t.onDataLoadComplete(evt) });
   },
 
   onDataLoadComplete: function(aEvent) {
-dump("onDataLoadComplete\n");
     let request = aEvent.target;
 
     // XXX Try to reload again sooner?
@@ -265,7 +263,6 @@ dump("onDataLoadComplete\n");
   },
 
   _onPersonaChanged: function() {
-dump("this.selected" + this.selected + "\n");
     switch (this.selected) {
       case "default":
         this._onChangeToDefaultPersona();
@@ -295,7 +292,6 @@ dump("this.selected" + this.selected + "\n");
    * call resetPersona when the preview ends, f.e. on mouseout.
    */
   previewPersona: function(persona) {
-dump("previewPersona: " + JSON.stringify(persona) + "\n");
     this._previewingPersona = persona;
     Observers.notify(null, "personas:persona:changed", null);
   },
@@ -304,7 +300,6 @@ dump("previewPersona: " + JSON.stringify(persona) + "\n");
    * Stop previewing a persona.
    */
   resetPersona: function() {
-dump("resetPersona\n");
     this._previewingPersona = null;
     Observers.notify(null, "personas:persona:changed", null);
   },

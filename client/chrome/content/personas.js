@@ -120,7 +120,6 @@ let PersonaController = {
 
   // nsIObserver
   observe: function(subject, topic, data) {
-dump("observe: " + topic + "\n");
     switch (topic) {
       case "personas:persona:changed":
         this._applyPersona();
@@ -236,8 +235,6 @@ dump("observe: " + topic + "\n");
   // Appearance Updates
 
   _applyPersona: function() {
-dump("_applyPersona: " + this.JSON.stringify(PersonaService.activePersona) + "\n");
-
     // Style the header.
     let header = document.getElementById("main-window");
     header.setAttribute("persona", PersonaService.activePersona.id);
