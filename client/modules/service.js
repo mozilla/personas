@@ -231,6 +231,42 @@ let PersonaService = {
     this._onChangeToPersona();
   },
 
+  _getRandomPersona: function(categoryName) {
+    let persona;
+
+    // If we have the list of categories, use it to pick a random persona
+    // from the selected category.
+    if (this.personas && this.personas.categories) {
+      let personas;
+      for each (let category in this.personas.categories) {
+        if (categoryName == category.name) {
+          personas = category.personas;
+          break;
+        }
+      }
+
+      // Get a random item from the list, trying up to five times to get one
+      // that is different from the currently-selected item in the category
+      // (if any).  We use Math.floor instead of Math.round to pick a random
+      // number because the JS reference says Math.round returns a non-uniform
+      // distribution
+      // <http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Math:random#Examples>.
+      if (personas && personas.length > 0) {
+        let randomIndex, randomItem;
+        for (let i = 0; i < 5; i++) {
+          randomIndex = Math.floor(Math.random() * personas.length);
+          randomItem = personas[randomIndex];
+          if (randomItem.id != this.currentPersona.id)
+            break;
+        }
+
+        persona = randomItem;
+      }
+    }
+
+    return persona;
+  },
+
   changeToPersona: function(persona) {
     this._observePrefChanges = false;
     try {
@@ -679,42 +715,6 @@ let PersonaService = {
    this.textColor = this._getTextColor(this._activePersona);
    this.accentColor = this._getAccentColor(this._activePersona);
    Observers.notify(null, "personas:activePersonaUpdated", null);
-  },
-
-  _getRandomPersona: function(categoryName) {
-    let persona;
-
-    // If we have the list of categories, use it to pick a random persona
-    // from the selected category.
-    if (this.personas && this.personas.categories) {
-      let personas;
-      for each (let category in this.personas.categories) {
-        if (categoryName == category.name) {
-          personas = category.personas;
-          break;
-        }
-      }
-
-      // Get a random item from the list, trying up to five times to get one
-      // that is different from the currently-selected item in the category
-      // (if any).  We use Math.floor instead of Math.round to pick a random
-      // number because the JS reference says Math.round returns a non-uniform
-      // distribution
-      // <http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Math:random#Examples>.
-      if (personas && personas.length > 0) {
-        let randomIndex, randomItem;
-        for (let i = 0; i < 5; i++) {
-          randomIndex = Math.floor(Math.random() * personas.length);
-          randomItem = personas[randomIndex];
-          if (randomItem.id != this.currentPersona.id)
-            break;
-        }
-
-        persona = randomItem;
-      }
-    }
-
-    return persona;
   },
 
   // FIXME: index personas after retrieving them and make the index (or a method
