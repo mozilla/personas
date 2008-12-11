@@ -47,10 +47,6 @@
       onload="CustomPersonaEditor.onLoad()"
       onunload="CustomPersonaEditor.onUnload()">
 
-  <stringbundleset id="stringbundleset">
-    <stringbundle id="personasStringBundle" src="chrome://personas/locale/personas.properties"/>
-  </stringbundleset>
-
   <script type="application/x-javascript;version=1.7" src="chrome://personas/content/init.js"/>
   <script type="application/x-javascript;version=1.7" src="chrome://personas/content/customPersonaEditor.js"/>
 

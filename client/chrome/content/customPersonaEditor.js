@@ -42,6 +42,7 @@ const Cu = Components.utils;
 // modules that are generic
 Cu.import("resource://personas/modules/JSON.js");
 Cu.import("resource://personas/modules/Preferences.js");
+Cu.import("resource://personas/modules/StringBundle.js");
 
 // modules that are Personas-specific
 Cu.import("resource://personas/modules/service.js");
@@ -50,11 +51,9 @@ let CustomPersonaEditor = {
   //**************************************************************************//
   // Convenience Getters
 
-  get _stringBundle() {
-    let stringBundle = document.getElementById("personasStringBundle");
-    delete this._stringBundle;
-    this._stringBundle = stringBundle;
-    return this._stringBundle;
+  get _strings() {
+    delete this._strings;
+    return this._strings = new StringBundle("chrome://personas/locale/personas.properties");
   },
 
   get _customName() {
@@ -160,7 +159,7 @@ let CustomPersonaEditor = {
     let control = aEvent.target;
     // Trim leading and trailing whitespace.
     let value = control.value.replace(/^\s*|\s*$/g, "");
-    this.customPersona.name = value ? value : "Custom Persona";
+    this.customPersona.name = value || this._strings.get("customPersona");
     this._save();
   },
 
@@ -187,7 +186,7 @@ let CustomPersonaEditor = {
 
     let fp = Cc["@mozilla.org/filepicker;1"].createInstance(Ci.nsIFilePicker);
     fp.init(window,
-            this._stringBundle.getString("backgroundPickerDialogTitle"),
+            this._strings.get("backgroundPickerDialogTitle"),
             Ci.nsIFilePicker.modeOpen);
     let result = fp.show();
 
