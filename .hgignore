@@ -1,0 +1,5 @@
+# XPI installer module
+\.xpi$
+
+# ActiveState Komodo project file
+\.kpf$
