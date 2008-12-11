@@ -66,8 +66,8 @@
           </menupopup>
         </menu>
         <menuseparator/>
-        <menuitem label="&useDefaultPersona.label;"
-                  persona="default"
+        <menuitem id="defaultPersona" label="&useDefaultPersona.label;"
+                  persona="default" type="checkbox" autocheck="false"
                   oncommand="PersonaController.onSelectPersona(event)"/>
         <menuseparator/>
         <menuitem label="&preferences.label;"

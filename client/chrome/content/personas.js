@@ -621,6 +621,9 @@ let PersonaController = {
         personaStatus.setAttribute("label", name);
     }
 
+    // Update the checkmark on the Default menu item.
+    document.getElementById("defaultPersona").setAttribute("checked", (PersonaService.selected == "default" ? "true" : "false"));
+
     // FIXME: factor out the duplicate code below.
 
     // Create the Most Popular menu.
