@@ -37,6 +37,13 @@
 
 /* Header */
 
+/* IMPORTANT: these rules are very carefully devised to work in conjunction
+ * with additional rules below to add the persona image and remove borders
+ * between toolbars in the top chrome without changing the overall height
+ * of the top chrome, so content doesn't jump up or down when the user switches
+ * from the default theme to a persona. So when changing these rules, be very
+ * careful that you don't inadvertently change the overall height of the toolbar. */
+
 /* Anchor the image to the top-right corner of the window. */
 #main-window[persona] {
   -moz-appearance: none;
@@ -113,6 +120,7 @@
   background-color: transparent;
 }
 
+
 /******************************************************************************/
 /* Eliminate top/bottom borders from toolbars so they don't mar the persona. */
 
@@ -145,4 +153,18 @@
   border-top-color: transparent;
   border-bottom-color: transparent;
   -moz-border-bottom-colors: transparent;
+}
+
+
+/******************************************************************************/
+/* Eliminate top/bottom borders from statusbars so they don't mar the persona. */
+
+#browser-bottombox[persona] statusbar {
+  border-top-width: 1px !important;
+  border-top-color: transparent !important;
+}
+
+#browser-bottombox[persona] #FindToolbar {
+  border-top-width: 1px;
+  border-top-color: transparent;
 }

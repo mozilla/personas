@@ -36,6 +36,10 @@
  * ***** END LICENSE BLOCK ***** */
 
 
+/* Note: Styles that don't apply to all OSes are in OS-specific stylesheets
+ * in the skin/ subdirectories. */
+
+
 /* Personas Selector Menu & Toolbar Button */
 
 #personas-selector-button {
@@ -72,10 +76,17 @@
   list-style-image: url("chrome://personas/content/new.png");
 }
 
-/* The header is styled in the version/platform-specific files in the skin. */
 
-
+/******************************************************************************/
 /* Footer */
+
+/* IMPORTANT: these rules are very carefully devised to work in conjunction
+ * with rules in the OS-specific files to add the persona image and remove
+ * borders between the bottom chrome and the content area without changing
+ * the overall height of the bottom chrome, so content doesn't jump up or down
+ * when the user switches from the default theme to a persona. So when changing
+ * these rules, be very careful that you don't inadvertently change the overall
+ * height of the toolbar. */
 
 #browser-bottombox[persona] {
   background-repeat: no-repeat;
@@ -94,14 +105,4 @@
   -moz-appearance: none;
   background-color: transparent;
   background-image: none;
-  border: 0 !important;
-}
-
-/**
- * The statusbarpanel element that sits inside the statusbar element defines
- * its own background color and border, so we have to turn them off separately.
- */
-#browser-bottombox[persona] statusbarpanel {
-  -moz-appearance: none;
-  border: 0;
 }
