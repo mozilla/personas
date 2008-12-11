@@ -101,10 +101,14 @@ let CustomPersonaEditor = {
 
 
   //**************************************************************************//
-  // Initialization
+  // Initialization & Destruction
 
-  init: function() {
+  onLoad: function() {
     this._restore();
+  },
+
+  onUnload: function() {
+    PersonaService.resetPersona();
   },
 
 
@@ -215,16 +219,8 @@ let CustomPersonaEditor = {
     this.onChangeAccentColor();
   },
 
-  onClose: function() {
-    PersonaService.resetPersona();
-    window.close();
-  },
-
   onApply: function() {
-    PersonaService.resetPersona();
     PersonaService.changeToPersona(this.customPersona);
     window.close();
   }
 };
-
-window.addEventListener("load", function() { CustomPersonaEditor.init() }, false);

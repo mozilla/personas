@@ -41,9 +41,11 @@
 
 <!DOCTYPE overlay SYSTEM "chrome://personas/locale/personas.dtd">
 
-<window id="customPersonaEditor"
-        align="center"
-        xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+<page id="customPersonaEditor"
+      xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+      align="center"
+      onload="CustomPersonaEditor.onLoad()"
+      onunload="CustomPersonaEditor.onUnload()">
 
   <stringbundleset id="stringbundleset">
     <stringbundle id="personasStringBundle" src="chrome://personas/locale/personas.properties"/>
@@ -121,4 +123,4 @@
       <spacer flex="1"/>
     </hbox>
   </vbox>
-</window>
+</page>
