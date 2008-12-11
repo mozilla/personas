@@ -38,9 +38,9 @@
 /******************************************************************************/
 /* Personas Selector Menu & Toolbar Button */
 
-/* This is here because it doesn't look good on Mac, which also doesn't seem
- * to respect the -moz-image-region rule, so we only add it to the Tools menu
- * item on Windows and Linux. */
+/* Show the Personas icon to the Personas Tools menu item.  This is OS-specific
+ * because it doesn't look good on Mac, which also doesn't seem to respect
+ * the -moz-image-region rule, so we only show it on Windows and Linux. */
 #personas-menu {
   list-style-image: url("chrome://personas/content/personas_16x16.png");
   -moz-image-region: rect(0, 16px, 16px, 0px);
@@ -51,9 +51,7 @@
 /* Header */
 
 #main-window[persona],
-#main-window[persona] toolbar,
-#main-window[persona] toolbarpalette,
-#main-window[persona] toolbarbutton {
+#main-window[persona] toolbar {
   -moz-appearance: none;
 }
 
@@ -67,3 +65,11 @@
 #main-window[persona] .tabbrowser-tab {
   opacity: 0.8;
 }
+
+/* Note: we don't have to eliminate top/bottom borders from toolbars on Linux,
+ * as they go away by themselves when we set -moz-appearance: none on toolbars.
+ * Nor do we have to compensate for the lack of borders to prevent jumping
+ * when the user switches from the default theme to a persona, as the toolbars
+ * retain the same height, probably because the default theme specifies
+ * top and bottom padding that applies when -moz-appearance: none and which is
+ * the exact same height as the borders with -moz-appearance: toolbar. */
