@@ -49,7 +49,7 @@
 #main-window[persona] toolbar {
   -moz-appearance: none;
   background-image: none; 
-  background-color: transparent; 
+  background-color: transparent;
 }
 
 /* Gray out the window slightly when it's not active. */
@@ -98,12 +98,6 @@
   background-image: url(chrome://browser/skin/tabbrowser/tab-middle-bkgnd.png) !important;
 }
 
-/* Remove the borders from the toolbars so they don't mar the persona. */
-#main-window[persona] toolbar {
-  border-top: 0;
-  border-bottom: 0;
-}
-
 /* Make some elements a little transparent so the persona flavors their look. */
 #main-window[persona] #urlbar,
 #main-window[persona] #searchbar {
@@ -117,4 +111,38 @@
 #main-window[persona] toolbarbutton.bookmark-item {
   -moz-appearance: none;
   background-color: transparent;
+}
+
+/******************************************************************************/
+/* Eliminate top/bottom borders from toolbars so they don't mar the persona. */
+
+/* IMPORTANT: these rules are very carefully devised to remove or hide borders
+ * without changing the overall height of the top chrome, so content doesn't
+ * jump up or down when the user switches from the default theme to a persona.
+ * So when changing these rules, be very careful that you don't inadvertently
+ * change the overall height of the toolbar. */
+
+#main-window[persona] #nav-bar {
+  /* When we set -moz-appearance: none so the persona will appear, the toolbar
+   * gains 1px tall top and bottom borders.  This causes the toolbar to become
+   * 2px bigger overall, which would make content jump down two pixels.
+   * To prevent that jump, we remove the top and bottom borders, matching their
+   * state in the default theme with -moz-appearance: -moz-mac-unified-toolbar.
+   */
+  border-top: none;
+  border-bottom: none;
+}
+
+#main-window[persona] #PersonalToolbar {
+  /* The personal (a.k.a. bookmarks) toolbar doesn't have a -moz-appearance,
+   * but it does have top and bottom borders, which we simply hide by setting
+   * their color to transparent.  Note that the bottom border is set via both
+   * border-bottom-color and -moz-border-bottom-colors in the default theme.
+   * The latter appears to override the former, so we probably only need to set
+   * -moz-border-bottom-colors to transparent, but we set them both anyway
+   * just in case.
+   */
+  border-top-color: transparent;
+  border-bottom-color: transparent;
+  -moz-border-bottom-colors: transparent;
 }
