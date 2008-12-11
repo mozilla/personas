@@ -35,6 +35,19 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
+/******************************************************************************/
+/* Personas Selector Menu & Toolbar Button */
+
+/* This is here because it doesn't look good on Mac, which also doesn't seem
+ * to respect the -moz-image-region rule, so we only add it to the Tools menu
+ * item on Windows and Linux. */
+#personas-menu {
+  list-style-image: url("chrome://personas/content/personas_16x16.png");
+  -moz-image-region: rect(0, 16px, 16px, 0px);
+}
+
+
+/******************************************************************************/
 /* Header */
 
 #main-window[persona],

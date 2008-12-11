@@ -35,6 +35,20 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
+
+/******************************************************************************/
+/* Personas Selector Menu & Toolbar Button */
+
+/* This is here because it doesn't look good on Mac, which also doesn't seem
+ * to respect the -moz-image-region rule, so we only add it to the Tools menu
+ * item on Windows and Linux. */
+#personas-menu {
+  list-style-image: url("chrome://personas/content/personas_16x16.png");
+  -moz-image-region: rect(0, 16px, 16px, 0px);
+}
+
+
+/******************************************************************************/
 /* Header */
 
 /* Anchor the image to the top-right corner of the window. */
@@ -51,8 +65,10 @@
   background-color: transparent;
 }
 
+
 /******************************************************************************/
 /* Make some elements a little transparent so the persona flavors their look. */
+
 #main-window[persona] .tabbrowser-tab {
   background-color: -moz-dialog;
   opacity: 0.6;
@@ -64,16 +80,6 @@
 #main-window[persona] #searchbar {
   opacity: 0.8;
 }
-
-/* FIXME: this doesn't seem to matter, and no other OS-specific skin has it,
- * so remove it. */
-/*#personas-menu {*/
-/*  list-style-image: url("chrome://personas/content/personas_16x16.png");*/
-/*  -moz-image-region: rect(0, 16px, 16px, 0px);*/
-/*  border: 0 !important;*/
-/*}*/
-/**/
-/**/
 
 
 /******************************************************************************/
