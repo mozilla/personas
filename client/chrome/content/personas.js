@@ -75,10 +75,18 @@ let PersonaController = {
   },
 
   get _menu() {
-    let menu = document.getElementById("personas-selector-menu");
     delete this._menu;
-    this._menu = menu;
-    return this._menu;
+    return this._menu = document.getElementById("personas-menu");
+  },
+
+  get _menuButton() {
+    delete this._menuButton;
+    return this._menuButton = document.getElementById("personas-selector-button");
+  },
+
+  get _menuPopup() {
+    delete this._menuPopup;
+    return this._menuPopup = document.getElementById("personas-selector-menu");
   },
 
   get _siteURL() {
@@ -528,16 +536,18 @@ let PersonaController = {
       throw host + " not authorized to modify personas";
   },
 
+  // XXX This function is obsolete and should be updated or removed.
   showThrobber: function(aPersonaID) {
     document.getElementById("personas-selector-button").setAttribute("busy", "true");
-    let items = this._menu.getElementsByAttribute("personaid", aPersonaID);
+    let items = this._menuPopup.getElementsByAttribute("personaid", aPersonaID);
     for (let i = 0; i < items.length; i++)
       items[i].setAttribute("busy", "true");
   },
 
+  // XXX This function is obsolete and should be updated or removed.
   hideThrobber: function(aPersonaID) {
     document.getElementById("personas-selector-button").removeAttribute("busy");
-    let items = this._menu.getElementsByAttribute("personaid", aPersonaID);
+    let items = this._menuPopup.getElementsByAttribute("personaid", aPersonaID);
     for (let i = 0; i < items.length; i++)
       items[i].removeAttribute("busy");
   },
@@ -546,51 +556,37 @@ let PersonaController = {
   // Popup Construction
 
   onMenuButtonMouseDown: function(event) {
-    var menuPopup = document.getElementById('personas-selector-menu');
-    var menuButton = document.getElementById("personas-selector-button");
-      
-    // If the menu popup isn't on the menu button, then move the popup onto
-    // the button so the popup appears when the user clicks the button.  We'll
-    // move the popup back to the Tools > Sync menu when the popup hides.
-    if (menuPopup.parentNode != menuButton)
-      menuButton.appendChild(menuPopup);
+    // If the menu popup isn't on the menu button, then move the popup
+    // onto the button so the popup appears when the user clicks it.
+    // We'll move the popup back onto the Personas menu in the Tools menu
+    // when the popup hides.
+    // FIXME: remove this workaround once bug 461899 is fixed.
+    if (this._menuPopup.parentNode != this._menuButton)
+      this._menuButton.appendChild(this._menuPopup);
   },
 
-  onMenuPopupHiding: function() {
-    var menuPopup = document.getElementById('personas-selector-menu');
-    var menu = document.getElementById('personas-menu');
+  onPopupShowing: function(event) {
+    if (event.target == this._menuPopup) {
+      if (!PersonaService.personas) {
+        alert(this._strings.get("dataUnavailable"));
+        return false;
+      }
 
-    // If the menu popup isn't on the Tools > Personas menu, then move the popup
-    // back onto that menu so the popup appears when the user selects the menu.
-    // We'll move the popup back to the menu button when the user clicks on
-    // the menu button.
-    if (menuPopup.parentNode != menu)
-      menu.appendChild(menuPopup);    
-  },
-
-  onPersonaPopupShowing: function(event) {
-    if (event.target != this._menu)
-      return false;
-
-    if (!PersonaService.personas) {
-      alert(this._strings.get("dataUnavailable"));
-      return false;
-    }
-
-    this._rebuildMenu();
-
-    if (this._prefs.get("showCustomMenu")) {
-      let customMenu = document.getElementById("custom-menu");
-      let name = PersonaService.customPersona ? PersonaService.customPersona.name
-                                              : this._strings.get("customPersona");
-      customMenu.setAttribute("label", name);
-      customMenu.setAttribute("hidden", "false");
-    }
-    else {
-      document.getElementById("custom-menu").setAttribute("hidden", "true");
+      this._rebuildMenu();
     }
 
     return true;
+  },
+
+  onPopupHiding: function(event) {
+    if (event.target == this._menuPopup) {
+      // If the menu popup isn't on the Personas menu in the Tools menu,
+      // then move the popup back onto that menu so the popup appears when
+      // the user selects it.  We'll move the popup back onto the menu button
+      // in onMenuButtonMouseDown when the user clicks on the menu button.
+      if (this._menuPopup.parentNode != this._menu)
+        this._menu.appendChild(this._menuPopup);
+    }
   },
 
   _rebuildMenu: function() {
@@ -599,7 +595,7 @@ let PersonaController = {
 
     // Remove everything between the two separators.
     while (openingSeparator.nextSibling && openingSeparator.nextSibling != closingSeparator)
-      this._menu.removeChild(openingSeparator.nextSibling);
+      this._menuPopup.removeChild(openingSeparator.nextSibling);
 
     // Update the item that identifies the current persona.
     let personaStatus = document.getElementById("persona-current");
@@ -636,7 +632,7 @@ let PersonaController = {
         popupmenu.appendChild(this._createPersonaItem(persona));
 
       menu.appendChild(popupmenu);
-      this._menu.insertBefore(menu, closingSeparator);
+      this._menuPopup.insertBefore(menu, closingSeparator);
     }
 
     // Create the New menu.
@@ -649,7 +645,7 @@ let PersonaController = {
         popupmenu.appendChild(this._createPersonaItem(persona));
 
       menu.appendChild(popupmenu);
-      this._menu.insertBefore(menu, closingSeparator);
+      this._menuPopup.insertBefore(menu, closingSeparator);
     }
 
     // Create the "Recently Selected" menu.
@@ -670,7 +666,7 @@ let PersonaController = {
       }
 
       menu.appendChild(popupmenu);
-      this._menu.insertBefore(menu, closingSeparator);
+      this._menuPopup.insertBefore(menu, closingSeparator);
     }
 
     // Create the Categories menu.
@@ -678,7 +674,7 @@ let PersonaController = {
     categoriesMenu.setAttribute("label", this._strings.get("categories"));
     let categoriesPopup = document.createElement("menupopup");
     categoriesMenu.appendChild(categoriesPopup);
-    this._menu.insertBefore(categoriesMenu, closingSeparator);
+    this._menuPopup.insertBefore(categoriesMenu, closingSeparator);
 
     // Create the category-specific submenus.
     for each (let category in PersonaService.personas.categories) {
@@ -696,6 +692,18 @@ let PersonaController = {
       menu.appendChild(popupmenu);
       categoriesPopup.appendChild(menu);
     }
+
+    // Update the Custom menu.
+    let customMenu = document.getElementById("custom-menu");
+    if (this._prefs.get("showCustomMenu")) {
+      let name = PersonaService.customPersona &&
+                 PersonaService.customPersona.name ? PersonaService.customPersona.name
+                                                   : this._strings.get("customPersona");
+      customMenu.setAttribute("label", name);
+      customMenu.hidden = false;
+    }
+    else
+      customMenu.hidden = true;
   },
 
   _createPersonaItem: function(persona) {
