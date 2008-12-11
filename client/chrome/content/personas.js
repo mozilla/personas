@@ -704,7 +704,9 @@ let PersonaController = {
     item.setAttribute("class", "menuitem-iconic");
     item.setAttribute("label", persona.name);
     item.setAttribute("type", "checkbox");
-    item.setAttribute("checked", (PersonaService.currentPersona && PersonaService.currentPersona.id == persona.id));
+    item.setAttribute("checked", (PersonaService.selected != "default" &&
+                                  PersonaService.currentPersona &&
+                                  PersonaService.currentPersona.id == persona.id));
     item.setAttribute("autocheck", "false");
     item.setAttribute("oncommand", "PersonaController.onSelectPersona(event)");
     item.setAttribute("recent", persona.recent ? "true" : "false");
