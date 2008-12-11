@@ -49,16 +49,9 @@
 #main-window[persona] .tabbrowser-tabs {
   -moz-appearance: none;
   background-color: transparent;
-  border-top: 0;
 }
 
-/* Remove the borders from the toolbars so they don't mar the persona. */
-#main-window[persona] toolbar {
-  -moz-appearance: none;
-  border-bottom-color: transparent;
-  border-top-color: transparent;
-}
-
+/******************************************************************************/
 /* Make some elements a little transparent so the persona flavors their look. */
 #main-window[persona] .tabbrowser-tab {
   background-color: -moz-dialog;
@@ -72,18 +65,53 @@
   opacity: 0.8;
 }
 
-#main-window[persona] #home-button,
-#main-window[persona] #stop-button,
-#main-window[persona] #reload-button,
-#main-window[persona] toolbarbutton.bookmark-item {
+/* FIXME: fix borders so these icons don't jump to the right and down when you select a persona. */
+/* XXX Commented these out because they don't seem to matter on Windows XP,
+ * Where those icons are already transparent.  Perhaps they aren't on Vista?
+ * FIXME: test on Vista. */
+/*#main-window[persona] #home-button,*/
+/*#main-window[persona] #stop-button,*/
+/*#main-window[persona] #reload-button,*/
+/*#main-window[persona] toolbarbutton.bookmark-item {*/
+/*  -moz-appearance: none;*/
+/*  background-color: transparent;*/
+/*}*/
+
+/* FIXME: this doesn't seem to matter, and no other OS-specific skin has it,
+ * so remove it. */
+/*#personas-menu {*/
+/*  list-style-image: url("chrome://personas/content/personas_16x16.png");*/
+/*  -moz-image-region: rect(0, 16px, 16px, 0px);*/
+/*  border: 0 !important;*/
+/*}*/
+/**/
+/**/
+
+
+/******************************************************************************/
+/* Eliminate top/bottom borders from toolbars so they don't mar the persona. */
+
+/* IMPORTANT: these rules are very carefully devised to remove or hide borders
+ * without changing the overall height of the top chrome, so content doesn't
+ * jump up or down when the user switches from the default theme to a persona.
+ * So when changing these rules, be very careful that you don't inadvertently
+ * change the overall height of the toolbar. */
+
+#main-window[persona] toolbox {
+  /* When we set -moz-appearance: none so the persona will appear, the toolbox
+   * gains a 1px top border that it doesn't have with -moz-appearance: toolbox,
+   * so we have to remove it. */
+  border-top: 0;
+}
+
+#main-window[persona] toolbar {
+  /* To get rid of the borders on the toolbars, we have to first set
+   * -moz-appearance from toolbar to none so we can override the border rules.
+   * That changes the top and bottom border widths from 2px, 0px to 1px, 1px,
+   * respectively, so we then emulate the widths of the original borders
+   * with top and bottom border rules. */
   -moz-appearance: none;
-  background-color: transparent;
+  border-top-width: 2px;
+  border-top-color: transparent;
+  border-bottom: none;
 }
-
-#personas-menu {
-  list-style-image: url("chrome://personas/content/personas_16x16.png");
-  -moz-image-region: rect(0, 16px, 16px, 0px);
-  border: 0 !important;
-}
-
-
