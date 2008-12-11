@@ -65,18 +65,6 @@
   opacity: 0.8;
 }
 
-/* FIXME: fix borders so these icons don't jump to the right and down when you select a persona. */
-/* XXX Commented these out because they don't seem to matter on Windows XP,
- * Where those icons are already transparent.  Perhaps they aren't on Vista?
- * FIXME: test on Vista. */
-/*#main-window[persona] #home-button,*/
-/*#main-window[persona] #stop-button,*/
-/*#main-window[persona] #reload-button,*/
-/*#main-window[persona] toolbarbutton.bookmark-item {*/
-/*  -moz-appearance: none;*/
-/*  background-color: transparent;*/
-/*}*/
-
 /* FIXME: this doesn't seem to matter, and no other OS-specific skin has it,
  * so remove it. */
 /*#personas-menu {*/
