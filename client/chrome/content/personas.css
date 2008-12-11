@@ -36,12 +36,11 @@
  * ***** END LICENSE BLOCK ***** */
 
 
-/* Personas Selector Button/Menu */
+/* Personas Selector Menu & Toolbar Button */
 
 #personas-selector-button {
   list-style-image: url("chrome://personas/content/personas_16x16.png");
   -moz-image-region: rect(0, 16px, 16px, 0px);
-  border: 0 !important;
 }
 
 #personas-selector-button[buttonover="true"],
