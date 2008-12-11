@@ -47,8 +47,8 @@
       onload="CustomPersonaEditor.onLoad()"
       onunload="CustomPersonaEditor.onUnload()">
 
-  <script type="application/x-javascript;version=1.7" src="chrome://personas/content/init.js"/>
-  <script type="application/x-javascript;version=1.7" src="chrome://personas/content/customPersonaEditor.js"/>
+  <script type="application/javascript" src="chrome://personas/content/init.js"/>
+  <script type="application/javascript" src="chrome://personas/content/customPersonaEditor.js"/>
 
   <vbox id="top">
     <spacer flex="1"/>

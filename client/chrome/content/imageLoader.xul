@@ -15,7 +15,7 @@
      - set the background-image property once the image has finished loading. -->
   <image id="image" collapsed="true"/>
 
-  <script type="application/javascript;version=1.7">
+  <script type="application/javascript">
     <![CDATA[
       // The URL of the image to load.  Defined below by the code that parses
       // the URL parameters.
