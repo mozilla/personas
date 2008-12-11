@@ -49,7 +49,12 @@ Cu.import("resource://personas/modules/service.js");
 
 let CustomPersonaEditor = {
   //**************************************************************************//
-  // Convenience Getters
+  // Shortcuts
+
+  get _prefs() {
+    delete this._prefs;
+    return this._prefs = new Preferences("extensions.personas.");
+  },
 
   get _strings() {
     delete this._strings;
@@ -89,11 +94,6 @@ let CustomPersonaEditor = {
     delete this._accentColorPicker;
     this._accentColorPicker = accentColorPicker;
     return this._accentColorPicker;
-  },
-
-  get _prefs() {
-    delete this._prefs;
-    return this._prefs = new Preferences("extensions.personas.");
   },
 
   customPersona: null,
