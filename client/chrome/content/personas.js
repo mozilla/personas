@@ -572,9 +572,8 @@ let PersonaController = {
     if (event.target != this._menu)
       return false;
 
-    // FIXME: make this localizable.
     if (!PersonaService.personas) {
-      alert("Personas data is not available yet. Please check your network connection and restart Firefox, or try again in a few minutes.");
+      alert(this._strings.get("dataUnavailable"));
       return false;
     }
 
@@ -582,9 +581,8 @@ let PersonaController = {
 
     if (this._prefs.get("showCustomMenu")) {
       let customMenu = document.getElementById("custom-menu");
-      // FIXME: make this localizable.
       let name = PersonaService.customPersona ? PersonaService.customPersona.name
-                                              : "Custom Persona";
+                                              : this._strings.get("customPersona");
       customMenu.setAttribute("label", name);
       customMenu.setAttribute("hidden", "false");
     }
@@ -610,10 +608,9 @@ let PersonaController = {
     if (PersonaService.selected == "random") {
       personaStatus.setAttribute("class", "menuitem-iconic");
       personaStatus.setAttribute("image", "chrome://personas/content/random-feed-16x16.png");
-      // FIXME: make this a formatted string using %S in the properties file
-      // so it is localizable.
-      personaStatus.setAttribute("label", this._strings.get("useRandomPersona.label") + " " +
-                                          PersonaService.category + " > " + name);
+      personaStatus.setAttribute("label", this._strings.get("randomPersona",
+                                                            [PersonaService.category,
+                                                             name]));
     }
     else {
       personaStatus.removeAttribute("class");
@@ -629,7 +626,7 @@ let PersonaController = {
     // Create the Most Popular menu.
     {
       let menu = document.createElement("menu");
-      menu.setAttribute("label", this._strings.get("popular.label"));
+      menu.setAttribute("label", this._strings.get("popular"));
       let popupmenu = document.createElement("menupopup");
   
       for each (let persona in PersonaService.personas.popular)
@@ -642,7 +639,7 @@ let PersonaController = {
     // Create the New menu.
     {
       let menu = document.createElement("menu");
-      menu.setAttribute("label", this._strings.get("new.label"));
+      menu.setAttribute("label", this._strings.get("new"));
       let popupmenu = document.createElement("menupopup");
   
       for each (let persona in PersonaService.personas.recent)
@@ -655,7 +652,7 @@ let PersonaController = {
     // Create the "Recently Selected" menu.
     {
       let menu = document.createElement("menu");
-      menu.setAttribute("label", this._strings.get("recent.label"));
+      menu.setAttribute("label", this._strings.get("recent"));
       let popupmenu = document.createElement("menupopup");
 
       for (let i = 0; i < 4; i++) {
@@ -675,7 +672,7 @@ let PersonaController = {
 
     // Create the Categories menu.
     let categoriesMenu = document.createElement("menu");
-    categoriesMenu.setAttribute("label", this._strings.get("categories.label"));
+    categoriesMenu.setAttribute("label", this._strings.get("categories"));
     let categoriesPopup = document.createElement("menupopup");
     categoriesMenu.appendChild(categoriesPopup);
     this._menu.insertBefore(categoriesMenu, closingSeparator);
@@ -720,8 +717,7 @@ let PersonaController = {
 
     item.setAttribute("class", "menuitem-iconic");
     item.setAttribute("image", "chrome://personas/content/random-feed-16x16.png");
-    // FIXME: insert the category into the localized string via getFormattedString.
-    item.setAttribute("label", this._strings.get("useRandomPersona.label") + " " + category);
+    item.setAttribute("label", this._strings.get("useRandomPersona", [category]));
     item.setAttribute("oncommand", "PersonaController.onSelectPersona(event)");
     item.setAttribute("persona", "random");
     item.setAttribute("category", category);

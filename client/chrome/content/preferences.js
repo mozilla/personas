@@ -11,4 +11,3 @@ let PersonasPreferences = {
   onAccept: function(event) {
   }
 };
-
