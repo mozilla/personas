@@ -603,7 +603,7 @@ let PersonaController = {
     while (openingSeparator.nextSibling && openingSeparator.nextSibling != closingSeparator)
       this._menu.removeChild(openingSeparator.nextSibling);
 
-    // Add the item that identifies the selected persona by name.
+    // Update the item that identifies the current persona.
     let personaStatus = document.getElementById("persona-current");
     let name = PersonaService.currentPersona ? PersonaService.currentPersona.name
                                              : this._strings.get("unnamedPersona");
@@ -618,7 +618,10 @@ let PersonaController = {
     else {
       personaStatus.removeAttribute("class");
       personaStatus.removeAttribute("image");
-      personaStatus.setAttribute("label", name);
+      if (PersonaService.selected == "default")
+        personaStatus.setAttribute("label", this._strings.get("Default"));
+      else
+        personaStatus.setAttribute("label", name);
     }
 
     // FIXME: factor out the duplicate code below.
