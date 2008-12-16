@@ -55,7 +55,7 @@
 			{
 				#print auth page with bad login warning
 				$error = "We were unable to locate your account. Please try again or register.";
-				include 'personas_libs/auth_form.php';
+				include '../lib/auth_form.php';
 				exit;
 			}
 			setcookie('PERSONA_USER', $auth_user . " " . md5($auth_user . $db->get_password_md5($auth_user) . PERSONAS_LOGIN_SALT . $_SERVER['REMOTE_ADDR']), time() + 60*60*24*365);
@@ -63,7 +63,7 @@
 		else if (!array_key_exists('PERSONA_USER', $_COOKIE))
 		{
 			#print auth page
-			include 'personas_libs/auth_form.php';
+			include '../lib/auth_form.php';
 			exit;
 		}
 
@@ -76,7 +76,7 @@
 			if (md5($auth_user . $db->get_password_md5($auth_user) . PERSONAS_LOGIN_SALT . $_SERVER['REMOTE_ADDR']) != $token)
 			{
 				#print auth page
-				include 'personas_libs/auth_form.php';
+				include '../lib/auth_form.php';
 				exit;
 			}
 		}
@@ -157,7 +157,7 @@
 			$second_folder = $persona_id%10;
 			$first_folder = ($persona_id%100 - $second_folder)/10;
 
-			$persona_path = PERSONAS_STORAGE_PREFIX . "/" . $first_folder;
+			$persona_path = PERSONAS_PENDING_PREFIX . "/" . $first_folder;
 			if (!is_dir($persona_path)) { mkdir($persona_path); }
 			$persona_path .= "/" . $second_folder;
 			if (!is_dir($persona_path)) { mkdir($persona_path); }
@@ -168,7 +168,7 @@
 			if (move_uploaded_file($_FILES['header']['tmp_name'], $persona_path . "/" . $h_name)
 			  && move_uploaded_file($_FILES['footer']['tmp_name'], $persona_path . "/" . $f_name))
 			{
-				$error = "<div class=\"message\">Files uploaded successfully</div>";
+				$error = "Files uploaded successfully";
 			}
 			else
 			{
@@ -176,13 +176,24 @@
 				#need to remove the db record, too.
 			}
 		
+			#add a json descriptor
+
+			file_put_contents($persona_path . '/index_1.json', json_encode(array('id' => $persona_id, 
+						'name' => $name,
+						'accentcolor' => $accentcolor ? $accentcolor : null,
+						'textcolor' => textcolor ? $textcolor : null,
+						'header' => $persona_path . '/' . $h_name, 
+						'footer' => url_prefix($id) . '/' . $f_name)));
+						
+						
+						
 			$imgcommand = "convert \( " . $persona_path . "/" . $h_name . " -gravity NorthEast -crop 600x200+0+0 \) \( " . $persona_path . "/" . $f_name . " -gravity NorthEast -crop 600x100+0+0 \)  -append -scale 200x100 " . $persona_path . "/preview.jpg";
 			exec($imgcommand);
 		}
 	}
 	catch (Exception $e)
 	{
-		$error = "<div class=\"message\">An error occured: " . $e->getMessage() . "</div>";
+		$error = "An error occured: " . $e->getMessage();
 	}
 	
 ?>
