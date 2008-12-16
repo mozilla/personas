@@ -168,7 +168,7 @@
 			if (move_uploaded_file($_FILES['header']['tmp_name'], $persona_path . "/" . $h_name)
 			  && move_uploaded_file($_FILES['footer']['tmp_name'], $persona_path . "/" . $f_name))
 			{
-				$error = "<div class=\"message\">Files uploaded successfully</div>";
+				$error = "Files uploaded successfully";
 			}
 			else
 			{
@@ -176,6 +176,17 @@
 				#need to remove the db record, too.
 			}
 		
+			#add a json descriptor
+
+			file_put_contents($persona_path . '/index_1.json', json_encode(array('id' => $persona_id, 
+						'name' => $name,
+						'accentcolor' => $accentcolor ? $accentcolor : null,
+						'textcolor' => textcolor ? $textcolor : null,
+						'header' => $persona_path . '/' . $h_name, 
+						'footer' => url_prefix($id) . '/' . $f_name)));
+						
+						
+						
 			$imgcommand = "convert \( " . $persona_path . "/" . $h_name . " -gravity NorthEast -crop 600x200+0+0 \) \( " . $persona_path . "/" . $f_name . " -gravity NorthEast -crop 600x100+0+0 \)  -append -scale 200x100 " . $persona_path . "/preview.jpg";
 			exec($imgcommand);
 		}

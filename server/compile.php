@@ -121,7 +121,7 @@
 	}
 	$master['categories'] = $category_array;
 
-	file_put_contents(PERSONAS_STORAGE_PREFIX . '/index.json', json_encode($master));
+	file_put_contents(PERSONAS_STORAGE_PREFIX . '/index_1.json', json_encode($master));
 
 
 
