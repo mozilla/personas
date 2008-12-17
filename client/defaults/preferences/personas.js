@@ -16,8 +16,8 @@ pref("extensions.personas.current", "");
 pref("extensions.personas.category", "");
 
 pref("extensions.personas.lastversion", "firstrun");
-pref("extensions.personas.url", "http://people.mozilla.com/~cbeard/personas/en-US/store/");
-pref("extensions.personas.siteURL", "http://people.mozilla.com/~cbeard/personas/en-US/store/");
+pref("extensions.personas.url", "http://sm-personas01.mozilla.org/personas/store/");
+pref("extensions.personas.siteURL", "http://sm-personas01.mozilla.org/personas/store/");
 pref("extensions.personas.lastselected0", "");
 pref("extensions.personas.lastselected1", "");
 pref("extensions.personas.lastselected2", "");
