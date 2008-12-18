@@ -16,14 +16,21 @@ pref("extensions.personas.current", "");
 pref("extensions.personas.category", "");
 
 pref("extensions.personas.lastversion", "firstrun");
+
+// The URL from which we load the data and the location of the web directory.
+// The authorizedHosts preference is a comma and/or space-separated list
+// of rightmost substrings matching domains allowed to set and preview personas.
+// At a minimum, it must contain a value matching the domain at which the web
+// directory is located in order for the directory to work.
 pref("extensions.personas.url", "http://sm-personas01.mozilla.org/personas/store/");
 pref("extensions.personas.siteURL", "http://sm-personas01.mozilla.org/personas/store/");
+pref("extensions.personas.authorizedHosts", "sm-personas01.mozilla.org");
+
 pref("extensions.personas.lastselected0", "");
 pref("extensions.personas.lastselected1", "");
 pref("extensions.personas.lastselected2", "");
 pref("extensions.personas.lastcategoryupdate", "");
 pref("extensions.personas.lastlistupdate", "");
-pref("extensions.personas.authorizedHosts", ".mozilla.com");
 
 // The interval between consecutive persona reloads.  Measured in minutes,
 // with a default of 24 hours and a minimum of one minute.
