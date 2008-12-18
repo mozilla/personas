@@ -55,3 +55,6 @@ pref("extensions.personas.useAccentColor", true);
 // by Persona in the feed.
 pref("extensions.personas.useTextColor", true);
 pref("extensions.personas.showCustomMenu", false);
+
+// The version of the JSON data feed that this extension expects.
+pref("extensions.personas.data.version", 1);

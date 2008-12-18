@@ -117,7 +117,7 @@ let PersonaService = {
 
   _loadData: function() {
     let t = this;
-    this._makeRequest(this.baseURI + "index.json",
+    this._makeRequest(this.baseURI + "index_" + this._prefs.get("data.version") + ".json",
                       function(evt) { t.onDataLoadComplete(evt) });
   },
 
