@@ -97,6 +97,12 @@ let PersonaController = {
     return this._prefs.get("previewTimeout");
   },
 
+  // XXX We used to use this to direct users to locale-specific directories
+  // on the personas server, but we're not using it anymore, as we no longer
+  // have locale-specific pages on the server.  And once we get them back,
+  // it'll probably make more sense for the browser and server to do locale
+  // negotiation using the standard mechanisms anyway, so this is no longer
+  // needed.
   get _locale() {
     switch (this.Preferences.get("general.useragent.locale", "en-US")) {
       case 'ja':
@@ -213,12 +219,12 @@ let PersonaController = {
                       getService(Ci.nsIExtensionManager).
                       getItemForID(PERSONAS_EXTENSION_ID).version;
     if (lastVersion == "firstrun") {
-      let firstRunURL = this._siteURL + this._locale + "/firstrun/?version=" + thisVersion;
+      let firstRunURL = this._siteURL + "firstrun/?version=" + thisVersion;
       setTimeout(function() { window.openUILinkIn(firstRunURL, "tab") }, 500);
       this._prefs.set("lastversion", thisVersion);
     }
     else if (lastVersion != thisVersion) {
-      let updatedURL = this._siteURL + this._locale + "/updated/?version=" + thisVersion;
+      let updatedURL = this._siteURL + "updated/?version=" + thisVersion;
       setTimeout(function() { window.openUILinkIn(updatedURL, "tab") }, 500);
       this._prefs.set("lastversion", thisVersion);
     }
@@ -516,7 +522,7 @@ let PersonaController = {
 
   onSelectAbout: function(event) {
     if (PersonaService.currentPersona && PersonaService.currentPersona.id)
-      window.openUILinkIn(this._siteURL + this._locale + "/about/?persona=" + PersonaService.currentPersona.id, "tab");
+      window.openUILinkIn(this._siteURL + "about/?persona=" + PersonaService.currentPersona.id, "tab");
   },
 
   /**
