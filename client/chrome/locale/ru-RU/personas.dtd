@@ -1,18 +1,2 @@
 <!ENTITY personas_app_title "Personas для Firefox">
 <!ENTITY useDefaultPersona.label "Стиль по умолчанию">
-<!ENTITY useCustomPersona.label "Стиль, установленный пользователем...">
-<!ENTITY aboutPersonas.label "О Personas...">
-<!ENTITY preferences.label "Настройки...">
-<!ENTITY customPersona.label "Стиль, установленный пользователем">
-<!ENTITY header.label "Верхняя часть:">
-<!ENTITY selectBackground.label "Выбрать...">
-<!ENTITY footer.label "Нижняя часть:">
-<!ENTITY textColorPicker.label "Цвет текста:">
-<!ENTITY accentColorPicker.label "Цвет выделенного:">
-<!ENTITY useDefaultColor.label "Использовать по умолчанию">
-<!ENTITY closeButton.label "Закрыть">
-<!ENTITY autoPreviewCheckbox.label "Автоматический предварительный просмотр">
-<!ENTITY previewButton.label "Предварительный просмотр">
-<!ENTITY applyButton.label "Применить">
-<!ENTITY contextHomePage.label      "Home Page">
-<!ENTITY contextPreferences.label   "Settings">

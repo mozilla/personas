@@ -1,18 +1,2 @@
 <!ENTITY personas_app_title "Personas för Firefox">
 <!ENTITY useDefaultPersona.label "Standard">
-<!ENTITY useCustomPersona.label "Egen...">
-<!ENTITY aboutPersonas.label "Om...">
-<!ENTITY preferences.label "Inställningar...">
-<!ENTITY customPersona.label "Egen Persona">
-<!ENTITY header.label "Header:">
-<!ENTITY selectBackground.label "Bläddra...">
-<!ENTITY footer.label "Footer:">
-<!ENTITY textColorPicker.label "Textfärg">
-<!ENTITY accentColorPicker.label "Accentfärg:">
-<!ENTITY useDefaultColor.label "Använd standard">
-<!ENTITY closeButton.label "Stäng">
-<!ENTITY autoPreviewCheckbox.label "Auto-förhandsgranskning">
-<!ENTITY previewButton.label "Förhandsgranskning">
-<!ENTITY applyButton.label "Använd">
-<!ENTITY contextHomePage.label      "Home Page">
-<!ENTITY contextPreferences.label   "Settings">
