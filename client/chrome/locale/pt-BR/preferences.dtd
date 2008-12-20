@@ -1,11 +1,10 @@
-<!ENTITY preferences.title	"Personas Preferences">
-<!ENTITY generalSettings.label  "General">
-<!ENTITY previewEnabled.label   "Show preview when selecting from menu">
-<!ENTITY reportSelection.label  "Participate in popularity tracking">
-<!ENTITY reportSelection.title  "Details">
-<!ENTITY displaySettings.label  "Display">
-<!ENTITY useTextColor.label     "Use text color">
-<!ENTITY useAccentColor.label   "Use accent color">
-<!ENTITY advancedSettings.label "Advanced">
-<!ENTITY submitPersona.label    "Submit Persona to Directory">
-<!ENTITY customEditor.label     "Use Custom Editor">
+<!ENTITY preferences.title "Preferências de Personas">
+<!ENTITY generalSettings.label "Geral">
+<!ENTITY previewEnabled.label "Pré-visualizar ao selecionar no menu">
+<!ENTITY reportSelection.label "Participar do registro de popularidade">
+<!ENTITY reportSelection.title "Detalhes">
+<!ENTITY displaySettings.label "Exibir">
+<!ENTITY useTextColor.label "Usar cor do texto">
+<!ENTITY useAccentColor.label "Usar cor da barra de título">
+<!ENTITY advancedSettings.label "Avançado">
+<!ENTITY showCustomMenu.label "Exibir Persona personalizada no menu">

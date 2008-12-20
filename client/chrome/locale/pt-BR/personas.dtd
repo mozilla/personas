@@ -1,21 +1,17 @@
-<!ENTITY personas_app_title 	  "Personas for Firefox">
-
-<!ENTITY useDefaultPersona.label  "Usar Padrão">
-<!ENTITY useCustomPersona.label   "Usar Cabeçalho Local...">
-<!ENTITY aboutPersonas.label      "Sobre...">
-
-<!-- FIXME: translate these strings -->
-<!ENTITY customPersona.label      "Custom Persona">
-<!ENTITY header.label             "Header:">
-<!ENTITY selectBackground.label   "Browse...">
-<!ENTITY footer.label             "Footer:">
-<!ENTITY textColorPicker.label    "Text Color:">
-<!ENTITY accentColorPicker.label  "Accent Color:">
-<!ENTITY useDefaultColor.label    "Use default">
-
-<!ENTITY closeButton.label          "Close">
-<!ENTITY autoPreviewCheckbox.label  "Auto-preview">
-<!ENTITY previewButton.label        "Preview">
-<!ENTITY applyButton.label          "Apply">
-<!ENTITY contextHomePage.label      "Home Page">
-<!ENTITY contextPreferences.label   "Settings">
+<!ENTITY personas_app_title "Personas para o Firefox">
+<!ENTITY useDefaultPersona.label "Padrão">
+<!ENTITY preferences.label "Preferências…">
+<!ENTITY viewDirectory.label "Exibir catálogo…">
+<!ENTITY customPersona.label "Personalizar Persona">
+<!ENTITY customName.label "Nome:">
+<!ENTITY header.label "Barras de ferramentas:">
+<!ENTITY selectBackground.label "Procurar…">
+<!ENTITY footer.label "Barra de status:">
+<!ENTITY textColorPicker.label "Cor do texto:">
+<!ENTITY accentColorPicker.label "Cor da barra de título:">
+<!ENTITY useDefaultColor.label "Usar padrão">
+<!ENTITY okButton.label "OK">
+<!ENTITY contextHomePage.label "Página inicial">
+<!ENTITY contextPreferences.label "Configurações">
+<!ENTITY contextEdit.label "Editar">
+<!ENTITY contextApply.label "Aplicar">
