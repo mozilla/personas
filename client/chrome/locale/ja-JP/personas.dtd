@@ -1,2 +1,17 @@
 <!ENTITY personas_app_title "Personas for Firefox">
-<!ENTITY useDefaultPersona.label "既定">
+<!ENTITY useDefaultPersona.label "既定を利用する">
+<!ENTITY preferences.label "設定...">
+<!ENTITY viewDirectory.label "直接表示...">
+<!ENTITY customPersona.label "カスタムペルソナ">
+<!ENTITY customName.label "名前:">
+<!ENTITY header.label "ヘッダー:">
+<!ENTITY selectBackground.label "参照...">
+<!ENTITY footer.label "フッター:">
+<!ENTITY textColorPicker.label "テキスト色:">
+<!ENTITY accentColorPicker.label "強調色:">
+<!ENTITY useDefaultColor.label "既定を利用する">
+<!ENTITY okButton.label "承認">
+<!ENTITY contextHomePage.label "ホームページ">
+<!ENTITY contextPreferences.label "設定">
+<!ENTITY contextEdit.label "編集">
+<!ENTITY contextApply.label "適用">
