@@ -79,6 +79,7 @@
 	}
 	$master['recent'] = $recent_json;
 	file_put_contents(PERSONAS_STORAGE_PREFIX . '/recent.html', html_page('recent', '', $recent_list));
+	file_put_contents(PERSONAS_STORAGE_PREFIX . '/index.html', html_page('recent', '', $recent_list));
 	
 
 	foreach ($categories as $category)
@@ -185,9 +186,10 @@
 					 persona="$persona"
 					 src="$preview_url">
 			</div>
-			<div class="creator">Creator: ${item['author']}</div>
 		</div>			
 End_of_block;
+#this goes back in between those two divs once we have real creator info
+#			<div class="creator">Creator: ${item['author']}</div>
 		return $text;
 	}
 
@@ -202,7 +204,7 @@ End_of_block;
 			<head>
 				<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 				<title>Personas</title>
-				<link rel="stylesheet" type="text/css" href="/personas/store/personas.css" />
+				<link rel="stylesheet" type="text/css" href="/personas/store/css/personas.css" />
 				<script language="JavaScript">
 					function dispatchPersonaEvent(aType, aNode) 
 					{
@@ -216,7 +218,7 @@ End_of_block;
 			</head>
 			<body>
 			<div id="header">
-				<div><img src="http://labs.mozilla.com/projects/personas/images/personas-logo-full.png" width=175></div>
+				<div><img src="/personas/images/personas-logo.png" width=175></div>
 				<h1>$uctype Personas $forcat</h1>
 			</div>
 			<div id="menu">
