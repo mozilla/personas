@@ -1,3 +1,17 @@
-<!ENTITY personas_app_title 	  "Personas ל-Firefox">
-
-<!ENTITY useDefaultPersona.label  "השתמש בברירת המחדל">
+<!ENTITY personas_app_title "Personas לפיירפוקס">
+<!ENTITY useDefaultPersona.label "ברירת מחדל">
+<!ENTITY preferences.label "העדפות...">
+<!ENTITY viewDirectory.label "הצג ספרייה...">
+<!ENTITY customPersona.label "Persona מותאם אישית">
+<!ENTITY customName.label "שם:">
+<!ENTITY header.label "כותרת עליונה:">
+<!ENTITY selectBackground.label "דפדוף...">
+<!ENTITY footer.label "כותרת תחתונה:">
+<!ENTITY textColorPicker.label "צבע טקסט:">
+<!ENTITY accentColorPicker.label "צבע מודגש:">
+<!ENTITY useDefaultColor.label "השתמש בברירת מחדל">
+<!ENTITY okButton.label "אישור">
+<!ENTITY contextHomePage.label "עמוד בית">
+<!ENTITY contextPreferences.label "הגדרות">
+<!ENTITY contextEdit.label "ערוך">
+<!ENTITY contextApply.label "החל">

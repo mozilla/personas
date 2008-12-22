@@ -16,5 +16,6 @@ skin  personas  classic/1.0  chrome/skin/linux/    appversion>=3.0  os=Linux
 
 # localizations in alphabetical order
 locale   personas   en-US       chrome/locale/en-US/
+locale   personas   he-IL       chrome/locale/he-IL/
 locale   personas   ja-JP       chrome/locale/ja-JP/
 locale   personas   pt-BR       chrome/locale/pt-BR/
