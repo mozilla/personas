@@ -82,7 +82,7 @@
 }
 #main-window[persona] .tabbrowser-tab[selected="true"],
 #main-window[persona] .tabbrowser-tab:hover {
-  opacity: 1.0;
+  opacity: 0.6;
 }
 #main-window[persona] .tab-text,
 #main-window[persona] .tab-text-shadow {
