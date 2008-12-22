@@ -54,7 +54,7 @@
 			if (!$db->authenticate_user($auth_user, $auth_pass))
 			{
 				#print auth page with bad login warning
-				$error = "We were unable to locate your account. Please try again or register.";
+				$error = "We were unable to locate your account. Please try again or <a href=\"user.php\">register</a>.";
 				include '../lib/auth_form.php';
 				exit;
 			}
@@ -181,9 +181,9 @@
 			file_put_contents($persona_path . '/index_1.json', json_encode(array('id' => $persona_id, 
 						'name' => $name,
 						'accentcolor' => $accentcolor ? $accentcolor : null,
-						'textcolor' => textcolor ? $textcolor : null,
-						'header' => $persona_path . '/' . $h_name, 
-						'footer' => url_prefix($id) . '/' . $f_name)));
+						'textcolor' => $textcolor ? $textcolor : null,
+						'header' => $first_folder . '/' . $second_folder .  '/'. $persona_id . '/' . $h_name, 
+						'footer' => $first_folder . '/' . $second_folder .  '/'. $persona_id . '/' . $f_name)));
 						
 						
 						
