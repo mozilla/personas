@@ -1,0 +1,17 @@
+<!ENTITY personas_app_title "Personas for Firefox">
+<!ENTITY useDefaultPersona.label "Standard">
+<!ENTITY preferences.label "Indstillinger...">
+<!ENTITY viewDirectory.label "Vis katalog...">
+<!ENTITY customPersona.label "Tilpas Persona">
+<!ENTITY customName.label "Navn:">
+<!ENTITY header.label "Værktøjslinjer:">
+<!ENTITY selectBackground.label "Gennemse...">
+<!ENTITY footer.label "Statuslinje:">
+<!ENTITY textColorPicker.label "Tekstfarve:">
+<!ENTITY accentColorPicker.label "Accentfarve:">
+<!ENTITY useDefaultColor.label "Brug standard">
+<!ENTITY okButton.label "OK">
+<!ENTITY contextHomePage.label "Hjemmeside">
+<!ENTITY contextPreferences.label "Indstillinger">
+<!ENTITY contextEdit.label "Rediger">
+<!ENTITY contextApply.label "Anvend">

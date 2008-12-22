@@ -1,0 +1,10 @@
+<!ENTITY preferences.title "Personas indstillinger">
+<!ENTITY generalSettings.label "Generelt">
+<!ENTITY previewEnabled.label "Vis eksempel når der vælges fra menu">
+<!ENTITY reportSelection.label "Deltag i popularitetsmåling">
+<!ENTITY reportSelection.title "Detaljer">
+<!ENTITY displaySettings.label "Vis">
+<!ENTITY useTextColor.label "Brug tekstfarve">
+<!ENTITY useAccentColor.label "Brug accentfarve">
+<!ENTITY advancedSettings.label "Avanceret">
+<!ENTITY showCustomMenu.label "Vis tilpassede Persona i menu">
