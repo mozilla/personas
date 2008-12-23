@@ -547,7 +547,7 @@ class PersonaStorage
 		try
 		{
 			$stmt = 'update users set admin = 1 where username = :username';
-			$sth = $this->_dbh->prepare($delete_stmt);
+			$sth = $this->_dbh->prepare($stmt);
 			$sth->bindParam(':username', $username);
 			$sth->execute();
 

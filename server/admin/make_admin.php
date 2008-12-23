@@ -60,6 +60,10 @@
 				echo $db->promote_admin($_GET['username']);
 				exit;
 			}
+			else
+			{
+				echo "User not found";
+			}
 		}
 	}
 	catch(Exception $e)
