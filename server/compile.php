@@ -79,7 +79,6 @@
 	}
 	$master['recent'] = $recent_json;
 	file_put_contents(PERSONAS_STORAGE_PREFIX . '/recent.html', html_page('recent', '', $recent_list));
-	file_put_contents(PERSONAS_STORAGE_PREFIX . '/index.html', html_page('recent', '', $recent_list));
 	
 
 	foreach ($categories as $category)
