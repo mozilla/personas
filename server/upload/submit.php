@@ -187,7 +187,8 @@
 						
 						
 						
-			$imgcommand = "convert \( " . $persona_path . "/" . $h_name . " -gravity NorthEast -crop 600x200+0+0 \) \( " . $persona_path . "/" . $f_name . " -gravity NorthEast -crop 600x100+0+0 \)  -append -scale 200x100 " . $persona_path . "/preview.jpg";
+			$imgcommand = "convert " . $persona_path . "/" . $h_name . " -gravity NorthEast -crop 600x200+0+0  -scale 200x100 " . $persona_path . "/preview.jpg";
+			#error_log($imgcommand);
 			exec($imgcommand);
 		}
 	}
