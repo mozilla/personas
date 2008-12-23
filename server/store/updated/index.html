@@ -1,0 +1,54 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+        <title>Personas for Firefox</title>
+        <link rel="stylesheet" type="text/css" href="../css/otherpages.css" />
+    </head>
+<body>
+    <div id="content">
+        <div id="top">
+            <img src="../images/personas-logo-beta.png" alt="Personas for Firefox" />
+        </div>
+        
+        <div id="bottom">
+            <div><img src="../images/otherpages-table-top.png" alt="" /></div>
+            <div class="table_middle">
+                <div class="title">You've been updated to the latest version of Personas for Firefox!</div>
+                <div class="divider"><img src="../images/otherpages-divider.png" alt="" /></div>
+                
+                <div class="details">
+ 		  <div id="details-1.0a7" style="display: none;">
+                    <p>This version includes:</p>
+                  </div>
+                  <p>Please join us in the Mozilla Labs <a href="https://labs.mozilla.com/forum/index.php/board,18.0.html">discussion forum</a> to provide feedback or make suggestions.</p>
+                </div>
+            </div>
+            <div><img src="../images/otherpages-table-foot.png" alt="" /></div>
+        </div>
+        
+        <div id="footer">
+        </div>
+    </div>
+    <div id="arrow">Click on the Fox mask to rediscover the joy of Personas</div>
+
+    <script type="application/javascript;version=1.7">
+      // Show the appropriate list of changes for the given version.
+      let params = {};
+      for each (let param in window.location.search.substr(1).split("&")) {
+        let [name, value] = param.split("=");
+        value = decodeURIComponent(value);
+        params[name] = value;
+      }
+      if (params.version) {  
+        let versionLabel = document.getElementById("versionLabel");
+        if (versionLabel)
+          versionLabel.innerHTML = "(" + params.version + ")"; 
+        let details = document.getElementById("details-" + params.version);
+        if (details)
+          details.style.display = "block";
+      }
+    </script>
+
+</body>
+</html>

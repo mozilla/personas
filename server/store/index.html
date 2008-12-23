@@ -1,0 +1,63 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+        <title>Personas for Firefox</title>
+        <link rel="stylesheet" type="text/css" href="css/home.css" />
+        <link rel="stylesheet" type="text/css" href="css/thickbox.css" />
+        <script language="JavaScript" type="text/javascript" src="js/jquery-compressed.js"></script>
+        <script language="JavaScript" type="text/javascript" src="js/home.js"></script>
+
+    </head>
+<body>
+    
+    <div id="design-dialog">
+        <div id="design" class="dialog">
+            <div class="header">
+                <img src="images/personas-desig-header.png" alt="Designers" />
+                <a href="#" onclick="$('#design-dialog').hide();">
+                    <img src="images/personas-x-50.png" alt="Close Window" border="0" />
+                </a>
+
+            </div>
+
+            <div class="body">
+              <iframe style="border:0;" src="/personas/upload/submit.php" width="100%" height="100%"></iframe>
+            </div>
+        </div>
+    </div>
+    
+    <div id="content">
+        <div id="top">
+
+            <div class="left">
+                <img src="images/personas-logo-full.png" alt="Personas for Firefox" />
+                <div class="subhead">Personas are lightweight, easy to install and easy to change &ldquo;skins&rdquo; for your Firefox web browser.</div>
+                <div class="install">
+                    <a href="https://people.mozilla.com/~cbeard/personas/dist/personas-latest.xpi" id="install-link"><img id="install-button" src="images/personas-btn-get.png" alt="Get Personas for Firefox - Free" border="0" 
+                    <div class="details">Firefox Add-on for Windows, Mac or Linux</div>
+                    <div id="install-nonfirefox" class="details" style="display: none; font-weight: bold;">
+
+                        Firefox is required to use this add-on. <a href="http://www.mozilla.com/en-US/firefox/?ref=personas">Learn more</a>.
+                    </div>
+                </div>
+            </div>
+            <div class="right">
+                <img src="images/personas-mood.png" alt="What's your mood today?" />
+            </div>
+        </div>
+
+        
+        <div id="bottom">
+            <div id="detaillinks"><br/>
+                <div style="float:left;"><a href="/personas/store/popular.html">Directory</a></div><div style="float:right;"><a href="#" onclick="$('#design-dialog').show();">Submit</a></div>
+            </div>
+        </div>
+        
+        <div id="footer">
+            <div class="labs"><br/>Personas for Firefox is a <a href="http://labs.mozilla.com/2007/12/personas-for-firefox/">Mozilla Labs</a> Project</a></div>
+
+        </div>
+    </div>
+</body>
+</html>

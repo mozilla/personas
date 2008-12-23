@@ -1,0 +1,151 @@
+body {
+    margin: 0;
+    padding: 0;
+    background: url('../images/personas-bg.jpg') repeat-x;
+    font-family: Tahoma, Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    color: #003663;
+}
+
+#content .subhead a {
+    text-decoration: none;
+    color: #FFFFFF;
+}
+
+#content {
+    width: 880px;
+    margin: 0 auto;
+}
+#content #top {
+    height: 440px;
+    background: url('../images/personas-bg-browsers.jpg') no-repeat top right;
+}
+#content #top .left {
+    width: 415px;
+    float: left;
+    margin-top: 35px;
+}
+#content #top .right {
+    float: left;
+    margin-top: 66px;
+    width: 465px;
+    text-align: center;
+}
+#content #top .left .subhead {
+    height: 82px;
+    color: #FFFFFF;
+    font-family: Tahoma,Arial,Helvetica,sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+    padding-left: 31px;
+    padding-top: 27px;
+}
+#content #top .left .install {
+    text-align: center;
+}
+#content #top .left .install .details,
+#content #top .left .install .details a {
+    color: #FFFFFF;
+}
+
+#content #bottom {
+    clear: both;
+    padding: 0 28px;
+}
+#content #bottom #detaillinks div {
+}
+#content #bottom #detailmiddle {
+    clear: both;
+    height: 134px;
+    background: url('../images/personas-table-middle.png') repeat-y;
+}
+#content #bottom #detailmiddle #detailboxes {
+    width: 718px;
+    padding: 0 52px;
+}
+#content #bottom #detailmiddle #detailboxes .detailbox {
+    width: 222px;
+    float: left;
+}
+#content #bottom #detailmiddle #detailboxes .detailline {
+    float: left;
+    margin-top: 10px;
+}
+#content #bottom #detailmiddle #detailboxes .detailbox p {
+    padding: 0 15px;
+}
+#content #bottom #detailfooter {
+    background: url('../images/personas-table-foot.png') no-repeat;
+    height: 10px;
+}
+
+#content #footer {
+    clear: both;
+    text-align: center;
+    color: #547A9B;
+    font-size: 10px;
+    padding-bottom: 10px;
+}
+#content #footer a {
+    color: #547A9B;
+    text-decoration: underline;
+}
+#content #footer .labs {
+    margin-top: 15px;
+    margin-bottom: 3px;
+}
+#content #footer .labs img {
+    vertical-align: middle;
+    margin-right: 10px;
+}
+#content #footer .legal span {
+    margin-left: 10px;
+}
+
+#available-dialog,
+#design-dialog,
+#faq-dialog {
+background: url('../images/macFFBgHack.png') repeat;
+    position: absolute;
+    display: none;
+    left: 0px;
+    top: 0px;
+    width:100%;
+    height:100%;
+    z-index: 1000;
+}
+
+#available,
+#design,
+#faq {
+    background: url('../images/personas-desig-foot-waves.png') no-repeat bottom left;  
+    margin: 75px auto;  
+    width: 720px;
+}
+
+#available .body, #faq .body, #design .body {
+    background: url('../images/personas-faq-side-bg.png') repeat-y;
+    padding: 10px;
+    height: 400px;
+}
+
+#available .intro, #faq .intro, #design .intro {
+    padding: 10px 0;
+}
+#faq .questions {
+    padding-left: 20px;
+}
+#faq .questions div {
+    font-weight: bold;
+    padding-bottom: 3px;
+    padding-top: 20px;
+}
+.dialog .header img {
+    float: left;
+}
+.dialog .body {
+    clear: both;
+}
+.dialog .dots {
+    text-align: center;
+}
