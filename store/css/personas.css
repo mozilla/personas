@@ -1,0 +1,131 @@
+/* partly ganked from seoconsultants.com/css/menus/tutorial/ */
+
+body {
+    margin: 0;
+    padding: 0;
+    background: url('../images/personas-bg.jpg') repeat-x;
+    font-family: Tahoma, Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    color: #003663;
+}
+
+#content .subhead a {
+    text-decoration: none;
+    color: #FFFFFF;
+}
+
+#content {
+    width: 880px;
+    margin: 0 auto;
+}
+#content #top {
+    height: 440px;
+    background: url('../images/personas-bg-browsers.jpg') no-repeat top right;
+}
+
+      #header {
+        position:fixed;
+        top:0;
+        left:0;
+        width:100%;
+        height:6em;
+        z-index:1;
+        background:#fff;
+      }
+      #header div {
+        float:left;
+        width:12em;
+        height:3em;
+        margin-right:0.5em;
+      }
+
+.creator
+{
+	text-align:right;
+}
+.persona
+{
+float: left;
+width: 200px;
+border: 1px solid #999;
+margin: 0 15px 15px 0;
+padding: 5px;
+}
+#contents {
+	margin:7em 0em 2em 12em;
+}
+
+#menu {
+	position:fixed;
+	top:7em;
+	left:0;
+	width:11em;
+	margin:0;
+	padding:0;
+	background:#666;
+  }
+
+#menu {
+width: 12em; /* set width of menu */
+background: #eee;
+} 
+
+#menu ul { /* remove bullets and list indents */
+list-style: none;
+margin: 0;
+padding: 0;
+}
+
+/* style, color and size links and headings to suit */
+#menu a, #menu h2 {
+font: bold 11px/16px arial, helvetica, sans-serif;
+display: block;
+border-width: 1px;
+border-style: solid;
+border-color: #ccc #888 #555 #bbb;
+margin: 0;
+padding: 2px 3px;
+}
+
+
+#menu h2 {
+color: #000;
+background: #bbb;
+text-align: right;
+}
+
+#menu h2:hover {
+color: #000;
+background: #bbb;
+}
+
+#menu a {
+color: #000;
+background: #efefef;
+text-decoration: none;
+}
+
+#menu a:hover {
+color: #a00;
+background: #fff;
+}
+
+#menu li {
+/* make the list elements a containing block for the nested lists */
+position: relative;
+} 
+
+#menu ul ul {
+position: absolute;
+top: 0;
+left: 100%; /* to position them to the right of their containing block */
+width: 100%; /* width is based on the containing block */
+}
+
+div#menu ul ul,
+div#menu ul li:hover ul
+{display: none;}
+
+div#menu ul li:hover ul,
+div#menu ul ul li:hover ul
+{display: block;}

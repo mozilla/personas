@@ -217,7 +217,7 @@ End_of_block;
 			</head>
 			<body>
 			<div id="header">
-				<div><img src="/personas/images/personas-logo.png" width=175></div>
+				<div><img src="/personas/store/images/personas-logo.png" width=175></div>
 				<h1>$uctype Personas $forcat</h1>
 			</div>
 			<div id="menu">
