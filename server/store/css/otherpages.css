@@ -1,0 +1,83 @@
+body {
+    margin: 0;
+    padding: 0;
+    background: url('../images/otherpages-bg.jpg') repeat-x;
+    font-family: Tahoma, Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    color: #003663;
+}
+
+#content {
+    width: 880px;
+    margin: 0 auto;
+}
+#content #top {
+    background: url('../images/otherpages-waves.jpg') no-repeat top right;
+    height: 200px;
+    padding-top: 15px;
+}
+
+#content #bottom {
+    margin: 0 29px 0 30px;
+}
+
+#content #bottom .table_middle {
+    background: url('../images/otherpages-table-sides.png') repeat-y;
+    min-height: 200px;
+}
+
+#content #bottom .table_middle .divider {
+    text-align: center;
+}
+#content #bottom .table_middle .title {
+    padding-left: 15px;
+    padding-bottom: 10px;
+    font-size: 18px;
+}
+#content #bottom .table_middle .details {
+    padding-left: 30px;
+    font-size: 14px;
+}
+
+#content #bottom .table_middle .updatelist li {
+    list-style-image: url('../images/otherpages-circles.png');
+    padding-bottom: 5px;
+}
+
+#arrow {
+    background: url('../images/firstrun-arrow.png') no-repeat bottom left;
+    position: absolute;
+    left: 7px;
+    bottom: 5px;
+    font-size: 14px;
+    height: 30px;
+    padding-left: 25px;
+}
+
+#content #footer {
+    margin-top: 30px;
+    clear: both;
+    text-align: center;
+    color: #547A9B;
+    font-size: 12px;
+    padding-bottom: 10px;
+}
+#content #footer a {
+    color: #547A9B;
+    text-decoration: underline;
+}
+#content #footer .labs {
+    margin-top: 15px;
+    margin-bottom: 3px;
+}
+#content #footer .labs img {
+    vertical-align: middle;
+    margin-right: 10px;
+}
+#content #footer .legal {
+    margin-top: 10px;
+    font-size: 10px;
+}
+#content #footer .legal span {
+    margin-left: 10px;
+}
