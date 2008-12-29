@@ -19,4 +19,5 @@ locale   personas   da-DK       chrome/locale/da-DK/
 locale   personas   en-US       chrome/locale/en-US/
 locale   personas   he-IL       chrome/locale/he-IL/
 locale   personas   ja-JP       chrome/locale/ja-JP/
+locale   personas   ko-KR       chrome/locale/ko-KR/
 locale   personas   pt-BR       chrome/locale/pt-BR/
