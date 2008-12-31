@@ -13,7 +13,7 @@
 # for the specific language governing rights and limitations under the
 # License.
 #
-# The Original Code is Weave Basic Object Server
+# The Original Code is Personas Server
 #
 # The Initial Developer of the Original Code is
 # Mozilla Labs.
@@ -171,6 +171,41 @@ class PersonaStorage
 		return $result;
 	}
 	
+	function get_persona_by_author($author, $category = null, $sort = "all")
+	{
+		if (!$author) { return 0; }
+		$sortkeys = array('all' => 'name', 'recent' => 'submit desc', 'popular' => 'popularity desc');
+		try
+		{
+			$statement = 'select * from personas where author = ?';
+			$params = array($author);
+			
+			if ($category)
+			{
+				$statement .= " and category = ?";
+				$params[] = $category;
+			}
+			
+			$statement .= 'order by ' . $sortkeys[$sort];
+			
+			$sth = $this->_dbh->prepare($statement);
+			$sth->execute($params);
+		}
+		catch( PDOException $exception )
+		{
+			error_log($exception->getMessage());
+			throw new Exception("Database unavailable", 503);
+		}
+
+		$personas = array();
+		
+		while ($result = $sth->fetch(PDO::FETCH_ASSOC))
+		{
+			$personas[] = $result;
+		}		
+		return $personas;
+	}
+	
 	function get_recent_personas($category = null, $limit = null)
 	{
 		try
@@ -274,6 +309,44 @@ class PersonaStorage
 	}
 	
 	
+	function get_pending_edits()
+	{
+		try
+		{
+			$statement = 'select * from edits limit 1';
+			$sth = $this->_dbh->prepare($statement);
+			$sth->execute();
+		}
+		catch( PDOException $exception )
+		{
+			error_log($exception->getMessage());
+			throw new Exception("Database unavailable", 503);
+		}
+		
+		$result = $sth->fetch(PDO::FETCH_ASSOC);
+		return $result;
+	}
+	
+	function get_edits_by_id($id)
+	{
+		try
+		{
+			$statement = 'select * from edits where id = :id';
+			$sth = $this->_dbh->prepare($statement);
+			$sth->bindParam(':id', $id);
+			$sth->execute();
+		}
+		catch( PDOException $exception )
+		{
+			error_log($exception->getMessage());
+			throw new Exception("Database unavailable", 503);
+		}
+		
+		$result = $sth->fetch(PDO::FETCH_ASSOC);
+		return $result;
+	}
+	
+	
 	function get_personas_by_category($category)
 	{
 		try
@@ -298,12 +371,12 @@ class PersonaStorage
 		return $personas;
 	}
 	
-	#see f we're going to get a namespace collision with a persona
+	#see if we're going to get a namespace collision with a persona
 	function check_persona_name($name)
 	{
 		try
 		{
-			$statement = 'select count(*) from personas where name = :name';
+			$statement = 'select id from personas where name = :name limit 1';
 			$sth = $this->_dbh->prepare($statement);
 			$sth->bindParam(':name', $name);
 			$sth->execute();
@@ -314,7 +387,26 @@ class PersonaStorage
 			throw new Exception("Database unavailable", 503);
 		}
 
-		return $sth->fetchColumn();			
+		$id = $sth->fetchColumn();	
+
+		#now make sure someone isn't trying to change to that
+		if (!$id)
+		{
+			try
+			{
+				$statement = 'select id from edits where name = :name limit 1';
+				$sth = $this->_dbh->prepare($statement);
+				$sth->bindParam(':name', $name);
+				$sth->execute();
+			}
+			catch( PDOException $exception )
+			{
+				error_log($exception->getMessage());
+				throw new Exception("Database unavailable", 503);
+			}			
+			$id = $sth->fetchColumn();	
+		}
+		return $id;
 	}
 	
 	
@@ -342,9 +434,117 @@ class PersonaStorage
 		return 0;
 	}
 	
+	function submit_persona_edit($id, $author, $name, $category, $accent, $text, $header = null, $footer = null)
+	{
+		try
+		{
+			$statement = 'replace into edits (id, author, name, header, footer, category,  accentcolor, textcolor) values (:id, :author, :name, :header, :footer, :category,  :accentcolor, :textcolor)';
+			$sth = $this->_dbh->prepare($statement);
+			$sth->bindParam(':id', $id);
+			$sth->bindParam(':author', $author);
+			$sth->bindParam(':name', $name);
+			$sth->bindParam(':header', $header);
+			$sth->bindParam(':footer', $footer);
+			$sth->bindParam(':category', $category);
+			$sth->bindParam(':accentcolor', $accent);
+			$sth->bindParam(':textcolor', $text);
+			$sth->execute();
+		}
+		catch( PDOException $exception )
+		{
+			error_log($exception->getMessage());
+			throw new Exception("Database unavailable", 503);
+		}
+		return 1;
 
+	}
 	
-	#stealing functions from the weave sqlite authentication class
+	function approve_persona_edit($id)
+	{
+		$edits = $this->get_edits_by_id($id);
+		
+		$update = "update personas set name = ?, category = ?, accentcolor = ?, textcolor = ?";
+		$params = array($edits['name'], $edits['category'], $edits['accentcolor'], $edits['textcolor']);
+		
+		
+		if ($edits['header'])
+		{
+			$update .= ", header = ?";
+			$params[] = $edits['header'];
+		}
+		
+		if ($edits['footer'])
+		{
+			$update .= ", footer = ?";
+			$params[] = $edits['footer'];
+		}
+		
+		$update .= " where id = ?";
+		$params[] = $id;
+		try
+		{
+			$sth = $this->_dbh->prepare($update);
+			$sth->execute($params);
+		}
+		catch( PDOException $exception )
+		{
+			error_log($exception->getMessage());
+			throw new Exception("Database unavailable", 503);
+		}
+
+		try
+		{
+			$statement = 'delete from edits where id = :id';
+			$sth = $this->_dbh->prepare($statement);
+			$sth->bindParam(':id', $id);
+			$sth->execute();
+		}
+		catch( PDOException $exception )
+		{
+			error_log($exception->getMessage());
+			throw new Exception("Database unavailable", 503);
+		}
+		return 1;
+		
+	}
+	
+	function reject_persona_edit($id)
+	{
+		try
+		{
+			$statement = 'delete from edits where id = :id';
+			$sth = $this->_dbh->prepare($statement);
+			$sth->bindParam(':id', $id);
+			$sth->execute();
+		}
+		catch( PDOException $exception )
+		{
+			error_log($exception->getMessage());
+			throw new Exception("Database unavailable", 503);
+		}
+		return 1;
+		
+	}
+	
+	function log_action($name, $id, $action)
+	{
+		try
+		{
+			$statement = 'insert into log (id, username, action) values (:id, :username, :action)';
+			$sth = $this->_dbh->prepare($statement);
+			$sth->bindParam(':id', $id);
+			$sth->bindParam(':username', $name);
+			$sth->bindParam(':action', $action);
+			$sth->execute();
+		}
+		catch( PDOException $exception )
+		{
+			error_log($exception->getMessage());
+			throw new Exception("Database unavailable", 503);
+		}
+		return 1;
+	}
+	
 	
 	function create_user($username, $password, $email = "")
 	{ 

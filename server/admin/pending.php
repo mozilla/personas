@@ -63,11 +63,11 @@
 		throw new Exception("Database problem. Please try again later.");
 	}
 
-	if (array_key_exists('verdict', $_POST) && array_key_exists('id', $_POST))
+	if (array_key_exists('verdict', $_GET) && array_key_exists('id', $_GET))
 	{
-		$persona = $db->get_persona_by_id($_POST['id']);
+		$persona = $db->get_persona_by_id($_GET['id']);
 
-		switch ($_POST['verdict'])
+		switch ($_GET['verdict'])
 		{
 			case 'accept':
 				$persona_id = $persona['id'];
@@ -82,21 +82,12 @@
 				$db->approve_persona($persona{'id'});
 				break;
 			case 'change':
-				$category = ini_get('magic_quotes_gpc') ? stripslashes($_POST['category']) : $_POST['category'];
+				$category = ini_get('magic_quotes_gpc') ? stripslashes($_GET['category']) : $_GET['category'];
 				$db->change_persona_category($persona{'id'}, $category);
 				break;			
 			case 'reject':
 				$db->reject_persona($persona{'id'});
 				break;
-			case 'pull':
-				$persona_id = $persona['id'];
-				$second_folder = $persona_id%10;
-				$first_folder = ($persona_id%100 - $second_folder)/10;	
-				$persona_path = "/" . $first_folder . "/" . $second_folder . "/" . $persona_id;
-				rename (PERSONAS_STORAGE_PREFIX . $persona_path, PERSONAS_PENDING_PREFIX . $persona_path);
-				$db->reject_persona($persona{'id'});
-				print "<div>Persona $persona_id pulled</div>";
-				break;				
 			default:
 				print "Could not understand the verdict";	
 				exit;
@@ -120,7 +111,7 @@
 		$header_url =  $path . "/" . $result['header'];
 		$footer_url =  $path . "/" . $result['footer'];
 ?>
-		<form action="pending.php" method="POST">
+		<form action="pending.php" method="GET">
 		<input type=hidden name=id value=<?= $result{'id'} ?>>
 		Internal ID: <?= $result{'id'} ?>
 		<br>
@@ -152,10 +143,5 @@
 <?php
 	}
 ?>
-<hr>
-<form action="pending.php" method="POST">
-Pull persona id: <input type=text name=id>
-<input type="submit" name="verdict" value="pull">
-</form>
 </body>
 </html>
