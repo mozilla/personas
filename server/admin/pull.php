@@ -1,3 +1,5 @@
+<html>
+<body>
 <?php
 
 # ***** BEGIN LICENSE BLOCK *****
@@ -13,7 +15,7 @@
 # for the specific language governing rights and limitations under the
 # License.
 #
-# The Original Code is Weave Basic Object Server
+# The Original Code is Personas Server
 #
 # The Initial Developer of the Original Code is
 # Mozilla Labs.
@@ -37,6 +39,7 @@
 #
 # ***** END LICENSE BLOCK *****
 	
+	require_once '../lib/personas_constants.php';
 	require_once '../lib/storage.php';
 
 	$db = new PersonaStorage();
@@ -53,23 +56,27 @@
 			header('WWW-Authenticate: Basic realm="PersonasAdmin"');
 			exit;
 		}
-		if (array_key_exists('username', $_GET))
-		{
-			if ($db->user_exists($_GET['username']))
-			{
-				echo $db->promote_admin($_GET['username']);
-				exit;
-			}
-			else
-			{
-				echo "User not found";
-			}
-		}
 	}
 	catch(Exception $e)
 	{
 		throw new Exception("Database problem. Please try again later.");
 	}
 
-	
-?>
+	if (array_key_exists('id', $_GET))
+	{
+		$persona = $db->get_persona_by_id($_GET['id']);
+		$persona_id = $persona['id'];
+		$second_folder = $persona_id%10;
+		$first_folder = ($persona_id%100 - $second_folder)/10;	
+		$persona_path = "/" . $first_folder . "/" . $second_folder . "/" . $persona_id;
+		rename (PERSONAS_STORAGE_PREFIX . $persona_path, PERSONAS_PENDING_PREFIX . $persona_path);
+		$db->reject_persona($persona{'id'});
+		print "<div>Persona $persona_id pulled</div>";
+	}
+?>	
+<form action="pull.php" method="POST">
+Pull persona id: <input type=text name=id>
+<input type="submit" name="verdict" value="pull">
+</form>
+</body>
+</html>

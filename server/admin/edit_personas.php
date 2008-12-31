@@ -13,7 +13,7 @@
 # for the specific language governing rights and limitations under the
 # License.
 #
-# The Original Code is Weave Basic Object Server
+# The Original Code is Personas Server
 #
 # The Initial Developer of the Original Code is
 # Mozilla Labs.
@@ -37,9 +37,15 @@
 #
 # ***** END LICENSE BLOCK *****
 	
+	require_once '../lib/personas_constants.php';
+	require_once '../lib/html_generation.php';	
 	require_once '../lib/storage.php';
 
 	$db = new PersonaStorage();
+	$categories = $db->get_categories();
+	$action = "edit_personas.php";
+
+	$category = $_GET['category'];
 	
 	$auth_user = array_key_exists('PHP_AUTH_USER', $_SERVER) ? $_SERVER['PHP_AUTH_USER'] : null;
 	$auth_pw = array_key_exists('PHP_AUTH_PW', $_SERVER) ? $_SERVER['PHP_AUTH_PW'] : null;
@@ -53,23 +59,27 @@
 			header('WWW-Authenticate: Basic realm="PersonasAdmin"');
 			exit;
 		}
-		if (array_key_exists('username', $_GET))
+		$category = array_key_exists('category', $_GET) ? $_GET['category'] : null;
+		$sort = array_key_exists('type', $_GET) ? $_GET['type'] : 'recent';
+		if ($sort == 'recent')
 		{
-			if ($db->user_exists($_GET['username']))
-			{
-				echo $db->promote_admin($_GET['username']);
-				exit;
-			}
-			else
-			{
-				echo "User not found";
-			}
+			$personas = $db->get_recent_personas($category);
 		}
+		else if ($sort = 'popular')
+		{
+			$personas = $db->get_popular_personas($category);
+		}
+		else
+		{
+			$personas = $db->get_personas_by_category($category);
+		}
+		
 	}
-	catch(Exception $e)
+	catch (Exception $e)
 	{
-		throw new Exception("Database problem. Please try again later.");
+		$error = "An error occured: " . $e->getMessage();
 	}
-
+	print html_page('recent', '', $personas, $_SERVER['PHP_SELF'], "Edit Personas", 1, 1);
 	
 ?>
+
