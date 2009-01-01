@@ -171,13 +171,14 @@ class PersonaStorage
 		return $result;
 	}
 	
-	function get_persona_by_author($author, $category = null, $sort = "all")
+	function get_persona_by_author($author, $category = null, $sort)
 	{
 		if (!$author) { return 0; }
+		if (!$sort) { $sort = 'all'; }
 		$sortkeys = array('all' => 'name', 'recent' => 'submit desc', 'popular' => 'popularity desc');
 		try
 		{
-			$statement = 'select * from personas where author = ?';
+			$statement = 'select * from personas where status = 1 and author = ?';
 			$params = array($author);
 			
 			if ($category)
@@ -186,7 +187,7 @@ class PersonaStorage
 				$params[] = $category;
 			}
 			
-			$statement .= 'order by ' . $sortkeys[$sort];
+			$statement .= ' order by ' . $sortkeys[$sort];
 			
 			$sth = $this->_dbh->prepare($statement);
 			$sth->execute($params);
