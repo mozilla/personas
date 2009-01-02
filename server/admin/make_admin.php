@@ -38,21 +38,30 @@
 # ***** END LICENSE BLOCK *****
 	
 	require_once '../lib/storage.php';
+	require_once '../lib/user.php';
 
-	$db = new PersonaStorage();
-	
-	$auth_user = array_key_exists('PHP_AUTH_USER', $_SERVER) ? $_SERVER['PHP_AUTH_USER'] : null;
-	$auth_pw = array_key_exists('PHP_AUTH_PW', $_SERVER) ? $_SERVER['PHP_AUTH_PW'] : null;
-		
-	#Auth the user
 	try 
 	{
-		if (!$db->authenticate_admin($auth_user, $auth_pw))
+		$user = new PersonaUser();
+		$user->authenticate();
+		if (!$user->has_admin_privs())
 		{
-			header('HTTP/1.1 Unauthorized',true,401);
-			header('WWW-Authenticate: Basic realm="PersonasAdmin"');
+			$error = "This account does not have privileges for this operation. Please log in with an account that does.";
+			$user->auth_form();
 			exit;
 		}
+	}
+	catch(Exception $e)
+	{
+		error_log($e->getMessage());
+		print("Database problem. Please try again later.");
+		exit;
+	}
+
+	
+	try 
+	{
+		$db = new PersonaStorage();
 		if (array_key_exists('username', $_GET))
 		{
 			if ($db->user_exists($_GET['username']))
@@ -68,6 +77,7 @@
 	}
 	catch(Exception $e)
 	{
+		error_log($e->getMessage());
 		throw new Exception("Database problem. Please try again later.");
 	}
 

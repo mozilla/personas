@@ -13,7 +13,7 @@
 # for the specific language governing rights and limitations under the
 # License.
 #
-# The Original Code is Weave Basic Object Server
+# The Original Code is Personas Server
 #
 # The Initial Developer of the Original Code is
 # Mozilla Labs.
@@ -37,7 +37,7 @@
 #
 # ***** END LICENSE BLOCK *****
 	
-	require_once '../lib/storage.php';
+	require_once '../lib/user.php';
 
 	$error = '';
 	
@@ -61,14 +61,13 @@
 				throw new Exception("Password does not match confirmation");
 			}
 			
-			$db = new PersonaStorage();
+			$db = new PersonaUser();
 			if ($db->user_exists($username))
 			{
 				throw new Exception("User already exists");
 			}
 			
 			$db->create_user($username, $password, $email);
-			setcookie('PERSONA_USER', $username . " " . md5($username . $db->get_password_md5($username) . getenv('PERSONAS_LOGIN_SALT') . $_SERVER['REMOTE_ADDR']));
 			print "<div class=\"message\">Username successfully created. You may start <a href=\"submit.php\">uploading a persona</a></div>";
 			exit;
 

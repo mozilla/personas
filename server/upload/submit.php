@@ -39,8 +39,8 @@
 	
 	require_once '../lib/personas_constants.php';
 	require_once '../lib/storage.php';
+	require_once '../lib/user.php';
 	$error = "";
-	$auth_user = null;
 
 	function get_basic_form_data($id = null)
 	{
@@ -108,45 +108,15 @@
 		return $persona_path;
 	}
 	
+	
+	
+	
+	
 	try
 	{
 		$db = new PersonaStorage();
-		
-		$action = "submit.php";
-		if (array_key_exists('user', $_POST))
-		{
-			#trying to log in
-			$auth_user = ini_get('magic_quotes_gpc') ? stripslashes($_POST['user']) : $_POST['user'];
-			$auth_pass = ini_get('magic_quotes_gpc') ? stripslashes($_POST['pass']) : $_POST['pass'];
-			if (!$db->authenticate_user($auth_user, $auth_pass))
-			{
-				#print auth page with bad login warning
-				$error = "We were unable to locate your account. Please try again or <a href=\"user.php\">register</a>.";
-				include '../lib/auth_form.php';
-				exit;
-			}
-			setcookie('PERSONA_USER', $auth_user . " " . md5($auth_user . $db->get_password_md5($auth_user) . PERSONAS_LOGIN_SALT . $_SERVER['REMOTE_ADDR']), time() + 60*60*24*365);
-		}
-		else if (!array_key_exists('PERSONA_USER', $_COOKIE))
-		{
-			#print auth page
-			include '../lib/auth_form.php';
-			exit;
-		}
-
-		if (!$auth_user)
-		{
-			#authenticate the user off their cookie
-			$auth_cookie = ini_get('magic_quotes_gpc') ? stripslashes($_COOKIE['PERSONA_USER']) : $_COOKIE['PERSONA_USER'];
-			list($auth_user, $token) = explode(' ', $auth_cookie);
-		
-			if (md5($auth_user . $db->get_password_md5($auth_user) . PERSONAS_LOGIN_SALT . $_SERVER['REMOTE_ADDR']) != $token)
-			{
-				#print auth page
-				include '../lib/auth_form.php';
-				exit;
-			}
-		}
+		$user = new PersonaUser();
+		$auth_user = $user->authenticate();
 		
 		$categories = $db->get_categories();
 
@@ -261,7 +231,7 @@
 		$form_title = 'Edit a Persona';
 		$form_id = preg_replace('/[^0-9]/', '', $_GET['edit_id']);
 		$persona = $db->get_persona_by_id($form_id);
-		if ($persona['author'] == $auth_user || $db->authenticate_admin($auth_user, $auth_pw))
+		if ($persona['author'] == $auth_user || $user->has_admin_privs())
 		{
 			$form_name = $persona['name'];
 			$form_category = $persona['category'];

@@ -11,7 +11,7 @@
 
 <?php global $error; if ($error) { echo "<div class=\"error\">$error</div>"; } ?>
 
-<form method=POST enctype='multipart/form-data' action="submit.php">
+<form method=POST enctype='multipart/form-data' action="<?= $_SERVER['PHP_SELF'] ?>">
 
 Username: <input type=text name="user">
 <p>
