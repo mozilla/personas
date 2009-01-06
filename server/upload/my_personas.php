@@ -69,7 +69,10 @@
 	{
 		$error = "An error occured: " . $e->getMessage();
 	}
-	print html_page('recent', '', $personas, $_SERVER['PHP_SELF'], "Personas by " . $user->get_username(), 1);
+	print html_page('recent', '', $personas, $_SERVER['PHP_SELF'], "<form method=POST enctype='multipart/form-data' 
+								action=\"" . $_SERVER['REQUEST_URI']  . "\">
+								Personas by " . $user->get_username() . " <input type=submit name=\"logout\" value=\"not " . $user->get_username() . "?\">
+								</form>", 1);
 	
 ?>
 

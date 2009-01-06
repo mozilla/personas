@@ -5,6 +5,7 @@
 	<script type="text/javascript" src="include/jquery.js"></script>
 	<script type="text/javascript" src="include/farbtastic.js"></script>
 	<link rel="stylesheet" href="include/farbtastic.css" type="text/css" />
+	<link rel="stylesheet" type="text/css" href="/personas/store/css/personas.css" />
 </head>
 
   <body>
@@ -42,9 +43,11 @@ $(document).ready(
 </script>
 
 
-<h1>Designing Personas - <?= $form_title ?></h1>
+<div class="subtitle"><?= $form_title ?></div>
 <?php if ($error) { echo "<div class=\"error\">$error</div>"; } ?>
-Welcome <?php echo $auth_user ?>
+<form method=POST enctype='multipart/form-data' action="submit.php">
+<b>Welcome <?php echo $auth_user ?></b> <input type=submit name="logout" value="not <?php echo $auth_user ?>?">
+</form>
 <p>
 
 <form method=POST enctype='multipart/form-data' action="submit.php">

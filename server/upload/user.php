@@ -78,7 +78,15 @@
 		}
 	}
 ?>
-Create a personas account:
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <title>Personas for Firefox</title>
+	<link rel="stylesheet" type="text/css" href="/personas/store/css/personas.css" />
+  </head>
+
+  <body>
+<div class="subtitle">Create a Personas Account</div>
 
 <?php if ($error) { echo "<div class=\"error\">$error</div>"; } ?>
 <form method=POST enctype='multipart/form-data' action="user.php">

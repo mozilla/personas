@@ -70,7 +70,7 @@ class PersonaUser
 		$this->_username = $username;
 		$this->_email = $email;
 		$this->_cookie_value = $username . " " . md5($username . md5($password) . PERSONAS_LOGIN_SALT . $_SERVER['REMOTE_ADDR']);
-		setcookie('PERSONA_USER', $this->_cookie_value, time() + 60*60*24*365);
+		setcookie('PERSONA_USER', $this->_cookie_value, time() + 60*60*24*365, '/');
 
 		return 1;
 	}
@@ -138,6 +138,11 @@ class PersonaUser
 	function authenticate()
 	{
 		
+		if (array_key_exists('logout', $_POST))
+		{
+			$this->log_out();
+		}
+		
 		if (array_key_exists('user', $_POST))
 		{
 			#trying to log in
@@ -157,10 +162,16 @@ class PersonaUser
 			exit;
 		}
 
-		setcookie('PERSONA_USER', $this->_cookie_value, time() + 60*60*24*365);
+		setcookie('PERSONA_USER', $this->_cookie_value, time() + 60*60*24*365, '/');
 		return $this->_username;
 	}		
-
+	
+	function log_out()
+	{
+		setcookie('PERSONA_USER', '', time() - 3600, '/');		
+		include '../lib/auth_form.php';
+		exit;
+	}
 
 	function auth_form()
 	{

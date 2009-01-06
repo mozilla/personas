@@ -171,7 +171,7 @@ function html_page($type, $category, $boxes, $action = null, $title = null, $is_
 		</head>
 		<body>
 		<div id="header">
-			<div><img src="/personas/store/images/icon_firefox-personas_S.gif" width=175></div>
+			<div><img src="/personas/store/images/icon_firefox-personas_S.gif"></div>
 			<h1>$title</h1>
 		</div>
 		<div id="menu">
