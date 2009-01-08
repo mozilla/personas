@@ -203,9 +203,9 @@ let PersonaController = {
     this._defaultTitlebarColor = "#C9C9C9";
 
     // Observe various changes that we should apply to the browser window.
-    this.Observers.add(this, "personas:persona:changed");
-    this.Observers.add(this, "personas:personaLoadStarted");
-    this.Observers.add(this, "personas:personaLoadFinished");
+    this.Observers.add("personas:persona:changed", this);
+    this.Observers.add("personas:personaLoadStarted", this);
+    this.Observers.add("personas:personaLoadFinished", this);
 
     // Listen for various persona-related events that can bubble up from content.
     document.addEventListener("SelectPersona", this, false, true);
@@ -240,9 +240,9 @@ let PersonaController = {
     document.removeEventListener("PreviewPersona", this, false);
     document.removeEventListener("ResetPersona", this, false);
 
-    this.Observers.remove(this, "personas:persona:changed");
-    this.Observers.remove(this, "personas:personaLoadFinished");
-    this.Observers.remove(this, "personas:personaLoadStarted");
+    this.Observers.remove("personas:persona:changed", this);
+    this.Observers.remove("personas:personaLoadFinished", this);
+    this.Observers.remove("personas:personaLoadStarted", this);
   },
 
 

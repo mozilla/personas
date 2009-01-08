@@ -63,7 +63,7 @@ let PersonaService = {
 
   _init: function() {
     // Observe quit so we can destroy ourselves.
-    Observers.add(this, "quit-application");
+    Observers.add("quit-application", this);
 
     // Observe changes to personas preferences.
     this._observePrefChanges = true;
@@ -78,7 +78,7 @@ let PersonaService = {
   _destroy: function() {
     //this._destroyPersonaLoader();
     this._observePrefChanges = false;
-    Observers.remove(this, "quit-application");
+    Observers.remove("quit-application", this);
   },
 
 
@@ -304,11 +304,11 @@ let PersonaService = {
   },
 
   _onChangeToDefaultPersona: function() {
-    Observers.notify(null, "personas:persona:changed", null);
+    Observers.notify("personas:persona:changed");
   },
 
   _onChangeToPersona: function() {
-    Observers.notify(null, "personas:persona:changed", null);
+    Observers.notify("personas:persona:changed");
   },
 
   previewingPersona: null,
@@ -321,7 +321,7 @@ let PersonaService = {
    */
   previewPersona: function(persona) {
     this.previewingPersona = persona;
-    Observers.notify(null, "personas:persona:changed", null);
+    Observers.notify("personas:persona:changed");
   },
 
   /**
@@ -329,7 +329,7 @@ let PersonaService = {
    */
   resetPersona: function() {
     this.previewingPersona = null;
-    Observers.notify(null, "personas:persona:changed", null);
+    Observers.notify("personas:persona:changed");
   },
 
   /**
@@ -366,7 +366,7 @@ let PersonaService = {
   observe: function(subject, topic, data) {
     switch (topic) {
       case "quit-application":
-        Observers.remove(this, "quit-application");
+        Observers.remove("quit-application", this);
         this._destroy();
         break;
 
@@ -631,14 +631,12 @@ let PersonaService = {
     if (this._loadState == LOAD_STATE_LOADING) {
       // FIXME: cancel the requests currently in process in the header
       // and footer iframes.
-      Observers.notify(null,
-                       "personas:personaLoadFinished",
-                       this._activePersona);
+      Observers.notify("personas:personaLoadFinished", null, this._activePersona);
     }
     this._activePersona = null;
 
     if (aPersonaID == "default") {
-      Observers.notify(null, "personas:defaultPersonaSelected", null);
+      Observers.notify("personas:defaultPersonaSelected");
       return;
     }
 
@@ -671,7 +669,7 @@ let PersonaService = {
     this._activePersona = aPersonaID;
 
     if(aPersonaID != "default") {
-      Observers.notify(null, "personas:personaLoadStarted", aPersonaID);
+      Observers.notify("personas:personaLoadStarted", null, aPersonaID);
       this._loadState = LOAD_STATE_LOADING;
       this._headerLoader.load(aPersonaID, this._getHeaderURL(aPersonaID));
       this._footerLoader.load(aPersonaID, this._getFooterURL(aPersonaID));
@@ -691,9 +689,7 @@ let PersonaService = {
 
   _onLoadedPersona: function() {
     this._loadState = LOAD_STATE_LOADED;
-    Observers.notify(null,
-                     "personas:personaLoadFinished",
-                     this._activePersona);
+    Observers.notify("personas:personaLoadFinished", null, this._activePersona);
 
     this._snapshotPersona();
 
@@ -714,7 +710,7 @@ let PersonaService = {
    //}
    this.textColor = this._getTextColor(this._activePersona);
    this.accentColor = this._getAccentColor(this._activePersona);
-   Observers.notify(null, "personas:activePersonaUpdated", null);
+   Observers.notify("personas:activePersonaUpdated");
   },
 
   // FIXME: index personas after retrieving them and make the index (or a method
@@ -795,7 +791,7 @@ let PersonaService = {
       return;
 
     this.textColor = this._getTextColor(this._activePersona);
-    Observers.notify(null, "personas:activePersonaUpdated", null);
+    Observers.notify("personas:activePersonaUpdated");
   },
 
   _getAccentColor: function(persona) {
@@ -816,7 +812,7 @@ let PersonaService = {
       return;
 
     this.accentColor = this._getAccentColor(this._activePersona);
-    Observers.notify(null, "personas:activePersonaUpdated", null);
+    Observers.notify("personas:activePersonaUpdated");
   }
 
 };
