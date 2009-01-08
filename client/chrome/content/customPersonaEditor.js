@@ -149,8 +149,8 @@ let CustomPersonaEditor = {
     this._header.value = this.customPersona.header || "";
     this._footer.value = this.customPersona.footer || "";
     this._customName.value = this.customPersona.name || "";
-    this._textColorPicker.color = this.customPersona.textColor || "#000000";
-    this._accentColorPicker.color = this.customPersona.accentColor || "#C9C9C9";
+    this._textColorPicker.color = this.customPersona.textcolor || "#000000";
+    this._accentColorPicker.color = this.customPersona.accentcolor || "#C9C9C9";
 
     PersonaService.previewPersona(this.customPersona);
   },
