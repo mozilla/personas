@@ -17,14 +17,18 @@ pref("extensions.personas.category", "");
 
 pref("extensions.personas.lastversion", "firstrun");
 
-// The URL from which we load the data and the location of the web directory.
+// The URL from which we load the data.
+pref("extensions.personas.url", "http://getpersonas.com/personas/store/");
+
+// The location of the web directory.
+// We load a variety of URLs relative to this one.
+pref("extensions.personas.siteURL", "http://getpersonas.com/personas/store/");
+
 // The authorizedHosts preference is a comma and/or space-separated list
 // of rightmost substrings matching domains allowed to set and preview personas.
 // At a minimum, it must contain a value matching the domain at which the web
 // directory is located in order for the directory to work.
-pref("extensions.personas.url", "http://sm-personas01.mozilla.org/personas/store/");
-pref("extensions.personas.siteURL", "http://sm-personas01.mozilla.org/personas/store/");
-pref("extensions.personas.authorizedHosts", "sm-personas01.mozilla.org");
+pref("extensions.personas.authorizedHosts", "getpersonas.com");
 
 pref("extensions.personas.lastselected0", "");
 pref("extensions.personas.lastselected1", "");
