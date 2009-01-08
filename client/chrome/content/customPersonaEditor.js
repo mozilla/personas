@@ -208,7 +208,7 @@ let CustomPersonaEditor = {
   },
 
   onChangeAccentColor: function(aEvent) {
-    this.customPersona.accentcolor = this._textColorPicker.color;
+    this.customPersona.accentcolor = this._accentColorPicker.color;
     PersonaService.resetPersona();
     this._save();
   },
