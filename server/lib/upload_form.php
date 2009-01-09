@@ -53,7 +53,7 @@ $(document).ready(
 <form method=POST enctype='multipart/form-data' action="submit.php">
 <input type=hidden name='id' value='<?= $form_id ?>'>
 
-Persona Title: <input type=text name="name" value='<?= htmlspecialchars($form_name) ?>'>
+Persona Title: <input type=text name="name" maxlength=25 value='<?= htmlspecialchars($form_name) ?>'>
 <p>
 Category: <select name="category">
 <?php 

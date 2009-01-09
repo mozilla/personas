@@ -277,13 +277,7 @@ class PersonaStorage
 			throw new Exception("Database unavailable", 503);
 		}
 		
-		$personas = array();
-		
-		while ($result = $sth->fetch(PDO::FETCH_ASSOC))
-		{
-			$personas[] = $result;
-		}		
-		return $personas;
+		return 1;
 	}
 	
 	function get_pending_personas()
