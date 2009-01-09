@@ -13,7 +13,7 @@
 # for the specific language governing rights and limitations under the
 # License.
 #
-# The Original Code is Weave Basic Object Server
+# The Original Code is Personas Server
 #
 # The Initial Developer of the Original Code is
 # Mozilla Labs.

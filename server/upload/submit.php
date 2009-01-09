@@ -195,7 +195,7 @@
 			if (move_uploaded_file($_FILES['header']['tmp_name'], $persona_path . "/" . $h_name)
 			  && move_uploaded_file($_FILES['footer']['tmp_name'], $persona_path . "/" . $f_name))
 			{
-				$error = "Files uploaded successfully";
+				$error = "Files uploaded successfully. Persona added to the approval queue.";
 			}
 			else
 			{
@@ -235,8 +235,8 @@
 		{
 			$form_name = $persona['name'];
 			$form_category = $persona['category'];
-			$form_accent = $persona['accentcolor'];
-			$form_text = $persona['textcolor'];
+			$form_accent = $persona['accentcolor'] ? $persona['accentcolor'] : ' ';
+			$form_text = $persona['textcolor'] ? $persona['textcolor'] : ' ';
 		}
 		else
 		{

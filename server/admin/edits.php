@@ -169,7 +169,7 @@
 		}
 		else 
 		{ 
-			print "Name: " . $result['category']; 
+			print "Category: " . $result['category']; 
 		}
 		print "<p>";
 
