@@ -517,7 +517,25 @@ let PersonaController = {
   },
 
   onEditCustomPersona: function() {
-    window.openUILinkIn("chrome://personas/content/customPersonaEditor.xul", "tab");
+    let editorUrl = "chrome://personas/content/customPersonaEditor.xul";
+    let found = false;
+    let tabbrowser = window.getBrowser();
+
+    // Check each tab of this browser for the editor XUL file
+    let numTabs = tabbrowser.browsers.length;
+    for (let index = 0; index < numTabs; index++) {
+      let currentBrowser = tabbrowser.getBrowserAtIndex(index);
+      if (editorUrl == currentBrowser.currentURI.spec) {
+        // The editor is already opened. Select this tab.
+        tabbrowser.selectedTab = tabbrowser.mTabs[index];
+        found = true;
+        break;
+      }
+    }
+
+    // If the editor's not open...
+    if (!found)
+      window.openUILinkIn(editorUrl, "tab");
   },
 
   onSelectAbout: function(event) {
