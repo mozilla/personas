@@ -74,3 +74,10 @@ colorpicker {
   font-size: large;
   color: white;
 }
+
+/* Firefox 3.0 hides textbox#header on Mac for some unknown reason
+ * <http://mxr.mozilla.org/firefox/source/toolkit/themes/pinstripe/global/global.css#209>,
+ * so we have to override that for our textbox with that ID. */
+#header {
+  display: -moz-box !important;
+}
