@@ -75,9 +75,9 @@ Accent Color (optional): <input type="text" id="accentcolor" name="accentcolor" 
 <div id="colorpicker2" align="left" style="display:none"></div>
 <p>
 Header<?php if ($form_id) {?> (optional) <?php } ?>: <input type=file name=header>
-<p>
+(Recommended: 3000px wide, 200px tall)<p>
 Footer<?php if ($form_id) {?> (optional) <?php } ?>: <input type=file name=footer>
-<p>
+(Recommended: 3000px wide, 100px tall)<p>
 <input type=submit>
 
 </form>

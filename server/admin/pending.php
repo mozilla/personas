@@ -118,7 +118,7 @@
 		<br>
 		Name: <?= $result['name'] ?>
 		<br>
-		User: <?= $result['user'] ?>
+		User: <?= $result['author'] ?>
 		<br>
 		Category: <select name="category">
 		<?php
