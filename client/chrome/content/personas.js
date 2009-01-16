@@ -328,16 +328,21 @@ let PersonaController = {
           header.setAttribute("activetitlebarcolor", titlebarColor);
           header.setAttribute("inactivetitlebarcolor", titlebarColor);
           header.setAttribute("titlebarcolor", titlebarColor);
-          // FIXME: Incredibly gross hack in order to force a window redraw event
-          // that ensures that the titlebar color change is applied.  Note that
-          // this will unmaximize a maximized window on Windows and Linux, but
-          // we only do this on Mac (which is the only place the "titlebarcolor"
-          // attribute has any effect anyway at the moment), so it's ok for now.
-          // If we ever make this work on Windows and Linux, we'll have to
-          // determine the maximized state of the window beforehand and restore
-          // it to that state afterwards.
-          window.resizeTo(parseInt(window.outerWidth)+1, window.outerHeight);
-          window.resizeTo(parseInt(window.outerWidth)-1, window.outerHeight);
+
+          // FIXME: Incredibly gross hack in order to force a window redraw
+          // event that ensures that the titlebar color change is applied.
+          //
+          // This will unmaximize a maximized window on Windows and Linux,
+          // but we only do this on Mac (which is the only place
+          // the "titlebarcolor" attribute has any effect anyway at the moment),
+          // so that's ok for now.
+          //
+          // This will unminimize a minimized window on Mac, so we can't do it
+          // if the window is minimized.
+          if (window.windowState != Ci.nsIDOMChromeWindow.STATE_MINIMIZED) {
+            window.resizeTo(parseInt(window.outerWidth)+1, window.outerHeight);
+            window.resizeTo(parseInt(window.outerWidth)-1, window.outerHeight);
+          }
         }
       }
     }
