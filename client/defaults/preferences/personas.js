@@ -18,11 +18,11 @@ pref("extensions.personas.category", "");
 pref("extensions.personas.lastversion", "firstrun");
 
 // The URL from which we load the data.
-pref("extensions.personas.url", "http://getpersonas.com/personas/store/");
+pref("extensions.personas.url", "http://getpersonas.com/store/");
 
 // The location of the web directory.
 // We load a variety of URLs relative to this one.
-pref("extensions.personas.siteURL", "http://getpersonas.com/personas/store/");
+pref("extensions.personas.siteURL", "http://getpersonas.com/store/");
 
 // The authorizedHosts preference is a comma and/or space-separated list
 // of rightmost substrings matching domains allowed to set and preview personas.
