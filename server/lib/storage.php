@@ -308,7 +308,7 @@ class PersonaStorage
 	{
 		try
 		{
-			$statement = 'select * from edits limit 1';
+			$statement = 'select * from edits';
 			$sth = $this->_dbh->prepare($statement);
 			$sth->execute();
 		}
@@ -318,8 +318,12 @@ class PersonaStorage
 			throw new Exception("Database unavailable", 503);
 		}
 		
-		$result = $sth->fetch(PDO::FETCH_ASSOC);
-		return $result;
+		$edits = array();
+		while ($result = $sth->fetch(PDO::FETCH_ASSOC))
+		{
+			$edits[] = $result;
+		}		
+		return $edits;
 	}
 	
 	function get_edits_by_id($id)

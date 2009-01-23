@@ -49,7 +49,8 @@ $(document).ready(function () {
     if (ua.indexOf('firefox') == -1 &&
         ua.indexOf('minefield') == -1 &&
         ua.indexOf('bonecho') == -1 &&
-        ua.indexOf('granparadiso') == -1) {
+        ua.indexOf('granparadiso') == -1 &&
+        ua.indexOf('shiretoko') == -1) {
         // If not using Firefox, change install link and show notice
         $('#install-link').attr('href', 'http://www.mozilla.com/en-US/firefox/?ref=personas');
         $('#install-nonfirefox').show();

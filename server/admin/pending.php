@@ -43,6 +43,18 @@
 	require_once '../lib/storage.php';
 	require_once '../lib/user.php';
 
+function send_problem_email($address, $reason)
+{
+	$message = 'Thanks for submitting a persona. Unfortunately, there was a problem that prevents us from adding it to the available pool.';
+	$message .= "\n\n";
+	$message .= "The reason given was: $reason";
+	$message .= "\n\n";
+	$message .= "We hope this will be enough information to address the issue. If you need more information, please feel free to contact us.\n\nBest wishes,\nMozilla Labs\n";
+	
+	$header = "From: personas-devel@mozilla.com\r\n";
+	return mail($address, 'A problem with your persona submission', $message, $header);
+}
+
 	try 
 	{
 		$user = new PersonaUser();
@@ -84,10 +96,11 @@
 				break;
 			case 'change':
 				$category = ini_get('magic_quotes_gpc') ? stripslashes($_GET['category']) : $_GET['category'];
-				$db->change_persona_category($persona{'id'}, $category);
+				$db->change_persona_category($persona['id'], $category);
 				break;			
 			case 'reject':
-				$db->reject_persona($persona{'id'});
+				$db->reject_persona($persona['id']);
+				send_problem_email($user->get_email($persona['author']), $_GET['reason']);
 				break;
 			default:
 				print "Could not understand the verdict";	
@@ -118,7 +131,7 @@
 		<br>
 		Name: <?= $result['name'] ?>
 		<br>
-		User: <?= $result['user'] ?>
+		User: <?= $result['author'] ?>
 		<br>
 		Category: <select name="category">
 		<?php
@@ -137,6 +150,8 @@
 		<img src="<?= $header_url ?>"><p>
 		Footer:<br>
 		<img src="<?= $footer_url ?>"><p>
+		<p>
+		If reject, reason to tell the user: <input type=text name=reason>
 		<p>
 		<input type="submit" name="verdict" value="accept">
 		<input type="submit" name="verdict" value="reject">

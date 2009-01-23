@@ -107,13 +107,13 @@
 	
 	
 	$result = $db->get_pending_edits();
-	if (!$result)
+	if (!$result[0])
 	{
 		print "There are no more pending edits";
 	}
 	else
 	{
-	
+		$result = $result[0];
 		$id = $result['id'];
 		
 		$second_folder = $id%10;

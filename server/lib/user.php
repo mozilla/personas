@@ -35,6 +35,31 @@ class PersonaUser
 		return $this->_cookie_value;
 	}
 	
+	function get_email($username = null)
+	{
+		if ($username)
+		{
+			try
+			{
+				$select_stmt = 'select email from users where username = :username';
+				$sth = $this->_dbh->prepare($select_stmt);
+				$sth->bindParam(':username', $username);
+				$sth->execute();
+			}
+			catch( PDOException $exception )
+			{
+				error_log("get_email: " . $exception->getMessage());
+				throw new Exception("Database unavailable", 503);
+			}
+			return $sth->fetchColumn();
+		}
+		else
+		{
+			return $this->_email;
+		}
+		
+	}
+	
 	function has_admin_privs()
 	{
 		return $this->_privs == 2;
