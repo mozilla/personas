@@ -1,3 +1,17 @@
-<!ENTITY personas_app_title 	  "Personas für Firefox">
-
-<!ENTITY useDefaultPersona.label  "Standard benutzen">
+<!ENTITY personas_app_title "Personas für Firefox">
+<!ENTITY useDefaultPersona.label "Standard">
+<!ENTITY preferences.label "Einstellungen...">
+<!ENTITY viewDirectory.label "Personas im Internet...">
+<!ENTITY customPersona.label "Persona anpassen">
+<!ENTITY customName.label "Name:">
+<!ENTITY header.label "Header:">
+<!ENTITY selectBackground.label "Durchsuche...">
+<!ENTITY footer.label "Footer:">
+<!ENTITY textColorPicker.label "Textfarbe:">
+<!ENTITY accentColorPicker.label "Akzentfarbe:">
+<!ENTITY useDefaultColor.label "Verwende Standardfarbe">
+<!ENTITY okButton.label "OK">
+<!ENTITY contextHomePage.label "Internetseite">
+<!ENTITY contextPreferences.label "Einstellungen">
+<!ENTITY contextEdit.label "Bearbeiten">
+<!ENTITY contextApply.label "Anwenden">
