@@ -130,10 +130,10 @@ function html_box($item, $is_author = null, $is_admin = null)
 End_of_block;
 	if ($is_author || $is_admin)
 	{
-		$text .= "<div class=\"creator\"><a href=\"/personas/upload/submit.php?edit_id=${item['id']}\" target=\"_blank\">Edit</a>";
+		$text .= "<div class=\"creator\"><a href=\"/upload/submit.php?edit_id=${item['id']}\" target=\"_blank\">Edit</a>";
 		if ($is_admin)
 		{
-			$text .= " | <a href=\"/personas/admin/pull.php?id=${item['id']}\" target=\"_blank\" onClick=\"return confirm('Confirm Deletion');\">Pull</a>";
+			$text .= " | <a href=\"/admin/pull.php?id=${item['id']}\" target=\"_blank\" onClick=\"return confirm('Confirm Deletion');\">Pull</a>";
 		}
 		$text .= "</div>";
 	}
@@ -157,7 +157,7 @@ function html_page($type, $category, $boxes, $action = null, $title = null, $is_
 		<head>
 			<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 			<title>Personas</title>
-			<link rel="stylesheet" type="text/css" href="/personas/store/css/personas.css" />
+			<link rel="stylesheet" type="text/css" href="/store/css/personas.css" />
 			<script language="JavaScript">
 				function dispatchPersonaEvent(aType, aNode) 
 				{
@@ -171,7 +171,7 @@ function html_page($type, $category, $boxes, $action = null, $title = null, $is_
 		</head>
 		<body>
 		<div id="header">
-			<div><img src="/personas/store/images/icon_firefox-personas_S.gif"></div>
+			<div><img src="/store/images/icon_firefox-personas_S.gif"></div>
 			<h1>$title</h1>
 		</div>
 		<div id="menu">
