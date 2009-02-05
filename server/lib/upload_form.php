@@ -5,7 +5,7 @@
 	<script type="text/javascript" src="include/jquery.js"></script>
 	<script type="text/javascript" src="include/farbtastic.js"></script>
 	<link rel="stylesheet" href="include/farbtastic.css" type="text/css" />
-	<link rel="stylesheet" type="text/css" href="/personas/store/css/personas.css" />
+	<link rel="stylesheet" type="text/css" href="/store/css/personas.css" />
 </head>
 
   <body>

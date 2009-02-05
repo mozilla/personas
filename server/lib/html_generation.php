@@ -130,10 +130,10 @@ function html_box($item, $is_author = null, $is_admin = null)
 End_of_block;
 	if ($is_author || $is_admin)
 	{
-		$text .= "<div class=\"creator\"><a href=\"/upload/submit.php?edit_id=${item['id']}\" target=\"_blank\">Edit</a>";
+		$text .= "<div class=\"creator\"><a href=\"https://personas.services.mozilla.org/upload/submit.php?edit_id=${item['id']}\" target=\"_blank\">Edit</a>";
 		if ($is_admin)
 		{
-			$text .= " | <a href=\"/admin/pull.php?id=${item['id']}\" target=\"_blank\" onClick=\"return confirm('Confirm Deletion');\">Pull</a>";
+			$text .= " | <a href=\"https://personas.services.mozilla.org/admin/pull.php?id=${item['id']}\" target=\"_blank\" onClick=\"return confirm('Confirm Deletion');\">Pull</a>";
 		}
 		$text .= "</div>";
 	}

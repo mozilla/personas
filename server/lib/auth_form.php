@@ -2,7 +2,7 @@
 <html>
   <head>
     <title>Personas for Firefox</title>
-	<link rel="stylesheet" type="text/css" href="/personas/store/css/personas.css" />
+	<link rel="stylesheet" type="text/css" href="/store/css/personas.css" />
   </head>
 
   <body>
@@ -19,7 +19,7 @@ Password: <input type=password name=pass>
 <input type=submit value="Log In">
 
 </form>
-<p><a href="/personas/upload/user.php">Create a personas account</a>
+<p><a href="/upload/user.php">Create a personas account</a>
   </body>
 
 </html>

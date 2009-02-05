@@ -82,7 +82,7 @@
 <html>
   <head>
     <title>Personas for Firefox</title>
-	<link rel="stylesheet" type="text/css" href="/personas/store/css/personas.css" />
+	<link rel="stylesheet" type="text/css" href="/store/css/personas.css" />
   </head>
 
   <body>
