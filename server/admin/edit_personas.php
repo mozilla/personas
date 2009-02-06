@@ -59,7 +59,6 @@
 		print("Database problem. Please try again later.");
 		exit;
 	}
-error_log($user->get_username());
 
 	try 
 	{
