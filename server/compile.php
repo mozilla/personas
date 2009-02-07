@@ -48,7 +48,9 @@
 	$popular_list = $db->get_popular_personas(null, 20);
 	foreach ($popular_list as $item)
 	{
-		$popular_json[] = extract_record_data($item);
+		$data = extract_record_data($item);
+		$data['recent'] = (time() - strtotime($item['approve']) < 604800) ? true : false;
+		$popular_json[] = $data;
 	}
 	$master['popular'] = $popular_json;
 	file_put_contents(PERSONAS_STORAGE_PREFIX . '/popular.html', html_page('popular', '', $popular_list));
@@ -56,7 +58,9 @@
 	$recent_list = $db->get_recent_personas(null, 20);
 	foreach ($recent_list as $item)
 	{
-		$recent_json[] = extract_record_data($item);
+		$data = extract_record_data($item);
+		$data['recent'] = (time() - strtotime($item['approve']) < 604800) ? true : false;
+		$recent_json[] = $data;
 	}
 	$master['recent'] = $recent_json;
 	file_put_contents(PERSONAS_STORAGE_PREFIX . '/recent.html', html_page('recent', '', $recent_list));
