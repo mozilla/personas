@@ -150,6 +150,26 @@ class PersonaStorage
 		
 	}
 	
+	function get_active_persona_count()
+	{
+		try
+		{
+			$statement = 'select count(*) from personas where status = 1';
+			$sth = $this->_dbh->prepare($statement);
+			$sth->execute();
+		}
+		catch( PDOException $exception )
+		{
+			error_log($exception->getMessage());
+			throw new Exception("Database unavailable", 503);
+		}
+
+		$result = $sth->fetchColumn();
+		
+		return $result;
+	}
+	
+	
 	function get_persona_by_id($id)
 	{
 		if (!$id) { return 0; }
@@ -633,6 +653,6 @@ class PersonaStorage
 		}
 		return 1;
 	}
-
+	
 }
 ?>
