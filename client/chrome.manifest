@@ -9,10 +9,10 @@ content  personas             chrome/content/
 
 # Register separate skins for each primary platform so we can fit personas
 # into each one's very different skin.
-# FIXME: remove the appversion>=3.0 flag now that we only support Fx3+.
-skin  personas  classic/1.0  chrome/skin/windows/  appversion>=3.0  os=WINNT
-skin  personas  classic/1.0  chrome/skin/mac/      appversion>=3.0  os=Darwin
-skin  personas  classic/1.0  chrome/skin/linux/    appversion>=3.0  os=Linux
+skin  personas  classic/1.0  chrome/skin/windows/      appversion>=3.0  os=WINNT
+skin  personas  classic/1.0  chrome/skin/mac3.0/       appversion<3.1   os=Darwin
+skin  personas  classic/1.0  chrome/skin/mac3.1/       appversion>=3.1b2  os=Darwin
+skin  personas  classic/1.0  chrome/skin/linux/        appversion>=3.0  os=Linux
 
 # localizations in alphabetical order
 locale   personas   cs-CZ       chrome/locale/cs-CZ/

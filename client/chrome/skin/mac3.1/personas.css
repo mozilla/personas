@@ -52,8 +52,18 @@
 }
 
 /* Make the toolbox and tabs transparent so the image shines through them. */
-#main-window[persona] .tabbrowser-tabs,
+#main-window[persona] .tabbrowser-tabs {
+  -moz-appearance: none;
+  background-color: transparent;
+  background-image: none !important;
+}
 #main-window[persona] toolbar {
+  -moz-appearance: none;
+  background-color: transparent;
+#  background-image: none !important;
+}
+
+#main-window[persona] #nav-bar {
   -moz-appearance: none;
   background-image: none; 
   background-color: transparent;
@@ -61,8 +71,11 @@
 
 /* Gray out the window slightly when it's not active. */
 #main-window[persona]:not([active="true"]) > #navigator-toolbox > toolbar,
-#main-window[persona]:not([active="true"]) > #navigator-toolbox > #nav-bar,
 #main-window[persona]:not([active="true"]) > #navigator-toolbox > #PersonalToolbar {
+  -moz-appearance: none;
+  background-color: transparent; 
+}
+#main-window[persona]:not([active="true"]) > #navigator-toolbox > #nav-bar {
   -moz-appearance: none;
   background-image: none; 
   background-color: transparent; 
@@ -74,35 +87,63 @@
 /* Style the tabs. */
 #main-window[persona] .tabbrowser-strip {
   -moz-appearance: none;
-  background-image: url(chrome://personas/skin/tabbrowser-tabs-bkgnd.png);
+#  background-image: url(chrome://personas/skin/tabbrowser-tabs-bkgnd.png) !important;
   background-color: transparent; 
+  background-image: none !important;
 }
+
 #main-window[persona] .tabbrowser-tab {
-  opacity: 0.6;
+#  opacity: 0.6;
+#   color: black !important;
 }
+
 #main-window[persona] .tabbrowser-tab[selected="true"],
 #main-window[persona] .tabbrowser-tab:hover {
-  opacity: 0.6;
+#   background-color: none;
+#  opacity: 0.6;
 }
+
 #main-window[persona] .tab-text,
 #main-window[persona] .tab-text-shadow {
-  font-weight: normal !important;
+#   font-weight: normal !important;
 }
 
-#main-window[persona] .tabbrowser-tab[selected="true"] > .tab-image-left {
-  background-image: url(chrome://browser/skin/tabbrowser/tab-left-bkgnd.png) !important;
+#main-window[persona] .tabbrowser-tab {
+  -moz-appearance: none;
+  -moz-border-radius: 0 0 6px 6px;
+  color: #222;
+  -moz-box-pack: center;
+  -moz-box-align: center;
+  margin-bottom: 1px;
+  -moz-margin-end: 1px;
+  padding: 0 5px;
+  border-style: none solid solid;
+  border-width: 3px;
+  -moz-border-right-colors: rgba(0, 0, 0, .08) rgba(0, 0, 0, .17) rgba(180, 180, 180, .29);
+  -moz-border-bottom-colors: rgba(0, 0, 0, .08) rgba(0, 0, 0, .17) rgba(180, 180, 180, .29);
+  -moz-border-left-colors: rgba(0, 0, 0, .08) rgba(0, 0, 0, .17) rgba(180, 180, 180, .29);
+  -moz-background-clip: padding;
+  min-width: 1px !important;
+  text-align: center;
+  height: 24px;
+  background-image: none !important;
 }
 
-#main-window[persona] .tabbrowser-tab[selected="true"] > .tab-image-middle {
-  background-image: url(chrome://browser/skin/tabbrowser/tab-middle-bkgnd.png) !important;
+#main-window[persona] .tabbrowser-tab:not([selected="true"]) {
+  background-image: url(chrome://personas/skin/tabbrowser-tabs-bkgnd.png) !important;
+ #   background-image: url(chrome://browser/skin/tabbrowser/tab-bkgnd.png);
+ #  background-image: none !important;
 }
 
-#main-window[persona] .tabbrowser-tab[selected="true"] > .tab-image-right {
-  background-image: url(chrome://browser/skin/tabbrowser/tab-right-bkgnd.png) !important;
-}
-
-#main-window[persona] .tabbrowser-tab[selected="true"] > .tab-close-button {
-  background-image: url(chrome://browser/skin/tabbrowser/tab-middle-bkgnd.png) !important;
+#main-window[persona] .tabbrowser-tab[selected="true"] {
+  -moz-user-focus: normal;
+  padding: 0 6px 1px;
+  border-width: 2px;
+  -moz-border-left-colors: rgba(0, 0, 0, .1) rgba(0, 0, 0, .2);
+  -moz-border-bottom-colors: rgba(0, 0, 0, .1) rgba(0, 0, 0, .2);
+  -moz-border-right-colors: rgba(0, 0, 0, .1) rgba(0, 0, 0, .2);
+  background-color: transparent !important;
+  background-image: none !important;
 }
 
 /* Make some elements a little transparent so the persona flavors their look. */
@@ -112,7 +153,7 @@
 }
 
 #main-window[persona] .toolbarbutton-1, #back-forward-dropmarker {
-  opacity: 0.9;
+  list-style-image: url("chrome://personas/skin/Toolbar.png") !important;
 }
 
 #main-window[persona] toolbarbutton.bookmark-item {
