@@ -552,17 +552,16 @@ let PersonaController = {
   /**
    * Ensure the host that loaded the document from which the given DOM event
    * came matches an entry in the personas whitelist.  The host matches if it
-   * ends with one of the entries in the whitelist.  For example, if
-   * .mozilla.com is an entry in the whitelist, then www.mozilla.com matches,
-   * as does labs.mozilla.com, but mozilla.com does not, nor does evil.com.
+   * equals one of the entries in the whitelist.  For example, if
+   * www.mozilla.com is an entry in the whitelist, then www.mozilla.com matches,
+   * but labs.mozilla.com, mozilla.com, and evil.com do not.
    * 
    * @param aEvent {Event} the DOM event
    */
   _authorizeHost: function(aEvent) {
     let host = aEvent.target.ownerDocument.location.hostname;
-    let hostBackwards = host.split('').reverse().join('');
     let authorizedHosts = this._prefs.get("authorizedHosts").split(/[, ]+/);
-    if (!authorizedHosts.some(function(v) { return hostBackwards.indexOf(v.split('').reverse().join('')) == 0 }))
+    if (!authorizedHosts.some(function(v) v == host))
       throw host + " not authorized to modify personas";
   },
 

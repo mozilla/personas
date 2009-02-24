@@ -25,10 +25,10 @@ pref("extensions.personas.url", "http://getpersonas.com/store/");
 pref("extensions.personas.siteURL", "http://getpersonas.com/store/");
 
 // The authorizedHosts preference is a comma and/or space-separated list
-// of rightmost substrings matching domains allowed to set and preview personas.
+// of domains allowed to set and preview personas.
 // At a minimum, it must contain a value matching the domain at which the web
 // directory is located in order for the directory to work.
-pref("extensions.personas.authorizedHosts", "getpersonas.com");
+pref("extensions.personas.authorizedHosts", "getpersonas.com, www.getpersonas.com");
 
 pref("extensions.personas.lastselected0", "");
 pref("extensions.personas.lastselected1", "");
