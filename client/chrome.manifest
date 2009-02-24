@@ -15,6 +15,7 @@ skin  personas  classic/1.0  chrome/skin/mac3.1/       appversion>=3.1b2  os=Dar
 skin  personas  classic/1.0  chrome/skin/linux/        appversion>=3.0  os=Linux
 
 # localizations in alphabetical order
+locale   personas   bg-BG       chrome/locale/bg-BG/
 locale   personas   cs-CZ       chrome/locale/cs-CZ/
 locale   personas   da-DK       chrome/locale/da-DK/
 locale   personas   de-DE       chrome/locale/de-DE/
