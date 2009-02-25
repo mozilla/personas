@@ -14,6 +14,9 @@ version: 2.7.0
 */
 body{font:13px/1.231 arial,helvetica,clean,sans-serif;*font-size:small;*font:x-small;}select,input,button,textarea,button{font:99% arial,helvetica,clean,sans-serif;}table{font-size:inherit;font:100%;}pre,code,kbd,samp,tt{font-family:monospace;*font-size:108%;line-height:100%;}
 
+html {
+    background:#ececec ;
+}
 
 body {
     background: #ececec;
@@ -30,7 +33,7 @@ body {
     background: url('img/home-bg.jpg') top left repeat-x;
 }
 
-#inner-wrapper {
+#inner-wrapper, #footer {
     width: 950px;
     margin: 0 auto;
 }
@@ -103,10 +106,26 @@ body {
 }
 
 #nav ul a:active {
-    background: url('img/nav-sprite.jpg') 0 0 repeat-x;
+    background: url('img/nav-sprite.jpg') 0 -140px repeat-x;
 }
 
 #header {
-    clear: both;
-    
+    margin: 0 0 0 -10px;
+    padding: 20px 0 0 285px;
+    background: url('img/hanger-bg.jpg') top left no-repeat;
+    height: 125px;
+}
+
+#header h2 {
+    font-size: 350%;
+    color: #c33c26;
+    font-weight: bold;
+    letter-spacing: -2px;
+}
+
+#header h3 {
+    font-style: italic;
+    font-family: Georgia, Times, "Times New Roman", serif;
+    font-size: 116%;
+    color: #09344f;
 }
