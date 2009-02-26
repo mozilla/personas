@@ -129,9 +129,44 @@ body {
     color: #09344f;
 }
 
+.home #header {
+    background: url('img/home-header-bg.jpg') top right no-repeat;
+    height: 367px;
+    padding: 40px 500px 0 0;
+    margin-left: 0;
+}
+
+.home #header h2 {
+    line-height: 1em;
+}
+
+.home #header h3 {
+    margin: 20px 0 0 0;
+    font-size: 131%;
+    line-height: 1.3em;
+}
+
+p.get-personas {
+    margin: 35px 0 0 0;
+}
+
+a.get-personas {
+    text-decoration: none;
+}
+
+a.get-personas span {
+    background: url('img/main-sprites.png') 0 -52px no-repeat;
+    padding: 26px 0 26px 10px;
+}
+
+p.get-personas span.arrow {
+    padding: 26px 30px;
+    background: url('img/main-sprites.png') -623px -52px no-repeat;
+}
+
 #footer {
     width: 900px;
-    margin: 10px auto;
+    margin: 0 auto;
     padding: 12px 0 12px 50px;
     color: #868585;
     font-family: Arial, Verdana, sans-serif;
