@@ -117,6 +117,12 @@
   border-bottom: none;
 }
 
+#main-window[persona] toolbarbutton {
+  /* Ensure transparency of all toolbar items in their various states (e.g.
+   * active,inactive,hover, etc. */
+  -moz-appearance: none;
+}
+
 
 /******************************************************************************/
 /* Eliminate top/bottom borders from statusbars so they don't mar the persona. */
