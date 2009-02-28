@@ -4,8 +4,8 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<title>Personas Homepage</title>
-	<link href="style.css" rel="stylesheet" type="text/css" media="all" />
-	<script src="script.js"></script>
+	<link href="css/style.css" rel="stylesheet" type="text/css" media="all" />
+	
 </head>
 <body class="home">
     <div id="outer-wrapper">
@@ -36,32 +36,101 @@
             <div class="feature slideshow">
                 <h3>Featured Personas</h3>
                 <ul id="slideshow-nav">
-                    <li><a href="#">1</a></li>
+                    <li><a href="#" class="active">1</a></li>
                     <li><a href="#">2</a></li>
                     <li><a href="#">3</a></li>
                     <li><a href="#">4</a></li>
                 </ul>
+                <a href="#" id="slideshow-previous"><img src="img/nav-prev.png" alt="Previous"/></a>
+                <a href="#" id="slideshow-next"><img src="img/nav-next.png" alt="Next"/></a>
                 <div id="slideshow">
                     <ul id="slides">
-                        <li>Test</li>
-                        <li>Test</li>
-                        <li>Test</li>
-                        <li>Test</li>
+                        <li>
+                            <img class="preview" src="img/featured-persona-example.jpg">
+                            <h4>Firefox Robot</h4>
+                            <p class="try"><a href="#">try it now »</a></p>
+                            <hr />
+                            <p class="designer"><strong>Designer:</strong> NoBox</p>
+                            <p class="added"><strong>Added:</strong> 01/19/09</p>
+                            <hr />
+                            <p class="description"><strong>Description:</strong> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam a nulla. Nulla...</p>
+                        </li>
+                        <li>
+                            <img class="preview" src="img/featured-persona-example.jpg">
+                            <h4>Firefox Robot</h4>
+                            <p class="try"><a href="#">try it now »</a></p>
+                            <hr />
+                            <p class="designer"><strong>Designer:</strong> NoBox</p>
+                            <p class="added"><strong>Added:</strong> 01/19/09</p>
+                            <hr />
+                            <p class="description"><strong>Description:</strong> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam a nulla. Nulla...</p>
+                        </li>
+                        <li>
+                            <img class="preview" src="img/featured-persona-example.jpg">
+                            <h4>Firefox Robot</h4>
+                            <p class="try"><a href="#">try it now »</a></p>
+                            <hr />
+                            <p class="designer"><strong>Designer:</strong> NoBox</p>
+                            <p class="added"><strong>Added:</strong> 01/19/09</p>
+                            <hr />
+                            <p class="description"><strong>Description:</strong> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam a nulla. Nulla...</p>
+                        </li>
+                        <li>
+                            <img class="preview" src="img/featured-persona-example.jpg">
+                            <h4>Firefox Robot</h4>
+                            <p class="try"><a href="#">try it now »</a></p>
+                            <hr />
+                            <p class="designer"><strong>Designer:</strong> NoBox</p>
+                            <p class="added"><strong>Added:</strong> 01/19/09</p>
+                            <hr />
+                            <p class="description"><strong>Description:</strong> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam a nulla. Nulla...</p>
+                        </li>
                     </ul>
-                    <a href="#" id="slideshow-previous">Previous</a>
-                    <a href="#" id="slideshow-next">Next</a>
+                    
                 </div>
             </div>
             <div class="feature">
                 <h3>Featured Designer</h3>
+                <img src="img/featured-designer-example.jpg" class="preview">
+                <h4>NoBox Marketing</h4>
+                <p class="try"><a href="#">view designs »</a></p>
+                <hr />
+                <p class="description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed eget magna vel nibh posuere sodales. Vivamus sit amet elit vel diam pellentesque venenatis. </p>
             </div>
             <div class="feature last">
                 <h3>Most Popular Personas</h3>
+                <ol class="popular">
+                    <li>
+                            <h4>Firefox Logo</h4>
+                            <hr />
+                            <img src="img/popular-thumbnail-example.jpg">
+                            <p class="downloads"><strong>Downloads:</strong> 3,000</p>
+                            <p class="try"><a href="#">try it now »</a></p>
+                    </li>
+                    <li>
+                            <h4>Firefox Logo</h4>
+                            <hr />
+                            <img src="img/popular-thumbnail-example.jpg">
+                            <p class="downloads"><strong>Downloads:</strong> 3,000</p>
+                            <p class="try"><a href="#">try it now »</a></p>
+                    </li>
+                    <li>
+                            <h4>Firefox Logo</h4>
+                            <hr />
+                            <img src="img/popular-thumbnail-example.jpg">
+                            <p class="downloads"><strong>Downloads:</strong> 3,000</p>
+                            <p class="try"><a href="#">try it now »</a></p>
+                    </li>
+                </ol>
+                
+                
             </div>
         </div>
     </div>
     <div id="footer">
         <p>Copyright © 2009 Mozilla. Personas is a Mozilla Labs Project.  |  Terms of Use  |  Privacy</p>
     </div>
+    <script src="jquery.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
