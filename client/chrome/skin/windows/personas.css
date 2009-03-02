@@ -90,6 +90,15 @@
 
 
 /******************************************************************************/
+/* Ensure transparency of all toolbar items in their various states */
+/* (e.g. active, inactive, hover, etc.). */
+
+#main-window[persona] toolbarbutton {
+  -moz-appearance: none;
+}
+
+
+/******************************************************************************/
 /* Eliminate top/bottom borders from toolbars so they don't mar the persona. */
 
 /* IMPORTANT: these rules are very carefully devised to remove or hide borders
@@ -115,12 +124,6 @@
   border-top-width: 2px;
   border-top-color: transparent;
   border-bottom: none;
-}
-
-#main-window[persona] toolbarbutton {
-  /* Ensure transparency of all toolbar items in their various states (e.g.
-   * active,inactive,hover, etc. */
-  -moz-appearance: none;
 }
 
 
