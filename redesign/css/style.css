@@ -27,6 +27,10 @@ strong {
     font-weight: bold;
 }
 
+a {
+    outline: none;
+}
+
 #inner-wrapper:after, #nav ul:after{
     content: '.';
     display: block;
@@ -267,9 +271,9 @@ img.preview  {
 
 #slideshow {
     height: 240px;
-    width: 1000px;
+    width: 1500px;
     overflow: hidden;
-    z-index: -1;
+    z-index: -20;
 }
 
 #slideshow-nav {
@@ -298,8 +302,9 @@ img.preview  {
 
 #slides {
     height: 240px;
-    width: 297px;
     overflow: hidden;
+    position: absolute;
+    width: 1500px;
 }
 
 #slides li {
@@ -311,6 +316,7 @@ img.preview  {
 #slideshow-previous, #slideshow-next {
     position: absolute;
     top: 66px;
+    z-index: 20;
 }
 
 #slideshow-next {

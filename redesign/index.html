@@ -5,7 +5,6 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<title>Personas Homepage</title>
 	<link href="css/style.css" rel="stylesheet" type="text/css" media="all" />
-	
 </head>
 <body class="home">
     <div id="outer-wrapper">
@@ -130,7 +129,12 @@
     <div id="footer">
         <p>Copyright © 2009 Mozilla. Personas is a Mozilla Labs Project.  |  Terms of Use  |  Privacy</p>
     </div>
-    <script src="jquery.js"></script>
-    <script src="script.js"></script>
+    <script src="js/jquery.js"></script>
+    <script src="js/script.js"></script>
+    <script type="text/javascript" charset="utf-8">
+        $(document).ready(function () {
+            $("#slideshow").slider();
+        });
+    </script>
 </body>
 </html>
