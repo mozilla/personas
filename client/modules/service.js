@@ -68,7 +68,27 @@ let PersonaService = {
     // Observe changes to personas preferences.
     this._observePrefChanges = true;
 
+    // Load data, then set a timer to refresh it periodically.
+    // This isn't quite right, since we always load data on startup, even if
+    // we've recently refreshed it.  And the timer that refreshes data ignores
+    // the data load on startup, so if it's been more than the timer interval
+    // since a user last started her browser, we load the data twice:
+    // once because the browser starts and once because the refresh timer fires.
+    // FIXME: save the data to disk when we retrieve it and then retrieve it
+    // from there on startup instead of loading it over the network.
     this._loadData();
+    let timerManager = Cc["@mozilla.org/updates/timer-manager;1"].
+                       getService(Ci.nsIUpdateTimerManager);
+    let refreshInterval = this._prefs.get("data.refreshInterval");
+    // Don't refresh data more frequently than once per hour.
+    if (refreshInterval < 3600)
+      refreshInterval = 3600;
+    let refreshDataCallback = {
+      _svc: this,
+      notify: function(timer) { this._svc._loadData() }
+    };
+    timerManager.registerTimer("personas-data-refresh-timer",
+                               refreshDataCallback, refreshInterval);
 
     // Initialize the persona loader.
     // XXX Commented out because dynamic personas have been disabled.
