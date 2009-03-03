@@ -207,6 +207,8 @@
 		
 			#add a json descriptor
 
+			$second_folder = $persona_id%10;
+			$first_folder = ($persona_id%100 - $second_folder)/10;
 			file_put_contents($persona_path . '/index_1.json', json_encode(array('id' => $persona_id, 
 						'name' => $name,
 						'accentcolor' => $accentcolor ? $accentcolor : null,
