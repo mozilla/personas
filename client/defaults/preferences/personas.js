@@ -21,7 +21,7 @@ pref("extensions.personas.lastversion", "firstrun");
 // Note: this should be the canonical URL, not one that redirects us
 // to another, since we set the If-Modified-Since header so we can find out
 // when a persona record has changed, and that header doesn't get preserved
-// across redirects.
+// across redirects because of bug 401564.
 pref("extensions.personas.url", "http://www.getpersonas.com/store/");
 
 // The location of the web directory.
