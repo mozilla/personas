@@ -59,6 +59,17 @@ const DEFAULT_FOOTER = new URI("chrome://personas/content/footer-default.jpg");
 
 let PersonaService = {
   //**************************************************************************//
+  // Shortcuts
+
+  // Access to extensions.personas.* preferences.  To access other preferences,
+  // call the Preferences module directly.
+  get _prefs() {
+    delete this._prefs;
+    return this._prefs = new Preferences("extensions.personas.");
+  },
+
+
+  //**************************************************************************//
   // Initialization & Destruction
 
   _init: function() {
@@ -67,6 +78,9 @@ let PersonaService = {
 
     // Observe changes to personas preferences.
     this._observePrefChanges = true;
+
+    let timerManager = Cc["@mozilla.org/updates/timer-manager;1"].
+                       getService(Ci.nsIUpdateTimerManager);
 
     // Load data, then set a timer to refresh it periodically.
     // This isn't quite right, since we always load data on startup, even if
@@ -77,18 +91,30 @@ let PersonaService = {
     // FIXME: save the data to disk when we retrieve it and then retrieve it
     // from there on startup instead of loading it over the network.
     this._loadData();
-    let timerManager = Cc["@mozilla.org/updates/timer-manager;1"].
-                       getService(Ci.nsIUpdateTimerManager);
-    let refreshInterval = this._prefs.get("data.refreshInterval");
+    let dataRefreshInterval = this._prefs.get("data.refreshInterval");
     // Don't refresh data more frequently than once per hour.
-    if (refreshInterval < 3600)
-      refreshInterval = 3600;
-    let refreshDataCallback = {
+    if (dataRefreshInterval < 3600)
+      dataRefreshInterval = 3600;
+    let dataRefreshCallback = {
       _svc: this,
       notify: function(timer) { this._svc._loadData() }
     };
     timerManager.registerTimer("personas-data-refresh-timer",
-                               refreshDataCallback, refreshInterval);
+                               dataRefreshCallback,
+                               dataRefreshInterval);
+
+    // Periodically refresh the current persona.
+    let personaRefreshInterval = this._prefs.get("persona.refreshInterval");
+    // Don't refresh the persona more frequently than once per hour.
+    if (personaRefreshInterval < 3600)
+      personaRefreshInterval = 3600;
+    let personaRefreshCallback = {
+      _svc: this,
+      notify: function(timer) { this._svc._refreshPersona() }
+    };
+    timerManager.registerTimer("personas-persona-refresh-timer",
+                               personaRefreshCallback,
+                               personaRefreshInterval);
 
     // Initialize the persona loader.
     // XXX Commented out because dynamic personas have been disabled.
@@ -111,27 +137,21 @@ let PersonaService = {
 
 
   //**************************************************************************//
-  // Shortcuts
-
-  // Access to extensions.personas.* preferences.  To access other preferences,
-  // call the Preferences module directly.
-  get _prefs() {
-    delete this._prefs;
-    return this._prefs = new Preferences("extensions.personas.");
-  },
-
-
-  //**************************************************************************//
   // Data Retrieval
 
-  _makeRequest: function(aURL, aLoadCallback) {
+  _makeRequest: function(url, loadCallback, headers) {
     let request = Cc["@mozilla.org/xmlextras/xmlhttprequest;1"].createInstance();
 
     request = request.QueryInterface(Ci.nsIDOMEventTarget);
-    request.addEventListener("load", aLoadCallback, false);
+    request.addEventListener("load", loadCallback, false);
 
     request = request.QueryInterface(Ci.nsIXMLHttpRequest);
-    request.open("GET", aURL, true);
+    request.open("GET", url, true);
+
+    if (headers)
+      for (let header in headers)
+        request.setRequestHeader(header, headers[header]);
+
     request.send(null);
   },
 
@@ -162,6 +182,99 @@ let PersonaService = {
     // the browser starts, and pick a new random persona from the cached data.
     if (this.selected == "random")
       this.changeToRandomPersona(this.category);
+  },
+
+  _refreshPersona: function() {
+    // Only refresh the persona if the user selected a specific persona.
+    // If the user selected a random persona, we'll change it the next time
+    // we refresh the directory, and if the user selected the default persona,
+    // we don't need to refresh it, as it doesn't change.
+    if (this.selected != "current" || !this.currentPersona)
+      return;
+
+    let lastTwoDigits = new String(this.currentPersona.id).substr(-2).split("");
+    if (lastTwoDigits.length == 1)
+      lastTwoDigits.unshift("0");
+
+    let url = this.baseURI + lastTwoDigits.join("/") + "/" +
+              this.currentPersona.id + "/" +
+              "index_" + this._prefs.get("data.version") + ".json";
+
+    let headers = {};
+
+    let lastRefreshed = this._prefs.get("persona.lastRefreshed", null);
+    if (lastRefreshed) {
+      let date = new Date(parseInt(lastRefreshed));
+
+      // Format the last refreshed date per RFC 1123 for use in an HTTP header.
+      // Example: Sun, 06 Nov 1994 08:49:37 GMT
+      // I'd love to use Datejs here, but its Date::toString formatting method
+      // doesn't convert dates to their UTC equivalents before formatting them,
+      // resulting in incorrect output (since RFC 1123 requires dates to be
+      // in UTC), so instead I roll my own.
+      let pad = function(v) { return (v < 10) ? "0" + v : v };
+      let day = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"][date.getUTCDay()];
+      let dayOfMonth = pad(date.getUTCDate());
+      let month = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"][date.getUTCMonth()];
+      let year = date.getUTCFullYear();
+      let hours = pad(date.getUTCHours());
+      let minutes = pad(date.getUTCMinutes());
+      let seconds = pad(date.getUTCSeconds());
+      let rfc1123Date = day + ", " + dayOfMonth + " " + month + " " + year +
+                        " " + hours + ":" + minutes + ":" + seconds + " GMT";
+
+      headers["If-Modified-Since"] = rfc1123Date;
+    }
+
+    let t = this;
+    this._makeRequest(url,
+                      function(evt) { t.onPersonaLoadComplete(evt) },
+                      headers);
+  },
+
+  onPersonaLoadComplete: function(event) {
+    let request = event.target;
+
+    // 304 means the file we requested has not been modified since the
+    // If-Modified-Since date we specified, so there's nothing to do.
+    if (request.status == 304) {
+      //dump("304 - the persona has not been modified\n");
+      return;
+    }
+
+    // 404 means the persona wasn't found, which means we need to unselect it.
+    // FIXME: be kinder to the user and inform them about what we're doing
+    // and why.
+    if (request.status == 404) {
+      //dump("persona " + persona.id + "(" + persona.name + ") no longer exists; unselecting\n");
+      this.changeToDefaultPersona();
+      return;
+    }
+
+    if (request.status != 200)
+      throw("problem refreshing persona: " + request.status + " - " + request.statusText);
+
+    let persona = JSON.parse(request.responseText);
+
+    // If the persona we're refreshing is no longer the selected persona,
+    // then cancel the refresh (otherwise we'd undo whatever changes the user
+    // has just made).
+    if (this.selected != "current" || !this.currentPersona ||
+        this.currentPersona.id != persona.id) {
+      //dump("persona " + persona.id + "(" + persona.name + ") no longer the current persona; ignoring refresh\n");
+      return;
+    }
+
+    // Set the current persona to the updated version we got from the server,
+    // and notify observers about the change.
+    this.currentPersona = persona;
+    Observers.notify("personas:persona:changed");
+
+    // Record when this refresh took place so the next refresh only looks
+    // for changes since this refresh.
+    // Note: we set the preference to a string value because preferences
+    // can't hold large enough integer values.
+    this._prefs.set("persona.lastRefreshed", new Date().getTime().toString());
   },
 
 
@@ -298,14 +411,13 @@ let PersonaService = {
         this._prefs.set("lastselected1", this._prefs.get("lastselected0"));
         this._prefs.set("lastselected0", JSON.stringify(this.currentPersona));
       }
-  
-      this.currentPersona = persona;
-      this.selected = "current";
     }
     finally {
       this._observePrefChanges = true;
     }
 
+    this.currentPersona = persona;
+    this.selected = "current";
     this.reportSelection(persona);
     this._onChangeToPersona();
   },
@@ -328,6 +440,7 @@ let PersonaService = {
   },
 
   _onChangeToPersona: function() {
+    this._prefs.reset("persona.lastRefreshed");
     Observers.notify("personas:persona:changed");
   },
 

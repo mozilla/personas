@@ -18,11 +18,15 @@ pref("extensions.personas.category", "");
 pref("extensions.personas.lastversion", "firstrun");
 
 // The URL from which we load the data.
-pref("extensions.personas.url", "http://getpersonas.com/store/");
+// Note: this should be the canonical URL, not one that redirects us
+// to another, since we set the If-Modified-Since header so we can find out
+// when a persona record has changed, and that header doesn't get preserved
+// across redirects.
+pref("extensions.personas.url", "http://www.getpersonas.com/store/");
 
 // The location of the web directory.
 // We load a variety of URLs relative to this one.
-pref("extensions.personas.siteURL", "http://getpersonas.com/store/");
+pref("extensions.personas.siteURL", "http://www.getpersonas.com/store/");
 
 // The authorizedHosts preference is a comma and/or space-separated list
 // of domains allowed to set and preview personas.
@@ -70,6 +74,10 @@ pref("extensions.personas.showCustomMenu", false);
 // The version of the JSON data feed that this extension expects.
 pref("extensions.personas.data.version", 1);
 
-// How often to refresh the JSON data feed.  Measured in seconds, with a default
-// of 86400 seconds (24 hours) and a minimum of 3600 seconds (one hour).
+// How often to refresh the JSON data feed.  In seconds, with a default
+// of 86400 seconds (one day) and a minimum of 3600 seconds (one hour).
 pref("extensions.personas.data.refreshInterval", 86400);
+
+// How often to refresh the current persona.  In seconds, with a default
+// of 86400 seconds (one day) and a minimum of 3600 seconds (one hour).
+pref("extensions.personas.persona.refreshInterval", 86400);
