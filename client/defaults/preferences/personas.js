@@ -77,7 +77,3 @@ pref("extensions.personas.data.version", 1);
 // How often to refresh the JSON data feed.  In seconds, with a default
 // of 86400 seconds (one day) and a minimum of 3600 seconds (one hour).
 pref("extensions.personas.data.refreshInterval", 86400);
-
-// How often to refresh the current persona.  In seconds, with a default
-// of 86400 seconds (one day) and a minimum of 3600 seconds (one hour).
-pref("extensions.personas.persona.refreshInterval", 86400);
