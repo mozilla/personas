@@ -103,11 +103,11 @@ let PersonaService = {
                                dataRefreshCallback,
                                dataRefreshInterval);
 
-    // Periodically refresh the current persona.
-    let personaRefreshInterval = this._prefs.get("persona.refreshInterval");
-    // Don't refresh the persona more frequently than once per hour.
-    if (personaRefreshInterval < 3600)
-      personaRefreshInterval = 3600;
+    // Refresh the current persona once per day.  The interval is not
+    // configurable via a preference because we use these checks to determine
+    // the popularity of personas, and we don't want those statistics to be
+    // skewed by changes to this value.
+    let personaRefreshInterval = 86400;
     let personaRefreshCallback = {
       _svc: this,
       notify: function(timer) { this._svc._refreshPersona() }
