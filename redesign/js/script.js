@@ -1,7 +1,6 @@
 $.fn.slider = function (options) {
     var settings = jQuery.extend({
         "slides"        : "#slides li",
-        "start"         : 1,
         "nav"           : "#slideshow-nav",
         "previous"      : "#slideshow-previous",
         "next"          : "#slideshow-next",
@@ -71,5 +70,14 @@ $.fn.slider = function (options) {
         jQuery(settings['nav'] + ' li a.active').removeClass('active');
         jQuery(settings['nav'] + ' li a:eq('+newIndex+')').addClass('active');
     }
+};
+
+$.fn.popup = function() {
     
+    jQuery(this).hover(function() {
+        jQuery("#info").css({"position":"relative", "left":"0px"});
+    },
+    function() {
+        jQuery("#info").css({"position":"absolute", "left":"-2000px"});
+    });
 };

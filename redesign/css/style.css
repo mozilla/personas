@@ -113,7 +113,7 @@ a {
     background: url('../img/nav-sprite.jpg') 0 -70px repeat-x;
 }
 
-#nav ul a:active {
+#nav ul a:active, #nav ul a.active {
     background: url('../img/nav-sprite.jpg') 0 -140px repeat-x;
 }
 
@@ -123,6 +123,7 @@ a {
     background: url('../img/hanger-bg.jpg') top left no-repeat;
     height: 125px;
     clear: both;
+    position: relative;
 }
 
 #header h2 {
@@ -201,6 +202,38 @@ a.get-personas span {
 a.get-personas span.arrow {
     padding: 35px 30px;
     background: url('../img/main-sprites.png') -623px -52px no-repeat;
+}
+
+#more-info {
+    height:260px;
+    left:633px;
+    padding:22px 0 0 100px;
+    position:absolute;
+    top:58px;
+    width:230px;
+}
+
+#info {
+    width: 210px;
+    position: absolute;
+    left: -5000px;
+}
+
+#info h4 {
+    background: url('../img/main-sprites.png') no-repeat scroll -92px -200px;
+    padding: 16px 25px 10px;
+    color: #00a1e2;
+    font-size: 138.5%;
+    font-family: Georgia, serif;
+    font-style: italic;
+}
+
+#info p {
+    background: url('../img/main-sprites.png') no-repeat scroll -92px bottom;
+    padding: 0 25px 40px;
+    color: #868585;
+    font-size: 93%;
+    line-height: 1.4em;
 }
 
 .feature {
@@ -350,12 +383,67 @@ img.preview  {
 }
 
 .popular .try {
-    display: inline;
-    float: right;
+    text-align: right;
 }
 
 .popular p {
     font-size: 85%;
+}
+
+#gallery {
+    width: 700px;
+    float: right;
+    margin: 0 -20px 0 -20px;
+}
+
+.gallery-item {
+    width: 200px;
+    min-height: 200px;
+    display: -moz-inline-stack;
+    display: inline-block;
+    vertical-align: top;
+    margin: 5px 22px 5px 5px;
+    zoom: 1;
+    *display: inline;
+    _height: 250px;
+    color: #a4a4a4;
+}
+
+.gallery-item h3 {
+    color: #f67b00;
+    font-size: 116%;
+    font-weight: bold;
+    font-family: Helvetica, sans-serif;
+}
+
+.gallery-item p {
+    font-size: 85%;
+}
+
+.gallery-item div {
+    position: relative;
+}
+
+.gallery-item .preview {
+    top: -113px;
+    position: absolute;
+}
+
+.gallery-item h3 {
+    margin: 120px 0 0 0;
+    position: relative;
+}
+
+.gallery-item p {
+    position: relative;
+    margin: 1em 0;
+}
+
+.gallery-item .view {
+    font-size: 110%;
+    font-family: Arial, sans-serif;
+    font-weight: bold;
+    color: #00a1e2;
 }
 
 #footer {
