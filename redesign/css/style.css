@@ -390,10 +390,101 @@ img.preview  {
     font-size: 85%;
 }
 
-#gallery {
-    width: 700px;
+#breadcrumbs {
+    color: #747474;
+    font-size: 85%;
+}
+
+#maincontent, #secondary-content {
+    margin: 15px 0 0 0;
+}
+
+#maincontent {
+    width: 675px;
     float: right;
-    margin: 0 -20px 0 -20px;
+}
+
+#secondary-content {
+    width: 240px;
+}
+
+#subnav {
+    border-bottom: 1px solid #eaeaea;
+}
+
+#subnav li {
+    border-top: 1px solid #eaeaea;
+    background: url('../img/main-sprites.png') -656px -255px no-repeat;
+    font-weight: bold;
+    font-family: Helvetica, Arial, sans-serif;
+}
+
+#subnav li.active + li {
+    border-top: none;
+}
+
+#subnav li ul {
+    margin: 8px -9px 0 -29px;
+    padding: 10px 0 0 20px;
+    background: #f2f2f2;
+    -moz-border-radius-bottomleft: 5px;
+    -moz-border-radius-bottomright: 5px;
+}
+
+#subnav li ul li {
+    border: none;
+    background: none;
+}
+
+#subnav li ul li a:before {
+    content: '»';
+    display: inline;
+    color: #848484;
+    margin: 0 5px 0 0;
+}
+
+#subnav a {
+    display: block;
+}
+
+#subnav a:link {
+    color: #007aab;
+    text-decoration: none;
+}
+
+#subnav a:visited {
+    color: #007aab;
+    text-decoration: none;
+}
+
+#subnav a, #subnav .active {
+    padding: 8px 10px 8px 30px;
+}
+
+#subnav .active {
+    color: #fff;
+    background: url('../img/main-sprites.png') -335px -206px no-repeat;
+    border: none;
+}
+
+#subnav li ul li a {
+     font-weight: normal;
+     padding: 5px;
+}
+
+#subnav li ul li a:link {
+   
+    color: #848484;
+}
+
+#subnav li ul li a:visited {
+    color: #848484;
+}
+
+
+#gallery {
+    margin: 0 -5px 0 -5px;
+    width: 700px;
 }
 
 .gallery-item {
@@ -414,6 +505,11 @@ img.preview  {
     font-size: 116%;
     font-weight: bold;
     font-family: Helvetica, sans-serif;
+}
+
+.gallery-item h3 a {
+    color: #f67b00;
+    text-decoration: none;
 }
 
 .gallery-item p {
