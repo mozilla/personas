@@ -165,6 +165,9 @@ let PersonaController = {
       case "ResetPersona":
         this.onResetPersonaFromContent(aEvent);
         break;
+      case "CheckPersonas":
+        this.onCheckPersonasFromContent(aEvent);
+        break;
     }
   },
 
@@ -212,6 +215,7 @@ let PersonaController = {
     document.addEventListener("SelectPersona", this, false, true);
     document.addEventListener("PreviewPersona", this, false, true);
     document.addEventListener("ResetPersona", this, false, true);
+    document.addEventListener("CheckPersonas", this, false, true);
 
     // Check for a first-run or updated extension and display some additional
     // information to users.
@@ -240,6 +244,7 @@ let PersonaController = {
     document.removeEventListener("SelectPersona", this, false);
     document.removeEventListener("PreviewPersona", this, false);
     document.removeEventListener("ResetPersona", this, false);
+    document.removeEventListener("CheckPersonas", this, false);
 
     this.Observers.remove("personas:persona:changed", this);
     this.Observers.remove("personas:personaLoadFinished", this);
@@ -511,6 +516,20 @@ let PersonaController = {
 
   _resetPersona: function() {
     PersonaService.resetPersona();
+  },
+
+  /**
+   * Confirm that Firefox has this Personas extension when requested by
+   * a web page via a CheckPersonas event.  Checks to ensure the page is hosted
+   * on a host in the whitelist before responding to the event, so only
+   * whitelisted pages can find out if Personas is installed.
+   * 
+   * @param event   {Event}
+   *        the CheckPersonas DOM event
+   */
+  onCheckPersonasFromContent: function(event) {
+    this._authorizeHost(event);
+    event.target.setAttribute("personas", "true");
   },
 
   onSelectPreferences: function() {
