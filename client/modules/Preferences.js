@@ -52,8 +52,9 @@ function Preferences(prefBranch) {
 Preferences.prototype = {
   _prefBranch: "",
 
-  // Preferences Service
-
+  /**
+   * Preferences Service
+   */
   get _prefSvc() {
     let prefSvc = Cc["@mozilla.org/preferences-service;1"].
                   getService(Ci.nsIPrefService).
@@ -62,6 +63,7 @@ Preferences.prototype = {
     this.__defineGetter__("_prefSvc", function() prefSvc);
     return this._prefSvc;
   },
+
 
   /**
     * Get the value of a pref, if any; otherwise return the default value.
@@ -72,14 +74,12 @@ Preferences.prototype = {
     * @returns the value of the pref, if any; otherwise the default value
     */
   get: function(prefName, defaultValue) {
-    // We can't check for |prefName.constructor == Array| here, since we have
-    // a different global object, so we check the constructor name instead.
-    if (typeof prefName == "object" && prefName.constructor.name == Array.name)
+    if (isArray(prefName))
       return prefName.map(function(v) this.get(v), this);
 
     switch (this._prefSvc.getPrefType(prefName)) {
       case Ci.nsIPrefBranch.PREF_STRING:
-        return this._prefSvc.getCharPref(prefName);
+        return this._prefSvc.getComplexValue(prefName, Ci.nsISupportsString).data;
 
       case Ci.nsIPrefBranch.PREF_INT:
         return this._prefSvc.getIntPref(prefName);
@@ -94,28 +94,68 @@ Preferences.prototype = {
   },
 
   set: function(prefName, prefValue) {
-    // We can't check for |prefName.constructor == Object| here, since we have
-    // a different global object, so we check the constructor name instead.
-    if (typeof prefName == "object" && prefName.constructor.name == Object.name)
+    if (isObject(prefName)) {
       for (let [name, value] in Iterator(prefName))
         this.set(name, value);
-    else {
-      switch (typeof prefValue) {
-        case "number":
-          this._prefSvc.setIntPref(prefName, prefValue);
-          break;
+      return;
+    }
 
-        case "boolean":
-          this._prefSvc.setBoolPref(prefName, prefValue);
-          break;
+    let prefType;
+    if (typeof prefValue != "undefined" && prefValue != null)
+      prefType = prefValue.constructor.name;
 
-        case "string":
-        default:
-          this._prefSvc.setCharPref(prefName, prefValue);
-          break;
-      }
+    switch (prefType) {
+      case "String":
+        {
+          let string = Cc["@mozilla.org/supports-string;1"].
+                       createInstance(Ci.nsISupportsString);
+          string.data = prefValue;
+          this._prefSvc.setComplexValue(prefName, Ci.nsISupportsString, string);
+        }
+        break;
+
+      case "Number":
+        this._prefSvc.setIntPref(prefName, prefValue);
+        if (prefValue % 1 != 0)
+          Cu.reportError("Warning: setting the " + prefName + " pref to the " +
+                         "non-integer number " + prefValue + " converted it " +
+                         "to the integer number " + this.get(prefName) +
+                         "; to retain fractional precision, store non-integer " +
+                         "numbers as strings.");
+        break;
+
+      case "Boolean":
+        this._prefSvc.setBoolPref(prefName, prefValue);
+        break;
+
+      default:
+        throw "can't set pref " + prefName + " to value '" + prefValue +
+              "'; it isn't a String, Number, or Boolean";
     }
   },
+
+  reset: function(prefName) {
+    if (isArray(prefName)) {
+      prefName.map(function(v) this.reset(v), this);
+      return;
+    }
+
+    try {
+      this._prefSvc.clearUserPref(prefName);
+    }
+    catch(ex) {
+      // The pref service throws NS_ERROR_UNEXPECTED when the caller tries
+      // to reset a pref that doesn't exist or is already set to its default
+      // value.  This interface fails silently in those cases, so callers
+      // can unconditionally reset a pref without having to check if it needs
+      // resetting first or trap exceptions after the fact.  It passes through
+      // other exceptions, however, so callers know about them, since we don't
+      // know what other exceptions might be thrown and what they might mean.
+      if (ex.result != Cr.NS_ERROR_UNEXPECTED)
+        throw ex;
+    }
+  },
+
 
   // Observers indexed by pref branch and callback.  This lets us get
   // the observer to remove when a caller calls |remove|, passing it a callback.
@@ -169,6 +209,7 @@ Preferences.prototype = {
     }
   },
 
+
   // FIXME: make the methods below accept an array of pref names.
 
   has: function(prefName) {
@@ -191,12 +232,18 @@ Preferences.prototype = {
     this._prefSvc.unlockPref(prefName);
   },
 
-  reset: function(prefName) {
-    this._prefSvc.clearUserPref(prefName);
-  },
-
   resetBranch: function(prefBranch) {
-    this._prefSvc.resetBranch(prefBranch);
+    try {
+      this._prefSvc.resetBranch(prefBranch);
+    }
+    catch(ex) {
+      // The current implementation of nsIPrefBranch in Mozilla
+      // doesn't implement resetBranch, so we do it ourselves.
+      if (ex.result == Cr.NS_ERROR_NOT_IMPLEMENTED)
+        this.reset(this._prefSvc.getChildList(prefBranch, []));
+      else
+        throw ex;
+    }
   }
 
 };
@@ -205,6 +252,7 @@ Preferences.prototype = {
 // preferences directly via the constructor without having to create an instance
 // first.
 Preferences.__proto__ = Preferences.prototype;
+
 
 function PrefObserver(callback) {
   this._callback = callback;
@@ -218,4 +266,21 @@ PrefObserver.prototype = {
     else
       this._callback.observe(subject, topic, data);
   }
+}
+
+
+function isArray(val) {
+  // We can't check for |val.constructor == Array| here, since the value
+  // might be from a different context whose Array constructor is not the same
+  // as ours, so instead we match based on the name of the constructor.
+  return (typeof val != "undefined" && val != null && typeof val == "object" &&
+          val.constructor.name == "Array");
+}
+
+function isObject(val) {
+  // We can't check for |val.constructor == Object| here, since the value
+  // might be from a different context whose Object constructor is not the same
+  // as ours, so instead we match based on the name of the constructor.
+  return (typeof val != "undefined" && val != null && typeof val == "object" &&
+          val.constructor.name == "Object");
 }
