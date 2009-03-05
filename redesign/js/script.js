@@ -82,15 +82,21 @@ $.fn.popup = function() {
     });
 };
 
-$.fn.previewPersonas = function() {
-    jQuery(this).click(function() {
+$.fn.previewPersona = function() {
+    jQuery(this).click(function(event) {
         dispatchPersonaEvent('SelectPersona', event.originalTarget);
     });
     
-    onclick="dispatchPersonaEvent('SelectPersona', event.originalTarget)"
-    		  onmouseover="dispatchPersonaEvent('PreviewPersona', event.originalTarget)"
-    		  onmouseout="dispatchPersonaEvent('ResetPersona', event.originalTarget)"
-    
+    jQuery(this).hover(
+        function(event) {
+            console.log(event);
+            dispatchPersonaEvent('PreviewPersona', event.originalTarget);
+        },
+        function(event) {
+            dispatchPersonaEvent('ResetPersona', event.originalTarget);
+        }
+    );
+
     function dispatchPersonaEvent(aType, aNode) 
 	{
 		if (!aNode.hasAttribute("persona"))
