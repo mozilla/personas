@@ -546,6 +546,10 @@ img.preview  {
     font-size: 85%;
 }
 
+.gallery-item .designer, .gallery-item .added {
+    margin: 0.3em 0;
+}
+
 .gallery-item div {
     position: relative;
 }
