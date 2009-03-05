@@ -81,3 +81,22 @@ $.fn.popup = function() {
         jQuery("#info").css({"position":"absolute", "left":"-2000px"});
     });
 };
+
+$.fn.previewPersonas = function() {
+    jQuery(this).click(function() {
+        dispatchPersonaEvent('SelectPersona', event.originalTarget);
+    });
+    
+    onclick="dispatchPersonaEvent('SelectPersona', event.originalTarget)"
+    		  onmouseover="dispatchPersonaEvent('PreviewPersona', event.originalTarget)"
+    		  onmouseout="dispatchPersonaEvent('ResetPersona', event.originalTarget)"
+    
+    function dispatchPersonaEvent(aType, aNode) 
+	{
+		if (!aNode.hasAttribute("persona"))
+			return;
+		var event = document.createEvent("Events");
+		event.initEvent(aType, true, false);
+		aNode.dispatchEvent(event);
+	}
+}
