@@ -404,6 +404,11 @@ img.preview  {
     float: right;
 }
 
+#maincontent h3 {
+    color: #007aab;
+    font-weight: bold;
+}
+
 #secondary-content {
     width: 240px;
 }

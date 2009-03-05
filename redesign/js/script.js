@@ -4,10 +4,10 @@ $.fn.slider = function (options) {
         "nav"           : "#slideshow-nav",
         "previous"      : "#slideshow-previous",
         "next"          : "#slideshow-next",
-        "nextImg"       : "/img/nav-next.png",
-        "nextOverImg"   : "/img/nav-next-over.png",
-        "prevOverImg"   : "/img/nav-prev-over.png",
-        "prevImg"       : "/img/nav-prev.png"
+        "nextImg"       : "img/nav-next.png",
+        "nextOverImg"   : "img/nav-next-over.png",
+        "prevOverImg"   : "img/nav-prev-over.png",
+        "prevImg"       : "img/nav-prev.png"
     }, options);
     
     var items = jQuery(settings['slides']);
