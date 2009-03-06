@@ -74,7 +74,7 @@ let PersonaService = {
 
   _init: function() {
     // Observe quit so we can destroy ourselves.
-    Observers.add("quit-application", this);
+    Observers.add("quit-application", this.onQuitApplication, this);
 
     // Observe changes to personas preferences.
     this._observePrefChanges = true;
@@ -522,41 +522,29 @@ let PersonaService = {
    * by setting this to false.
    */
   set _observePrefChanges(newVal) {
-    if (newVal)
-      this._prefs.addObserver(this);
-    else
-      this._prefs.removeObserver(this);
-  },
+    if (newVal) {
+      this._prefs.observe("persona",        this._onPersonaChanged, this);
+      this._prefs.observe("selected",       this._onPersonaChanged, this);
 
-  // nsIObserver
-
-  observe: function(subject, topic, data) {
-    switch (topic) {
-      case "quit-application":
-        Observers.remove("quit-application", this);
-        this._destroy();
-        break;
-
-      case "nsPref:changed":
-        switch (data) {
-          case "extensions.personas.persona":
-          case "extensions.personas.selected":
-            this._onPersonaChanged();
-            break;
-
-          // If the user has enabled/disabled the text or accent color,
-          // pretend the selected persona has changed so observers reapply
-          // the current persona, updating the use of text and accent colors
-          // in the process.
-          case "extensions.personas.useTextColor":
-	  case "extensions.personas.useAccentColor":
-            this._onPersonaChanged();
-            break;
-        }
-        break;
+      // If the user has enabled/disabled the text or accent color,
+      // pretend the selected persona has changed so observers reapply
+      // the current persona, updating the use of text and accent colors
+      // in the process.
+      this._prefs.observe("useTextColor",   this._onPersonaChanged, this);
+      this._prefs.observe("useAccentColor", this._onPersonaChanged, this);
+    }
+    else {
+      this._prefs.ignore("persona",        this._onPersonaChanged, this);
+      this._prefs.ignore("selected",       this._onPersonaChanged, this);
+      this._prefs.ignore("useTextColor",   this._onPersonaChanged, this);
+      this._prefs.ignore("useAccentColor", this._onPersonaChanged, this);
     }
   },
 
+  onQuitApplication: function() {
+    Observers.remove("quit-application", this.onQuitApplication, this);
+    this._destroy();
+  },
 
 
   //**************************************************************************//

@@ -44,6 +44,13 @@ const Cu = Components.utils;
 
 Cu.import("resource://gre/modules/XPCOMUtils.jsm");
 
+// The minimum and maximum integers that can be set as preferences.
+// The range of valid values is narrower than the range of valid JS values
+// because the native preferences code treats integers as NSPR PRInt32s,
+// which are 32-bit signed integers on all platforms.
+const MAX_INT = Math.pow(2, 31) - 1;
+const MIN_INT = -MAX_INT;
+
 function Preferences(prefBranch) {
   if (prefBranch)
     this._prefBranch = prefBranch;
@@ -63,7 +70,6 @@ Preferences.prototype = {
     this.__defineGetter__("_prefSvc", function() prefSvc);
     return this._prefSvc;
   },
-
 
   /**
     * Get the value of a pref, if any; otherwise return the default value.
@@ -93,6 +99,22 @@ Preferences.prototype = {
     }
   },
 
+  /**
+   * Set a preference to a value.
+   *
+   * @param   prefName  {String}
+   *          the name of the pref to set
+   *
+   * @param   prefValue {String|Number|Boolean}
+   *          the value to which to set the pref
+   *
+   * Note: Preferences cannot store non-integer numbers or numbers outside
+   * the signed 32-bit range -(2^31-1) to 2^31-1, If you have such a number,
+   * store it as a string by calling toString() on the number before passing
+   * it to this method, i.e.:
+   *   Preferences.set("pi", 3.14159.toString())
+   *   Preferences.set("big", Math.pow(2, 31).toString()).
+   */
   set: function(prefName, prefValue) {
     if (isObject(prefName)) {
       for (let [name, value] in Iterator(prefName))
@@ -115,6 +137,15 @@ Preferences.prototype = {
         break;
 
       case "Number":
+        // We throw if the number is outside the range, since the result
+        // will never be what the consumer wanted to store, but we only warn
+        // if the number is non-integer, since the consumer might not mind
+        // the loss of precision.
+        if (prefValue > MAX_INT || prefValue < MIN_INT)
+          throw("you cannot set the " + prefName + " pref to the number " +
+                prefValue + ", as number pref values must be in the signed " +
+                "32-bit integer range -(2^31-1) to 2^31-1.  To store numbers " +
+                "outside that range, store them as strings.");
         this._prefSvc.setIntPref(prefName, prefValue);
         if (prefValue % 1 != 0)
           Cu.reportError("Warning: setting the " + prefName + " pref to the " +
@@ -157,55 +188,70 @@ Preferences.prototype = {
   },
 
 
-  // Observers indexed by pref branch and callback.  This lets us get
-  // the observer to remove when a caller calls |remove|, passing it a callback.
-  // Note: all Preferences instances share this object, since all of them
-  // have the same prototype.  This is intentional, because we want callers
-  // to be able to remove an observer using a different Preferences object
-  // than the one with which they added it.  But it means we have to index
-  // the observers in this object by their complete pref branch, not just
-  // the branch relative to the root branch of any given Preferences object.
-  _observers: {},
-
   /**
-   * Add an observer to a pref branch.  The callback can be a simple function
-   * or any object that implements nsIObserver.  The pref branch can be
-   * any string and is appended to the root branch for the Preferences instance
-   * on which this method is called.  For example, if the Preferences instance
-   * has root branch "foo.", and this method is called with branch "bar.",
-   * then the callback will observe the complete branch "foo.bar.".
+   * Start observing a pref.
    *
-   * @param   callback    {Object}
-   *          the nsIObserver or Function to notify about changes
-   * @param   prefBranch  {String}  [optional]
-   *          the branch for which to notify the callback
+   * The callback can be a function or any object that implements nsIObserver.
+   * When the callback is a function and thisObject is provided, it gets called
+   * as a method of thisObject.
+   *
+   * @param   prefName    {String}
+   *          the name of the pref to observe
+   *
+   * @param   callback    {Function|Object}
+   *          the code to notify when the pref changes;
+   *
+   * @param   thisObject  {Object}  [optional]
+   *          the object to use as |this| when calling a Function callback;
    *
    * @returns the wrapped observer
    */
-  addObserver: function(callback, prefBranch) {
-    let completePrefBranch = this._prefBranch + (prefBranch || "");
-    let observer = new PrefObserver(callback);
-    if (!(completePrefBranch in Preferences._observers))
-      Preferences._observers[completePrefBranch] = {};
-    Preferences._observers[completePrefBranch][callback] = observer;
-    Preferences._prefSvc.addObserver(completePrefBranch, observer, true);
+  observe: function(prefName, callback, thisObject) {
+    let fullPrefName = this._prefBranch + (prefName || "");
+
+    let observer = new PrefObserver(fullPrefName, callback, thisObject);
+    Preferences._prefSvc.addObserver(fullPrefName, observer, true);
+    observers.push(observer);
+
     return observer;
   },
 
   /**
-   * Remove an observer from a pref branch.
+   * Stop observing a pref.
    *
-   * @param   callback    {Object}
-   *          the nsIObserver or Function to stop notifying about changes
-   * @param   prefBranch  {String}  [optional]
-   *          the branch for which to stop notifying the callback
+   * You must call this method with the same prefName, callback, and thisObject
+   * with which you originally registered the observer.  However, you don't have
+   * to call this method on the same exact instance of Preferences; you can call
+   * it on any instance.  For example, the following code first starts and then
+   * stops observing the "foo.bar.baz" preference:
+   *
+   *   let observer = function() {...};
+   *   Preferences.observe("foo.bar.baz", observer);
+   *   new Preferences("foo.bar.").ignore("baz", observer);
+   *
+   * @param   prefName    {String}
+   *          the name of the pref being observed
+   *
+   * @param   callback    {Function|Object}
+   *          the code being notified when the pref changes
+   *
+   * @param   thisObject  {Object}  [optional]
+   *          the object being used as |this| when calling a Function callback
    */
-  removeObserver: function(callback, prefBranch) {
-    let completePrefBranch = this._prefBranch + (prefBranch || "");
-    let observer = Preferences._observers[completePrefBranch][callback];
+  ignore: function(prefName, callback, thisObject) {
+    let fullPrefName = this._prefBranch + (prefName || "");
+
+    // This seems fairly inefficient, but I'm not sure how much better we can
+    // make it.  We could index by fullBranch, but we can't index by callback
+    // or thisObject, as far as I know, since the keys to JavaScript hashes
+    // (a.k.a. objects) can apparently only be primitive values.
+    let [observer] = observers.filter(function(v) v.prefName   == fullPrefName &&
+                                                  v.callback   == callback &&
+                                                  v.thisObject == thisObject);
+
     if (observer) {
-      Preferences._prefSvc.removeObserver(completePrefBranch, observer);
-      delete this._observers[completePrefBranch][callback];
+      Preferences._prefSvc.removeObserver(fullPrefName, observer);
+      observers.splice(observers.indexOf(observer), 1);
     }
   },
 
@@ -216,6 +262,7 @@ Preferences.prototype = {
     return (this._prefSvc.getPrefType(prefName) != Ci.nsIPrefBranch.PREF_INVALID);
   },
 
+  // FIXME: change this to isSet (for consistency with set and reset).
   modified: function(prefName) {
     return (this.has(prefName) && this._prefSvc.prefHasUserValue(prefName));
   },
@@ -253,21 +300,47 @@ Preferences.prototype = {
 // first.
 Preferences.__proto__ = Preferences.prototype;
 
+/**
+ * A cache of pref observers.
+ *
+ * We use this to remove observers when a caller calls Preferences::ignore.
+ *
+ * All Preferences instances share this object, because we want callers to be
+ * able to remove an observer using a different Preferences object than the one
+ * with which they added it.  That means we have to identify the observers
+ * in this object by their complete pref name, not just their name relative to
+ * the root branch of the Preferences object with which they were created.
+ */
+let observers = [];
 
-function PrefObserver(callback) {
-  this._callback = callback;
+function PrefObserver(prefName, callback, thisObject) {
+  this.prefName = prefName;
+  this.callback = callback;
+  this.thisObject = thisObject;
 }
 
 PrefObserver.prototype = {
   QueryInterface: XPCOMUtils.generateQI([Ci.nsIObserver, Ci.nsISupportsWeakReference]),
-  observe: function(subject, topic, data) {
-    if (typeof this._callback == "function")
-      this._callback(subject, topic, data);
-    else
-      this._callback.observe(subject, topic, data);
-  }
-}
 
+  observe: function(subject, topic, data) {
+    // The pref service only observes whole branches, but we only observe
+    // individual preferences, so we check here that the pref that changed
+    // is the exact one we're observing (and not some sub-pref on the branch).
+    if (data != this.prefName)
+      return;
+
+    if (typeof this.callback == "function") {
+      let prefValue = Preferences.get(this.prefName);
+
+      if (this.thisObject)
+        this.callback.call(this.thisObject, prefValue);
+      else
+        this.callback(prefValue);
+    }
+    else // typeof this.callback == "object" (nsIObserver)
+      this.callback.observe(subject, topic, data);
+  }
+};
 
 function isArray(val) {
   // We can't check for |val.constructor == Array| here, since the value
