@@ -124,7 +124,6 @@ let PersonaService = {
   _destroy: function() {
     //this._destroyPersonaLoader();
     this._observePrefChanges = false;
-    Observers.remove("quit-application", this);
   },
 
 
