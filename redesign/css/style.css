@@ -37,6 +37,10 @@ label {
     margin: 0 0 3px 0;
 }
 
+p {
+    margin: 0.9em 0;
+}
+
 input[type=text], input[type=password] {
     width: 240px;
     height: 1.3em;
@@ -432,10 +436,6 @@ img.preview  {
     font-size: 138.5%;
 }
 
-#maincontent p {
-    margin: 11px 0;
-}
-
 #secondary-content {
     width: 240px;
 }
@@ -579,7 +579,7 @@ img.preview  {
 }
 
 .gallery-item .designer, .gallery-item .added {
-    margin: 0.3em 0;
+    margin: 0.2em 0;
 }
 
 .gallery-item div {
