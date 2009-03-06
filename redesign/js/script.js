@@ -89,7 +89,6 @@ $.fn.previewPersona = function() {
     
     jQuery(this).hover(
         function(event) {
-            console.log(event);
             dispatchPersonaEvent('PreviewPersona', event.originalTarget);
         },
         function(event) {
@@ -105,4 +104,8 @@ $.fn.previewPersona = function() {
 		event.initEvent(aType, true, false);
 		aNode.dispatchEvent(event);
 	}
+}
+
+$.fn.reCaptcha = function() {
+    jQuery()
 }

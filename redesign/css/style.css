@@ -4,7 +4,8 @@ Code licensed under the BSD License:
 http://developer.yahoo.net/yui/license.txt
 version: 2.7.0
 */
-html{color:#000;background:#FFF;}body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,code,form,fieldset,legend,input,button,textarea,p,blockquote,th,td{margin:0;padding:0;}table{border-collapse:collapse;border-spacing:0;}fieldset,img{border:0;}address,caption,cite,code,dfn,em,strong,th,var,optgroup{font-style:inherit;font-weight:inherit;}del,ins{text-decoration:none;}li{list-style:none;}caption,th{text-align:left;}h1,h2,h3,h4,h5,h6{font-size:100%;font-weight:normal;}q:before,q:after{content:'';}abbr,acronym{border:0;font-variant:normal;}sup{vertical-align:baseline;}sub{vertical-align:baseline;}legend{color:#000;}input,button,textarea,select,optgroup,option{font-family:inherit;font-size:inherit;font-style:inherit;font-weight:inherit;}input,button,textarea,select{*font-size:100%;}
+html{color:#000;background:#FFF;}body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,code,form,fieldset,legend,f
+,button,textarea,p,blockquote,th,td{margin:0;padding:0;}table{border-collapse:collapse;border-spacing:0;}fieldset,img{border:0;}address,caption,cite,code,dfn,em,strong,th,var,optgroup{font-style:inherit;font-weight:inherit;}del,ins{text-decoration:none;}li{list-style:none;}caption,th{text-align:left;}h1,h2,h3,h4,h5,h6{font-size:100%;font-weight:normal;}q:before,q:after{content:'';}abbr,acronym{border:0;font-variant:normal;}sup{vertical-align:baseline;}sub{vertical-align:baseline;}legend{color:#000;}input,button,textarea,select,optgroup,option{font-family:inherit;font-size:inherit;font-style:inherit;font-weight:inherit;}input,button,textarea,select{*font-size:100%;}
 
 /*
 Copyright (c) 2009, Yahoo! Inc. All rights reserved.
@@ -29,6 +30,21 @@ strong {
 
 a {
     outline: none;
+}
+
+label {
+    display: block;
+    margin: 0 0 3px 0;
+}
+
+input[type=text], input[type=password] {
+    width: 240px;
+    height: 1.3em;
+    border:1px solid #BBBBBB;
+}
+
+input[type=checkbox] {
+    vertical-align: bottom;
 }
 
 #inner-wrapper:after, #nav ul:after{
@@ -393,10 +409,12 @@ img.preview  {
 #breadcrumbs {
     color: #747474;
     font-size: 85%;
+    margin: 0 0 5px 0;
 }
 
 #maincontent, #secondary-content {
     margin: 15px 0 0 0;
+    color: #707070;
 }
 
 #maincontent {
@@ -404,9 +422,18 @@ img.preview  {
     float: right;
 }
 
-#maincontent h3 {
+#maincontent.login-signup {
+    float: none;
+}
+
+#maincontent h4 {
     color: #007aab;
     font-weight: bold;
+    font-size: 138.5%;
+}
+
+#maincontent p {
+    margin: 11px 0;
 }
 
 #secondary-content {
@@ -628,6 +655,70 @@ img.preview  {
 #pagination .current {
     color: #fff;
     background: #00a1e2;
+}
+
+#signup, #login {
+    width: 300px;
+    float: left;
+    margin: 15px 0 0 0;
+}
+
+#signup h4, #login h4 {
+    border-bottom: #eaeaea 1px solid;
+    padding: 0 0 7px 0;
+}
+
+#login {
+    margin: 15px 20px 0 0;
+}
+
+#captcha {
+    margin: 0 0 10px 0;
+    height: 110px;
+}
+
+.news, .disclaimer {
+    font-size: 85%;
+    color: #b1b1b1;
+}
+
+.disclaimer {
+    padding: 20px 0 0 0;
+    clear: both;
+}
+
+.error, input.error {
+    border: 1px solid red;
+}
+
+.error-message {
+    color:red;
+    display:block;
+    font-size:91%;
+}
+
+button[type=submit] {
+    display: block;
+    border: none;
+    background: none;
+    height: 30px;
+    cursor: pointer;
+    padding: 0;
+}
+
+.button {
+    font-weight: bold;
+    color: #0077a6;
+    font-family: Arial, sans-serif;
+}
+
+.button span {
+    background: transparent url(../img/main-sprites.png) no-repeat scroll -383px 10px;
+    padding: 15px;
+}
+
+.button span+span, .button .arrow {
+    background: transparent url(../img/main-sprites.png) no-repeat scroll -651px 10px;
 }
 
 #footer {
