@@ -105,7 +105,3 @@ $.fn.previewPersona = function() {
 		aNode.dispatchEvent(event);
 	}
 }
-
-$.fn.reCaptcha = function() {
-    jQuery()
-}
