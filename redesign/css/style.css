@@ -743,6 +743,39 @@ button[type=submit] {
     margin: 3px 0 0 0;
 }
 
+#upload-steps {
+    background: #f2f2f2;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+}
+
+#upload-steps li {
+    padding: 10px 0 10px 32px;
+    border-bottom: #e6e6e6 solid 1px;
+    border-top: #fff solid 1px;
+}
+
+#upload-steps li:first-child {
+    border-top: none;
+}
+
+#upload-steps li:last-child {
+    border-bottom: none;
+}
+
+#upload-steps h3 {
+    color: #676767;
+    font-size: 153.9%;
+    font-weight: bold;
+    font-family: Helvetica, sans-serif;
+}
+
+#upload-steps h4 {
+    color: #8c8c8c;
+    font-weight: bold;
+    font-family: Helvetica, sans-serif;
+}
+
 #footer {
     width: 900px;
     margin: 11px auto;
