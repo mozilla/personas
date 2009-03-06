@@ -41,10 +41,14 @@ p {
     margin: 0.9em 0;
 }
 
-input[type=text], input[type=password] {
+input[type=text], input[type=password], textarea {
     width: 240px;
     height: 1.3em;
     border:1px solid #BBBBBB;
+}
+
+textarea {
+    height: 100px;
 }
 
 input[type=checkbox] {
@@ -254,6 +258,7 @@ a.get-personas span.arrow {
     color: #868585;
     font-size: 93%;
     line-height: 1.4em;
+    margin: 0;
 }
 
 .feature {
@@ -424,7 +429,7 @@ img.preview  {
 #breadcrumbs {
     color: #747474;
     font-size: 85%;
-    margin: 0 0 5px 0;
+    margin: 0 0 10px 0;
 }
 
 #maincontent, #secondary-content {
@@ -578,6 +583,8 @@ img.preview  {
     font-size: 116%;
     font-weight: bold;
     font-family: Helvetica, sans-serif;
+    margin: 70px 0 0 0;
+    position: relative;
 }
 
 .gallery-item h3 a {
@@ -598,13 +605,8 @@ img.preview  {
 }
 
 .gallery-item .preview {
-    top: -113px;
+    top: -76px;
     position: absolute;
-}
-
-.gallery-item h3 {
-    margin: 120px 0 0 0;
-    position: relative;
 }
 
 .gallery-item p {
@@ -674,7 +676,7 @@ img.preview  {
     margin: 15px 0 0 0;
 }
 
-#signup h4, #login h4 {
+#maincontent h4 {
     border-bottom: #eaeaea 1px solid;
     padding: 0 0 7px 0;
 }
@@ -750,7 +752,7 @@ button[type=submit] {
 }
 
 #upload-steps li {
-    padding: 10px 0 10px 32px;
+    padding: 18px 0 18px 32px;
     border-bottom: #e6e6e6 solid 1px;
     border-top: #fff solid 1px;
 }
@@ -761,6 +763,20 @@ button[type=submit] {
 
 #upload-steps li:last-child {
     border-bottom: none;
+}
+
+#upload-steps li.current {
+    padding: 0;
+}
+
+#upload-steps li.current .wrapper {
+    padding: 18px 0 18px 32px;
+    width: 220px;
+    background: transparent url(../img/main-sprites.png) no-repeat scroll -325px -461px;
+}
+
+#upload-steps li.completed {
+    background: transparent url(../img/main-sprites.png) no-repeat scroll 187px -243px;
 }
 
 #upload-steps h3 {
@@ -774,6 +790,14 @@ button[type=submit] {
     color: #8c8c8c;
     font-weight: bold;
     font-family: Helvetica, sans-serif;
+}
+
+#upload-steps .current h3 {
+    color: #fff;
+}
+
+#upload-steps .current h4 {
+    color: #e5e5e5;
 }
 
 #footer {

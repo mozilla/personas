@@ -1,0 +1,110 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+            "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title>View Personas</title>
+	<link href="css/style.css" rel="stylesheet" type="text/css" media="all" />
+
+</head>
+<body>
+    <div id="outer-wrapper">
+        <div id="inner-wrapper">
+            <p id="account"><a href="#">Designer Tools</a></p>
+            <div id="nav">
+                <h1><a href="#"><img src="img/logo.png" alt="Mozilla Labs Personas"></a></h1>
+                <ul>
+                    <li><a href="#" class="active">View <br/>Personas</a></li>
+                    <li><a href="#">Create <br/>Your Own</a></li>
+                    <li><a href="#">Watch <br/> Our Demo</a></li>
+                    <li><a href="#">Frequent <br/>Questions</a></li>
+                </ul>
+            </div>
+            <div id="header">
+                <h2>Create Your Persona</h2>
+                <h3>It’s easy to create your own Persona just follow the easy steps below!</h3>
+            </div>
+            <div id="maincontent">
+                <p id="breadcrumbs">Personas Home : Create Your Own</p>
+                
+                <h4>Create Your Persona</h4>
+                
+                <div id="create-part-1">
+                    <p>
+                        <label for="persona-name">Persona Name</label>
+                        <input type="text" name="name" value="" id="name" />
+                    </p>
+                    
+                    <p>
+                        <label for="text-color">Text Color</label>
+                        <input type="text" name="text-color" value="" id="text-color" />
+                    </p>
+                    
+                    <p>
+                        <label for="header-image">Header Image</label>
+                        <span><input type="file" name="header-image" value="" id="header-image" /></span>
+                    </p>
+                    
+                    <p>
+                        <label for="description">Description</label>
+                        <textarea name="description" id="description"></textarea>
+                    </p>
+                </div>
+                
+                <div id="create-part-2">
+                    <p>
+                        <label for="category">Category</label>
+                        <select name="category" id="category">
+                            <option value=""></option>
+                            <option value="Stuff">Stuff</option>
+                        </select>
+                    </p>
+                    <p>
+                        <label for="accent-color">Accent Color</label>
+                        <select name="accent-color" id="accent-color">
+                            <option value=""></option>
+                            <option value="Stuff">Stuff</option>
+                        </select>
+                    </p>
+                    
+                    <p>
+                        <label for="footer-image">Footer Image</label>
+                        <span><input type="file" name="footer-image" value="" id="footer-image" /></span>
+                    </p>
+                    
+                    <label for="public"><input type="checkbox" name="public" id="public" value="" /> Your Persona information will be publicly viewable.</label></p>
+                </div>
+                
+            </div>
+            <div id="secondary-content">
+              <ol id="upload-steps">
+                <li class="current">
+                    <div class="wrapper">
+                        <h3>Step 1:</h3>
+                        <h4>Create Your Persona</h4>
+                    </div> 
+                </li>
+                <li class="completed">
+                    <h3>Step 2:</h3>
+                    <h4>Persona Agreement</h4>
+                </li>
+                <li>
+                    <h3>Step 3:</h3>
+                    <h4>Finish!</h4>
+                </li>
+              </ol>
+            </div>
+        </div>
+    </div>
+    <script src="js/jquery.js"></script>
+    <script src="js/script.js"></script>
+    <script type="text/javascript" charset="utf-8">
+        $(document).ready(function() {
+            $("#gallery .preview img").previewPersona();
+        });
+    </script>
+    <div id="footer">
+        <p>Copyright © 2009 Mozilla. Personas is a Mozilla Labs Project.  |  Terms of Use  |  Privacy</p>
+    </div>
+</body>
+</html>
