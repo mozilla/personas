@@ -91,30 +91,22 @@ let PersonaService = {
     // FIXME: save the data to disk when we retrieve it and then retrieve it
     // from there on startup instead of loading it over the network.
     this._loadData();
-    let dataRefreshInterval = this._prefs.get("data.refreshInterval");
-    // Don't refresh data more frequently than once per hour.
-    if (dataRefreshInterval < 3600)
-      dataRefreshInterval = 3600;
     let dataRefreshCallback = {
       _svc: this,
-      notify: function(timer) { this._svc._loadData() }
+      notify: function(timer) { this._svc._refreshData() }
     };
     timerManager.registerTimer("personas-data-refresh-timer",
                                dataRefreshCallback,
-                               dataRefreshInterval);
+                               86400 /* in seconds == one day */);
 
-    // Refresh the current persona once per day.  The interval is not
-    // configurable via a preference because we use these checks to determine
-    // the popularity of personas, and we don't want those statistics to be
-    // skewed by changes to this value.
-    let personaRefreshInterval = 86400;
+    // Refresh the current persona once per day.
     let personaRefreshCallback = {
       _svc: this,
       notify: function(timer) { this._svc._refreshPersona() }
     };
     timerManager.registerTimer("personas-persona-refresh-timer",
                                personaRefreshCallback,
-                               personaRefreshInterval);
+                               86400 /* in seconds == one day */);
 
     // Initialize the persona loader.
     // XXX Commented out because dynamic personas have been disabled.
@@ -154,10 +146,72 @@ let PersonaService = {
     request.send(null);
   },
 
-  _loadData: function() {
+  /**
+   * Retrieve data. This method gets called once per day, updates the version
+   * of the data that is currently in memory, and passes information about the
+   * selected persona and the host application to the server for statistical
+   * analysis (f.e. figuring out which personas are the most popular).
+   */
+  _refreshData: function() {
+    let appInfo     = Cc["@mozilla.org/xre/app-info;1"].
+                      getService(Ci.nsIXULAppInfo);
+    let xulRuntime  = Cc["@mozilla.org/xre/app-info;1"].
+                      getService(Ci.nsIXULRuntime);
+
+    let duration = "";
+    if (this._prefs.has("persona.lastChanged")) {
+      let date = new Date(parseInt(this._prefs.get("persona.lastChanged")));
+      duration = DateUtils.toISO8601(date);
+    }
+
+    // This logic is based on ExtensionManager::_updateLocale.
+    let locale;
+    try {
+      if (Preferences.get("intl.locale.matchOS")) {
+        let localeSvc = Cc["@mozilla.org/intl/nslocaleservice;1"].
+                        getService(Ci.nsILocaleService);
+        locale = localeSvc.getLocaleComponentForUserAgent();
+      }
+      else
+        throw "set locale in the catch block";
+    }
+    catch (ex) {
+      locale = Preferences.get("general.useragent.locale");
+    }
+
+    let params = {
+      type:       this.selected,
+      id:         this.currentPersona ? this.currentPersona.id : "",
+      duration:   duration,
+      appID:      appInfo.ID,
+      appVersion: appInfo.version,
+      appLocale:  locale,
+      appOS:      xulRuntime.OS,
+      appABI:     xulRuntime.XPCOMABI
+    };
+
+    //dump("params: " + [name + "=" + encodeURIComponent(params[name]) for (name in params)].join("&") + "\n");
+
+    let url = this.baseURI + "index_" + this._prefs.get("data.version") + ".json?" +
+              [name + "=" + encodeURIComponent(params[name]) for (name in params)].join("&");
     let t = this;
-    this._makeRequest(this.baseURI + "index_" + this._prefs.get("data.version") + ".json",
-                      function(evt) { t.onDataLoadComplete(evt) });
+    this._makeRequest(url, function(evt) { t.onDataLoadComplete(evt) });
+  },
+
+  /**
+   * Retrieve data. This method gets called on startup and retrieves data
+   * without passing any additional information about the selected persona
+   * and the application (that information is only included in the daily
+   * retrieval so we can get consistent daily statistics from it no matter
+   * how many times a user starts the application in a given day).
+   *
+   * FIXME: save the data that we retrieve once per day to disk, then remove
+   * this method and load the data from disk on startup.
+   */
+  _loadData: function() {
+    let url = this.baseURI + "index_" + this._prefs.get("data.version") + ".json";
+    let t = this;
+    this._makeRequest(url, function(evt) { t.onDataLoadComplete(evt) });
   },
 
   onDataLoadComplete: function(aEvent) {
@@ -201,34 +255,13 @@ let PersonaService = {
 
     let headers = {};
 
-    let lastRefreshed = this._prefs.get("persona.lastRefreshed", null);
-    if (lastRefreshed) {
-      let date = new Date(parseInt(lastRefreshed));
-
-      // Format the last refreshed date per RFC 1123 for use in an HTTP header.
-      // Example: Sun, 06 Nov 1994 08:49:37 GMT
-      // I'd love to use Datejs here, but its Date::toString formatting method
-      // doesn't convert dates to their UTC equivalents before formatting them,
-      // resulting in incorrect output (since RFC 1123 requires dates to be
-      // in UTC), so instead I roll my own.
-      let pad = function(v) { return (v < 10) ? "0" + v : v };
-      let day = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"][date.getUTCDay()];
-      let dayOfMonth = pad(date.getUTCDate());
-      let month = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"][date.getUTCMonth()];
-      let year = date.getUTCFullYear();
-      let hours = pad(date.getUTCHours());
-      let minutes = pad(date.getUTCMinutes());
-      let seconds = pad(date.getUTCSeconds());
-      let rfc1123Date = day + ", " + dayOfMonth + " " + month + " " + year +
-                        " " + hours + ":" + minutes + ":" + seconds + " GMT";
-
-      headers["If-Modified-Since"] = rfc1123Date;
+    if (this._prefs.has("persona.lastRefreshed")) {
+      let date = new Date(parseInt(this._prefs.get("persona.lastRefreshed")));
+      headers["If-Modified-Since"] = DateUtils.toRFC1123(date);
     }
 
     let t = this;
-    this._makeRequest(url,
-                      function(evt) { t.onPersonaLoadComplete(evt) },
-                      headers);
+    this._makeRequest(url, function(evt) { t.onPersonaLoadComplete(evt) }, headers);
   },
 
   onPersonaLoadComplete: function(event) {
@@ -436,10 +469,12 @@ let PersonaService = {
 
   _onChangeToDefaultPersona: function() {
     Observers.notify("personas:persona:changed");
+    this._prefs.set("persona.lastChanged", new Date().getTime().toString());
   },
 
   _onChangeToPersona: function() {
     this._prefs.reset("persona.lastRefreshed");
+    this._prefs.set("persona.lastChanged", new Date().getTime().toString());
     Observers.notify("personas:persona:changed");
   },
 
@@ -949,9 +984,6 @@ let PersonaService = {
 
 };
 
-PersonaService._init();
-
-
 
 const LOAD_STATE_EMPTY = 0;
 const LOAD_STATE_LOADING = 1;
@@ -1198,3 +1230,64 @@ FooterLoader.prototype = {
     return this._personaLoader.contentDocument.getElementById("footerCanvas");
   }
 };
+
+let DateUtils = {
+  /**
+   * Returns the number as a string with a 0 prepended to it if it contains
+   * only one digit, for formats like ISO 8601 that require two digit month,
+   * day, hour, minute, and second values (f.e. so midnight on January 1, 2009
+   * becomes 2009:01:01T00:00:00Z instead of 2009:1:1T0:0:0Z, which would be
+   * invalid).
+   */
+  _pad: function(number) {
+    return (number >= 0 && number <= 9) ? "0" + number : "" + number;
+  },
+
+  /**
+   * Format a date per ISO 8601, in particular the subset described in
+   * http://www.w3.org/TR/NOTE-datetime, which is recommended for date
+   * interchange on the internet.
+   *
+   * Example: 1994-11-06T08:49:37Z
+   *
+   * @param   date  {Date}    the date to format
+   * @returns       {String}  the date formatted per ISO 8601
+   */
+  toISO8601: function(date) {
+    let year = date.getUTCFullYear();
+    let month = this._pad(date.getUTCMonth() + 1);
+    let day = this._pad(date.getUTCDate());
+    let hours = this._pad(date.getUTCHours());
+    let minutes = this._pad(date.getUTCMinutes());
+    let seconds = this._pad(date.getUTCSeconds());
+    return year + "-" + month + "-" + day + "T" +
+           hours + ":" + minutes + ":" + seconds + "Z";
+  },
+
+  /**
+   * Format a date per RFC 1123, which is the standard for HTTP headers.
+   *
+   * Example: Sun, 06 Nov 1994 08:49:37 GMT
+   *
+   * I'd love to use Datejs here, but its Date::toString formatting method
+   * doesn't convert dates to their UTC equivalents before formatting them,
+   * resulting in incorrect output (since RFC 1123 requires dates to be
+   * in UTC), so instead I roll my own.
+   *
+   * @param   date  {Date}    the date to format
+   * @returns       {String}  the date formatted per RFC 1123
+   */
+  toRFC1123: function(date) {
+    let dayOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"][date.getUTCDay()];
+    let day = this._pad(date.getUTCDate());
+    let month = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"][date.getUTCMonth()];
+    let year = date.getUTCFullYear();
+    let hours = this._pad(date.getUTCHours());
+    let minutes = this._pad(date.getUTCMinutes());
+    let seconds = this._pad(date.getUTCSeconds());
+    return dayOfWeek + ", " + day + " " + month + " " + year + " " +
+           hours + ":" + minutes + ":" + seconds + " GMT";
+  }
+};
+
+PersonaService._init();

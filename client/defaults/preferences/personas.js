@@ -73,7 +73,3 @@ pref("extensions.personas.showCustomMenu", false);
 
 // The version of the JSON data feed that this extension expects.
 pref("extensions.personas.data.version", 1);
-
-// How often to refresh the JSON data feed.  In seconds, with a default
-// of 86400 seconds (one day) and a minimum of 3600 seconds (one hour).
-pref("extensions.personas.data.refreshInterval", 86400);
