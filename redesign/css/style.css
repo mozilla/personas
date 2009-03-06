@@ -320,8 +320,6 @@ img.preview  {
     margin: 0 0 10px 0;
 }
 
-
-
 #slideshow {
     height: 240px;
     width: 1500px;
@@ -376,6 +374,15 @@ img.preview  {
     left: 273px;
 }
 
+#slides .try {
+    float: right;
+    display: inline;
+}
+
+#slides p {
+    margin: 0;
+}
+
 .popular img {
     padding: 1px;
     border: 2px solid #d8d8d8;
@@ -395,6 +402,10 @@ img.preview  {
 
 .popular h4 {
     font-size: 100%;
+}
+
+.popular p {
+    margin: 0;
 }
 
 .downloads {
@@ -677,9 +688,14 @@ img.preview  {
     height: 110px;
 }
 
-.news, .disclaimer {
+.news, .disclaimer, .forgot a {
     font-size: 85%;
     color: #b1b1b1;
+    text-decoration: none;
+}
+
+.forgot a:hover {
+    text-decoration: underline;
 }
 
 .disclaimer {
@@ -719,6 +735,12 @@ button[type=submit] {
 
 .button span+span, .button .arrow {
     background: transparent url(../img/main-sprites.png) no-repeat scroll -651px 10px;
+}
+
+.extra-info {
+    display:block;
+    font-size: 85%;
+    margin: 3px 0 0 0;
 }
 
 #footer {
