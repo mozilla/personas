@@ -227,11 +227,11 @@ class PersonaStorage
 		return $personas;
 	}
 	
-	function get_recent_personas($category = null, $limit = null)
+	function get_recent_personas($category = null, $limit = null, $offset = null)
 	{
 		try
 		{
-			$statement = 'select * from personas where status = 1' . ($category ? " and category = :category" : "") . ' order by approve desc' . ($limit ? " limit  $limit" : "");
+			$statement = 'select * from personas where status = 1' . ($category ? " and category = :category" : "") . ' order by approve desc' . ($limit ? " limit $limit" : "") . ($offset ? " offset $offset" : "");
 			$sth = $this->_dbh->prepare($statement);
 			if ($category)
 			{
@@ -254,11 +254,11 @@ class PersonaStorage
 		return $personas;
 	}
 
-	function get_popular_personas($category = null, $limit = null)
+	function get_popular_personas($category = null, $limit = null, $offset = null)
 	{
 		try
 		{
-			$statement = 'select * from personas where status = 1' . ($category ? " and category = :category" : "") . ' order by popularity desc' . ($limit ? " limit $limit" : "");
+			$statement = 'select * from personas where status = 1' . ($category ? " and category = :category" : "") . ' order by popularity desc' . ($limit ? " limit $limit" : "") . ($offset ? " offset $offset" : "");
 			$sth = $this->_dbh->prepare($statement);
 			if ($category)
 			{
@@ -388,6 +388,24 @@ class PersonaStorage
 			$personas[] = $result;
 		}		
 		return $personas;
+	}
+	
+	function get_personas_by_category_count($category)
+	{
+		try
+		{
+			$statement = 'select count(*) from personas where status = 1 and category = :category';
+			$sth = $this->_dbh->prepare($statement);
+			$sth->bindParam(':category', $category);
+			$sth->execute();
+		}
+		catch( PDOException $exception )
+		{
+			error_log($exception->getMessage());
+			throw new Exception("Database unavailable", 503);
+		}
+		
+		return $sth->fetchColumn();
 	}
 	
 	#see if we're going to get a namespace collision with a persona
