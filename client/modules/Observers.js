@@ -68,8 +68,8 @@ let Observers = {
    */
   add: function(topic, callback, thisObject) {
     let observer = new Observer(topic, callback, thisObject);
-    this._cache.push(observer);
     this._service.addObserver(observer, topic, true);
+    cache.push(observer);
 
     return observer;
   },
@@ -91,12 +91,12 @@ let Observers = {
     // we can make it.  We could index by topic, but we can't index by callback
     // or thisObject, as far as I know, since the keys to JavaScript hashes
     // (a.k.a. objects) can apparently only be primitive values.
-    let [observer] = this._cache.filter(function(v) v.topic      == topic    &&
-                                                    v.callback   == callback &&
-                                                    v.thisObject == thisObject);
+    let [observer] = cache.filter(function(v) v.topic      == topic    &&
+                                              v.callback   == callback &&
+                                              v.thisObject == thisObject);
     if (observer) {
       this._service.removeObserver(observer, topic);
-      this._cache.splice(this._cache.indexOf(observer), 1);
+      cache.splice(cache.indexOf(observer), 1);
     }
   },
 
@@ -123,21 +123,15 @@ let Observers = {
   },
 
   _service: Cc["@mozilla.org/observer-service;1"].
-            getService(Ci.nsIObserverService),
-
-  /**
-   * A cache of observers that have been added.
-   *
-   * We use this to remove observers when a caller calls |remove|.
-   *
-   * XXX This might result in reference cycles, causing memory leaks,
-   * if we hold a reference to an observer that holds a reference to us.
-   * Could we fix that by making this an independent top-level object
-   * rather than a property of this object?
-   */
-  _cache: []
+            getService(Ci.nsIObserverService)
 };
 
+/**
+ * A cache of observers that have been added.
+ *
+ * We use this to remove observers when a caller calls |Observers.remove|.
+ */
+let cache = [];
 
 function Observer(topic, callback, thisObject) {
   this.topic = topic;
