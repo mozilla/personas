@@ -681,6 +681,18 @@ img.preview  {
     padding: 0 0 7px 0;
 }
 
+#maincontent h2 {
+    font-family: Helvetica, sans-serif;
+    color: #f67b00;
+    font-size: 189%;
+}
+
+#maincontent h3 {
+    font-family: Helvetica, sans-serif;
+    color: #09344f;
+    font-weight: bold;
+}
+
 #login {
     margin: 15px 20px 0 0;
 }
@@ -725,13 +737,14 @@ img.preview  {
     overflow: visible;
     width: auto;
     height: 30px;
+    text-decoration: none;
 }
 
 .button span {
     background: #fff url(../img/main-sprites.png) no-repeat scroll -383px 1px;
     display:inline; 
     line-height: 25px;
-    padding: 6px 6px 10px 10px;
+    padding: 6px 6px 6px 10px;
 }
 
 .button span+span, .button .arrow {
@@ -823,6 +836,28 @@ img.preview  {
 
 .continue {
     clear: both;
+}
+
+.detailed-view {
+    margin: 15px 0;
+}
+
+.description strong {
+    font-family: Helvetica, sans-serif;
+    color: #4d4d4d;
+}
+
+.numb-users {
+    float: right;
+    color: #007aab;
+    font-family: Helvetica, sans-serif;
+    font-weight: bold;
+    font-size: 91%;
+    padding: 5px 0 0 0;
+}
+
+#buttons {
+    float: left;
 }
 
 #footer {
