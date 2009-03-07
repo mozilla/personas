@@ -57,31 +57,20 @@ function Preferences(prefBranch) {
 }
 
 Preferences.prototype = {
-  _prefBranch: "",
-
   /**
-   * Preferences Service
+   * Get the value of a pref, if any; otherwise return the default value.
+   *
+   * @param   prefName  {String|Array}
+   *          the pref to get, or an array of prefs to get
+   *
+   * @param   defaultValue
+   *          the default value, if any, for prefs that don't have one
+   *
+   * @returns the value of the pref, if any; otherwise the default value
    */
-  get _prefSvc() {
-    let prefSvc = Cc["@mozilla.org/preferences-service;1"].
-                  getService(Ci.nsIPrefService).
-                  getBranch(this._prefBranch).
-                  QueryInterface(Ci.nsIPrefBranch2);
-    this.__defineGetter__("_prefSvc", function() prefSvc);
-    return this._prefSvc;
-  },
-
-  /**
-    * Get the value of a pref, if any; otherwise return the default value.
-    *
-    * @param   prefName      the name of the pref to get
-    * @param   defaultValue  the default value, if any
-    *
-    * @returns the value of the pref, if any; otherwise the default value
-    */
   get: function(prefName, defaultValue) {
     if (isArray(prefName))
-      return prefName.map(function(v) this.get(v), this);
+      return prefName.map(function(v) this.get(v, defaultValue), this);
 
     switch (this._prefSvc.getPrefType(prefName)) {
       case Ci.nsIPrefBranch.PREF_STRING:
@@ -107,8 +96,14 @@ Preferences.prototype = {
   /**
    * Set a preference to a value.
    *
-   * @param   prefName  {String}
-   *          the name of the pref to set
+   * You can set multiple prefs by passing an object as the only parameter.
+   * In that case, this method will treat the properties of the object
+   * as preferences to set, where each property name is the name of a pref
+   * and its corresponding property value is the value of the pref.
+   *
+   * @param   prefName  {String|Object}
+   *          the name of the pref to set; or an object containing a set
+   *          of prefs to set
    *
    * @param   prefValue {String|Number|Boolean}
    *          the value to which to set the pref
@@ -170,6 +165,55 @@ Preferences.prototype = {
     }
   },
 
+  /**
+   * Whether or not the given pref has a value.  This is different from isSet
+   * because it returns true whether the value of the pref is a default value
+   * or a user-set value, while isSet only returns true if the value
+   * is a user-set value.
+   *
+   * @param   prefName  {String|Array}
+   *          the pref to check, or an array of prefs to check
+   *
+   * @returns {Boolean|Array}
+   *          whether or not the pref has a value; or, if the caller provided
+   *          an array of pref names, an array of booleans indicating whether
+   *          or not the prefs have values
+   */
+  has: function(prefName) {
+    if (isArray(prefName))
+      return prefName.map(this.has, this);
+
+    return (this._prefSvc.getPrefType(prefName) != Ci.nsIPrefBranch.PREF_INVALID);
+  },
+
+  /**
+   * Whether or not the given pref has a user-set value.  This is different
+   * from |has| because it returns true only if the value of the pref is a user-
+   * set value, while |has| returns true if the value of the pref is a default
+   * value or a user-set value.
+   *
+   * @param   prefName  {String|Array}
+   *          the pref to check, or an array of prefs to check
+   *
+   * @returns {Boolean|Array}
+   *          whether or not the pref has a user-set value; or, if the caller
+   *          provided an array of pref names, an array of booleans indicating
+   *          whether or not the prefs have user-set values
+   */
+  isSet: function(prefName) {
+    if (isArray(prefName))
+      return prefName.map(this.isSet, this);
+
+    return (this.has(prefName) && this._prefSvc.prefHasUserValue(prefName));
+  },
+
+  /**
+   * Whether or not the given pref has a user-set value. Use isSet instead,
+   * which is equivalent.
+   * @deprecated
+   */
+  modified: function(prefName) { return this.isSet(prefName) },
+
   reset: function(prefName) {
     if (isArray(prefName)) {
       prefName.map(function(v) this.reset(v), this);
@@ -192,6 +236,49 @@ Preferences.prototype = {
     }
   },
 
+  /**
+   * Lock a pref so it can't be changed.
+   *
+   * @param   prefName  {String|Array}
+   *          the pref to lock, or an array of prefs to lock
+   */
+  lock: function(prefName) {
+    if (isArray(prefName))
+      prefName.map(this.lock, this);
+
+    this._prefSvc.lockPref(prefName);
+  },
+
+  /**
+   * Unlock a pref so it can be changed.
+   *
+   * @param   prefName  {String|Array}
+   *          the pref to lock, or an array of prefs to lock
+   */
+  unlock: function(prefName) {
+    if (isArray(prefName))
+      prefName.map(this.unlock, this);
+
+    this._prefSvc.unlockPref(prefName);
+  },
+
+  /**
+   * Whether or not the given pref is locked against changes.
+   *
+   * @param   prefName  {String|Array}
+   *          the pref to check, or an array of prefs to check
+   *
+   * @returns {Boolean|Array}
+   *          whether or not the pref has a user-set value; or, if the caller
+   *          provided an array of pref names, an array of booleans indicating
+   *          whether or not the prefs have user-set values
+   */
+  locked: function(prefName) {
+    if (isArray(prefName))
+      return prefName.map(this.locked, this);
+
+    return this._prefSvc.prefIsLocked(prefName);
+  },
 
   /**
    * Start observing a pref.
@@ -260,30 +347,6 @@ Preferences.prototype = {
     }
   },
 
-
-  // FIXME: make the methods below accept an array of pref names.
-
-  has: function(prefName) {
-    return (this._prefSvc.getPrefType(prefName) != Ci.nsIPrefBranch.PREF_INVALID);
-  },
-
-  // FIXME: change this to isSet (for consistency with set and reset).
-  modified: function(prefName) {
-    return (this.has(prefName) && this._prefSvc.prefHasUserValue(prefName));
-  },
-
-  locked: function(prefName) {
-    return this._prefSvc.isLocked(prefName);
-  },
-
-  lock: function(prefName) {
-    this._prefSvc.lockPref(prefName);
-  },
-
-  unlock: function(prefName) {
-    this._prefSvc.unlockPref(prefName);
-  },
-
   resetBranch: function(prefBranch) {
     try {
       this._prefSvc.resetBranch(prefBranch);
@@ -296,6 +359,25 @@ Preferences.prototype = {
       else
         throw ex;
     }
+  },
+
+  /**
+   * The branch of the preferences tree to which this instance provides access.
+   * @private
+   */
+  _prefBranch: "",
+
+  /**
+   * Preferences Service
+   * @private
+   */
+  get _prefSvc() {
+    let prefSvc = Cc["@mozilla.org/preferences-service;1"].
+                  getService(Ci.nsIPrefService).
+                  getBranch(this._prefBranch).
+                  QueryInterface(Ci.nsIPrefBranch2);
+    this.__defineGetter__("_prefSvc", function() prefSvc);
+    return this._prefSvc;
   }
 
 };
