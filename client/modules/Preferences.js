@@ -94,8 +94,13 @@ Preferences.prototype = {
         return this._prefSvc.getBoolPref(prefName);
 
       case Ci.nsIPrefBranch.PREF_INVALID:
-      default:
         return defaultValue;
+
+      default:
+        // This should never happen.
+        throw "Error getting pref " + prefName + "; its value's type is " +
+              this._prefSvc.getPrefType(prefName) + ", which I don't know " +
+              "how to handle.";
     }
   },
 
