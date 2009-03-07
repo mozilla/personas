@@ -723,22 +723,20 @@ img.preview  {
     background: none;
     cursor: pointer;
     overflow: visible;
+    width: auto;
+    height: 30px;
 }
 
 .button span {
-    background: #fff url(../img/main-sprites.png) no-repeat scroll -383px 0;
-    display:block; 
+    background: #fff url(../img/main-sprites.png) no-repeat scroll -383px 1px;
+    display:inline; 
     line-height: 25px;
-    padding: 0 5px 2px 10px;
-    float: left;
+    padding: 6px 6px 10px 10px;
 }
 
 .button span+span, .button .arrow {
-    background: transparent url(../img/main-sprites.png) no-repeat scroll -651px 0;
-    height: 26px;
-    width: 30px;
-    padding: 0;
-    float: left;
+    background: transparent url(../img/main-sprites.png) no-repeat scroll -651px 1px;
+    padding: 6px 15px;
 }
 
 .extra-info {
