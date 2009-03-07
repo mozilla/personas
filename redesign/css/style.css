@@ -715,28 +715,30 @@ img.preview  {
     font-size:91%;
 }
 
-button[type=submit] {
-    display: block;
-    border: none;
-    background: none;
-    height: 30px;
-    cursor: pointer;
-    padding: 0;
-}
-
 .button {
     font-weight: bold;
     color: #0077a6;
     font-family: Arial, sans-serif;
+    border: none;
+    background: none;
+    cursor: pointer;
+    overflow: visible;
 }
 
 .button span {
-    background: transparent url(../img/main-sprites.png) no-repeat scroll -383px 10px;
-    padding: 15px;
+    background: #fff url(../img/main-sprites.png) no-repeat scroll -383px 0;
+    display:block; 
+    line-height: 25px;
+    padding: 0 5px 2px 10px;
+    float: left;
 }
 
 .button span+span, .button .arrow {
-    background: transparent url(../img/main-sprites.png) no-repeat scroll -651px 10px;
+    background: transparent url(../img/main-sprites.png) no-repeat scroll -651px 0;
+    height: 26px;
+    width: 30px;
+    padding: 0;
+    float: left;
 }
 
 .extra-info {
@@ -798,6 +800,31 @@ button[type=submit] {
 
 #upload-steps .current h4 {
     color: #e5e5e5;
+}
+
+#create-part-1, #create-part-2 {
+    width: 323px;
+    float: left;
+    margin: 0 0 10px 0;
+}
+
+#create-part-2 {
+    float: right;
+}
+
+#license-info {
+    width: 297px;
+    float: right;
+    margin: 2px 0 0 0;
+}
+
+#license {
+    float: left;
+    display: inline;
+}
+
+.continue {
+    clear: both;
 }
 
 #footer {

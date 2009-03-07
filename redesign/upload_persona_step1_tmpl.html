@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	<title>View Personas</title>
+	<title>Create Your Persona</title>
 	<link href="css/style.css" rel="stylesheet" type="text/css" media="all" />
 
 </head>
@@ -72,13 +72,24 @@
                         <span><input type="file" name="footer-image" value="" id="footer-image" /></span>
                     </p>
                     
-                    <label for="public"><input type="checkbox" name="public" id="public" value="" /> Your Persona information will be publicly viewable.</label></p>
+                    <p><label for="public"><input type="checkbox" name="public" id="public" value="" /> Your Persona information will be publicly viewable.</label></p>
+                    
+                    
+                    <p>
+                        <label for="license">
+                            <input type="checkbox" name="license" id="license" value="" /> 
+                            <span id="license-info">Publish your work with a Creative Commons Attribution-Noncommercial-Share Alike License.</span>
+                        </label></p>
+                    
+                    
                 </div>
                 
+                <p class="continue">
+                    <button type="submit" class="button"><span>continue</span><span class="arrow">&nbsp;</span></button></p>
             </div>
             <div id="secondary-content">
               <ol id="upload-steps">
-                <li class="current">
+                <li class="current"> <!-- Active step requires 'current' classname and the extra wrapper div -->
                     <div class="wrapper">
                         <h3>Step 1:</h3>
                         <h4>Create Your Persona</h4>
@@ -96,13 +107,6 @@
             </div>
         </div>
     </div>
-    <script src="js/jquery.js"></script>
-    <script src="js/script.js"></script>
-    <script type="text/javascript" charset="utf-8">
-        $(document).ready(function() {
-            $("#gallery .preview img").previewPersona();
-        });
-    </script>
     <div id="footer">
         <p>Copyright © 2009 Mozilla. Personas is a Mozilla Labs Project.  |  Terms of Use  |  Privacy</p>
     </div>
