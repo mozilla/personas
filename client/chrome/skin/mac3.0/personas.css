@@ -86,8 +86,7 @@
 }
 #main-window[persona] .tabbrowser-tab:not([selected="true"]),
 }
-#main-window[persona] .tab-text,
-#main-window[persona] .tab-text-shadow {
+#main-window[persona] .tab-text {
   font-weight: normal !important;
 }
 
@@ -160,4 +159,14 @@
 #browser-bottombox[persona] #FindToolbar {
   border-top-width: 1px;
   border-top-color: transparent;
+}
+
+
+/******************************************************************************/
+/* Eliminate text shadows from toolbarbutton and tab text so it doesn't create
+/* an unnatural color stroke on the bottom half of the text (bug 481980). */
+
+#main-window[persona] .toolbarbutton-text-shadow,
+#main-window[persona] .tab-text-shadow {
+  display: none;
 }
