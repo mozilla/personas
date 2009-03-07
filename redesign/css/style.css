@@ -30,6 +30,8 @@ strong {
 
 a {
     outline: none;
+    color: #00a1e2;
+    text-decoration: none;
 }
 
 label {
@@ -452,6 +454,12 @@ img.preview  {
     font-size: 138.5%;
 }
 
+#maincontent.success h2 {
+    color: #007aab;
+    font-size: 197%;
+    font-weight: bold;
+}
+
 #secondary-content {
     width: 240px;
 }
@@ -858,6 +866,16 @@ img.preview  {
 
 #buttons {
     float: left;
+}
+
+.success-options {
+    margin: 20px 0 0 0;
+}
+
+.success-options li {
+    display: inline;
+    font-weight: bold;
+    padding: 0 10px 0 0;
 }
 
 #footer {
