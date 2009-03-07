@@ -43,9 +43,9 @@
 	require_once '../lib/storage.php';
 	require_once '../lib/user.php';
 
-function send_problem_email($address, $reason)
+function send_problem_email($address, $reason, $name)
 {
-	$message = 'Thanks for submitting a persona. Unfortunately, there was a problem that prevents us from adding it to the available pool.';
+	$message = "Thanks for submitting a your persona '$name'. Unfortunately, there was a problem that prevents us from adding it to the available pool.";
 	$message .= "\n\n";
 	$message .= "The reason given was: $reason";
 	$message .= "\n\n";
@@ -100,7 +100,7 @@ function send_problem_email($address, $reason)
 				break;			
 			case 'reject':
 				$db->reject_persona($persona['id']);
-				send_problem_email($user->get_email($persona['author']), $_GET['reason']);
+				send_problem_email($user->get_email($persona['author']), $_GET['reason'], $persona['name']);
 				break;
 			default:
 				print "Could not understand the verdict";	

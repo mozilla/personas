@@ -51,25 +51,52 @@ Cu.import("resource://gre/modules/XPCOMUtils.jsm");
  * @version 0.2
  */
 let Observers = {
+  /**
+   * Register the given callback as an observer of the given topic.
+   *
+   * @param   topic       {String}
+   *          the topic to observe
+   *
+   * @param   callback    {Object}
+   *          the callback; an Object that implements nsIObserver or a Function
+   *          that gets called when the notification occurs
+   *
+   * @param   thisObject  {Object}  [optional]
+   *          the object to use as |this| when calling a Function callback
+   *
+   * @returns the observer
+   */
   add: function(topic, callback, thisObject) {
     let observer = new Observer(topic, callback, thisObject);
-    this._cache.push(observer);
     this._service.addObserver(observer, topic, true);
+    cache.push(observer);
 
     return observer;
   },
 
+  /**
+   * Unregister the given callback as an observer of the given topic.
+   *
+   * @param   topic       {String}
+   *          the topic being observed
+   *
+   * @param   callback    {Object}
+   *          the callback doing the observing
+   *
+   * @param   thisObject  {Object}  [optional]
+   *          the object being used as |this| when calling a Function callback
+   */
   remove: function(topic, callback, thisObject) {
     // This seems fairly inefficient, but I'm not sure how much better
     // we can make it.  We could index by topic, but we can't index by callback
     // or thisObject, as far as I know, since the keys to JavaScript hashes
     // (a.k.a. objects) can apparently only be primitive values.
-    let [observer] = this._cache.filter(function(v) v.topic      == topic    &&
-                                                    v.callback   == callback &&
-                                                    v.thisObject == thisObject);
+    let [observer] = cache.filter(function(v) v.topic      == topic    &&
+                                              v.callback   == callback &&
+                                              v.thisObject == thisObject);
     if (observer) {
       this._service.removeObserver(observer, topic);
-      this._cache.splice(this._cache.indexOf(observer), 1);
+      cache.splice(cache.indexOf(observer), 1);
     }
   },
 
@@ -79,14 +106,15 @@ let Observers = {
    * @param topic   {String}
    *        the topic to notify observers about
    *
-   * @param subject {Object}
+   * @param subject {Object}  [optional]
    *        some information about the topic; can be any JS object or primitive
    *
-   * @param data    {String}  [deprecated]
-   *        some more information about the topic; deprecated, as the subject
-   *        is sufficient to pass all needed information; if you have multiple
-   *        pieces of information, pass it inside an anonymous object, i.e.:
-   *        { foo: 1, bar: "some string", baz: myObject }
+   * @param data    {String}  [optional] [deprecated]
+   *        some more information about the topic; deprecated as the subject
+   *        is sufficient to pass all needed information to the JS observers
+   *        that this module targets; if you have multiple values to pass to
+   *        the observer, wrap them in an object and pass them via the subject
+   *        parameter (i.e.: { foo: 1, bar: "some string", baz: myObject })
    */
   notify: function(topic, subject, data) {
     subject = (typeof subject == "undefined") ? null : new Subject(subject);
@@ -95,21 +123,15 @@ let Observers = {
   },
 
   _service: Cc["@mozilla.org/observer-service;1"].
-            getService(Ci.nsIObserverService),
-
-  /**
-   * A cache of observers that have been added.
-   *
-   * We use this to remove observers when a caller calls |remove|.
-   *
-   * XXX This might result in reference cycles, causing memory leaks,
-   * if we hold a reference to an observer that holds a reference to us.
-   * Could we fix that by making this an independent top-level object
-   * rather than a property of this object?
-   */
-  _cache: []
+            getService(Ci.nsIObserverService)
 };
 
+/**
+ * A cache of observers that have been added.
+ *
+ * We use this to remove observers when a caller calls |Observers.remove|.
+ */
+let cache = [];
 
 function Observer(topic, callback, thisObject) {
   this.topic = topic;
