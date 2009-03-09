@@ -68,6 +68,15 @@
 }
 
 
+/******************************************************************************/
+/* Ensure transparency of all toolbar items in their various states */
+/* (e.g. active, inactive, hover, etc.). */
+
+#main-window[persona] toolbarbutton {
+  -moz-appearance: none;
+}
+
+
 /* Note: we don't have to eliminate top/bottom borders from toolbars on Linux,
  * as they go away by themselves when we set -moz-appearance: none on toolbars.
  * Nor do we have to compensate for the lack of borders to prevent jumping
