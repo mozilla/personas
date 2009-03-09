@@ -128,11 +128,15 @@ input[type=checkbox] {
 }
 
 #nav ul a {
-    padding: 20px 0 16px 10px;
+    padding: 20px 0 18px 10px;
     display: block;
     color: #fff;
     text-decoration: none;
     width: 110px;
+}
+
+#nav ul li.gallery a, #nav ul li.demo a {
+    padding: 28px 0 25px 10px ;
 }
 
 #nav ul a:hover {
@@ -701,6 +705,12 @@ img.preview  {
     font-weight: bold;
 }
 
+#maincontent.demo h3 {
+    font-size: 138.5%;
+    color: #007aab;
+    margin: 0 0 10px 0;
+}
+
 #login {
     margin: 15px 20px 0 0;
 }
@@ -766,34 +776,43 @@ img.preview  {
     margin: 3px 0 0 0;
 }
 
-#upload-steps {
+#upload-steps, #demo-nav {
     background: #f2f2f2;
     -moz-border-radius: 5px;
     -webkit-border-radius: 5px;
 }
 
-#upload-steps li {
+#upload-steps li, #demo-nav li {
     padding: 18px 0 18px 32px;
     border-bottom: #e6e6e6 solid 1px;
     border-top: #fff solid 1px;
 }
 
-#upload-steps li:first-child {
+#upload-steps li:first-child, #demo-nav li:first-child {
     border-top: none;
 }
 
-#upload-steps li:last-child {
+#upload-steps li:last-child, #demo-nav li:last-child {
     border-bottom: none;
 }
 
-#upload-steps li.current {
+#upload-steps li.current, #demo-nav li.current {
     padding: 0;
 }
 
-#upload-steps li.current .wrapper {
+#upload-steps li.current .wrapper, #demo-nav li.current .wrapper {
     padding: 18px 0 18px 32px;
     width: 220px;
     background: transparent url(../img/main-sprites.png) no-repeat scroll -325px -461px;
+}
+
+#demo-nav li.current .wrapper {
+    padding: 0;
+}
+
+#demo-nav li.current .wrapper a {
+    padding: 10px 0 0 0;
+    display: block;
 }
 
 #upload-steps li.completed {
