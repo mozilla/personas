@@ -926,6 +926,8 @@ img.preview  {
     background: url('../img/nav-sprite.jpg') 0 -280px repeat-x;
     -moz-border-radius-topleft: 5px;
     -moz-border-radius-topright: 5px;
+    -webkit-border-radius-topleft: 5px;
+    -webkit-border-radius-topright: 5px;
 }
 
 .info-box h3 a {
@@ -941,6 +943,8 @@ img.preview  {
     background: #d9d9d9;
     -moz-border-radius-bottomleft: 5px;
     -moz-border-radius-bottomright: 5px;
+    -webkit-border-radius-bottomleft: 5px;
+    -webkit-border-radius-bottomright: 5px;
     padding: 5px 10px 14px;
     font-size: 93%;
 }
