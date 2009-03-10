@@ -13,10 +13,10 @@
             <div id="nav">
                 <h1><a href="#"><img src="/store/img/logo.png" alt="Mozilla Labs Personas"></a></h1>
                 <ul>
-                    <li><a href="#">View <br/>Personas</a></li>
-                    <li><a href="#">Create <br/>Your Own</a></li>
-                    <li><a href="#">Watch <br/> Our Demo</a></li>
-                    <li><a href="#">Frequent <br/>Questions</a></li>
+                    <li class="gallery"><a href="#">Gallery</a></li>
+                    <li class="create"><a href="#">Create <br/>Your Own</a></li>
+                    <li class="demo"><a href="#">Demo</a></li>
+                    <li class="faq"><a href="#">Frequent <br/>Questions</a></li>
                 </ul>
             </div>
             <div id="header">
