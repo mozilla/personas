@@ -60,7 +60,7 @@
 #main-window[persona] toolbar {
   -moz-appearance: none;
   background-color: transparent;
-#  background-image: none !important;
+  /*background-image: none !important;*/
 }
 
 #main-window[persona] #nav-bar {
@@ -87,25 +87,25 @@
 /* Style the tabs. */
 #main-window[persona] .tabbrowser-strip {
   -moz-appearance: none;
-#  background-image: url(chrome://personas/skin/tabbrowser-tabs-bkgnd.png) !important;
+  /*background-image: url(chrome://personas/skin/tabbrowser-tabs-bkgnd.png) !important;*/
   background-color: transparent; 
   background-image: none !important;
 }
 
 #main-window[persona] .tabbrowser-tab {
-#  opacity: 0.6;
-#   color: black !important;
+  /*opacity: 0.6;*/
+  /*color: black !important;*/
 }
 
 #main-window[persona] .tabbrowser-tab[selected="true"],
 #main-window[persona] .tabbrowser-tab:hover {
-#   background-color: none;
-#  opacity: 0.6;
+  /*background-color: none;*/
+  /*opacity: 0.6;*/
 }
 
 #main-window[persona] .tab-text,
 #main-window[persona] .tab-text-shadow {
-#   font-weight: normal !important;
+  /*font-weight: normal !important;*/
 }
 
 #main-window[persona] .tabbrowser-tab {
@@ -131,8 +131,8 @@
 
 #main-window[persona] .tabbrowser-tab:not([selected="true"]) {
   background-image: url(chrome://personas/skin/tabbrowser-tabs-bkgnd.png) !important;
- #   background-image: url(chrome://browser/skin/tabbrowser/tab-bkgnd.png);
- #  background-image: none !important;
+  /*background-image: url(chrome://browser/skin/tabbrowser/tab-bkgnd.png);*/
+  /*background-image: none !important;*/
 }
 
 #main-window[persona] .tabbrowser-tab[selected="true"] {
