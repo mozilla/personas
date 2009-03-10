@@ -37,7 +37,7 @@
                     
                     <p>
                         <label for="text-color">Text Color</label>
-                        <input type="text" name="text-color" value="" id="text-color" />
+                        <input type="text" name="text-color" value="" id="text-color"/>
                     </p>
                     
                     <p>
@@ -61,26 +61,13 @@
                     </p>
                     <p>
                         <label for="accent-color">Accent Color</label>
-                        <select name="accent-color" id="accent-color">
-                            <option value=""></option>
-                            <option value="Stuff">Stuff</option>
-                        </select>
+                        <input type="text" name="accent-color" value="" id="accent-color"/>
                     </p>
                     
                     <p>
                         <label for="footer-image">Footer Image</label>
                         <span><input type="file" name="footer-image" value="" id="footer-image" /></span>
                     </p>
-                    
-                    <p><label for="public"><input type="checkbox" name="public" id="public" value="" /> Your Persona information will be publicly viewable.</label></p>
-                    
-                    
-                    <p>
-                        <label for="license">
-                            <input type="checkbox" name="license" id="license" value="" /> 
-                            <span id="license-info">Publish your work with a Creative Commons Attribution-Noncommercial-Share Alike License.</span>
-                        </label></p>
-                    
                     
                 </div>
                 
@@ -107,6 +94,44 @@
             </div>
         </div>
     </div>
+    
+    <script src="js/jquery.js"></script>
+    <script src="js/script.js"></script>
+   <script type="text/javascript" charset="utf-8">
+    $('#text-color').ColorPicker({
+    	onSubmit: function(hsb, hex, rgb) {
+    		$('#text-color').val(hex);
+    	},
+    	onBeforeShow: function () {
+    		$(this).ColorPickerSetColor(this.value);
+    	},
+    	onChange: function (hsb, hex, rgb) {
+        		$('#text-color').val(hex);
+        	}
+        
+    })
+    .bind('keyup', function(){
+    	$(this).ColorPickerSetColor(this.value);
+    });
+    
+    
+    $('#accent-color').ColorPicker({
+    	onSubmit: function(hsb, hex, rgb) {
+    		$('#accent-color').val(hex);
+    	},
+    	onBeforeShow: function () {
+    		$(this).ColorPickerSetColor(this.value);
+    	},
+    	onChange: function (hsb, hex, rgb) {
+        		$('#accent-color').val(hex);
+        	}
+        
+    })
+    .bind('keyup', function(){
+    	$(this).ColorPickerSetColor(this.value);
+    });
+    
+   </script>
     <div id="footer">
         <p>Copyright © 2009 Mozilla. Personas is a Mozilla Labs Project.  |  Terms of Use  |  Privacy</p>
     </div>
