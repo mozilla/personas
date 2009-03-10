@@ -198,6 +198,7 @@ div.get-personas {
 div.get-personas p {
     display: block;
     clear: both;
+    padding: 0;
 }
 
 div.get-personas p.platforms-note {
@@ -793,6 +794,10 @@ img.preview  {
     border-top: #fff solid 1px;
 }
 
+#demo-nav li {
+    padding: 31px 0 31px 31px;
+}
+
 #upload-steps li:first-child, #demo-nav li:first-child {
     border-top: none;
 }
@@ -821,10 +826,9 @@ img.preview  {
     display: block;
 }
 
-#demo-nav li a:link, #demo-nav li.current .wrapper span {
+#demo-nav li a:link, #demo-nav li.current .wrapper span, #demo-nav li a:visited {
     font-size: 131%;
     color: #676767;
-    font-weight: bold;
 }
 
 #demo-nav li.current .wrapper span {
@@ -926,10 +930,9 @@ img.preview  {
 
 .info-box h3 a {
     line-height: 40px;
-    padding: 0 0 0 20px;
+    padding: 0 0 0 13px;
     display: block;
     color: #fff;
-    font-weight: bold;
     font-size: 131%;
     background: transparent url(../img/main-sprites.png) no-repeat scroll 204px -347px;
 }
@@ -938,7 +941,7 @@ img.preview  {
     background: #d9d9d9;
     -moz-border-radius-bottomleft: 5px;
     -moz-border-radius-bottomright: 5px;
-    padding: 0 10px 10px;
+    padding: 5px 10px 14px;
     font-size: 93%;
 }
 
