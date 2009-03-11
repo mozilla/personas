@@ -82,6 +82,10 @@ ul li {
     list-style-type: disc; 
 }
 
+em {
+    font-style: italic;
+}
+
 #inner-wrapper:after, #nav ul:after{
     content: '.';
     display: block;
@@ -133,9 +137,19 @@ ul li {
     text-decoration: underline;
 }
 
+#nav {
+    z-index: 45;
+    height: 80px;
+}
+
 #nav h1 {
     margin: -15px 45px -13px 0;
     float: left;
+    z-index: 5;
+}
+
+#nav h1 a img {
+    z-index: 20;
 }
 
 #nav ul {
@@ -175,7 +189,7 @@ ul li {
 }
 
 #header {
-    margin: 0 0 0 -10px;
+    margin: -10px 0 0 -10px;
     padding: 20px 0 0 285px;
     background: url('../img/hanger-bg.jpg') top left no-repeat;
     height: 125px;
@@ -183,11 +197,20 @@ ul li {
     position: relative;
 }
 
+.firstrun #header {
+    padding: 50px 280px 0 15px;
+    background: none;
+}
+
 #header h2 {
     font-size: 350%;
     color: #c33c26;
     font-weight: bold;
-    letter-spacing: -2px;
+    letter-spacing: -1px;
+}
+
+.firstrun #header h2 {
+    font-size: 260%;
 }
 
 #header h3 {
@@ -212,6 +235,38 @@ ul li {
     margin: 20px 0 0 0;
     font-size: 131%;
     line-height: 1.3em;
+}
+
+#check-it-out {
+    font-weight: bold;
+    color: #fff;
+    padding: 0;
+    margin: 0;
+    position: absolute;
+    left: 660px;
+    top: 50px;
+}
+
+#check-it-out div, #check-it-out p {
+    background: url('../img/main-sprites.png') 0 0 no-repeat;
+    padding: 40px 0 19px 0;
+    margin: 0;
+    display: inline;
+}
+
+#check-it-out p {
+    padding: 40px 10px 19px 0;
+    background-position: center -124px;
+}
+
+#check-it-out .hd {
+    background-position: -53px -124px;
+    padding: 40px 12px 19px 0;
+}
+
+#check-it-out .ft {
+    background-position: -616px -124px;
+    padding: 40px 12px 19px 0;
 }
 
 div.get-personas {
@@ -363,6 +418,17 @@ img.preview  {
     margin: 0 0 10px 0;
 }
 
+.feature.more p, .get-started li {
+    margin: 1.4em 0;
+}
+
+.get-started li {
+    list-style-type: none;
+    margin-left: 10px;
+    margin-right: 10px;
+    background: url('../img/main-sprites.png') 0 0 no-repeat;
+}
+
 #slideshow {
     height: 240px;
     width: 1500px;
@@ -378,6 +444,7 @@ img.preview  {
 
 #slideshow-nav li {
     float: left;
+    list-style-type: none;
 }
 
 #slideshow-nav li a {
