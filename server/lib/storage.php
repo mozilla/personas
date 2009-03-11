@@ -231,7 +231,7 @@ class PersonaStorage
 	{
 		try
 		{
-			$statement = 'select id from personas where status = 1' . ($category ? " and category = :category" : ""));
+			$statement = 'select id from personas where status = 1' . ($category ? " and category = :category" : "");
 			$sth = $this->_dbh->prepare($statement);
 			if ($category)
 			{
