@@ -333,7 +333,7 @@ a.get-personas span.arrow {
 }
 
 #info h4 {
-    background: url('../img/main-sprites.png') no-repeat scroll -92px -200px;
+    background: url('../img/main-sprites.png') no-repeat scroll -92px -310px;
     padding: 16px 25px 10px;
     color: #00a1e2;
     font-size: 138.5%;
@@ -424,9 +424,17 @@ img.preview  {
 
 .get-started li {
     list-style-type: none;
-    margin-left: 10px;
+    padding-left: 30px;
     margin-right: 10px;
-    background: url('../img/main-sprites.png') 0 0 no-repeat;
+    background: transparent url(../img/main-sprites.png) no-repeat scroll -660px -467px;
+}
+
+.get-started li.two {
+    background-position:  -624px -555px;
+}
+
+.get-started li.three {
+    background-position: -582px -613px;
 }
 
 #slideshow {
@@ -581,6 +589,7 @@ img.preview  {
     background: url('../img/main-sprites.png') -656px -255px no-repeat;
     font-weight: bold;
     font-family: Helvetica, Arial, sans-serif;
+    list-style-type: none;
 }
 
 #subnav li.active + li {
