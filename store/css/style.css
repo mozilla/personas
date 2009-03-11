@@ -822,6 +822,8 @@ img.preview  {
 }
 
 #upload-steps li, #demo-nav li {
+    list-style-type: none;
+    margin: 0;
     padding: 18px 0 18px 31px;
     border-bottom: #e6e6e6 solid 1px;
     border-top: #fff solid 1px;
