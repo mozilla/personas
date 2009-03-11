@@ -450,7 +450,6 @@ let PersonaService = {
 
     this.currentPersona = persona;
     this.selected = "current";
-    this.reportSelection(persona);
     this._onChangeToPersona();
   },
 
@@ -497,19 +496,6 @@ let PersonaService = {
   resetPersona: function() {
     this.previewingPersona = null;
     Observers.notify("personas:persona:changed");
-  },
-
-  /**
-   * Report which persona was selected.  This only gets called when the user
-   * selects a persona from the menu or the web directory, and it doesn't report
-   * about custom personas.  It can be disabled by setting the preference
-   * extensions.personas.reportSelection to false.
-   */
-  reportSelection: function(persona) {
-    if (persona.custom || !this._prefs.get("reportSelection"))
-      return;
-    this._makeRequest(this.baseURI + persona.id + "/report_selection/",
-                      function(evt) {});
   },
 
   /**

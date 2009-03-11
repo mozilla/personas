@@ -54,7 +54,6 @@
 
     <preferences>
       <preference id="preview" name="extensions.personas.previewEnabled" type="bool"/>
-      <preference id="reporting" name="extensions.personas.reportSelection" type="bool"/>
       <preference id="textcolor" name="extensions.personas.useTextColor" type="bool"/>
       <preference id="accentcolor" name="extensions.personas.useAccentColor" type="bool"/>
       <preference id="custommenu" name="extensions.personas.showCustomMenu" type="bool"/>
@@ -64,10 +63,6 @@
       <caption label="&generalSettings.label;"/>
       <hbox align="center">
         <checkbox label="&previewEnabled.label;" preference="preview"/>
-      </hbox>
-      <hbox align="center">
-        <checkbox label="&reportSelection.label;" preference="reporting"/>
-        <html:a style="text-decoration:underline; color:rgb(0,0,255);" target="_top" href="#" onclick="window.open('http://sm-labs01.mozilla.org/projects/personas/popularity_tracking/');">&reportSelection.title;</html:a>
       </hbox>
     </groupbox>
 

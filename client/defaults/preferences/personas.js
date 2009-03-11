@@ -57,11 +57,6 @@ pref("extensions.personas.previewTimeout", 200);
 // User preference to enable/disable preview when hovering over popup items.
 pref("extensions.personas.previewEnabled", true);
 
-// User preference to enable/disable to pinging of the persona service
-// on the selection of a new persona. Used to update the Popularity
-// fields in the directory.
-pref("extensions.personas.reportSelection", true);
-
 // User preference to enable/disable use of the accent color provided
 // by Persona in the feed.
 pref("extensions.personas.useAccentColor", true);
