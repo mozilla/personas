@@ -70,7 +70,7 @@
 		$second_folder = $persona_id%10;
 		$first_folder = ($persona_id%100 - $second_folder)/10;
 
-		$persona_path = PERSONAS_STORAGE_PREFIX . "/gallery/" . $first_folder;
+		$persona_path = PERSONAS_STORAGE_PREFIX . "/gallery/persona/" . $first_folder;
 		if (!is_dir($persona_path)) { mkdir($persona_path); }
 		$persona_path .= "/" . $second_folder;
 		if (!is_dir($persona_path)) { mkdir($persona_path); }
@@ -171,9 +171,9 @@
 
 	#now write out the individual pages
 	$master_list = $db->get_active_persona_ids();
-	foreach ($master_list as $persona)
+	foreach ($master_list as $id)
 	{
-		get_active_persona_ids($id);
+		get_persona_html($id);
 	}
 	
 
