@@ -65,16 +65,40 @@
 		return  $first_folder . '/' . $second_folder .  '/'. $id . '/';
 	}
 
-	function get_html($path, $file)
+	function make_persona_path($persona_id)
 	{
-		if (!is_dir("/var/www/personas/store/gallery/$path"))
+		$second_folder = $persona_id%10;
+		$first_folder = ($persona_id%100 - $second_folder)/10;
+
+		$persona_path = PERSONAS_STORAGE_PREFIX . "/gallery/" . $first_folder;
+		if (!is_dir($persona_path)) { mkdir($persona_path); }
+		$persona_path .= "/" . $second_folder;
+		if (!is_dir($persona_path)) { mkdir($persona_path); }
+		return $persona_path;
+	}
+	
+	function get_directory_html($path, $file)
+	{
+		if (!is_dir(PERSONAS_STORAGE_PREFIX . "/gallery/$path"))
 		{
-			mkdir("/var/www/personas/store/gallery/$path");
+			mkdir(PERSONAS_STORAGE_PREFIX . "/gallery/$path");
 		}
 
 		$ch = curl_init();
-		$fp = fopen("/var/www/personas/store/gallery/$path/$file", "w");	
+		$fp = fopen(PERSONAS_STORAGE_PREFIX . "/gallery/$path/$file", "w");	
 		curl_setopt($ch, CURLOPT_URL, "http://localhost/store/dynamic/$path/$file");
+		curl_setopt($ch, CURLOPT_FILE, $fp);
+		curl_exec($ch);
+		fclose($fp);	
+	}
+
+	function get_persona_html($id)
+	{
+		$path = make_persona_path($id);
+
+		$ch = curl_init();
+		$fp = fopen("$path/$id", "w");	
+		curl_setopt($ch, CURLOPT_URL, "http://localhost/store/dynamic/persona/$id");
 		curl_setopt($ch, CURLOPT_FILE, $fp);
 		curl_exec($ch);
 		fclose($fp);	
@@ -91,7 +115,7 @@
 	}
 	$master['popular'] = $popular_json;
 
-	get_html('All', 'Popular');
+	get_directory_html('All', 'Popular');
 	
 	#Top level recent page
 	$recent_list = $db->get_recent_personas(null, 21);
@@ -103,7 +127,7 @@
 	}
 	$master['recent'] = $recent_json;
 
-	get_html('All', 'Recent');
+	get_directory_html('All', 'Recent');
 	
 
 	foreach ($categories as $category)
@@ -131,13 +155,13 @@
 		$category_array[] = array('name' => $category, 'personas' => $short_cat_list);
 
 		#get the html
-		get_html("$category", "Popular");
-		get_html("$category", "Recent");
+		get_directory_html("$category", "Popular");
+		get_directory_html("$category", "Recent");
 
 		$i = 1;
 		while ($i <= $pages)
 		{
-			get_html("$category/All", "$i");
+			get_directory_html("$category/All", "$i");
 			$i++;
 		}		
 	}
@@ -145,6 +169,13 @@
 
 	file_put_contents(PERSONAS_STORAGE_PREFIX . '/index_1.json', json_encode($master));
 
+	#now write out the individual pages
+	$master_list = $db->get_active_persona_ids();
+	foreach ($master_list as $persona)
+	{
+		get_active_persona_ids($id);
+	}
+	
 
 
 ?>
