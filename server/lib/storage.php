@@ -227,6 +227,34 @@ class PersonaStorage
 		return $personas;
 	}
 	
+	function get_active_persona_ids($category = null)
+	{
+		try
+		{
+			$statement = 'select id from personas where status = 1' . ($category ? " and category = :category" : ""));
+			$sth = $this->_dbh->prepare($statement);
+			if ($category)
+			{
+				$sth->bindParam(':category', $category);
+			}
+			$sth->execute();
+		}
+		catch( PDOException $exception )
+		{
+			error_log($exception->getMessage());
+			throw new Exception("Database unavailable", 503);
+		}
+		
+		$personas = array();
+		
+		while ($result = $sth->fetchColumn())
+		{
+			$personas[] = $result;
+		}		
+		return $personas;
+	}
+	
+	
 	function get_recent_personas($category = null, $limit = null, $offset = null)
 	{
 		try
