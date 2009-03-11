@@ -78,14 +78,13 @@
   background-color: transparent; 
 }
 #main-window[persona] .tabbrowser-tab {
-#  opacity: 0.6;
+  /*opacity: 0.6;*/
 }
 #main-window[persona] .tabbrowser-tab[selected="true"],
 #main-window[persona] .tabbrowser-tab:hover {
   opacity: 0.8;
 }
 #main-window[persona] .tabbrowser-tab:not([selected="true"]),
-}
 #main-window[persona] .tab-text {
   font-weight: normal !important;
 }
@@ -97,7 +96,7 @@
 }
 
 #main-window[persona] .toolbarbutton-1, #back-forward-dropmarker {
-#  opacity: 0.9;
+  /*opacity: 0.9;*/
 }
 
 #main-window[persona] toolbarbutton.bookmark-item {
@@ -106,9 +105,6 @@
 }
 
 #main-window[persona] .toolbarbutton-1, #back-forward-dropmarker {
-#main-window[persona] .toolbarbutton-1, #back-forward-dropmarker {
-  list-style-image: url("chrome://personas/skin/Toolbar.png") !important;
-}
   list-style-image: url("chrome://personas/skin/Toolbar.png") !important;
 }
 
