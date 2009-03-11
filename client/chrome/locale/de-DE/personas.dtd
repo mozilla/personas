@@ -9,7 +9,7 @@
 <!ENTITY footer.label "Footer:">
 <!ENTITY textColorPicker.label "Textfarbe:">
 <!ENTITY accentColorPicker.label "Akzentfarbe:">
-<!ENTITY useDefaultColor.label "Verwende Standardfarbe">
+<!ENTITY useDefaultColor.label "Standardfarbe verwenden">
 <!ENTITY okButton.label "OK">
 <!ENTITY contextHomePage.label "Internetseite">
 <!ENTITY contextPreferences.label "Einstellungen">
