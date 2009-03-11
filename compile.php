@@ -74,7 +74,7 @@
 
 		$ch = curl_init();
 		$fp = fopen("/var/www/personas/store/gallery/$path/$file", "w");	
-		curl_setopt($ch, CURLOPT_URL, "http://localhost/redesign/gallery/$path/$file");
+		curl_setopt($ch, CURLOPT_URL, "http://localhost/store/dynamic/$path/$file");
 		curl_setopt($ch, CURLOPT_FILE, $fp);
 		curl_exec($ch);
 		fclose($fp);	
