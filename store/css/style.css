@@ -601,7 +601,7 @@ img.preview  {
 }
 
 #subnav li ul {
-    margin: 8px -9px 0 -29px;
+    margin: 5px -9px 0 -29px;
     padding: 2px 0 0 0;
     background: #f2f2f2;
     -moz-border-radius-bottomleft: 5px;
@@ -649,14 +649,18 @@ img.preview  {
     
 }
 
-#subnav li ul li.active a {
+#subnav li.active a:link {
+    padding:3px 10px 0 0px;
+}
+
+#subnav li.active ul li.active a {
     background: transparent url('../img/main-sprites.png') no-repeat scroll -667px -404px;
     padding: 5px 5px 5px 15px;
     
     font-weight: bold;
 }
 
-#subnav li ul li.active {
+#subnav li.active ul li.active {
     background: none;
     border-bottom: #e6e6e6 solid 1px;
     background: none;
@@ -670,14 +674,13 @@ img.preview  {
     border: none;
 }
 
-#subnav li ul li a {
+#subnav li.active ul li a:link {
      font-weight: normal;
      padding: 5px 5px 5px 15px;
      background: transparent url('../img/main-sprites.png') no-repeat scroll -667px -404px;
 }
 
 #subnav li ul li a:link {
-   
     color: #848484;
 }
 
