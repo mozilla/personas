@@ -890,6 +890,11 @@ img.preview  {
     margin: 3px 0 0 0;
 }
 
+.agree {
+    font-weight: bold;
+    margin: 0 0 20px 0;
+}
+
 #upload-steps, #demo-nav {
     background: #f2f2f2;
     -moz-border-radius: 5px;
