@@ -395,6 +395,11 @@ a.get-personas span.arrow {
     text-decoration: none;
 }
 
+.firstrun .feature a {
+    color: #f67b00;
+    font-weight: normal;
+}
+
 .feature p {
     font-size: 93%;
     line-height: 1.3em;
@@ -649,14 +654,13 @@ img.preview  {
     
 }
 
-#subnav li.active a:link {
+#subnav li.active a:link, #subnav li.active a:visited  {
     padding:3px 10px 0 0px;
 }
 
-#subnav li.active ul li.active a {
+#subnav li.active ul li.active a,#subnav li.active ul li.active a:visited {
     background: transparent url('../img/main-sprites.png') no-repeat scroll -667px -404px;
     padding: 5px 5px 5px 15px;
-    
     font-weight: bold;
 }
 
@@ -684,8 +688,11 @@ img.preview  {
     color: #848484;
 }
 
-#subnav li ul li a:visited {
+#subnav li.active ul li a:visited {
+    background:transparent url(../img/main-sprites.png) no-repeat scroll -667px -404px;
+    font-weight: normal;
     color: #848484;
+         padding: 5px 5px 5px 15px;
 }
 
 #gallery {
@@ -706,7 +713,7 @@ img.preview  {
     color: #a4a4a4;
 }
 
-.gallery-item h3 {
+#gallery .gallery-item h3 {
     color: #f67b00;
     font-size: 116%;
     font-weight: bold;
