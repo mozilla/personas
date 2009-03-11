@@ -80,6 +80,7 @@ ol li {
 
 ul li {
     list-style-type: disc; 
+    margin:0 0 0 3em;
 }
 
 em {
@@ -576,7 +577,7 @@ img.preview  {
     font-weight: bold;
 }
 
-#maincontent p, #secondary-content p {
+#maincontent p, #secondary-content p, #maincontent li {
     line-height: 1.4em;
     font-size: 93%;
 }
@@ -903,6 +904,18 @@ img.preview  {
 .agree {
     font-weight: bold;
     margin: 0 0 20px 0;
+}
+
+#license-options {
+    margin: 0 0 20px 0;
+}
+
+#license-options label {
+    font-weight: bold;
+}
+
+#license-options p {
+    padding: 0.1em;
 }
 
 #upload-steps, #demo-nav {
