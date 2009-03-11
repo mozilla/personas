@@ -37,15 +37,52 @@
 #
 # ***** END LICENSE BLOCK *****
 	
-	require_once 'lib/personas_constants.php';	
-	require_once 'lib/html_generation.php';	
-	require_once 'lib/storage.php';
+	require_once 'server/lib/personas_constants.php';	
+	require_once 'server/lib/storage.php';
 
+	$page_size = 21;
+	
 	$db = new PersonaStorage();
 	$categories = $db->get_categories();
 
+
+	function extract_record_data($item)
+	{
+		$padded_id = $item{'id'} < 10 ? '0' . $item{'id'} : $item{'id'};
+		$extracted = array('id' => $item{'id'}, 
+						'name' => $item{'name'},
+						'accentcolor' => $item{'accentcolor'} ? '#' . $item{'accentcolor'} : null,
+						'textcolor' => $item{'textcolor'} ? '#' . $item{'textcolor'} : null,
+						'header' => url_prefix($item{'id'}) . $item{'header'}, 
+						'footer' => url_prefix($item{'id'}) . $item{'footer'});
+		return $extracted;	
+	}
+		
+	function url_prefix($id)
+	{
+		$second_folder = $id%10;
+		$first_folder = ($id%100 - $second_folder)/10;
+		return  $first_folder . '/' . $second_folder .  '/'. $id . '/';
+	}
+
+	function get_html($path, $file)
+	{
+		if (!is_dir("/var/www/personas/store/gallery/$path"))
+		{
+			mkdir("/var/www/personas/store/gallery/$path");
+		}
+
+		$ch = curl_init();
+		$fp = fopen("/var/www/personas/store/gallery/$path/$file", "w");	
+		curl_setopt($ch, CURLOPT_URL, "http://localhost/redesign/gallery/$path/$file");
+		curl_setopt($ch, CURLOPT_FILE, $fp);
+		curl_exec($ch);
+		fclose($fp);	
+	}
+
 	
-	$popular_list = $db->get_popular_personas(null, 20);
+	#Top level popular page
+	$popular_list = $db->get_popular_personas(null, 21);
 	foreach ($popular_list as $item)
 	{
 		$data = extract_record_data($item);
@@ -53,9 +90,11 @@
 		$popular_json[] = $data;
 	}
 	$master['popular'] = $popular_json;
-	file_put_contents(PERSONAS_STORAGE_PREFIX . '/popular.html', html_page('popular', '', $popular_list));
 
-	$recent_list = $db->get_recent_personas(null, 20);
+	get_html('All', 'Popular');
+	
+	#Top level recent page
+	$recent_list = $db->get_recent_personas(null, 21);
 	foreach ($recent_list as $item)
 	{
 		$data = extract_record_data($item);
@@ -63,46 +102,44 @@
 		$recent_json[] = $data;
 	}
 	$master['recent'] = $recent_json;
-	file_put_contents(PERSONAS_STORAGE_PREFIX . '/recent.html', html_page('recent', '', $recent_list));
+
+	get_html('All', 'Recent');
 	
 
 	foreach ($categories as $category)
 	{
+		#get category counts for pagination
+		$category_total = $db->get_personas_by_category_count($category);
+		$pages = floor($category_total/$page_size) + 1;
+		
 		$storage_path = PERSONAS_STORAGE_PREFIX . '/' . preg_replace('/ /', '_', $category);
 		if (!is_dir($storage_path))
 		{
 			mkdir($storage_path);
 		}
 
-		$popular_list = $db->get_popular_personas($category);
+		$popular_list = $db->get_popular_personas($category, 10);
 	
 		$count = 0;
 		$short_cat_list = array();
-		$med_cat_list = array();
-		$long_cat_list = array();
 		foreach ($popular_list as $item)
 		{
-			$count++;
-			if ($count <= 10)
-			{
-				$data = extract_record_data($item);
-				$data['recent'] = (time() - strtotime($item['approve']) < 604800) ? true : false;
-				$short_cat_list[] = $data;
-			}
-			if ($count <= 20)
-			{
-				$med_cat_list[] = $item;
-			}
-			$long_cat_list[] = $item;
+			$data = extract_record_data($item);
+			$data['recent'] = (time() - strtotime($item['approve']) < 604800) ? true : false;
+			$short_cat_list[] = $data;
 		}
 		$category_array[] = array('name' => $category, 'personas' => $short_cat_list);
-		file_put_contents($storage_path . '/popular.html', html_page('popular', $category, $med_cat_list));
-		file_put_contents($storage_path . '/all.html', html_page('all', $category, $long_cat_list));
-		
-		
-		
-		$recent_list = $db->get_recent_personas($category, 20);
-		file_put_contents($storage_path . '/recent.html', html_page('recent', $category, $recent_list));
+
+		#get the html
+		get_html("$category", "Popular");
+		get_html("$category", "Recent");
+
+		$i = 1;
+		while ($i <= $pages)
+		{
+			get_html("$category/All", "$i");
+			$i++;
+		}		
 	}
 	$master['categories'] = $category_array;
 
