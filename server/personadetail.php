@@ -72,12 +72,12 @@
                 <h3>Your browser, your style! Dress it up with easy to change “skins” for your
                 Firefox.</h3>
             </div>
+            <div id="maincontent">
+                <p id="breadcrumbs">Personas Home : View Personas</p>
 <?php
 	if ($persona_data['id'])
 	{
 ?>
-            <div id="maincontent">
-                <p id="breadcrumbs">Personas Home : View Personas</p>
 				<h2><?= $persona_data['name'] ?></h2>
                 <h3>created by <?= $persona_data['author'] ?></h3>
                 <img class="detailed-view"  alt="<?= $item['name'] ?>" persona="<?= $persona_json ?>" src="<?= PERSONAS_LIVE_PREFIX . '/' . url_prefix($persona_id) ?>preview_large.jpg" >
@@ -89,7 +89,6 @@
                     
                 </p>
                 <p class="numb-users"><?= $persona_data['popularity'] ?> users</p>
-            </div>
 <?php
 	} else {
 ?>            
@@ -97,6 +96,7 @@
 <?php
 	}
 ?>
+            </div>
 	<div id="secondary-content">
                 <ul id="subnav">
 <?php
