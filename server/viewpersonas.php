@@ -6,7 +6,7 @@
 	{
 		$second_folder = $id%10;
 		$first_folder = ($id%100 - $second_folder)/10;
-		return  $first_folder . '/' . $second_folder .  '/'. $id . '/';
+		return  $first_folder . '/' . $second_folder .  '/'. $id ;
 	}
 
 	function extract_record_data($item)
@@ -16,8 +16,8 @@
 						'name' => $item{'name'},
 						'accentcolor' => $item{'accentcolor'} ? '#' . $item{'accentcolor'} : null,
 						'textcolor' => $item{'textcolor'} ? '#' . $item{'textcolor'} : null,
-						'header' => url_prefix($item{'id'}) . $item{'header'}, 
-						'footer' => url_prefix($item{'id'}) . $item{'footer'});
+						'header' => url_prefix($item{'id'}) . '/' . $item{'header'}, 
+						'footer' => url_prefix($item{'id'}) . '/' . $item{'footer'});
 		return $extracted;	
 	}
 
@@ -89,7 +89,7 @@
 			
 			foreach ($list as $item)
 			{
-				$preview_url = PERSONAS_LIVE_PREFIX . '/' . url_prefix($item['id']) . "preview.jpg";
+				$preview_url = PERSONAS_LIVE_PREFIX . '/' . url_prefix($item['id']) . '/' . "preview.jpg";
 				$persona_json = htmlentities(json_encode(extract_record_data($item)));
 				$persona_date = date("n/j/Y", strtotime($item['approve']));
 ?>
@@ -102,7 +102,7 @@
                                 <p class="designer"><strong>Designer:</strong> <?= $item['author'] ?></p>
                                 <p class="added"><strong>Added:</strong> <?= $persona_date ?></p>
                                 <p><?= $item['description'] ?></p>
-                                <p><a href="/store/gallery/persona/<?=  url_prefix($item['id']) . $item['id'] ?>" class="view">view details »</a></p>
+                                <p><a href="/store/gallery/persona/<?=  url_prefix($item['id']) ?>" class="view">view details »</a></p>
                             </div>
                         </li>
  <?php
