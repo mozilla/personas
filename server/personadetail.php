@@ -1,0 +1,127 @@
+<?php 
+	require_once 'lib/personas_constants.php';	
+	require_once 'lib/storage.php';
+	
+	function url_prefix($id)
+	{
+		$second_folder = $id%10;
+		$first_folder = ($id%100 - $second_folder)/10;
+		return  $first_folder . '/' . $second_folder .  '/'. $id . '/';
+	}
+
+	function extract_record_data($item)
+	{
+		$padded_id = $item{'id'} < 10 ? '0' . $item{'id'} : $item{'id'};
+		$extracted = array('id' => $item{'id'}, 
+						'name' => $item{'name'},
+						'accentcolor' => $item{'accentcolor'} ? '#' . $item{'accentcolor'} : null,
+						'textcolor' => $item{'textcolor'} ? '#' . $item{'textcolor'} : null,
+						'header' => url_prefix($item{'id'}) . $item{'header'}, 
+						'footer' => url_prefix($item{'id'}) . $item{'footer'});
+		return $extracted;	
+	}
+
+
+	$db = new PersonaStorage();
+	$categories = $db->get_categories();
+	array_unshift($categories, 'All');
+	$category = null;
+	
+	$path = array_key_exists('PATH_INFO', $_SERVER) ? $_SERVER['PATH_INFO'] : '/';
+	$path = substr($path, 1); #chop the lead slash
+	list($persona_id) = explode('/', $path.'');
+
+	if (!is_numeric($persona_id))
+		$persona_id = null;
+	else
+	{
+		$persona_id = intval($persona_id);
+		$persona_data = $db->get_persona_by_id($persona_id);
+		$category = $persona_data['category'];
+		$persona_json = htmlentities(json_encode(extract_record_data($persona_data)));
+	}
+	
+	
+?>
+
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+            "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title>View Personas</title>
+	<link href="/store/css/style.css" rel="stylesheet" type="text/css" media="all" />
+
+</head>
+<body>
+    <div id="outer-wrapper">
+        <div id="inner-wrapper">
+            <p id="account"><a href="#">Designer Tools</a></p>
+            <div id="nav">
+                <h1><a href="#"><img src="/store/img/logo.png" alt="Mozilla Labs Personas"></a></h1>
+                <ul>
+                    <li class="gallery"><a href="#">Gallery</a></li>
+                    <li class="create"><a href="#">Create <br/>Your Own</a></li>
+                    <li class="demo"><a href="#">Demo</a></li>
+                    <li class="faq"><a href="#">Frequent <br/>Questions</a></li>
+                </ul>
+            </div>
+            <div id="header">
+                <h2>View Personas</h2>
+                <h3>Your browser, your style! Dress it up with easy to change “skins” for your
+                Firefox.</h3>
+            </div>
+<?php
+	if ($persona_data['id'])
+	{
+?>
+            <div id="maincontent">
+                <p id="breadcrumbs">Personas Home : View Personas</p>
+				<h2><?= $persona_data['name'] ?></h2>
+                <h3>created by <?= $persona_data['author'] ?></h3>
+                <img class="detailed-view"  alt="<?= $item['name'] ?>" persona="<?= $persona_json ?>" src="<?= PERSONAS_LIVE_PREFIX . '/' . url_prefix($persona_id) ?>preview_large.jpg" >
+                
+                <p class="description"><strong>Description:</strong> <?= $persona_data['description'] ?></p>
+                
+                <p id="buttons">
+                    <a href="#" class="button"><span>try it now</span><span>&nbsp;</span></a>
+                    
+                </p>
+                <p class="numb-users"><?= $persona_data['popularity'] ?> users</p>
+            </div>
+<?php
+	} else {
+?>            
+                <p class="description">We are unable to find this persona. Please return to the gallery and try again.</p>
+<?php
+	}
+?>
+	<div id="secondary-content">
+                <ul id="subnav">
+<?php
+			foreach ($categories as $list_category)
+			{
+				$category_url = "/store/gallery/$list_category";
+				if ($list_category == $category)
+				{
+					echo "		<li class=\"active\"><a href=\"$category_url/Popular\">$list_category</a></li>\n";
+				}
+				else
+				{
+					echo "		<li><a href=\"$category_url/Popular\">$list_category</a></li>\n";
+				}
+			}
+?>
+                </ul>
+            </div>
+            
+        </div>
+    </div>
+    <script src="js/jquery.js"></script>
+    <script src="js/script.js"></script>
+    <div id="footer">
+        <p>Copyright © 2009 Mozilla. Personas is a Mozilla Labs Project.  |  Terms of Use  |  Privacy</p>
+    </div>
+</body>
+</html>
