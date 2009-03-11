@@ -21,7 +21,7 @@ html {
 
 body {
     background: #ececec;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: Helvetica, Arial , sans-serif;
 }
 
 strong {
@@ -55,6 +55,31 @@ textarea {
 
 input[type=checkbox] {
     vertical-align: bottom;
+}
+
+dt {
+    font-weight: bold;
+    color: #0077a6;
+    font-size: 123.1%;
+    margin: 13px 0 0 0;
+}
+
+dd p {
+    padding-bottom: 0;
+}
+
+dd {
+    border-bottom:  1px solid #eaeaea;
+    padding: 0 0 13px 0;
+}
+
+ol li {
+    list-style-type: decimal;
+    margin:0 0 0 3em;
+}
+
+ul li {
+    list-style-type: disc; 
 }
 
 #inner-wrapper:after, #nav ul:after{
@@ -122,9 +147,11 @@ input[type=checkbox] {
 }
 
 #nav ul li {
+    list-style-type: none;
     float: left;
     background: url('../img/nav-sprite.jpg') 0 0 no-repeat;
     padding: 0 0 0 2px;
+    margin: 0;
 }
 
 #nav ul a {
@@ -469,6 +496,11 @@ img.preview  {
     font-weight: bold;
 }
 
+#maincontent p, #secondary-content p {
+    line-height: 1.4em;
+    font-size: 93%;
+}
+
 #secondary-content {
     width: 240px;
 }
@@ -611,6 +643,7 @@ img.preview  {
 
 .gallery-item p {
     font-size: 85%;
+    padding: 0;
 }
 
 .gallery-item .designer, .gallery-item .added {
@@ -789,6 +822,8 @@ img.preview  {
 }
 
 #upload-steps li, #demo-nav li {
+    list-style-type: none;
+    margin: 0;
     padding: 18px 0 18px 31px;
     border-bottom: #e6e6e6 solid 1px;
     border-top: #fff solid 1px;
