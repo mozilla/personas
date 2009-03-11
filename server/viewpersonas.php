@@ -101,8 +101,8 @@
                                 </div>
                                 <p class="designer"><strong>Designer:</strong> <?= $item['author'] ?></p>
                                 <p class="added"><strong>Added:</strong> <?= $persona_date ?></p>
-                                <p>Lorem ipsum dolor sit amet, cons ectetur adipiscing elit vel nib eget magna.</p>
-                                <p><a href="#" class="view">view details »</a></p>
+                                <p><?= $item['description'] ?></p>
+                                <p><a href="/store/gallery/persona/<?= $item['id'] ?>" class="view">view details »</a></p>
                             </div>
                         </li>
  <?php
