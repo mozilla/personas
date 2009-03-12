@@ -1,26 +1,8 @@
 <?php 
 	require_once 'lib/personas_constants.php';	
+	require_once 'lib/personas_functions.php';	
 	require_once 'lib/storage.php';
 	
-	function url_prefix($id)
-	{
-		$second_folder = $id%10;
-		$first_folder = ($id%100 - $second_folder)/10;
-		return  $first_folder . '/' . $second_folder .  '/'. $id . '/';
-	}
-
-	function extract_record_data($item)
-	{
-		$padded_id = $item{'id'} < 10 ? '0' . $item{'id'} : $item{'id'};
-		$extracted = array('id' => $item{'id'}, 
-						'name' => $item{'name'},
-						'accentcolor' => $item{'accentcolor'} ? '#' . $item{'accentcolor'} : null,
-						'textcolor' => $item{'textcolor'} ? '#' . $item{'textcolor'} : null,
-						'header' => url_prefix($item{'id'}) . $item{'header'}, 
-						'footer' => url_prefix($item{'id'}) . $item{'footer'});
-		return $extracted;	
-	}
-
 
 	$db = new PersonaStorage();
 	$categories = $db->get_categories();
@@ -80,7 +62,7 @@
 ?>
 				<h2><?= $persona_data['name'] ?></h2>
                 <h3>created by <?= $persona_data['author'] ?></h3>
-                <img class="detailed-view"  alt="<?= $item['name'] ?>" persona="<?= $persona_json ?>" src="<?= PERSONAS_LIVE_PREFIX . '/' . url_prefix($persona_id) ?>preview_large.jpg" >
+                <img class="detailed-view"  alt="<?= $item['name'] ?>" persona="<?= $persona_json ?>" src="<?= PERSONAS_LIVE_PREFIX . '/' . url_prefix($persona_id) ?>/preview_large.jpg" >
                 
                 <p class="description"><strong>Description:</strong> <?= $persona_data['description'] ?></p>
                 
