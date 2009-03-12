@@ -72,8 +72,10 @@ $.fn.slider = function (options) {
     }
 };
 
+/**
+    Shows/hides 'theme your browser...' popup when mousing over bg image on homepage
+**/
 $.fn.popup = function() {
-    
     jQuery(this).hover(function() {
         jQuery("#info").css({"position":"relative", "left":"0px"});
     },
@@ -82,6 +84,12 @@ $.fn.popup = function() {
     });
 };
 
+/**
+    Binds click and hover events to the element.
+    Click - bubbles up SelectPersona event
+    Mouseenter - bubbles up PreviewPersona
+    Mouseleave - bubbles up ResetPersona
+**/
 $.fn.previewPersona = function() {
     jQuery(this).click(function(event) {
         dispatchPersonaEvent('SelectPersona', event.originalTarget);
@@ -95,7 +103,10 @@ $.fn.previewPersona = function() {
             dispatchPersonaEvent('ResetPersona', event.originalTarget);
         }
     );
-
+    
+    /**
+        Bubbles up persona event to tell Firefox to load a persona
+    **/
     function dispatchPersonaEvent(aType, aNode) 
 	{
 		if (!aNode.hasAttribute("persona"))
@@ -104,5 +115,32 @@ $.fn.previewPersona = function() {
 		event.initEvent(aType, true, false);
 		aNode.dispatchEvent(event);
 	}
-}
+};
 
+/**
+    Changes the innerhtml of the download button if the user is not using Firefox
+**/
+$.fn.personasDownload = function(options) {
+    if(!jQuery.browser.mozilla) {
+        jQuery(this).html(options["bundle-text"]);
+    }
+};
+
+$.fn.ie6Warning = function(options) {
+    if(jQuery.browser.msie && jQuery.browser.version == 6.0) {
+        jQuery(this).prepend(options['message']);
+    }
+};
+
+$.hasPersonas = function() {
+    var body = document.getElementById("body");
+    var status = document.getElementById("status");
+    
+    try {
+        var event = document.createEvent("Events");
+        event.initEvent("CheckPersonas", true, false);
+        body.dispatchEvent(event);
+    } catch(e) {}
+    
+    return body.getAttribute("personas") == "true";
+};

@@ -243,6 +243,16 @@ em {
     line-height: 1.3em;
 }
 
+#ie6 {
+    background: #ff990f;
+    padding: 5px;
+    color: #000;
+    width: 940px;
+    text-align: center;
+    position: absolute;
+    top: 5px;
+}
+
 #check-it-out {
     font-weight: bold;
     color: #fff;
@@ -464,6 +474,7 @@ img.preview  {
 #slideshow-nav li {
     float: left;
     list-style-type: none;
+    margin: 0;
 }
 
 #slideshow-nav li a {
@@ -491,6 +502,7 @@ img.preview  {
     height: 240px;
     width: 297px;
     float: left;
+    margin: 0;
 }
 
 #slideshow-previous, #slideshow-next {

@@ -25,7 +25,7 @@
                 <div class="get-personas">
                     <div>
                         <p>
-                            <a href="#" class="get-personas"><span>Get Personas for Firefox - Free</span><span class="arrow"></span></a>
+                            <a href="#" class="get-personas" id="download"><span>Get Personas for Firefox - Free</span><span class="arrow"></span></a>
                         </p>
                         <p class="platforms-note">Firefox Add-on for Windows, Mac or Linux</p>
                     </div>
@@ -140,6 +140,8 @@
         $(document).ready(function () {
             $("#slideshow").slider();
             $("#more-info").popup();
+            $("#download").personasDownload({"addon":"addon-url", "bundle":"bundle-url", "bundle-text":'<span>Get Firefox and Personas - Free</span><span class="arrow"></span>'});
+            $("#header").ie6Warning({"message":'<div id="ie6">You are using Internet Explorer 6. Please download a new browser.</div>'});
         });
     </script>
 </body>
