@@ -120,7 +120,7 @@
                             <h4><?= $persona['name'] ?></h4>
                             <hr />
                             <img alt="<?= $persona['name'] ?>" persona="<?= $persona_json ?>" src="<?= PERSONAS_LIVE_PREFIX . '/' . url_prefix($persona_id) ?>/preview_popular.jpg">
-                            <p class="downloads"><strong>Current Users:</strong> <?= $persona['downloads'] ?></p>
+                            <p class="downloads"><strong>Current Users:</strong> <?= $persona['popularity'] ?></p>
                             <p class="try"><a href="#">try it now »</a></p>
                     </li>
 <?php
