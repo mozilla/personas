@@ -67,7 +67,7 @@
 
 		$ch = curl_init();
 		$fp = fopen(PERSONAS_STORAGE_PREFIX . "/gallery/$path/$file", "w");	
-		curl_setopt($ch, CURLOPT_URL, "http://localhost/store/dynamic/$path/$file");
+		curl_setopt($ch, CURLOPT_URL, "http://localhost/store/dynamic/gallery/$path/$file");
 		curl_setopt($ch, CURLOPT_FILE, $fp);
 		curl_exec($ch);
 		fclose($fp);	
@@ -80,6 +80,18 @@
 		$ch = curl_init();
 		$fp = fopen("$path/$id", "w");	
 		curl_setopt($ch, CURLOPT_URL, "http://localhost/store/dynamic/persona/$id");
+		curl_setopt($ch, CURLOPT_FILE, $fp);
+		curl_exec($ch);
+		fclose($fp);	
+	}
+
+	function get_mainpage_html()
+	{
+		$path = PERSONAS_STORAGE_PREFIX . "/index.html";
+
+		$ch = curl_init();
+		$fp = fopen("$path", "w");	
+		curl_setopt($ch, CURLOPT_URL, "http://localhost/store/dynamic/");
 		curl_setopt($ch, CURLOPT_FILE, $fp);
 		curl_exec($ch);
 		fclose($fp);	
@@ -157,6 +169,8 @@
 		get_persona_html($id);
 	}
 	
+	#and the index
+	get_mainpage_html();
 
 
 ?>
