@@ -38,6 +38,7 @@
 # ***** END LICENSE BLOCK *****
 	
 	require_once 'server/lib/personas_constants.php';	
+	require_once 'lib/personas_functions.php';	
 	require_once 'server/lib/storage.php';
 
 	$page_size = 21;
