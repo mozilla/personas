@@ -199,7 +199,12 @@ em {
 }
 
 .firstrun #header {
-    padding: 50px 280px 0 15px;
+    padding: 34px 280px 0 15px;
+    background: none;
+    height: 111px;
+}
+
+.forgot-password #header {
     background: none;
 }
 
@@ -863,6 +868,23 @@ img.preview  {
 
 .error, input.error {
     border: 1px solid red;
+}
+
+#maincontent h4.error {
+    color: #d3454f;
+    background: #FFF2F1 url(../img/main-sprites.png) no-repeat scroll -664px -130px;
+    border: none;
+    padding: 4px 0 4px 20px;
+    font-size: 100%;
+    margin: 10px 0;
+}
+
+#maincontent h4.error a:link {
+    color: #cc1e02;
+}
+
+#maincontent h4.error a:visited {
+    color: #cc1e02;
 }
 
 .error-message {
