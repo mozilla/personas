@@ -135,8 +135,8 @@
     <div id="footer">
         <p>Copyright © <?= date("Y") ?> Mozilla. Personas is a Mozilla Labs Project.  |  Terms of Use  |  Privacy</p>
     </div>
-    <script src="js/jquery.js"></script>
-    <script src="js/script.js"></script>
+    <script src="../store/js/jquery.js"></script>
+    <script src="../store/js/script.js"></script>
     <script type="text/javascript" charset="utf-8">
         $(document).ready(function () {
             $("#slideshow").slider();
