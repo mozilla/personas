@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	<title>Create Your Persona</title>
+	<title><?= $upload_submitted['id'] ? "Edit" : "Create" ?> Your Persona</title>
 	<link href="/store/css/style.css" rel="stylesheet" type="text/css" media="all" />
 
 </head>
@@ -25,10 +25,13 @@
                 <h3>Follow the easy steps below to start dressing up your browser!</h3>
             </div>
             <div id="maincontent">
-                <p id="breadcrumbs">Personas Home : Create Your Own</p>
+                <p id="breadcrumbs">Personas Home : <?= $upload_submitted['id'] ? "Edit" : "Create" ?> Your Own</p>
                 
-                <h4>Create Your Persona</h4>
-                <form method="POST" action="" enctype='multipart/form-data'>
+                <h4><?= $upload_submitted['id'] ? "Edit" : "Create" ?> Your Persona</h4>
+                <form method="POST" action="upload" enctype='multipart/form-data'>
+				<input type="hidden" name="agree" value="<?= $upload_submitted['agree'] ?>">
+				<input type="hidden" name="license" value="<?= $upload_submitted['license'] ?>">
+				<input type="hidden" name="id" value="<?= $upload_submitted['id'] ?>">
                 <div id="create-part-1">
                     <p>
                         <label for="persona-name">Persona Name</label>
@@ -37,9 +40,9 @@
                      </p>
                     
                     <p>
-                        <label for="text-color">Text Color</label>
-                        <input type="text" name="text-color" value="<?= $upload_submitted['text-color'] ?>" id="text-color"/ <?php if (array_key_exists('text-color', $upload_errors)) echo 'class="error"' ?>>
-                         <?php if (array_key_exists('text-color', $upload_errors)) echo '<span class="error-message">' . $upload_errors['text-color'] . '</span>' ?>
+                        <label for="textcolor">Text Color</label>
+                        <input type="text" name="textcolor" value="<?= $upload_submitted['textcolor'] ?>" id="textcolor"/ <?php if (array_key_exists('textcolor', $upload_errors)) echo 'class="error"' ?>>
+                         <?php if (array_key_exists('textcolor', $upload_errors)) echo '<span class="error-message">' . $upload_errors['textcolor'] . '</span>' ?>
                     </p>
                     
                     <p>
@@ -77,9 +80,9 @@
                         <?php if (array_key_exists('category', $upload_errors)) echo '<span class="error-message">' . $upload_errors['category'] . '</span>' ?>
                     </p>
                     <p>
-                        <label for="accent-color">Accent Color</label>
-                        <input type="text" name="accent-color" value="<?= $upload_submitted['accent-color'] ?>" id="accent-color"/ <?php if (array_key_exists('accent-color', $upload_errors)) echo 'class="error"' ?> >
-                        <?php if (array_key_exists('accent-color', $upload_errors)) echo '<span class="error-message">' . $upload_errors['accent-color'] . '</span>' ?>
+                        <label for="accentcolor">Accent Color</label>
+                        <input type="text" name="accentcolor" value="<?= $upload_submitted['accentcolor'] ?>" id="accentcolor"/ <?php if (array_key_exists('accentcolor', $upload_errors)) echo 'class="error"' ?> >
+                        <?php if (array_key_exists('accentcolor', $upload_errors)) echo '<span class="error-message">' . $upload_errors['accentcolor'] . '</span>' ?>
                      </p>
                     
                     <p>
@@ -96,15 +99,15 @@
             </div>
             <div id="secondary-content">
               <ol id="upload-steps">
+                <li class="completed"> <!-- class="completed" needed to show green checkbox --> 
+                    <h3>Step 1:</h3>
+                    <h4>Create Your Persona</h4>
+                </li>
                 <li class="current"> <!-- Active step requires 'current' classname and the extra wrapper div -->
                     <div class="wrapper">
-                        <h3>Step 1:</h3>
-                        <h4>Create Your Persona</h4>
+                    	<h3>Step 2:</h3>
+                    	<h4>Persona Agreement</h4>
                     </div> 
-                </li>
-                <li class="completed"> <!-- class="completed" needed to show green checkbox -->
-                    <h3>Step 2:</h3>
-                    <h4>Persona Agreement</h4>
                 </li>
                 <li>
                     <h3>Step 3:</h3>
@@ -118,15 +121,15 @@
     <script src="js/jquery.js"></script>
     <script src="js/script.js"></script>
    <script type="text/javascript" charset="utf-8">
-    $('#text-color').ColorPicker({
+    $('#textcolor').ColorPicker({
     	onSubmit: function(hsb, hex, rgb) {
-    		$('#text-color').val(hex);
+    		$('#textcolor').val(hex);
     	},
     	onBeforeShow: function () {
     		$(this).ColorPickerSetColor(this.value);
     	},
     	onChange: function (hsb, hex, rgb) {
-        		$('#text-color').val(hex);
+        		$('#textcolor').val(hex);
         	}
         
     })
@@ -135,15 +138,15 @@
     });
     
     
-    $('#accent-color').ColorPicker({
+    $('#accentcolor').ColorPicker({
     	onSubmit: function(hsb, hex, rgb) {
-    		$('#accent-color').val(hex);
+    		$('#accentcolor').val(hex);
     	},
     	onBeforeShow: function () {
     		$(this).ColorPickerSetColor(this.value);
     	},
     	onChange: function (hsb, hex, rgb) {
-        		$('#accent-color').val(hex);
+        		$('#accentcolor').val(hex);
         	}
         
     })
