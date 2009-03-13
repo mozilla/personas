@@ -4,14 +4,14 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<title>Personas Homepage</title>
-	<link href="css/style.css" rel="stylesheet" type="text/css" media="all" />
+	<link href="/store/css/style.css" rel="stylesheet" type="text/css" media="all" />
 </head>
 <body class="home">
     <div id="outer-wrapper">
         <div id="inner-wrapper">
             <p id="account"><a href="#">Designer Tools</a></p>
             <div id="nav">
-                <h1><a href="#"><img src="img/logo.png" alt="Mozilla Labs Personas"></a></h1>
+                <h1><a href="#"><img src="/store/img/logo.png" alt="Mozilla Labs Personas"></a></h1>
                 <ul>
                     <li class="gallery"><a href="#">Gallery</a></li>
                     <li class="create"><a href="#">Create <br/>Your Own</a></li>
@@ -25,7 +25,7 @@
                 <div class="get-personas">
                     <div>
                         <p>
-                            <a href="#" class="get-personas" id="download"><span>Get Personas for Firefox - Free</span><span class="arrow"></span></a>
+                            <a href="#" class="get-personas"><span>Get Personas for Firefox - Free</span><span class="arrow"></span></a>
                         </p>
                         <p class="platforms-note">Firefox Add-on for Windows, Mac or Linux</p>
                     </div>
@@ -104,27 +104,28 @@
             <div class="feature last">
                 <h3>Most Popular Personas</h3>
                 <ol class="popular">
-                    <li>
-                            <h4>Firefox Logo</h4>
+<?php
+	require_once 'lib/personas_constants.php';	
+	require_once 'lib/personas_functions.php';	
+	require_once 'lib/storage.php';
+
+
+	$db = new PersonaStorage();
+	$list = $db->get_popular_personas(null,3);
+	foreach ($list as $persona)
+	{
+		$persona_json = htmlentities(json_encode(extract_record_data($persona)));
+?>
+					<li>
+                            <h4><?= $persona['name'] ?></h4>
                             <hr />
-                            <img src="img/popular-thumbnail-example.jpg">
-                            <p class="downloads"><strong>Downloads:</strong> 3,000</p>
+                            <img alt="<?= $persona['name'] ?>" persona="<?= $persona_json ?>" src="<?= PERSONAS_LIVE_PREFIX . '/' . url_prefix($persona['id']) ?>/preview_popular.jpg">
+                            <p class="downloads"><strong>Current Users:</strong> <?= $persona['popularity'] ?></p>
                             <p class="try"><a href="#">try it now »</a></p>
                     </li>
-                    <li>
-                            <h4>Firefox Logo</h4>
-                            <hr />
-                            <img src="img/popular-thumbnail-example.jpg">
-                            <p class="downloads"><strong>Downloads:</strong> 3,000</p>
-                            <p class="try"><a href="#">try it now »</a></p>
-                    </li>
-                    <li>
-                            <h4>Firefox Logo</h4>
-                            <hr />
-                            <img src="img/popular-thumbnail-example.jpg">
-                            <p class="downloads"><strong>Downloads:</strong> 3,000</p>
-                            <p class="try"><a href="#">try it now »</a></p>
-                    </li>
+<?php
+	}
+?>
                 </ol>
                 
                 
@@ -132,7 +133,7 @@
         </div>
     </div>
     <div id="footer">
-        <p>Copyright © 2009 Mozilla. Personas is a Mozilla Labs Project.  |  Terms of Use  |  Privacy</p>
+        <p>Copyright © <?= date("Y") ?> Mozilla. Personas is a Mozilla Labs Project.  |  Terms of Use  |  Privacy</p>
     </div>
     <script src="js/jquery.js"></script>
     <script src="js/script.js"></script>
@@ -140,8 +141,6 @@
         $(document).ready(function () {
             $("#slideshow").slider();
             $("#more-info").popup();
-            $("#download").personasDownload({"addon":"addon-url", "bundle":"bundle-url", "bundle-text":'<span>Get Firefox and Personas - Free</span><span class="arrow"></span>'});
-            $("#header").ie6Warning({"message":'<div id="ie6">You are using Internet Explorer 6. Please download a new browser.</div>'});
         });
     </script>
 </body>

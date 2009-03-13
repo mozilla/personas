@@ -38,6 +38,7 @@
 # ***** END LICENSE BLOCK *****
 	
 	require_once 'server/lib/personas_constants.php';	
+	require_once 'server/lib/personas_functions.php';	
 	require_once 'server/lib/storage.php';
 
 	$page_size = 21;
@@ -45,25 +46,6 @@
 	$db = new PersonaStorage();
 	$categories = $db->get_categories();
 
-
-	function extract_record_data($item)
-	{
-		$padded_id = $item{'id'} < 10 ? '0' . $item{'id'} : $item{'id'};
-		$extracted = array('id' => $item{'id'}, 
-						'name' => $item{'name'},
-						'accentcolor' => $item{'accentcolor'} ? '#' . $item{'accentcolor'} : null,
-						'textcolor' => $item{'textcolor'} ? '#' . $item{'textcolor'} : null,
-						'header' => url_prefix($item{'id'}) . $item{'header'}, 
-						'footer' => url_prefix($item{'id'}) . $item{'footer'});
-		return $extracted;	
-	}
-		
-	function url_prefix($id)
-	{
-		$second_folder = $id%10;
-		$first_folder = ($id%100 - $second_folder)/10;
-		return  $first_folder . '/' . $second_folder .  '/'. $id . '/';
-	}
 
 	function make_persona_path($persona_id)
 	{
@@ -86,7 +68,7 @@
 
 		$ch = curl_init();
 		$fp = fopen(PERSONAS_STORAGE_PREFIX . "/gallery/$path/$file", "w");	
-		curl_setopt($ch, CURLOPT_URL, "http://localhost/store/dynamic/$path/$file");
+		curl_setopt($ch, CURLOPT_URL, "http://localhost/store/dynamic/gallery/$path/$file");
 		curl_setopt($ch, CURLOPT_FILE, $fp);
 		curl_exec($ch);
 		fclose($fp);	
@@ -99,6 +81,18 @@
 		$ch = curl_init();
 		$fp = fopen("$path/$id", "w");	
 		curl_setopt($ch, CURLOPT_URL, "http://localhost/store/dynamic/persona/$id");
+		curl_setopt($ch, CURLOPT_FILE, $fp);
+		curl_exec($ch);
+		fclose($fp);	
+	}
+
+	function get_mainpage_html()
+	{
+		$path = PERSONAS_STORAGE_PREFIX . "/index.html";
+
+		$ch = curl_init();
+		$fp = fopen("$path", "w");	
+		curl_setopt($ch, CURLOPT_URL, "http://localhost/store/dynamic/");
 		curl_setopt($ch, CURLOPT_FILE, $fp);
 		curl_exec($ch);
 		fclose($fp);	
@@ -176,6 +170,8 @@
 		get_persona_html($id);
 	}
 	
+	#and the index
+	get_mainpage_html();
 
 
 ?>
