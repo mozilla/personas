@@ -141,6 +141,8 @@
         $(document).ready(function () {
             $("#slideshow").slider();
             $("#more-info").popup();
+            $("#download").personasDownload({"addon":"addon-url", "bundle":"bundle-url", "bundle-text":'<span>Get Firefox and Personas - Free</span><span class="arrow"></span>'});
+            $("#header").ie6Warning({"message":'<div id="ie6">Upgrade your browser to get the most out of this website. Download Firefox for free.</div>'});
         });
     </script>
 </body>
