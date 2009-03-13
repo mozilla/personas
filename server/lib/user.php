@@ -323,6 +323,67 @@ class PersonaUser
 		return 0;
 	}
 
+	function generate_password_change_code($username)
+	{
+		if (!$username)
+		{
+			throw new Exception("No username", 404);
+		}
+		$string = '';
+		for ($i = 1; $i <= 16; $i++) 
+		{
+			$number = rand(0,35) + 48;
+			if ($number > 57) { $number += 7; }
+			$string .= chr($number);
+			if ($i == 4 || $i == 8 || $i == 12) { $string .= '-'; }
+		}
+		
+		try
+		{
+			$insert_stmt = 'update users set change_code = :code where username = :username';
+			$sth = $this->_dbh->prepare($insert_stmt);
+			$sth->bindParam(':username', $username);
+			$sth->bindParam(':code', $string);
+			if ($sth->execute() == 0)
+			{
+				throw new Exception("User not found", 404);
+			}			
+		}
+		catch( PDOException $exception )
+		{
+			error_log("generate_password_change_code: " . $exception->getMessage());
+			throw new Exception("Database unavailable", 503);
+		}
+		return $string;
+	}
+
+	function check_password_change_code($username, $code)
+	{
+		if (!$username)
+		{
+			throw new Exception("No username", 404);
+		}
+		if (!$code)
+		{
+			return 0;
+		}
+		try
+		{
+			$select_stmt = 'select 1 from users where username = :username and change_code = :code';
+			$sth = $this->_dbh->prepare($select_stmt);
+			$sth->bindParam(':username', $username);
+			$sth->bindParam(':code', $code);
+			$sth->execute();
+		}
+		catch( PDOException $exception )
+		{
+			error_log("check_password_change_code: " . $exception->getMessage());
+			throw new Exception("Database unavailable", 503);
+		}
+		return $sth->fetchColumn();
+		
+	}
+	
 
 
 	function user_exists($username) 

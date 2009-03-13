@@ -42,7 +42,7 @@
                         <p><label for="login_remember"><input type="checkbox" name="login_remember" id="remember" value="1" /> Remember me on this computer</label></p>
                         <button type="submit" class="button"><span>sign in</span><span class="arrow"></span></button>
                         
-                        <p class="forgot"><a href="#">Forgot your password?</a></p>
+                        <p class="forgot"><a href="/forgot_password">Forgot your password?</a></p>
                     </form>
                 </div>
                 
