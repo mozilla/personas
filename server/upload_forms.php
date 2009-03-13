@@ -169,15 +169,22 @@
 	else
 	{
 		$upload_submitted['id'] = $db->submit_persona($upload_submitted['name'], $upload_submitted['category'], $upload_submitted['header'], $upload_submitted['footer'], $auth_user, $upload_submitted['accentcolor'], $upload_submitted['textcolor'], $upload_submitted['description'], $upload_submitted['license']);
-		$persona_path = make_persona_pending_path($upload_submitted['id']);
 		$db->log_action($auth_user, $upload_submitted['id'], "Added");
 	}
+	$persona_path = make_persona_pending_path($upload_submitted['id']);
 	
 	if (array_key_exists('header-image', $_FILES) && !move_uploaded_file($_FILES['header-image']['tmp_name'], $persona_path . "/" . $upload_submitted['header']))
 	{
 		$upload_errors['header-image'] = "A problem occured uploading your persona. Please contact persona-devel@mozilla.com to let us know about this issue. Thank you.";
 		if (!array_key_exists('id', $_POST))
 			$db->reject_persona($upload_submitted['id']);
+
+		$imgcommand = "convert " . $persona_path . "/" . $data['header'] . " -gravity NorthEast -crop 600x200+0+0  -scale 200x100 " . $persona_path . "/preview.jpg";
+		exec($imgcommand);
+		$imgcommand2 = "convert " . $persona_path . "/" . $data['header'] . " -gravity NorthEast -crop 680x110+0+0 " . $persona_path . "/preview_large.jpg";
+		exec($imgcommand2);
+		$imgcommand3 = "convert " . $persona_path . "/" . $data['header'] . " -gravity NorthEast -crop 320x220+0+0  -scale 64x44 " . $persona_path . "/preview_popular.jpg";
+		exec($imgcommand3);
 		include 'lib/upload_persona_tmpl.php';
 		exit;					
 	}
