@@ -118,8 +118,8 @@
         </div>
     </div>
     
-    <script src="js/jquery.js"></script>
-    <script src="js/script.js"></script>
+    <script src="/store/js/jquery.js"></script>
+    <script src="/store/js/script.js"></script>
    <script type="text/javascript" charset="utf-8">
     $('#textcolor').ColorPicker({
     	onSubmit: function(hsb, hex, rgb) {
