@@ -941,6 +941,11 @@ img.preview  {
     margin: 0 0 20px 0;
 }
 
+#agreement {
+    width: 100%;
+    height: 300px;
+}
+
 #license-options {
     margin: 0 0 20px 0;
 }
