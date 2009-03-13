@@ -4,7 +4,7 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<title>Create Your Persona</title>
-	<link href="css/style.css" rel="stylesheet" type="text/css" media="all" />
+	<link href="../store/css/style.css" rel="stylesheet" type="text/css" media="all" />
 
 </head>
 <body>
@@ -69,6 +69,24 @@
                         <span><input type="file" name="footer-image" value="" id="footer-image" /></span>
                     </p>
                     
+                    <p>
+                        <label for="reason">I'm creating a Persona to...</label>
+                        <span>
+                            <select name="reason" id="reason">
+                                <option value=""></option>
+                                <option value="fun">have some fun</option>
+                                <option value="build">build a brand</option>
+                                <option value="non-profit">support a non-profit cause</option>
+                                <option value="other">other</option>
+                            </select>
+                        </span>
+                    </p>
+                    
+                    <p id="other-info">
+                        <label for="other-reason">Reason:</label>
+                        <input id="other-reason" name="other-reason" type="text" />
+                    </p>
+                    
                 </div>
                 
                 <p class="continue">
@@ -95,8 +113,8 @@
         </div>
     </div>
     
-    <script src="js/jquery.js"></script>
-    <script src="js/script.js"></script>
+    <script src="../store/js/jquery.js"></script>
+    <script src="../store/js/script.js"></script>
    <script type="text/javascript" charset="utf-8">
     $('#text-color').ColorPicker({
     	onSubmit: function(hsb, hex, rgb) {
@@ -131,6 +149,13 @@
     	$(this).ColorPickerSetColor(this.value);
     });
     
+    $("#reason").change(function() {
+        if($(this)[0].selectedIndex == 4) {
+            $("#other-info").show();
+        } else {
+            $("#other-info").hide();
+        }
+    });
    </script>
     <div id="footer">
         <p>Copyright © 2009 Mozilla. Personas is a Mozilla Labs Project.  |  Terms of Use  |  Privacy</p>
