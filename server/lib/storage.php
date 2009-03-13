@@ -49,6 +49,8 @@
 #  submit varchar(32),
 #  approve varchar(32),
 #  author varchar(32),
+#  description text,
+#  license varbinary(10)
 #  accentcolor varchar(10),
 #  textcolor varchar(10),
 #  popularity integer
@@ -475,11 +477,11 @@ class PersonaStorage
 	}
 	
 	
-	function submit_persona($name, $category, $header, $footer, $author, $accent, $text)
+	function submit_persona($name, $category, $header, $footer, $author, $accent, $text, $desc, $license)
 	{
 		try
 		{
-			$statement = 'insert into personas (name, status, header, footer, category, submit, author, accentcolor, textcolor) values (:name, 0, :header, :footer, :category, current_timestamp, :author, :accentcolor, :textcolor)';
+			$statement = 'insert into personas (name, status, header, footer, category, submit, author, accentcolor, textcolor, description, license) values (:name, 0, :header, :footer, :category, NOW(), :author, :accentcolor, :textcolor, :description, :license)';
 			$sth = $this->_dbh->prepare($statement);
 			$sth->bindParam(':name', $name);
 			$sth->bindParam(':header', $header);
@@ -488,6 +490,8 @@ class PersonaStorage
 			$sth->bindParam(':author', $author);
 			$sth->bindParam(':accentcolor', $accent);
 			$sth->bindParam(':textcolor', $text);
+			$sth->bindParam(':description', $desc);
+			$sth->bindParam(':license', $desc);
 			$sth->execute();
 			return $this->_dbh->lastInsertId();
 		}
@@ -499,11 +503,11 @@ class PersonaStorage
 		return 0;
 	}
 	
-	function submit_persona_edit($id, $author, $name, $category, $accent, $text, $header = null, $footer = null)
+	function submit_persona_edit($id, $author, $name, $category, $accent, $text, $desc, $header = null, $footer = null)
 	{
 		try
 		{
-			$statement = 'replace into edits (id, author, name, header, footer, category,  accentcolor, textcolor) values (:id, :author, :name, :header, :footer, :category,  :accentcolor, :textcolor)';
+			$statement = 'replace into edits (id, author, name, header, footer, category,  accentcolor, textcolor, description) values (:id, :author, :name, :header, :footer, :category,  :accentcolor, :textcolor, :description)';
 			$sth = $this->_dbh->prepare($statement);
 			$sth->bindParam(':id', $id);
 			$sth->bindParam(':author', $author);
@@ -513,6 +517,7 @@ class PersonaStorage
 			$sth->bindParam(':category', $category);
 			$sth->bindParam(':accentcolor', $accent);
 			$sth->bindParam(':textcolor', $text);
+			$sth->bindParam(':description', $text);
 			$sth->execute();
 		}
 		catch( PDOException $exception )
@@ -528,8 +533,8 @@ class PersonaStorage
 	{
 		$edits = $this->get_edits_by_id($id);
 		
-		$update = "update personas set name = ?, category = ?, accentcolor = ?, textcolor = ?";
-		$params = array($edits['name'], $edits['category'], $edits['accentcolor'], $edits['textcolor']);
+		$update = "update personas set name = ?, category = ?, accentcolor = ?, textcolor = ?, description = ?";
+		$params = array($edits['name'], $edits['category'], $edits['accentcolor'], $edits['textcolor'], $edits['description']);
 		
 		
 		if ($edits['header'])

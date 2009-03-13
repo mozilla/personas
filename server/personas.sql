@@ -11,7 +11,9 @@ create table if not exists personas
  author varchar(32),
  accentcolor varchar(10),
  textcolor varchar(10),
- popularity integer
+ popularity integer,
+ description text,
+ licence varbinary(10)
 );
 
 create table if not exists categories

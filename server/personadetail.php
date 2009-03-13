@@ -64,7 +64,7 @@
                 <h3>created by <?= $persona_data['author'] ?></h3>
                 <img class="detailed-view"  alt="<?= $item['name'] ?>" persona="<?= $persona_json ?>" src="<?= PERSONAS_LIVE_PREFIX . '/' . url_prefix($persona_id) ?>/preview_large.jpg" >
                 
-                <p class="description"><strong>Description:</strong> <?= $persona_data['description'] ?></p>
+                <p class="description"><strong>Description:</strong> <?= htmlspecialchars($persona_data['description']) ?></p>
                 
                 <p id="buttons">
                     <a href="#" class="button"><span>try it now</span><span>&nbsp;</span></a>
