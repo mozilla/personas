@@ -45,7 +45,7 @@
             </ul>
             <div id="header">
                 <h2>View Personas</h2>
-                <h3>Your browser, your style! Dress it up with easy to change “skins” for your
+                <h3>Your browser, your style! Dress it up with easy-to-change "skins" for your
                 Firefox.</h3>
             </div>
             <div id="maincontent">
