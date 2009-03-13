@@ -122,7 +122,7 @@ class PersonaUser
 
 		try
 		{
-			$insert_stmt = 'update users set md5 = :md5 where username = :username';
+			$insert_stmt = 'update users set md5 = :md5, change_code = NULL where username = :username';
 			$sth = $this->_dbh->prepare($insert_stmt);
 			$sth->bindParam(':username', $username);
 			$sth->bindParam(':md5', md5($password));

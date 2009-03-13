@@ -42,7 +42,7 @@
                     
                     <p>
                         <label for="password-verify">Re-type your new password</label>
-                        <input type="password" name="password-verify" value="password-verify" id="" />
+                        <input type="password" name="password-verify" value="" id="" />
                     </p>
                     
                     <button type="submit" class="button"><span>reset password</span><span class="arrow">&nbsp;</span></button>

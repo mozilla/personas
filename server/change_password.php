@@ -1,10 +1,9 @@
 <?php
-	require_once '../lib/personas_constants.php';
-	require_once '../lib/user.php';	
+	require_once 'lib/personas_constants.php';
+	require_once 'lib/user.php';	
 
 	$user = new PersonaUser();
-	
-	$mail_message = "URL to visit: http://www.getpersonas.com/upload/change_password.php?user=$username&code=$code";
+	$error = null;
 	
 	
 	#initial request page
@@ -29,6 +28,7 @@
 			}
 			
 			$code = $user->generate_password_change_code($username);
+			$mail_message = "URL to visit: http://sm-personas01.mozilla.org/forgot_password?username=$username&code=$code";
 			if (!mail($email, 'Resetting your personas password', $mail_message, "From: personas-devel@mozilla.com\r\n"))
 			{
 				$error = "There was a problem with our mail server. Please try again in a few minutes. If it continues to not work, please contact personas-devel@mozilla.com";
@@ -36,12 +36,13 @@
 				exit;
 			}
 			
-			include "lib/forgot_password_thanks.php";
+			include "lib/forgot_password_thanks_tmpl.php";
 			exit;
 		}
 		catch (Exception $e)
 		{
 			$error = "There was an internal error. Please contact personas-devel@mozilla.com";
+			error_log($e->getMessage());
 			include "lib/forgot_password_tmpl.php";
 			exit;
 		}
@@ -52,14 +53,9 @@
 	{
 		try
 		{
-			$username = array_key_exists('user', $_GET) ? (ini_get('magic_quotes_gpc') ? stripslashes($_GET['user']) : $_GET['user']) : null;
-			$code = array_key_exists('user', $_GET) ? (ini_get('magic_quotes_gpc') ? stripslashes($_GET['code']) : $_GET['code']) : null;
+			$username = array_key_exists('username', $_GET) ? (ini_get('magic_quotes_gpc') ? stripslashes($_GET['username']) : $_GET['username']) : null;
+			$code = array_key_exists('code', $_GET) ? (ini_get('magic_quotes_gpc') ? stripslashes($_GET['code']) : $_GET['code']) : null;
 	
-			if (!$code)
-			{
-				include "lib/forgot_password_tmpl.php";
-				exit;
-			}
 			if (!$user->check_password_change_code($username, $code))
 			{
 				$error = "The code you submitted is not valid for that username. Please request another one";
@@ -70,9 +66,10 @@
 			include "lib/forgot_password_reset_tmpl.php";
 			exit;
 		}
-		catch
+		catch (Exception $e)
 		{
 			$error = "There was an internal error. Please contact personas-devel@mozilla.com";
+			error_log($e->getMessage());
 			include "lib/forgot_password_reset_tmpl.php";
 			exit;
 		}
@@ -84,8 +81,8 @@
 		{
 			$username = array_key_exists('user', $_POST) ? (ini_get('magic_quotes_gpc') ? stripslashes($_POST['user']) : $_POST['user']) : null;
 			$code = array_key_exists('code', $_POST) ? (ini_get('magic_quotes_gpc') ? stripslashes($_POST['code']) : $_POST['code']) : null;
-			$password = array_key_exists('pass', $_POST) ? (ini_get('magic_quotes_gpc') ? stripslashes($_POST['pass']) : $_POST['pass']) : null;
-			$conf = array_key_exists('passconf', $_POST) ? (ini_get('magic_quotes_gpc') ? stripslashes($_POST['passconf']) : $_POST['passconf']) : null;
+			$password = array_key_exists('password', $_POST) ? (ini_get('magic_quotes_gpc') ? stripslashes($_POST['password']) : $_POST['password']) : null;
+			$conf = array_key_exists('password-verify', $_POST) ? (ini_get('magic_quotes_gpc') ? stripslashes($_POST['password-verify']) : $_POST['password-verify']) : null;
 	
 			if (!$code)
 			{
@@ -115,8 +112,13 @@
 		catch (Exception $e)
 		{
 			$error = "There was an internal error. Please contact personas-devel@mozilla.com";
+			error_log($e->getMessage());
 			include "lib/forgot_password_reset_tmpl.php";
 			exit;			
 		}
 	}		
+
+	include "lib/forgot_password_tmpl.php";
+	exit;
+
 ?>
