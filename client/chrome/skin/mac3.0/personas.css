@@ -125,9 +125,6 @@
 #main-window[persona] #cut-button,
 #main-window[persona] #copy-button,
 #main-window[persona] #paste-button,
-#main-window[persona] #minimize-button,
-#main-window[persona] #restore-button,
-#main-window[persona] #close-button,
 #main-window[persona] #back-forward-dropmarker {
   list-style-image: url("chrome://personas/skin/Toolbar.png");
 }
