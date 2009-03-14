@@ -1,3 +1,10 @@
+var PERSONAS_URLS = {
+   'win_bundle'     : 'win',
+   'mac_bundle'     : 'osx',
+   'linux_bundle'   : 'linux',
+   'addon'          : 'https://addons.mozilla.org/en-US/firefox/downloads/latest/10900'
+}
+
 $.fn.slider = function (options) {
     var settings = jQuery.extend({
         "slides"        : "#slides li",
@@ -123,12 +130,16 @@ $.fn.previewPersona = function() {
 $.fn.personasDownload = function(options) {
     if(!jQuery.browser.mozilla) {
         jQuery(this).html(options["bundle-text"]);
+        
+        var downloadUrl = jQuery.os.mac ? PERSONAS_URLS['mac_bundle'] : jQuery.os.win ? PERSONAS_URLS['win_bundle'] : PERSONAS_URLS['linux_bundle'];
+        jQuery(this).attr("href", downloadUrl);
     }
 };
 
 $.fn.ie6Warning = function(options) {
     if(jQuery.browser.msie && jQuery.browser.version == 6.0) {
-        jQuery(this).prepend(options['message']);
+        var message = options['message'].replace("%LINK%", PERSONAS_URLS['win_bundle']);
+        jQuery(this).prepend(message);
     }
 };
 
@@ -877,6 +888,7 @@ EYE.extend({
 			);
 	}
 });
+
 if (!$.easing.easeout) {
 	$.easing.easeout = function(p, n, firstNum, delta, duration) {
 		return -delta * ((n=n/duration-1)*n*n*n - 1) + firstNum;
@@ -884,3 +896,11 @@ if (!$.easing.easeout) {
 }
 	
 })(jQuery);
+
+var userAgent = navigator.userAgent.toLowerCase();
+$.os = { 
+    mac: /mac/.test(userAgent), 
+    win: /win/.test(userAgent), 
+    linux: /linux/.test(userAgent)
+}
+

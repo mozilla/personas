@@ -4,7 +4,7 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<title>Personas Homepage</title>
-	<link href="css/style.css" rel="stylesheet" type="text/css" media="all" />
+	<link href="/store/css/style.css" rel="stylesheet" type="text/css" media="all" />
 </head>
 <body class="home">
     <div id="outer-wrapper">
@@ -25,7 +25,7 @@
                 <div class="get-personas">
                     <div>
                         <p>
-                            <a href="#" class="get-personas"><span>Get Personas for Firefox - Free</span><span class="arrow"></span></a>
+                            <a href="https://addons.mozilla.org/en-US/firefox/downloads/latest/10900" class="get-personas" id="download"><span>Get Personas for Firefox - Free</span><span class="arrow"></span></a>
                         </p>
                         <p class="platforms-note">Firefox Add-on for Windows, Mac or Linux</p>
                     </div>
@@ -135,14 +135,14 @@
     <div id="footer">
         <p>Copyright © <?= date("Y") ?> Mozilla. Personas is a Mozilla Labs Project.  |  Terms of Use  |  Privacy</p>
     </div>
-    <script src="../store/js/jquery.js"></script>
-    <script src="../store/js/script.js"></script>
+    <script src="/store/js/jquery.js"></script>
+    <script src="/store/js/script.js"></script>
     <script type="text/javascript" charset="utf-8">
         $(document).ready(function () {
             $("#slideshow").slider();
             $("#more-info").popup();
-            $("#download").personasDownload({"addon":"addon-url", "bundle":"bundle-url", "bundle-text":'<span>Get Firefox and Personas - Free</span><span class="arrow"></span>'});
-            $("#header").ie6Warning({"message":'<div id="ie6">Upgrade your browser to get the most out of this website. Download Firefox for free.</div>'});
+            $("#download").personasDownload({"bundle":"bundle-url", "bundle-text":'<span>Get Firefox and Personas - Free</span><span class="arrow"></span>'});
+            $("#header").ie6Warning({"message":'<div id="ie6">Upgrade your browser to get the most out of this website. <a href="%LINK%">Download Firefox for free</a>.</div>'});
         });
     </script>
 </body>
