@@ -41,14 +41,14 @@
                    <p>We encourage you to make your design publicly available, though you may choose not to submit your design under an open source license.  Please select the option below that you prefer. </p>
                    
                    <div id="license-options">
-                       <p><label for="license-cc"><input type="checkbox" name="license" value="cc" id="license-cc" />Yes, I want to make my design available to everyone under a Creative Commons license.</label></p>
+                       <p><label for="license-cc"><input type="radio" name="license" value="cc" id="license-cc" />Yes, I want to make my design available to everyone under a Creative Commons license.</label></p>
 
                           <ul>
                            <li>   People may share and modify my Persona as long as they give me credit and don’t charge for it.  <a href="http://creativecommons.org/licenses/by-nc-sa/3.0/us/">Learn more.</a></li>
                               <li>My design will be quickly added to the directory and hosted for free.</li>
                           </ul>
 
-                          <p><label for="license-restricted"><input type="checkbox" name="license" value="restricted" id="license-restricted" />I’d rather restrict any modifications and sharing of my Personas design.</label></p>
+                          <p><label for="license-restricted"><input type="radio" name="license" value="restricted" id="license-restricted" />I’d rather restrict any modifications and sharing of my Personas design.</label></p>
 
                           <ul>
                            <li>   People may not share, modify, or distribute my design outside of the Personas application.
