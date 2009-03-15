@@ -21,7 +21,7 @@
             </div>
             <div id="header">
                 <h2>What will your browser wear today?</h2>
-                <h3>Personas are lightweight, easy to install and easy to change “skins” for your Firefox web browser.</h3>
+                <h3>Personas are lightweight, easy-to-install and easy-to-change "skins" for your Firefox web browser.</h3>
                 <div class="get-personas">
                     <div>
                         <p>
