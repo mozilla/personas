@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	<title>Personas Homepage</title>
+	<title>Personas for Firefox | Dress up your web browser</title>
 	<link href="/store/css/style.css" rel="stylesheet" type="text/css" media="all" />
 </head>
 <body class="home">
