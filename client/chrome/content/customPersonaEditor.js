@@ -203,7 +203,7 @@ let CustomPersonaEditor = {
   },
 
   onSetDefaultTextColor: function(aEvent) {
-    this.customPersona.textcolor = "#000000";
+    this._textColorPicker.color = "#000000";
     this.onChangeTextColor();
   },
 
@@ -214,7 +214,7 @@ let CustomPersonaEditor = {
   },
 
   onSetDefaultAccentColor: function(aEvent) {
-    this.customPersona.accentcolor = "#C9C9C9";
+    this._accentColorPicker.color = "#C9C9C9";
     this.onChangeAccentColor();
   },
 
