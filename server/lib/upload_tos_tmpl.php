@@ -30,6 +30,7 @@
                 <h4>Terms of Service</h4>
                <form action="upload" method="post">
                <input type="hidden" name="firstterms" value="1">
+                        <textarea name="agreement" id="agreement" disabled="disabled">
 Personas Designer Agreement
 
 Dated: March 12, 2009
