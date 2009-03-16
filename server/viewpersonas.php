@@ -36,13 +36,16 @@
     <div id="outer-wrapper">
         <div id="inner-wrapper">
             <p id="account"><a href="#">Designer Tools</a></p>
-            <h1><a href="/store"><img src="/store/img/logo.png" alt="Mozilla Labs Personas"></a></h1>
-            <ul>
-                <li class="gallery"><a href="/store/dynamic/gallery/All/Popular">Gallery</a></li>
-                <li class="create"><a href="#">Create <br/>Your Own</a></li>
-                <li class="demo"><a href="/store/demo_install.html">Demo</a></li>
-                <li class="faq"><a href="/store/faq.html">Frequent <br/>Questions</a></li>
-            </ul>
+            <div id="nav">
+                <h1><a href="#"><img src="/store/img/logo.png" alt="Mozilla Labs Personas"></a></h1>
+                <ul>
+                    <li class="gallery"><a href="#">Gallery</a></li>
+                    <li class="create"><a href="#">Create <br/>Your Own</a></li>
+                    <li class="demo"><a href="#">Demo</a></li>
+                    <li class="faq"><a href="#">Frequent <br/>Questions</a></li>
+
+                </ul>
+			</div>
             <div id="header">
                 <h2>View Personas</h2>
                 <h3>Your browser, your style! Dress it up with easy-to-change "skins" for your
