@@ -188,7 +188,7 @@
 
 		$imgcommand = "convert " . $persona_path . "/" . $data['header'] . " -gravity NorthEast -crop 600x200+0+0  -scale 200x100 " . $persona_path . "/preview.jpg";
 		exec($imgcommand);
-		$imgcommand2 = "convert " . $persona_path . "/" . $data['header'] . " -gravity NorthEast -crop 680x110+0+0 " . $persona_path . "/preview_large.jpg";
+		$imgcommand2 = "convert " . $persona_path . "/" . $data['header'] . " -gravity NorthEast -crop 1360x200+0+0 -scale 680x100" . $persona_path . "/preview_large.jpg";
 		exec($imgcommand2);
 		$imgcommand3 = "convert " . $persona_path . "/" . $data['header'] . " -gravity NorthEast -crop 320x220+0+0  -scale 64x44 " . $persona_path . "/preview_popular.jpg";
 		exec($imgcommand3);
