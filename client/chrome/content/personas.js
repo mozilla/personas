@@ -638,6 +638,15 @@ let PersonaController = {
   },
 
   _rebuildMenu: function() {
+    // If we don't have personas data, we won't be able to fully build the menu,
+    // and we'll display a message to that effect in tooltips over the parts
+    // of the menu that are data-dependent (the Most Popular, New, and
+    // By Category submenus).  The message also suggests that the user try again
+    // in a few minutes, so here we immediately try to refresh data so it will
+    // be available when the user tries again.
+    if (!PersonaService.personas)
+      PersonaService.refreshData();
+
     let openingSeparator = document.getElementById("personasOpeningSeparator");
     let closingSeparator = document.getElementById("personasClosingSeparator");
 

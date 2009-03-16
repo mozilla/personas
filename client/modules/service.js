@@ -82,7 +82,7 @@ let PersonaService = {
     let timerManager = Cc["@mozilla.org/updates/timer-manager;1"].
                        getService(Ci.nsIUpdateTimerManager);
 
-    // Load data, then set a timer to refresh it periodically.
+    // Refresh data, then set a timer to refresh it periodically.
     // This isn't quite right, since we always load data on startup, even if
     // we've recently refreshed it.  And the timer that refreshes data ignores
     // the data load on startup, so if it's been more than the timer interval
@@ -90,10 +90,10 @@ let PersonaService = {
     // once because the browser starts and once because the refresh timer fires.
     // FIXME: save the data to disk when we retrieve it and then retrieve it
     // from there on startup instead of loading it over the network.
-    this._loadData();
+    this.refreshData();
     let dataRefreshCallback = {
       _svc: this,
-      notify: function(timer) { this._svc._refreshData() }
+      notify: function(timer) { this._svc._refreshDataWithMetrics() }
     };
     timerManager.registerTimer("personas-data-refresh-timer",
                                dataRefreshCallback,
@@ -147,12 +147,27 @@ let PersonaService = {
   },
 
   /**
-   * Retrieve data. This method gets called once per day, updates the version
-   * of the data that is currently in memory, and passes information about the
-   * selected persona and the host application to the server for statistical
-   * analysis (f.e. figuring out which personas are the most popular).
+   * Refresh data. This method gets called on demand (including on startup)
+   * and retrieves data without passing any additional information about
+   * the selected persona and the application (that information is only included
+   * in the daily retrieval so we can get consistent daily statistics from it
+   * no matter how many times a user starts the application in a given day).
    */
-  _refreshData: function() {
+  refreshData: function() {
+    let url = this.baseURI + "index_" + this._prefs.get("data.version") + ".json";
+    let t = this;
+    this._makeRequest(url, function(evt) { t.onDataLoadComplete(evt) });
+  },
+
+  /**
+   * Refresh data, providing metrics on persona usage in the process.
+   * This method gets called approximately once per day on a cross-session timer
+   * (provided Firefox is run every day), updates the version of the data
+   * that is currently in memory, and passes information about the selected
+   * persona and the host application to the server for statistical analysis
+   * (f.e. figuring out which personas are the most popular).
+   */
+  _refreshDataWithMetrics: function() {
     let appInfo     = Cc["@mozilla.org/xre/app-info;1"].
                       getService(Ci.nsIXULAppInfo);
     let xulRuntime  = Cc["@mozilla.org/xre/app-info;1"].
@@ -194,22 +209,6 @@ let PersonaService = {
 
     let url = this.baseURI + "index_" + this._prefs.get("data.version") + ".json?" +
               [name + "=" + encodeURIComponent(params[name]) for (name in params)].join("&");
-    let t = this;
-    this._makeRequest(url, function(evt) { t.onDataLoadComplete(evt) });
-  },
-
-  /**
-   * Retrieve data. This method gets called on startup and retrieves data
-   * without passing any additional information about the selected persona
-   * and the application (that information is only included in the daily
-   * retrieval so we can get consistent daily statistics from it no matter
-   * how many times a user starts the application in a given day).
-   *
-   * FIXME: save the data that we retrieve once per day to disk, then remove
-   * this method and load the data from disk on startup.
-   */
-  _loadData: function() {
-    let url = this.baseURI + "index_" + this._prefs.get("data.version") + ".json";
     let t = this;
     this._makeRequest(url, function(evt) { t.onDataLoadComplete(evt) });
   },
@@ -565,7 +564,7 @@ let PersonaService = {
 
     // Load the lists of categories and personas, and define a timer
     // that periodically reloads them.
-    this._loadData();
+    this.refreshData();
     this._reloadDataTimer = Cc["@mozilla.org/timer;1"].createInstance(Ci.nsITimer);
     this._reloadDataTimer.initWithCallback(this,
                                            30 * 60 * 1000, // 30 minutes
@@ -623,7 +622,7 @@ let PersonaService = {
         this._delayedInit();
         break;
       case this._reloadDataTimer:
-        this._loadData();
+        this.refreshData();
         break;
       case this._reloadPersonaTimer:
         let personaID = this._prefs.get("selected", "default");
