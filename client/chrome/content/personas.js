@@ -176,6 +176,12 @@ let PersonaController = {
   // Initialization & Destruction
 
   startUp: function() {
+    // Set the label for the tooltip that informs users when personas data
+    // is unavailable.
+    // FIXME: make this a DTD entity rather than a properties string.
+    document.getElementById("personasDataUnavailableTooltip").label =
+      this._strings.get("dataUnavailable");
+
     // Make sure there's a bottombox element enclosing the items below
     // the browser widget.  Firefox 3 beta 4 and later have one, but earlier
     // releases of the browser don't, and that's what we style.
@@ -614,14 +620,8 @@ let PersonaController = {
   },
 
   onPopupShowing: function(event) {
-    if (event.target == this._menuPopup) {
-      if (!PersonaService.personas) {
-        alert(this._strings.get("dataUnavailable"));
-        return false;
-      }
-
+    if (event.target == this._menuPopup)
       this._rebuildMenu();
-    }
 
     return true;
   },
@@ -674,12 +674,18 @@ let PersonaController = {
     {
       let menu = document.createElement("menu");
       menu.setAttribute("label", this._strings.get("popular"));
-      let popupmenu = document.createElement("menupopup");
-  
-      for each (let persona in PersonaService.personas.popular)
-        popupmenu.appendChild(this._createPersonaItem(persona));
 
-      menu.appendChild(popupmenu);
+      if (PersonaService.personas) {
+        let popupmenu = document.createElement("menupopup");
+        for each (let persona in PersonaService.personas.popular)
+          popupmenu.appendChild(this._createPersonaItem(persona));
+        menu.appendChild(popupmenu);
+      }
+      else {
+        menu.setAttribute("disabled", "true");
+        menu.setAttribute("tooltip", "personasDataUnavailableTooltip");
+      }
+
       this._menuPopup.insertBefore(menu, closingSeparator);
     }
 
@@ -687,12 +693,18 @@ let PersonaController = {
     {
       let menu = document.createElement("menu");
       menu.setAttribute("label", this._strings.get("new"));
-      let popupmenu = document.createElement("menupopup");
-  
-      for each (let persona in PersonaService.personas.recent)
-        popupmenu.appendChild(this._createPersonaItem(persona));
 
-      menu.appendChild(popupmenu);
+      if (PersonaService.personas) {
+        let popupmenu = document.createElement("menupopup");
+        for each (let persona in PersonaService.personas.recent)
+          popupmenu.appendChild(this._createPersonaItem(persona));
+        menu.appendChild(popupmenu);
+      }
+      else {
+        menu.setAttribute("disabled", "true");
+        menu.setAttribute("tooltip", "personasDataUnavailableTooltip");
+      }
+
       this._menuPopup.insertBefore(menu, closingSeparator);
     }
 
@@ -720,26 +732,35 @@ let PersonaController = {
     // Create the Categories menu.
     let categoriesMenu = document.createElement("menu");
     categoriesMenu.setAttribute("label", this._strings.get("categories"));
-    let categoriesPopup = document.createElement("menupopup");
-    categoriesMenu.appendChild(categoriesPopup);
-    this._menuPopup.insertBefore(categoriesMenu, closingSeparator);
 
-    // Create the category-specific submenus.
-    for each (let category in PersonaService.personas.categories) {
-      let menu = document.createElement("menu");
-      menu.setAttribute("label", category.name);
-      let popupmenu = document.createElement("menupopup");
+    if (PersonaService.personas) {
+      let categoriesPopup = document.createElement("menupopup");
 
-      for each (let persona in category.personas)
-        popupmenu.appendChild(this._createPersonaItem(persona));
+      // Create the category-specific submenus.
+      for each (let category in PersonaService.personas.categories) {
+        let menu = document.createElement("menu");
+        menu.setAttribute("label", category.name);
+        let popupmenu = document.createElement("menupopup");
 
-      // Create an item that picks a random persona from the category.
-      popupmenu.appendChild(document.createElement("menuseparator"));
-      popupmenu.appendChild(this._createRandomItem(category.name));
+        for each (let persona in category.personas)
+          popupmenu.appendChild(this._createPersonaItem(persona));
 
-      menu.appendChild(popupmenu);
-      categoriesPopup.appendChild(menu);
+        // Create an item that picks a random persona from the category.
+        popupmenu.appendChild(document.createElement("menuseparator"));
+        popupmenu.appendChild(this._createRandomItem(category.name));
+
+        menu.appendChild(popupmenu);
+        categoriesPopup.appendChild(menu);
+      }
+
+      categoriesMenu.appendChild(categoriesPopup);
     }
+    else {
+      categoriesMenu.setAttribute("disabled", "true");
+      categoriesMenu.setAttribute("tooltip", "personasDataUnavailableTooltip");
+    }
+
+    this._menuPopup.insertBefore(categoriesMenu, closingSeparator);
 
     // Update the Custom menu.
     let customMenu = document.getElementById("custom-menu");

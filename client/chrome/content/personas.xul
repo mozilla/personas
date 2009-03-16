@@ -47,6 +47,10 @@
 
   <script type="application/javascript" src="chrome://personas/content/personas.js"/>
 
+  <popupset id="mainPopupSet">
+    <tooltip id="personasDataUnavailableTooltip"/>
+  </popupset>
+
   <menupopup id="menu_ToolsPopup">
     <menu id="personas-menu" class="menu-iconic" label="&personas_app_title;" 
                 insertafter="menu_openAddons">
