@@ -2,14 +2,14 @@
 //   default: the default Firefox skin
 //    random: a random persona from extensions.personas.category
 //   current: the persona in extensions.personas.current
-pref("extensions.personas.selected", "default");
+pref("extensions.personas.selected", "current");
 
 // The current persona.  Generally, this is the persona that the user selected
 // from a menu in the extension or from the web directory of personas.  But if
 // the user selected "random persona from [category]", then this is the persona
 // we randomly selected from the category.  And if the user selected a custom
 // persona, then this is that persona.
-pref("extensions.personas.current", "");
+pref("extensions.personas.current", "{\"id\":\"33\",\"name\":\"Groovy Blue\",\"accentcolor\":\"499bee\",\"textcolor\":null,\"header\":\"3/3/33/tbox-groovy_blue.jpg\",\"footer\":\"3/3/33/stbar-groovy_blue.jpg\"}");
 
 // The category from which we pick a random persona, when the user selects
 // "random persona from [category]".
