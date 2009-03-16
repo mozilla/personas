@@ -56,7 +56,7 @@
 
 		$ch = curl_init();
 		$fp = fopen(PERSONAS_STORAGE_PREFIX . "/gallery/$path/$file", "w");	
-		curl_setopt($ch, CURLOPT_URL, "http://localhost/store/dynamic/gallery/$path/$file");
+		curl_setopt($ch, CURLOPT_URL, "http://localhost/store/dynamic/gallery/$path/$file?no_my=1");
 		curl_setopt($ch, CURLOPT_FILE, $fp);
 		curl_exec($ch);
 		fclose($fp);	
@@ -68,7 +68,7 @@
 
 		$ch = curl_init();
 		$fp = fopen("$path/$id", "w");	
-		curl_setopt($ch, CURLOPT_URL, "http://localhost/store/dynamic/persona/$id");
+		curl_setopt($ch, CURLOPT_URL, "http://localhost/store/dynamic/persona/$id?no_my=1");
 		curl_setopt($ch, CURLOPT_FILE, $fp);
 		curl_exec($ch);
 		fclose($fp);	
