@@ -2,7 +2,7 @@
 
 <!ENTITY useDefaultPersona.label  "Default">
 <!ENTITY preferences.label        "Preferences…">
-<!ENTITY viewDirectory.label      "View Directory…">
+<!ENTITY viewDirectory.label      "View Gallery…">
 
 <!ENTITY customPersona.label      "Custom Persona">
 <!ENTITY customName.label         "Name:">
