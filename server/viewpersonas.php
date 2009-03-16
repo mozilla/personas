@@ -2,25 +2,27 @@
 	require_once 'lib/personas_constants.php';	
 	require_once 'lib/personas_functions.php';	
 	require_once 'lib/storage.php';
+	require_once 'lib/user.php';
 	
 	$page_size = 21;
 
 	$db = new PersonaStorage();
 	$categories = $db->get_categories();
 	array_unshift($categories, 'All');
-	$tabs = array('Popular', 'Recent', 'All');
+	$tabs = array('Popular', 'Recent', 'All', 'My');
 	
 	$path = array_key_exists('PATH_INFO', $_SERVER) ? $_SERVER['PATH_INFO'] : '/';
 	$path = substr($path, 1); #chop the lead slash
 	list($category, $tab, $page) = explode('/', $path.'//');
 
+	$no_my = array_key_exists('no_my', $_GET) ? 1 : 0;
 
 	$category = $category && in_array(ucfirst($category), $categories) ? ucfirst($category) : "All";
 	$tab = $tab && in_array(ucfirst($tab), $tabs) ? ucfirst($tab) : 'Popular';
 	$page = $page && is_numeric($page) ? $page : 1;
 
-
-	
+	$user = new PersonaUser();
+	$user->authenticate_user_from_cookie($_COOKIE['PERSONA_USER']);
 ?>
 
 
@@ -43,9 +45,8 @@
                     <li class="create"><a href="#">Create <br/>Your Own</a></li>
                     <li class="demo"><a href="#">Demo</a></li>
                     <li class="faq"><a href="#">Frequent <br/>Questions</a></li>
-
                 </ul>
-			</div>
+            </div>
             <div id="header">
                 <h2>View Personas</h2>
                 <h3>Your browser, your style! Dress it up with easy-to-change "skins" for your
@@ -63,6 +64,10 @@
 			elseif ($tab == 'Popular')
 			{
 				$list = $db->get_popular_personas($category == 'All' ? null : $category, $page_size);			
+			}
+			elseif ($tab == 'My')
+			{
+				$list = $db->get_persona_by_author($user->get_username(), $category == 'All' ? null : $category);			
 			}
 			else
 			{
@@ -86,6 +91,15 @@
                                 <p class="added"><strong>Added:</strong> <?= $persona_date ?></p>
                                 <p><?= $item['description'] ?></p>
                                 <p><a href="/store/gallery/persona/<?=  url_prefix($item['id']) ?>" class="view">view details »</a></p>
+<?php
+				if ($tab == 'My' || $user->has_admin_privs())
+				{
+					print "<p><a href=\"/upload?id=${item['id']}\" target=\"_blank\">Edit</a>";
+					if ($user->has_admin_privs())
+						print " | <a href=\"/admin/pull?id=${item['id']}\" target=\"_blank\" onClick=\"return confirm('Confirm Deletion');\">Pull</a>";
+					print "</p>";
+				}
+?>
                             </div>
                         </li>
  <?php
@@ -140,6 +154,8 @@
 					echo "            <ul>\n";
 					foreach ($tabs as $list_tab)
 					{
+						if ($list_tab == 'My' && $no_my == 1)
+							continue;
 						if ($list_tab == 'All' && $list_category == 'All')
 							continue;
 						$tab_url = "/store/gallery/$list_category/$list_tab";

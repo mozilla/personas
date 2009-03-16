@@ -17,16 +17,23 @@
 
 	#is this an edit?
 	
-	if (array_key_exists('id', $_POST) && $_POST['id'])
+	$id == null;
+	
+	if (array_key_exists('id', $_GET))
+		$id = $_GET['id'];
+		
+	if (array_key_exists('id', $_POST))
+		$id = $_POST['id'];
+		
+	if ($id)	
 	{
-		$id = ini_get('magic_quotes_gpc') ? stripslashes($_POST['id']) : $_POST['id'];
-		$upload_submitted = $db->get_persona_by_id($_POST['id']);
 		if (!$user->has_admin_privs() && $upload_submitted['author'] != $auth_user)
 		{
 			#include something bad here
 			echo "You don't have permission to edit that";
 			exit;
 		}
+		$upload_submitted = $db->get_persona_by_id($id);
 		$upload_submitted['agree'] = 1;
 	}
 	else
@@ -84,7 +91,7 @@
 		$upload_errors['name'] = "Please use alphanumeric characters in your persona name";
 		
 	$collision_id = $db->check_persona_name($upload_submitted['name']);
-	if ($collision_id)
+	if ($collision_id != $id)
 		$upload_errors['name'] = "That name is already in use. Please select another one";
 
 	$upload_submitted['accentcolor'] = preg_replace('/[^a-f0-9]/i', '', strtolower($upload_submitted['accentcolor']));
@@ -96,8 +103,8 @@
 		$upload_errors['textcolor'] = "Unrecognized text color";
 	
 	#basic non-committal image upload checks
-	
-	if (!(array_key_exists('id', $upload_submitted) && !array_key_exists('header-image', $_FILES))) #images are optional on edit
+
+	if (!(array_key_exists('id', $upload_submitted) && $_FILES['header-image']['size'] == 0)) #images are optional on edit
 	{
 		if (!array_key_exists('header-image', $_FILES))
 			$upload_errors['header-image'] = "Please include a header image";
@@ -108,7 +115,7 @@
 		$upload_submitted['header'] = preg_replace('/[^A-Za-z0-9_\-\.]/', '', $_FILES['header-image']['name']);
 	}
 	
-	if (!(array_key_exists('id', $upload_submitted) && !array_key_exists('footer-image', $_FILES))) #images are optional on edit
+	if (!(array_key_exists('id', $upload_submitted) && $_FILES['footer-image']['size'] == 0)) #images are optional on edit
 	{
 		if (!array_key_exists('footer-image', $_FILES))
 			$upload_errors['footer-image'] = "Please include a footer image";
@@ -131,7 +138,7 @@
 	#now the more complex image checks		
 	
 	
-	if (!(array_key_exists('id', $upload_submitted) && !array_key_exists('header-image', $_FILES))) #images are optional on edit
+	if (!(array_key_exists('id', $upload_submitted) && $_FILES['header-image']['size'] == 0)) #images are optional on edit
 	{
 		$imgcommand = "identify -format \"%h %w %m\" "; 
 
@@ -143,7 +150,7 @@
 			$upload_errors['header-image'] = "Please make sure your header image is at least 2500x200 pixels (it appears to be $hwidth" . "x$hheight)";
 	}
 	
-	if (!(array_key_exists('id', $upload_submitted) && !array_key_exists('footer-image', $_FILES))) #images are optional on edit
+	if (!(array_key_exists('id', $upload_submitted) && $_FILES['footer-image']['size'] == 0)) #images are optional on edit
 	{
 		$footer_specs = exec($imgcommand . $_FILES['footer-image']['tmp_name']);
 		list($fheight, $fwidth, $ftype) = explode(" ", $footer_specs);
@@ -173,7 +180,7 @@
 	}
 	$persona_path = make_persona_pending_path($upload_submitted['id']);
 	
-	if (array_key_exists('header-image', $_FILES) && !move_uploaded_file($_FILES['header-image']['tmp_name'], $persona_path . "/" . $upload_submitted['header']))
+	if ($_FILES['header-image']['size'] > 0 && !move_uploaded_file($_FILES['header-image']['tmp_name'], $persona_path . "/" . $upload_submitted['header']))
 	{
 		$upload_errors['header-image'] = "A problem occured uploading your persona. Please contact persona-devel@mozilla.com to let us know about this issue. Thank you.";
 		if (!array_key_exists('id', $_POST))
@@ -189,9 +196,9 @@
 		exit;					
 	}
 	
-	if (array_key_exists('footer-image', $_FILES) && !move_uploaded_file($_FILES['footer-image']['tmp_name'], $persona_path . "/" . $upload_submitted['footer']))
+	if ($_FILES['footer-image']['size'] > 0 && !move_uploaded_file($_FILES['footer-image']['tmp_name'], $persona_path . "/" . $upload_submitted['footer']))
 	{
-		$upload_errors['header-image'] = "A problem occured uploading your persona. Please contact persona-devel@mozilla.com to let us know about this issue. Thank you.";
+		$upload_errors['footer-image'] = "A problem occured uploading your persona. Please contact persona-devel@mozilla.com to let us know about this issue. Thank you.";
 		if (!array_key_exists('id', $_POST))
 			$db->reject_persona($upload_submitted['id']);
 		include 'lib/upload_persona_tmpl.php';
