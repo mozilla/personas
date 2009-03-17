@@ -477,11 +477,11 @@ class PersonaStorage
 	}
 	
 	
-	function submit_persona($name, $category, $header, $footer, $author, $accent, $text, $desc, $license)
+	function submit_persona($name, $category, $header, $footer, $author, $accent, $text, $desc, $license, $reason, $reasonother)
 	{
 		try
 		{
-			$statement = 'insert into personas (name, status, header, footer, category, submit, author, accentcolor, textcolor, description, license) values (:name, 0, :header, :footer, :category, NOW(), :author, :accentcolor, :textcolor, :description, :license)';
+			$statement = 'insert into personas (name, status, header, footer, category, submit, author, accentcolor, textcolor, description, license, reason, reason_other) values (:name, 0, :header, :footer, :category, NOW(), :author, :accentcolor, :textcolor, :description, :license, :reason, :reasonother)';
 			$sth = $this->_dbh->prepare($statement);
 			$sth->bindParam(':name', $name);
 			$sth->bindParam(':header', $header);
@@ -492,6 +492,8 @@ class PersonaStorage
 			$sth->bindParam(':textcolor', $text);
 			$sth->bindParam(':description', $desc);
 			$sth->bindParam(':license', $desc);
+			$sth->bindParam(':reason', $reason);
+			$sth->bindParam(':reasonother', $reasonother);
 			$sth->execute();
 			return $this->_dbh->lastInsertId();
 		}
@@ -503,11 +505,11 @@ class PersonaStorage
 		return 0;
 	}
 	
-	function submit_persona_edit($id, $author, $name, $category, $accent, $text, $desc, $header = null, $footer = null)
+	function submit_persona_edit($id, $author, $name, $category, $accent, $text, $desc, $header = null, $footer = null, $reason = null, $reason_other = null)
 	{
 		try
 		{
-			$statement = 'replace into edits (id, author, name, header, footer, category,  accentcolor, textcolor, description) values (:id, :author, :name, :header, :footer, :category,  :accentcolor, :textcolor, :description)';
+			$statement = 'replace into edits (id, author, name, header, footer, category,  accentcolor, textcolor, description, reason, reason_other) values (:id, :author, :name, :header, :footer, :category,  :accentcolor, :textcolor, :description, :reason, :reasonother)';
 			$sth = $this->_dbh->prepare($statement);
 			$sth->bindParam(':id', $id);
 			$sth->bindParam(':author', $author);
@@ -518,6 +520,8 @@ class PersonaStorage
 			$sth->bindParam(':accentcolor', $accent);
 			$sth->bindParam(':textcolor', $text);
 			$sth->bindParam(':description', $text);
+			$sth->bindParam(':reason', $reason);
+			$sth->bindParam(':reasonother', $reasonother);
 			$sth->execute();
 		}
 		catch( PDOException $exception )

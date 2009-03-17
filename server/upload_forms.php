@@ -79,6 +79,8 @@
 	$upload_submitted['accentcolor'] = ini_get('magic_quotes_gpc') ? stripslashes($_POST['accentcolor']) : $_POST['accentcolor'];
 	$upload_submitted['textcolor'] = ini_get('magic_quotes_gpc') ? stripslashes($_POST['textcolor']) : $_POST['textcolor'];
 	$upload_submitted['description'] = ini_get('magic_quotes_gpc') ? stripslashes($_POST['description']) : $_POST['description'];
+	$upload_submitted['reason'] = ini_get('magic_quotes_gpc') ? stripslashes($_POST['reason']) : $_POST['reason'];
+	$upload_submitted['other-reason'] = ini_get('magic_quotes_gpc') ? stripslashes($_POST['other-reason']) : $_POST['other-reason'];
 
 	if (!in_array($upload_submitted['category'], $categories))
 		$upload_errors['category'] = "Unknown category";
@@ -101,6 +103,9 @@
 	$upload_submitted['textcolor'] = preg_replace('/[^a-f0-9]/i', '', strtolower($upload_submitted['textcolor']));
 	if ($upload_submitted['textcolor'] && strlen($upload_submitted['textcolor']) != 3 && strlen($upload_submitted['textcolor']) != 6)
 		$upload_errors['textcolor'] = "Unrecognized text color";
+	
+	if ($upload_submitted['license'] == 'restricted' && !$upload_submitted['reason'])
+		$upload_errors['reason'] = "Please provide a reason for creating this persona";
 	
 	#basic non-committal image upload checks
 
@@ -170,12 +175,12 @@
 
 	if (array_key_exists('id', $upload_submitted))
 	{
-		$db->submit_persona_edit($upload_submitted['id'], $auth_user, $upload_submitted['name'], $upload_submitted['category'], $upload_submitted['accentcolor'], $upload_submitted['textcolor'], $upload_submitted['header'], $upload_submitted['footer'], $upload_submitted['description']);
+		$db->submit_persona_edit($upload_submitted['id'], $auth_user, $upload_submitted['name'], $upload_submitted['category'], $upload_submitted['accentcolor'], $upload_submitted['textcolor'], $upload_submitted['header'], $upload_submitted['footer'], $upload_submitted['description'], $upload_submitted['reason'], $upload_submitted['reason-other']);
 		$db->log_action($auth_user, $id, "Edited");
 	}
 	else
 	{
-		$upload_submitted['id'] = $db->submit_persona($upload_submitted['name'], $upload_submitted['category'], $upload_submitted['header'], $upload_submitted['footer'], $auth_user, $upload_submitted['accentcolor'], $upload_submitted['textcolor'], $upload_submitted['description'], $upload_submitted['license']);
+		$upload_submitted['id'] = $db->submit_persona($upload_submitted['name'], $upload_submitted['category'], $upload_submitted['header'], $upload_submitted['footer'], $auth_user, $upload_submitted['accentcolor'], $upload_submitted['textcolor'], $upload_submitted['description'], $upload_submitted['license'], $upload_submitted['reason'], $upload_submitted['reason-other']);
 		$db->log_action($auth_user, $upload_submitted['id'], "Added");
 	}
 	$persona_path = make_persona_pending_path($upload_submitted['id']);
