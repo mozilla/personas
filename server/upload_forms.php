@@ -185,22 +185,6 @@
 	}
 	$persona_path = make_persona_pending_path($upload_submitted['id']);
 	
-	if ($_FILES['header-image']['size'] > 0 && !move_uploaded_file($_FILES['header-image']['tmp_name'], $persona_path . "/" . $upload_submitted['header']))
-	{
-		$upload_errors['header-image'] = "A problem occured uploading your persona. Please contact persona-devel@mozilla.com to let us know about this issue. Thank you.";
-		if (!array_key_exists('id', $_POST))
-			$db->reject_persona($upload_submitted['id']);
-
-		$imgcommand = "convert " . $persona_path . "/" . $data['header'] . " -gravity NorthEast -crop 600x200+0+0  -scale 200x100 " . $persona_path . "/preview.jpg";
-		exec($imgcommand);
-		$imgcommand2 = "convert " . $persona_path . "/" . $data['header'] . " -gravity NorthEast -crop 1360x200+0+0 -scale 680x100" . $persona_path . "/preview_large.jpg";
-		exec($imgcommand2);
-		$imgcommand3 = "convert " . $persona_path . "/" . $data['header'] . " -gravity NorthEast -crop 320x220+0+0  -scale 64x44 " . $persona_path . "/preview_popular.jpg";
-		exec($imgcommand3);
-		include 'lib/upload_persona_tmpl.php';
-		exit;					
-	}
-	
 	if ($_FILES['footer-image']['size'] > 0 && !move_uploaded_file($_FILES['footer-image']['tmp_name'], $persona_path . "/" . $upload_submitted['footer']))
 	{
 		$upload_errors['footer-image'] = "A problem occured uploading your persona. Please contact persona-devel@mozilla.com to let us know about this issue. Thank you.";
@@ -209,6 +193,26 @@
 		include 'lib/upload_persona_tmpl.php';
 		exit;					
 	}
+
+	if ($_FILES['header-image']['size'] > 0)
+	{
+		if (!move_uploaded_file($_FILES['header-image']['tmp_name'], $persona_path . "/" . $upload_submitted['header']))
+		{
+			$upload_errors['header-image'] = "A problem occured uploading your persona. Please contact persona-devel@mozilla.com to let us know about this issue. Thank you.";
+			if (!array_key_exists('id', $_POST))
+				$db->reject_persona($upload_submitted['id']);
+			include 'lib/upload_persona_tmpl.php';
+			exit;					
+		}
+
+		$imgcommand = "convert " . $persona_path . "/" . $data['header'] . " -gravity NorthEast -crop 600x200+0+0  -scale 200x100 " . $persona_path . "/preview.jpg";
+		exec($imgcommand);
+		$imgcommand2 = "convert " . $persona_path . "/" . $data['header'] . " -gravity NorthEast -crop 1360x200+0+0 -scale 680x100" . $persona_path . "/preview_large.jpg";
+		exec($imgcommand2);
+		$imgcommand3 = "convert " . $persona_path . "/" . $data['header'] . " -gravity NorthEast -crop 320x220+0+0  -scale 64x44 " . $persona_path . "/preview_popular.jpg";
+		exec($imgcommand3);
+	}
+	
 	
 		
 	file_put_contents($persona_path . '/index_1.json', json_encode(extract_record_data($upload_submitted)));

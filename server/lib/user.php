@@ -200,7 +200,7 @@ class PersonaUser
 			if (!preg_match('/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i', $email)) 
 				$this->_errors['create_email'] = "Invalid email address";
 
-			if (!preg_match('/^[A-Z0-9._-]+/i', $username)) 
+			if (!preg_match('/^[A-Z0-9._-]+$/i', $username)) 
 				$this->_errors['create_username'] = "Illegal characters in the username (alphanumerics, period, underscore and dash only)";
 			
 			if (strlen($password) < 6)
