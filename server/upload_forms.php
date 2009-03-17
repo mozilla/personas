@@ -88,14 +88,15 @@
 	$upload_submitted['name'] = preg_replace('/[^A-Za-z0-9_\-\. \&]/', '', $upload_submitted['name']);
 	if ($upload_submitted['name'][0] == '.')
 		$upload_errors['name'] = "name cannot start with a period";
-	
-	if (!$upload_submitted['name'])
+	elseif (!$upload_submitted['name'])
 		$upload_errors['name'] = "Please use alphanumeric characters in your persona name";
-		
-	$collision_id = $db->check_persona_name($upload_submitted['name']);
-	if ($collision_id != $id)
-		$upload_errors['name'] = "That name is already in use. Please select another one";
-
+	else
+	{
+		$collision_id = $db->check_persona_name($upload_submitted['name']);
+		if ($collision_id != $id)
+			$upload_errors['name'] = "That name is already in use. Please select another one";
+	}
+	
 	$upload_submitted['accentcolor'] = preg_replace('/[^a-f0-9]/i', '', strtolower($upload_submitted['accentcolor']));
 	if ($upload_submitted['accentcolor'] && strlen($upload_submitted['accentcolor']) != 3 && strlen($upload_submitted['accentcolor']) != 6)
 		$upload_errors['accentcolor'] = "Unrecognized accent color";
