@@ -450,6 +450,12 @@ let PersonaService = {
       }
     }
 
+    // Remove personas with the same ID (i.e. don't allow the recent persona
+    // to appear twice on the list).  Afterwards, we'll add the recent persona
+    // to the list in a way that makes it the most recent one.
+    if (recentPersona.id)
+      personas = personas.filter(function(v) !v.id || v.id != recentPersona.id);
+
     // Make the new persona the most recent one.
     personas.unshift(recentPersona);
 
@@ -460,9 +466,10 @@ let PersonaService = {
 
     // Serialize the list of recent personas.
     for (let i = 0; i < 4; i++) {
-      if (i == personas.length)
-        break;
-      this._prefs.set("lastselected" + i, JSON.stringify(personas[i]));
+      if (i < personas.length)
+        this._prefs.set("lastselected" + i, JSON.stringify(personas[i]));
+      else
+        this._prefs.reset("lastselected" + i);
     }
   },
 
