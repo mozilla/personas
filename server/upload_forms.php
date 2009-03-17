@@ -75,7 +75,7 @@
 	#ok, they've tried to submit the form. Let's look at the data...
 
 	$upload_submitted['category'] = ini_get('magic_quotes_gpc') ? stripslashes($_POST['category']) : $_POST['category'];
-	$upload_submitted['name'] = ini_get('magic_quotes_gpc') ? stripslashes($_POST['name']) : $_POST['name'];
+	$upload_submitted['name'] = trim(ini_get('magic_quotes_gpc') ? stripslashes($_POST['name']) : $_POST['name']);
 	$upload_submitted['accentcolor'] = ini_get('magic_quotes_gpc') ? stripslashes($_POST['accentcolor']) : $_POST['accentcolor'];
 	$upload_submitted['textcolor'] = ini_get('magic_quotes_gpc') ? stripslashes($_POST['textcolor']) : $_POST['textcolor'];
 	$upload_submitted['description'] = ini_get('magic_quotes_gpc') ? stripslashes($_POST['description']) : $_POST['description'];
