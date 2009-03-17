@@ -16,7 +16,7 @@
 	list($category, $tab, $page) = explode('/', $path.'//');
 
 	$no_my = array_key_exists('no_my', $_GET) ? 1 : 0;
-
+	$url_prefix = $no_my ? '/store/gallery' : '/store/dynamic/gallery';
 	$category = $category && in_array(ucfirst($category), $categories) ? ucfirst($category) : "All";
 	$tab = $tab && in_array(ucfirst($tab), $tabs) ? ucfirst($tab) : 'Popular';
 	$page = $page && is_numeric($page) ? $page : 1;
@@ -90,7 +90,7 @@
                                 <p class="designer"><strong>Designer:</strong> <?= $item['author'] ?></p>
                                 <p class="added"><strong>Added:</strong> <?= $persona_date ?></p>
                                 <p><?= $item['description'] ?></p>
-                                <p><a href="/store/gallery/persona/<?=  url_prefix($item['id']) ?>" class="view">view details »</a></p>
+                                <p><a href="$url_prefix/persona/<?=  url_prefix($item['id']) ?>" class="view">view details »</a></p>
 <?php
 				if ($tab == 'My' || $user->has_admin_privs())
 				{
@@ -116,7 +116,7 @@
 				echo "<ul>\n";
 				if ($page > 1)
 				{
-					$url = "/store/gallery/$category/$tab/" . ($page - 1);
+					$url = "$url_prefix/$category/$tab/" . ($page - 1);
 					echo "<li><a href=\"$url\">Previous</a></li>\n";
 				}
 				$i = 1;
@@ -128,13 +128,13 @@
 					}
 					else
 					{
-						echo "<li><a href=\"/store/gallery/$category/$tab/$i\">$i</a></li>\n";
+						echo "<li><a href=\"$url_prefix/$category/$tab/$i\">$i</a></li>\n";
 					}
 					$i++;
 				}
 				if ($page < $pages)
 				{
-					$url = "/store/gallery/$category/$tab/" . ($page + 1);
+					$url = "$url_prefix/$category/$tab/" . ($page + 1);
 					echo "<li><a href=\"$url\">Next</a></li>\n";
 				}
 				echo "</ul>\n";
@@ -147,7 +147,7 @@
 <?php
 			foreach ($categories as $list_category)
 			{
-				$category_url = "/store/gallery/$list_category";
+				$category_url = "$url_prefix/$list_category";
 				if ($list_category == $category)
 				{
 					echo "		<li class=\"active\">$list_category\n";
@@ -158,7 +158,7 @@
 							continue;
 						if ($list_tab == 'All' && $list_category == 'All')
 							continue;
-						$tab_url = "/store/gallery/$list_category/$list_tab";
+						$tab_url = "$url_prefix/$list_category/$list_tab";
 						echo "		<li";
 						if ($list_tab == $tab)
 							echo ' class="active"';
