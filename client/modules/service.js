@@ -432,24 +432,45 @@ let PersonaService = {
   },
 
   changeToPersona: function(persona) {
-    this._observePrefChanges = false;
-    try {
-      // Update the list of recent personas.
-      if (this.currentPersona && this.currentPersona.name &&
-          persona.id != this.currentPersona.id) {
-        this._prefs.set("lastselected3", this._prefs.get("lastselected2"));
-        this._prefs.set("lastselected2", this._prefs.get("lastselected1"));
-        this._prefs.set("lastselected1", this._prefs.get("lastselected0"));
-        this._prefs.set("lastselected0", JSON.stringify(this.currentPersona));
-      }
-    }
-    finally {
-      this._observePrefChanges = true;
-    }
-
     this.currentPersona = persona;
     this.selected = "current";
+    this._addRecentPersona(persona);
     this._onChangeToPersona();
+  },
+
+  _addRecentPersona: function(recentPersona) {
+    // Parse the list of recent personas.
+    let personas = [];
+    for (let i = 0; i < 4; i++) {
+      if (this._prefs.has("lastselected" + i)) {
+        try {
+          personas.push(JSON.parse(this._prefs.get("lastselected" + i)));
+        }
+        catch(ex) {}
+      }
+    }
+
+    // Remove personas with the same ID (i.e. don't allow the recent persona
+    // to appear twice on the list).  Afterwards, we'll add the recent persona
+    // to the list in a way that makes it the most recent one.
+    if (recentPersona.id)
+      personas = personas.filter(function(v) !v.id || v.id != recentPersona.id);
+
+    // Make the new persona the most recent one.
+    personas.unshift(recentPersona);
+
+    // Note: at this point, there might be five personas on the list, four
+    // that we parsed from preferences and the one we're now adding. But we
+    // only serialize the first four back to preferences, so the oldest one
+    // drops off the end of the list.
+
+    // Serialize the list of recent personas.
+    for (let i = 0; i < 4; i++) {
+      if (i < personas.length)
+        this._prefs.set("lastselected" + i, JSON.stringify(personas[i]));
+      else
+        this._prefs.reset("lastselected" + i);
+    }
   },
 
   _onPersonaChanged: function() {
