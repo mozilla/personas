@@ -58,7 +58,7 @@ If you upload a “persona” design for the Firefox® web browser (each a “Pe
 9) Miscellaneous. These Terms are governed by the laws of the state of California, U.S.A., excluding its conflict of law provisions. If any portion of these Terms is held to be invalid or unenforceable, the remaining portions will remain in full force and effect. In the event of a conflict between a translated version of these Terms and the English language version, the English language version shall control.  Mozilla’s subsidiaries and affiliates shall be third party beneficiaries of these Terms, entitled to enforce and rely upon the provisions hereof.
 
 10) Termination. You may terminate your use of the Persona Services at any time.  Mozilla may modify or discontinue the Persona Services at its discretion.</textarea>
-                           <label class="agree" for="agree"><input type="checkbox" name="agree" value="1" id="agree" /> I agree to the user agreement</label>
+                           <label class="agree" for="agree"><input type="checkbox" name="agree" value="1" id="agree" <?php if ($upload_submitted['agree'] == 1) echo "checked "; ?>/> I agree to the user agreement</label>
 <?php if (array_key_exists('agree', $upload_errors)) echo '<span class="error-message">' . $upload_errors['agree'] . '</span>' ?>
               
                    
@@ -67,14 +67,14 @@ If you upload a “persona” design for the Firefox® web browser (each a “Pe
                    <p>We encourage you to make your design publicly available, though you may choose not to submit your design under an open source license.  Please select the option below that you prefer. </p>
                    
                    <div id="license-options">
-                       <p><label for="license-cc"><input type="radio" name="license" value="cc" id="license-cc" />Yes, I want to make my design available to everyone under a Creative Commons license.</label></p>
+                       <p><label for="license-cc"><input type="radio" name="license" value="cc" id="license-cc" <?php if ($upload_submitted['license'] == 'cc') echo "checked "; ?>/>Yes, I want to make my design available to everyone under a Creative Commons license.</label></p>
 
                           <ul>
                            <li>   People may share and modify my Persona as long as they give me credit and don’t charge for it.  <a href="http://creativecommons.org/licenses/by-nc-sa/3.0/us/">Learn more.</a></li>
                               <li>My design will be quickly added to the directory and hosted for free.</li>
                           </ul>
 
-                          <p><label for="license-restricted"><input type="radio" name="license" value="restricted" id="license-restricted" />I’d rather restrict any modifications and sharing of my Personas design.</label></p>
+                          <p><label for="license-restricted"><input type="radio" name="license" value="restricted" <?php if ($upload_submitted['license'] == 'restricted') echo "checked "; ?>id="license-restricted" />I’d rather restrict any modifications and sharing of my Personas design.</label></p>
 
                           <ul>
                            <li>   People may not share, modify, or distribute my design outside of the Personas application.

@@ -29,19 +29,19 @@
                 
                 <h4><?= $upload_submitted['id'] ? "Edit" : "Create" ?> Your Persona</h4>
                 <form method="POST" action="upload" enctype='multipart/form-data'>
-				<input type="hidden" name="agree" value="<?= $upload_submitted['agree'] ?>">
-				<input type="hidden" name="license" value="<?= $upload_submitted['license'] ?>">
-				<input type="hidden" name="id" value="<?= $upload_submitted['id'] ?>">
+				<input type="hidden" name="agree" value="<?= htmlspecialchars($upload_submitted['agree']) ?>">
+				<input type="hidden" name="license" value="<?= htmlspecialchars($upload_submitted['license']) ?>">
+				<input type="hidden" name="id" value="<?= htmlspecialchars($upload_submitted['id']) ?>">
                 <div id="create-part-1">
                     <p>
                         <label for="persona-name">Persona Name</label>
-                        <input type="text" name="name" value="<?= $upload_submitted['name'] ?>" id="name" <?php if (array_key_exists('name', $upload_errors)) echo 'class="error"' ?> />
+                        <input type="text" name="name" value="<?= htmlspecialchars($upload_submitted['name']) ?>" id="name" <?php if (array_key_exists('name', $upload_errors)) echo 'class="error"' ?> />
                         <?php if (array_key_exists('name', $upload_errors)) echo '<span class="error-message">' . $upload_errors['name'] . '</span>' ?>
                      </p>
                     
                     <p>
                         <label for="textcolor">Text Color</label>
-                        <input type="text" name="textcolor" value="<?= $upload_submitted['textcolor'] ?>" id="textcolor"/ <?php if (array_key_exists('textcolor', $upload_errors)) echo 'class="error"' ?>>
+                        <input type="text" name="textcolor" value="<?= htmlspecialchars($upload_submitted['textcolor']) ?>" id="textcolor"/ <?php if (array_key_exists('textcolor', $upload_errors)) echo 'class="error"' ?>>
                          <?php if (array_key_exists('textcolor', $upload_errors)) echo '<span class="error-message">' . $upload_errors['textcolor'] . '</span>' ?>
                     </p>
                     
@@ -81,7 +81,7 @@
                     </p>
                     <p>
                         <label for="accentcolor">Accent Color</label>
-                        <input type="text" name="accentcolor" value="<?= $upload_submitted['accentcolor'] ?>" id="accentcolor"/ <?php if (array_key_exists('accentcolor', $upload_errors)) echo 'class="error"' ?> >
+                        <input type="text" name="accentcolor" value="<?= htmlspecialchars($upload_submitted['accentcolor']) ?>" id="accentcolor"/ <?php if (array_key_exists('accentcolor', $upload_errors)) echo 'class="error"' ?> >
                         <?php if (array_key_exists('accentcolor', $upload_errors)) echo '<span class="error-message">' . $upload_errors['accentcolor'] . '</span>' ?>
                      </p>
                     
@@ -90,6 +90,31 @@
                         <span><input type="file" name="footer-image" value="" id="footer-image" <?php if (array_key_exists('footer-image', $upload_errors)) echo 'class="error"' ?> /></span>
                         <?php if (array_key_exists('footer-image', $upload_errors)) echo '<span class="error-message">' . $upload_errors['footer-image'] . '</span>' ?>
                      </p>
+                    
+                    <p>
+                        <label for="reason">I'm creating a Persona to...</label>
+                        <span>
+                            <select name="reason" id="reason">
+<?php
+		$reasons = Array("" => "", "fun" => "have some fun", "build" => "build a brand", "non-profit" => "support a non-profit cause", "other" => "other");
+		foreach ($reasons as $reason => $longreason)
+		{
+			print "<option value=\"$reason\"";
+			if ($reason == $upload_submitted['reason'])
+				echo " selected";
+			print ">$longreason</option>\n";
+		}
+?>
+                            </select>
+                         <?php if (array_key_exists('reason', $upload_errors)) echo '<span class="error-message">' . $upload_errors['reason'] . '</span>' ?>
+                        </span>
+                    </p>
+                    
+                    <p id="other-info">
+                        <label for="other-reason">Reason:</label>
+                        <input id="other-reason" name="other-reason" type="text" value="<?= htmlspecialchars($upload_submitted['other-reason']) ?>"/>
+                        <?php if (array_key_exists('other-reason', $upload_errors)) echo '<span class="error-message">' . $upload_errors['other-reason'] . '</span>' ?>
+                   </p>
                     
                 </div>
                 
@@ -154,7 +179,14 @@
     	$(this).ColorPickerSetColor(this.value);
     });
     
-   </script>
+     $("#reason").change(function() {
+        if($(this)[0].selectedIndex == 4) {
+            $("#other-info").show();
+        } else {
+            $("#other-info").hide();
+        }
+    });
+  </script>
     <div id="footer">
         <p>Copyright © 2009 Mozilla. Personas is a Mozilla Labs Project.  |  Terms of Use  |  Privacy</p>
     </div>
