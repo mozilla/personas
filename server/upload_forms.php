@@ -88,7 +88,7 @@
 	$upload_submitted['name'] = preg_replace('/[^A-Za-z0-9_\-\. \&]/', '', $upload_submitted['name']);
 	if ($upload_submitted['name'][0] == '.')
 		$upload_errors['name'] = "name cannot start with a period";
-	elseif (!$upload_submitted['name'])
+	elseif ($upload_submitted['name'] == '')
 		$upload_errors['name'] = "Please use alphanumeric characters in your persona name";
 	else
 	{
