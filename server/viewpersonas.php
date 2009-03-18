@@ -90,7 +90,7 @@
                                 <p class="designer"><strong>Designer:</strong> <?= $item['author'] ?></p>
                                 <p class="added"><strong>Added:</strong> <?= $persona_date ?></p>
                                 <p><?= $item['description'] ?></p>
-                                <p><a href="$url_prefix/persona/<?=  url_prefix($item['id']) ?>" class="view">view details »</a></p>
+                                <p><a href="<?= $url_prefix ?>/persona/<?=  url_prefix($item['id']) ?>" class="view">view details »</a></p>
 <?php
 				if ($tab == 'My' || $user->has_admin_privs())
 				{
