@@ -330,12 +330,16 @@ class PersonaStorage
 		return 1;
 	}
 	
-	function get_pending_personas()
+	function get_pending_personas($category = null)
 	{
 		try
 		{
-			$statement = 'select * from personas where status = 0 order by submit';
+			$statement = 'select * from personas where status = 0' . ($category ? " and category = :category" : "") . ' order by submit';
 			$sth = $this->_dbh->prepare($statement);
+			if ($category)
+			{
+				$sth->bindParam(':category', $category);
+			}
 			$sth->execute();
 		}
 		catch( PDOException $exception )
