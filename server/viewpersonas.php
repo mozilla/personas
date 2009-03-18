@@ -80,6 +80,7 @@
 				$preview_url = PERSONAS_LIVE_PREFIX . '/' . url_prefix($item['id']) . '/' . "preview.jpg";
 				$persona_json = htmlentities(json_encode(extract_record_data($item)));
 				$persona_date = date("n/j/Y", strtotime($item['approve']));
+				$detail_url = $no_my ? ("/store/gallery/persona/" . url_prefix($item['id'])) : ("/store/dynamic/persona/" . $item['id']);
 ?>
                         <li class="gallery-item">
                             <div>
@@ -90,7 +91,7 @@
                                 <p class="designer"><strong>Designer:</strong> <?= $item['author'] ?></p>
                                 <p class="added"><strong>Added:</strong> <?= $persona_date ?></p>
                                 <p><?= $item['description'] ?></p>
-                                <p><a href="<?= $url_prefix ?>/persona/<?=  url_prefix($item['id']) ?>" class="view">view details »</a></p>
+                                <p><a href="<?= $detail_url ?>" class="view">view details »</a></p>
 <?php
 				if ($tab == 'My' || $user->has_admin_privs())
 				{
