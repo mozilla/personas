@@ -1,5 +1,6 @@
-# XPI installer module
+# XPI installer module and JAR files
 \.xpi$
+\.jar$
 
 # ActiveState Komodo project file
 \.kpf$
