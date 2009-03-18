@@ -144,12 +144,6 @@ let PersonaController = {
         else
           this._applyPersona(PersonaService.currentPersona);
         break;
-      case "personas:personaLoadStarted":
-        this.showThrobber(data);
-        break;
-      case "personas:personaLoadFinished":
-        this.hideThrobber(data);
-        break;
     }
   },
 
@@ -214,8 +208,6 @@ let PersonaController = {
 
     // Observe various changes that we should apply to the browser window.
     this.Observers.add("personas:persona:changed", this);
-    this.Observers.add("personas:personaLoadStarted", this);
-    this.Observers.add("personas:personaLoadFinished", this);
 
     // Listen for various persona-related events that can bubble up from content.
     document.addEventListener("SelectPersona", this, false, true);
@@ -256,8 +248,6 @@ let PersonaController = {
     document.removeEventListener("CheckPersonas", this, false);
 
     this.Observers.remove("personas:persona:changed", this);
-    this.Observers.remove("personas:personaLoadFinished", this);
-    this.Observers.remove("personas:personaLoadStarted", this);
   },
 
 
@@ -593,21 +583,6 @@ let PersonaController = {
       throw host + " not authorized to modify personas";
   },
 
-  // XXX This function is obsolete and should be updated or removed.
-  showThrobber: function(aPersonaID) {
-    document.getElementById("personas-selector-button").setAttribute("busy", "true");
-    let items = this._menuPopup.getElementsByAttribute("personaid", aPersonaID);
-    for (let i = 0; i < items.length; i++)
-      items[i].setAttribute("busy", "true");
-  },
-
-  // XXX This function is obsolete and should be updated or removed.
-  hideThrobber: function(aPersonaID) {
-    document.getElementById("personas-selector-button").removeAttribute("busy");
-    let items = this._menuPopup.getElementsByAttribute("personaid", aPersonaID);
-    for (let i = 0; i < items.length; i++)
-      items[i].removeAttribute("busy");
-  },
 
   //**************************************************************************//
   // Popup Construction

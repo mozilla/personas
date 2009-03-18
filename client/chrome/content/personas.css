@@ -58,15 +58,6 @@
   -moz-image-region: rect(48px, 16px, 64px, 0px);
 }
 
-#personas-selector-button[open="false"][busy="true"],
-#personas-selector-menu menuitem[busy="true"] {
-  list-style-image: url("chrome://personas/content/Throbber-small.gif");
-}
-
-#personas-data-throbber[busy="true"] {
-  list-style-image: url("chrome://personas/content/Throbber-small.gif");
-}
-
 #personas-selector-menu menuitem[header] {
   font-weight: bold;
   color: black;
