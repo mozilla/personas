@@ -230,6 +230,9 @@ let PersonaController = {
                       getService(Ci.nsIExtensionManager).
                       getItemForID(PERSONAS_EXTENSION_ID).version;
     if (lastVersion == "firstrun") {
+      // Change to the initial persona (the one we show users when they first
+      // install the extension) and show the first run page.
+      PersonaService.changeToPersona(this.JSON.parse(this._prefs.get("initial")));
       let firstRunURL = this._siteURL + "firstrun/?version=" + thisVersion;
       setTimeout(function() { window.openUILinkIn(firstRunURL, "tab") }, 500);
       this._prefs.set("lastversion", thisVersion);
