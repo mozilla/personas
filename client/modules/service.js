@@ -76,8 +76,8 @@ let PersonaService = {
     // Observe quit so we can destroy ourselves.
     Observers.add("quit-application", this.onQuitApplication, this);
 
-    // Observe changes to personas preferences.
-    this._observePrefChanges = true;
+    this._prefs.observe("useTextColor",   this.onUseColorChanged, this);
+    this._prefs.observe("useAccentColor", this.onUseColorChanged, this);
 
     let timerManager = Cc["@mozilla.org/updates/timer-manager;1"].
                        getService(Ci.nsIUpdateTimerManager);
@@ -115,7 +115,9 @@ let PersonaService = {
 
   _destroy: function() {
     //this._destroyPersonaLoader();
-    this._observePrefChanges = false;
+
+    this._prefs.ignore("useTextColor",   this.onUseColorChanged, this);
+    this._prefs.ignore("useAccentColor", this.onUseColorChanged, this);
   },
 
 
@@ -232,8 +234,11 @@ let PersonaService = {
     // until we reach this point; or cache the feed across sessions, so we have
     // at least an older version of the data available to us the moment
     // the browser starts, and pick a new random persona from the cached data.
-    if (this.selected == "random")
-      this.changeToRandomPersona(this.category);
+    if (this.selected == "random") {
+      this.currentPersona = this._getRandomPersona(this.category);
+      this._prefs.reset("persona.lastRefreshed");
+      Observers.notify("personas:persona:changed");
+    }
   },
 
   _refreshPersona: function() {
@@ -317,13 +322,15 @@ let PersonaService = {
   personas: null,
 
   /**
-   * extensions.personas.selected
+   * extensions.personas.selected: the type of persona that the user selected;
+   * possible values are default (the default Firefox theme), random (a random
+   * persona from a category), and current (the value of this.currentPersona).
    */
   get selected()        { return this._prefs.get("selected") },
   set selected(newVal)  {        this._prefs.set("selected", newVal) },
 
   /**
-   * extensions.personas.current
+   * extensions.personas.current: the current persona
    */
   get currentPersona() {
     let current = this._prefs.get("current");
@@ -339,7 +346,8 @@ let PersonaService = {
   },
 
   /**
-   * extensions.personas.category
+   * extensions.personas.category: the category from which to pick a random
+   * persona.
    */
   get category()        { return this._prefs.get("category") },
   set category(newVal)  {        this._prefs.set("category", newVal) },
@@ -352,7 +360,7 @@ let PersonaService = {
   },
 
   /**
-   * extensions.personas.custom
+   * extensions.personas.custom: the custom persona.
    */
   get customPersona() {
     let custom = this._prefs.get("custom");
@@ -368,31 +376,26 @@ let PersonaService = {
   },
 
   changeToDefaultPersona: function() {
-    this._observePrefChanges = false;
-    try {
-      this.selected = "default";
-    }
-    finally {
-      this._observePrefChanges = true;
-    }
-
-    this._onChangeToDefaultPersona();
+    this.selected = "default";
+    this._prefs.set("persona.lastChanged", new Date().getTime().toString());
+    Observers.notify("personas:persona:changed");
   },
 
   changeToRandomPersona: function(category) {
-    this._observePrefChanges = false;
-    try {
-      this.category = category;
-      let persona = this._getRandomPersona(this.category);
-      if (persona)
-        this.currentPersona = persona;
-      this.selected = "random";
-    }
-    finally {
-      this._observePrefChanges = true;
-    }
+    this.category = category;
+    this.currentPersona = this._getRandomPersona(category);
+    this.selected = "random";
+    this._prefs.set("persona.lastChanged", new Date().getTime().toString());
+    Observers.notify("personas:persona:changed");
+  },
 
-    this._onChangeToPersona();
+  changeToPersona: function(persona) {
+    this.currentPersona = persona;
+    this._addPersonaToRecent(persona);
+    this.selected = "current";
+    this._prefs.reset("persona.lastRefreshed");
+    this._prefs.set("persona.lastChanged", new Date().getTime().toString());
+    Observers.notify("personas:persona:changed");
   },
 
   _getRandomPersona: function(categoryName) {
@@ -420,7 +423,7 @@ let PersonaService = {
         for (let i = 0; i < 5; i++) {
           randomIndex = Math.floor(Math.random() * personas.length);
           randomItem = personas[randomIndex];
-          if (randomItem.id != this.currentPersona.id)
+          if (!this.currentPersona || randomItem.id != this.currentPersona.id)
             break;
         }
 
@@ -428,17 +431,10 @@ let PersonaService = {
       }
     }
 
-    return persona;
+    return persona || this.currentPersona;
   },
 
-  changeToPersona: function(persona) {
-    this.currentPersona = persona;
-    this.selected = "current";
-    this._addRecentPersona(persona);
-    this._onChangeToPersona();
-  },
-
-  _addRecentPersona: function(recentPersona) {
+  _addPersonaToRecent: function(persona) {
     // Parse the list of recent personas.
     let personas = [];
     for (let i = 0; i < 4; i++) {
@@ -453,11 +449,11 @@ let PersonaService = {
     // Remove personas with the same ID (i.e. don't allow the recent persona
     // to appear twice on the list).  Afterwards, we'll add the recent persona
     // to the list in a way that makes it the most recent one.
-    if (recentPersona.id)
-      personas = personas.filter(function(v) !v.id || v.id != recentPersona.id);
+    if (persona.id)
+      personas = personas.filter(function(v) !v.id || v.id != persona.id);
 
     // Make the new persona the most recent one.
-    personas.unshift(recentPersona);
+    personas.unshift(persona);
 
     // Note: at this point, there might be five personas on the list, four
     // that we parsed from preferences and the one we're now adding. But we
@@ -473,27 +469,11 @@ let PersonaService = {
     }
   },
 
-  _onPersonaChanged: function() {
-    switch (this.selected) {
-      case "default":
-        this._onChangeToDefaultPersona();
-        break;
-      case "random":
-      case "current":
-      default:
-        this._onChangeToPersona();
-        break;
-    }
-  },
-
-  _onChangeToDefaultPersona: function() {
-    Observers.notify("personas:persona:changed");
-    this._prefs.set("persona.lastChanged", new Date().getTime().toString());
-  },
-
-  _onChangeToPersona: function() {
-    this._prefs.reset("persona.lastRefreshed");
-    this._prefs.set("persona.lastChanged", new Date().getTime().toString());
+  onUseColorChanged: function() {
+    // Notify observers that the persona has changed so the change in whether
+    // or not to use the text or accent color will get applied.  The persona
+    // hasn't really changed, but doing this has the desired effect without any
+    // known unwanted side effects.
     Observers.notify("personas:persona:changed");
   },
 
@@ -516,35 +496,6 @@ let PersonaService = {
   resetPersona: function() {
     this.previewingPersona = null;
     Observers.notify("personas:persona:changed");
-  },
-
-  /**
-   * Whether or not to ignore changes to personas preferences.
-   * Sometimes changing the persona requires changing more than one pref
-   * (or making a pref change that triggers another pref change), and we don't
-   * want the service to act on the pref change until the last pref is changed
-   * (nor to recursively act on the pref change, creating an endless loop).
-   * In those situations, we make the service ignore pref changes temporarily
-   * by setting this to false.
-   */
-  set _observePrefChanges(newVal) {
-    if (newVal) {
-      this._prefs.observe("persona",        this._onPersonaChanged, this);
-      this._prefs.observe("selected",       this._onPersonaChanged, this);
-
-      // If the user has enabled/disabled the text or accent color,
-      // pretend the selected persona has changed so observers reapply
-      // the current persona, updating the use of text and accent colors
-      // in the process.
-      this._prefs.observe("useTextColor",   this._onPersonaChanged, this);
-      this._prefs.observe("useAccentColor", this._onPersonaChanged, this);
-    }
-    else {
-      this._prefs.ignore("persona",        this._onPersonaChanged, this);
-      this._prefs.ignore("selected",       this._onPersonaChanged, this);
-      this._prefs.ignore("useTextColor",   this._onPersonaChanged, this);
-      this._prefs.ignore("useAccentColor", this._onPersonaChanged, this);
-    }
   },
 
   onQuitApplication: function() {
