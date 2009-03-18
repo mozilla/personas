@@ -358,12 +358,16 @@ class PersonaStorage
 	}
 	
 	
-	function get_pending_edits()
+	function get_pending_edits($category = null)
 	{
 		try
 		{
-			$statement = 'select * from edits';
+			$statement = 'select * from edits' . ($category ? " where category = :category" : "");
 			$sth = $this->_dbh->prepare($statement);
+			if ($category)
+			{
+				$sth->bindParam(':category', $category);
+			}
 			$sth->execute();
 		}
 		catch( PDOException $exception )
