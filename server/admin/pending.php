@@ -1,5 +1,3 @@
-<html>
-<body>
 <?php
 
 # ***** BEGIN LICENSE BLOCK *****
@@ -40,20 +38,45 @@
 # ***** END LICENSE BLOCK *****
 	
 	require_once '../lib/personas_constants.php';
+	require_once '../lib/personas_functions.php';
 	require_once '../lib/storage.php';
 	require_once '../lib/user.php';
 
-function send_problem_email($address, $reason, $name)
-{
-	$message = "Thanks for submitting a your persona '$name'. Unfortunately, there was a problem that prevents us from adding it to the available pool.";
-	$message .= "\n\n";
-	$message .= "The reason given was: $reason";
-	$message .= "\n\n";
-	$message .= "We hope this will be enough information to address the issue. If you need more information, please feel free to contact us.\n\nBest wishes,\nMozilla Labs\n";
+	function send_problem_email($address, $reason, $name)
+	{
+		$message = "Thanks for submitting your Persona '$name'. Unfortunately, we cannot add your Persona because of the following reason: $reason.\n\n"; 
+		$message .= "We apologize for the disappointment, and we hope you will give it another shot and send us a new Persona.\n\n";
+		$message .= "If you have any questions or want more information, please stop by the Persona message boards and tell us what's on your mind.\n\n";
+		$message .= "Best Wishes,\n";
+		$message .= "The Personas Team\n";
+		
+		$header = "From: personas-devel@mozilla.com\r\n";
+		return mail($address, 'A problem with your Persona submission', $message, $header);
+	}
 	
-	$header = "From: personas-devel@mozilla.com\r\n";
-	return mail($address, 'A problem with your persona submission', $message, $header);
-}
+	function send_accept_email($address, $name)
+	{
+		$message = "Thanks for submitting your Persona '$name'! We're big fans of creativity, and it's fun to see how people are dressing up their browsers.\n\n";
+		$message .= "You can check it out now in the Personas directory.\n\n";
+		$message .= "If you have any questions or want more information, please stop by the Persona message boards and tell us what's on your mind.\n\n";
+		$message .= "Best Wishes,\n";
+		$message .= "The Personas Team\n";
+		
+		$header = "From: personas-devel@mozilla.com\r\n";
+		return mail($address, 'Thank you for your Persona', $message, $header);
+	}
+	
+	function send_edit_email($address, $name)
+	{
+		$message = "Congrats ' You have successfully updated your Persona '$name'!\n\n";
+		$message .= "If you have any questions or want more information, please stop by the Persona message boards and tell us what's on your mind.\n\n";
+		$message .= "Best Wishes,\n";
+		$message .= "The Personas Team\n";
+		
+		$header = "From: personas-devel@mozilla.com\r\n";
+		return mail($address, 'Your Persona has been successfully edited', $message, $header);
+	}
+	 
 
 	try 
 	{
@@ -61,7 +84,7 @@ function send_problem_email($address, $reason, $name)
 		$user->authenticate();
 		if (!$user->has_admin_privs())
 		{
-			$error = "This account does not have privileges for this operation. Please log in with an account that does.";
+			$this->_errors['login_user'] = "This account does not have privileges for this operation. Please log in with an account that does.";
 			$user->auth_form();
 			exit;
 		}
@@ -72,35 +95,71 @@ function send_problem_email($address, $reason, $name)
 		print("Database problem. Please try again later.");
 		exit;
 	}
+?>
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+            "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title>Personas for Firefox | Gallery</title>
+	<link href="/store/css/style.css" rel="stylesheet" type="text/css" media="all" />
+</head>
+<body>
+    <div id="outer-wrapper">
+        <div id="inner-wrapper">
+            <p id="account"><a href="https://personas.services.mozilla.com/upload">Designer Tools</a></p>
+            <div id="nav">
+                <h1><a href="http://www.getpersonas.com/"><img src="/store/img/logo.png" alt="Mozilla Labs Personas"></a></h1>
+                <ul>
+                    <li class="gallery"><a href="http://www.getpersonas.com/store/gallery/All/Popular">Gallery</a></li>
+                    <li class="create"><a href="https://personas.services.mozilla.com/upload">Create <br/>Your Own</a></li>
+                    <li class="demo"><a href="https://www.getpersonas.com/store/demo_install.html">Demo</a></li>
+                    <li class="faq"><a href="https://www.getpersonas.com/store/faq.html">Frequent <br/>Questions</a></li>
+                </ul>
+            </div>
+            <div id="header">
+                <h2>View Personas</h2>
+                <h3>Your browser, your style! Dress it up with easy-to-change "skins" for your
+                Firefox.</h3>
+            </div>
+            <div id="maincontent">
+                <p id="breadcrumbs">Personas Home : Admin </p>
+                <div id="gallery">
+<?php
 
 	$db = new PersonaStorage();
 	$categories = $db->get_categories();
 	
-	if (array_key_exists('verdict', $_GET) && array_key_exists('id', $_GET))
+	$id = array_key_exists('id', $_GET) ? $_GET['id'] : null;
+	$category = array_key_exists('category', $_GET) && $_GET['category'] != 'All' ? $_GET['category'] : null;
+	
+	if (array_key_exists('verdict', $_GET) && $id)
 	{
-		$persona = $db->get_persona_by_id($_GET['id']);
+		$persona = $db->get_persona_by_id($id);
 
 		switch ($_GET['verdict'])
 		{
 			case 'accept':
-				$persona_id = $persona['id'];
-				$second_folder = $persona_id%10;
-				$first_folder = ($persona_id%100 - $second_folder)/10;	
-				$persona_path = "/" . $first_folder;
-				if (!is_dir(PERSONAS_STORAGE_PREFIX . $persona_path)) { mkdir(PERSONAS_STORAGE_PREFIX . $persona_path); }
-				$persona_path .= "/" . $second_folder;
-				if (!is_dir(PERSONAS_STORAGE_PREFIX . $persona_path)) { mkdir(PERSONAS_STORAGE_PREFIX . $persona_path); }
-				$persona_path .= "/" . $persona_id;
-				rename (PERSONAS_PENDING_PREFIX . $persona_path, PERSONAS_STORAGE_PREFIX . $persona_path);
+				rename (make_persona_pending_path($id), make_persona_storage_path($id));
 				$db->approve_persona($persona{'id'});
+				send_accept_email($user->get_email($persona['author']), $persona['name']);
+				$id = null;
 				break;
 			case 'change':
 				$category = ini_get('magic_quotes_gpc') ? stripslashes($_GET['category']) : $_GET['category'];
 				$db->change_persona_category($persona['id'], $category);
 				break;			
+			case 'rebuild':
+				build_persona_files(make_persona_pending_path($id), $persona);
+				break;			
+			case 'rebuild_live':
+				build_persona_files(make_persona_storage_path($id), $persona);
+				break;			
 			case 'reject':
 				$db->reject_persona($persona['id']);
 				send_problem_email($user->get_email($persona['author']), $_GET['reason'], $persona['name']);
+				$id = null;
 				break;
 			default:
 				print "Could not understand the verdict";	
@@ -108,24 +167,18 @@ function send_problem_email($address, $reason, $name)
 		}
 	}
 	
-	
-	$results = $db->get_pending_personas();
-	if (!$count = count($results))
+	if ($id) #working with a specific persona.
 	{
-		print "There are no more pending personas";
-	}
-	else
-	{
-	
-		$result = $results[0];
-		$second_folder = $result['id']%10;
-		$first_folder = ($result['id']%100 - $second_folder)/10;
-		$path = PERSONAS_URL_PREFIX . '/' .  $first_folder . '/' . $second_folder . '/' . $result['id'];
+		$result = $db->get_persona_by_id($id);
+		$category = $result['category'];
+		$path = PERSONAS_URL_PREFIX . '/' . url_prefix($id);
 		$preview_url =  $path . "/preview.jpg";
+		$preview_large =  $path . "/preview_large.jpg";
+		$preview_popular =  $path . "/preview_popular.jpg";
 		$header_url =  $path . "/" . $result['header'];
 		$footer_url =  $path . "/" . $result['footer'];
 ?>
-		<form action="pending.php" method="GET">
+		<form action="/admin/pending.php" method="GET">
 		<input type=hidden name=id value=<?= $result{'id'} ?>>
 		Internal ID: <?= $result{'id'} ?>
 		<br>
@@ -135,17 +188,24 @@ function send_problem_email($address, $reason, $name)
 		<br>
 		Category: <select name="category">
 		<?php
-			foreach ($categories as $category)
+			foreach ($categories as $pcategory)
 			{
-				print "<option" . ($result{'category'} == $category ? ' selected="selected"' : "") . ">$category</option>";
+				print "<option" . ($result['category'] == $pcategory ? ' selected="selected"' : "") . ">$pcategory</option>";
 			}
 		?>
 		</select><input type="submit" name="verdict" value="change">
 		<br>
+		Description: <?= htmlspecialchars($result['description']) ?>
 		<p>
 		Preview:
 		<br>
 		<img src="<?= $preview_url ?>"><p>
+		Preview Large:
+		<br>
+		<img src="<?= $preview_large ?>"><p>
+		Preview Popular:
+		<br>
+		<img src="<?= $preview_popular ?>"><p>
 		Header:<br>
 		<img src="<?= $header_url ?>"><p>
 		Footer:<br>
@@ -155,9 +215,72 @@ function send_problem_email($address, $reason, $name)
 		<p>
 		<input type="submit" name="verdict" value="accept">
 		<input type="submit" name="verdict" value="reject">
+		<input type="submit" name="verdict" value="rebuild">
 		</form>
 <?php
+		
 	}
+	else
+	{
+		$results = $db->get_pending_personas($category);
+		if (!$count = count($results))
+		{
+			print "There are no more pending personas";
+		}
+		else
+		{
+            print "<ul>\n";
+			foreach ($results as $item)
+			{
+				$path = PERSONAS_URL_PREFIX . '/' . url_prefix($item['id']);
+				$preview_url =  $path . "/preview.jpg";
+				$persona_json = htmlentities(json_encode(extract_record_data($item)));
 ?>
+                        <li class="gallery-item">
+                            <div>
+                                <h3><a href="/admin/pending.php?id=<?= $item['id'] ?>"><?= $item['name'] ?></a></h3>
+                                <div class="preview">
+                                    <img src="<?= $preview_url ?>" alt="<?= $item['name'] ?>" persona="<?= $persona_json ?>"/>
+                                </div>
+                                <p class="designer"><strong>Designer:</strong> <?= $item['author'] ?></p>
+                                <p class="designer"><strong>Category:</strong> <?= $item['category'] ?></p>
+                                <p class="added"><strong>Submitted:</strong> <?= $item['submit'] ?></p>
+                                <p><?= $item['description'] ?></p>
+                                <p><a href="/admin/pending.php?id=<?= $item['id'] ?>" class="view">Administer »</a></p>
+                            </div>
+                        </li>
+ <?php
+ 			}
+			print "</ul>\n";
+		}
+	}
+
+	
+?>
+            </div>
+        </div>
+	<div id="secondary-content">
+                <ul id="subnav">
+<?php
+			array_unshift($categories, 'All');
+			foreach ($categories as $list_category)
+			{
+				$active = ($category == $list_category) ? 'class="active"' : null;
+				print "		<li" . ($category == $list_category ? ' class="active"' : "") . "><a href=\"/admin/pending.php?category=$list_category\">$list_category</a></li>\n";
+			}
+?>
+            </div>
+        </div>
+    </div>
+    <script src="/store/js/jquery.js"></script>
+    <script src="/store/js/script.js"></script>
+    <script type="text/javascript" charset="utf-8">
+        $(document).ready(function() {
+           $("#gallery .preview img").previewPersona();
+        });
+    </script>
+    <div id="footer">
+        <p>Copyright ' <?= date("Y") ?> Mozilla. Personas is a Mozilla Labs Project.  |  Terms of Use  |  Privacy</p>
+    </div>
 </body>
 </html>

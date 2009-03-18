@@ -208,19 +208,13 @@
 			include 'lib/upload_persona_tmpl.php';
 			exit;					
 		}
-
-		$imgcommand = "convert " . $persona_path . "/" . $upload_submitted['header'] . " -gravity NorthEast -crop 600x200+0+0  -scale 200x100 " . $persona_path . "/preview.jpg";
-		exec($imgcommand);
-		$imgcommand2 = "convert " . $persona_path . "/" . $upload_submitted['header'] . " -gravity NorthEast -crop 1360x200+0+0 -scale 680x100" . $persona_path . "/preview_large.jpg";
-		exec($imgcommand2);
-		$imgcommand3 = "convert " . $persona_path . "/" . $upload_submitted['header'] . " -gravity NorthEast -crop 320x220+0+0  -scale 64x44 " . $persona_path . "/preview_popular.jpg";
-		exec($imgcommand3);
+		build_persona_files($persona_path, $upload_submitted);
 	}
-	
-	
-		
-	file_put_contents($persona_path . '/index_1.json', json_encode(extract_record_data($upload_submitted)));
-	
+	else
+	{
+		file_put_contents($persona_path . '/index_1.json', json_encode(extract_record_data($upload_submitted)));
+	}
+
 	include 'lib/upload_success_tmpl.php';
 
 
