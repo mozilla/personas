@@ -233,10 +233,11 @@
 
 
 /******************************************************************************/
-/* Eliminate text shadows from toolbarbutton and tab text so it doesn't create
-/* an unnatural color stroke on the bottom half of the text (bug 481980). */
+/* Eliminate text shadows from toolbarbutton, tab, and statusbar text so it
+ * doesn't create an unnatural color stroke on the bottom half of the text. */
 
 #main-window[persona] .toolbarbutton-text,
-#main-window[persona] .tab-text {
+#main-window[persona] .tab-text,
+#browser-bottombox[persona] statusbar {
   text-shadow: none;
 }
