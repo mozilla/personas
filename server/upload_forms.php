@@ -108,7 +108,7 @@
 	if ($upload_submitted['license'] == 'restricted' && !$upload_submitted['reason'])
 		$upload_errors['reason'] = "Please provide a reason for creating this persona";
 	
-	if (strlen($upload_submitted['license']) > 500)
+	if (strlen($upload_submitted['description']) > 500)
 		$upload_errors['description'] = "Please limit your description to 500 characters";
 	
 	#basic non-committal image upload checks
