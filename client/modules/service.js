@@ -175,11 +175,10 @@ let PersonaService = {
     let xulRuntime  = Cc["@mozilla.org/xre/app-info;1"].
                       getService(Ci.nsIXULRuntime);
 
+    // Calculate the amount of time (in hours) since the persona was last changed.
     let duration = "";
-    if (this._prefs.has("persona.lastChanged")) {
-      let date = new Date(parseInt(this._prefs.get("persona.lastChanged")));
-      duration = DateUtils.toISO8601(date);
-    }
+    if (this._prefs.has("persona.lastChanged"))
+      duration = Math.round((new Date() - new Date(parseInt(this._prefs.get("persona.lastChanged")))) / 1000 / 60 / 60);
 
     // This logic is based on ExtensionManager::_updateLocale.
     let locale;
