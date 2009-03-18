@@ -225,7 +225,7 @@ let PersonaController = {
 
     // Check for a first-run or updated extension and display some additional
     // information to users.
-    let lastVersion = this._prefs.get("lastversion"); 
+    let lastVersion = this._prefs.get("lastversion");
     let thisVersion = Cc["@mozilla.org/extensions/manager;1"].
                       getService(Ci.nsIExtensionManager).
                       getItemForID(PERSONAS_EXTENSION_ID).version;
