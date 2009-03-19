@@ -527,7 +527,7 @@ class PersonaStorage
 			$sth->bindParam(':category', $category);
 			$sth->bindParam(':accentcolor', $accent);
 			$sth->bindParam(':textcolor', $text);
-			$sth->bindParam(':description', $text);
+			$sth->bindParam(':description', $desc);
 			$sth->bindParam(':reason', $reason);
 			$sth->bindParam(':reasonother', $reasonother);
 			$sth->execute();
