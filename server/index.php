@@ -50,46 +50,31 @@
                 <a href="#" id="slideshow-next"><img src="img/nav-next.png" alt="Next"/></a>
                 <div id="slideshow">
                     <ul id="slides">
+<?php
+	require_once 'lib/personas_constants.php';	
+	require_once 'lib/personas_functions.php';	
+	require_once 'lib/storage.php';
+
+
+	$db = new PersonaStorage();
+	$featured = $db->get_featured_personas();
+	foreach ($featured as $persona)
+	{
+		$short_description = substr($persona['description'], 0, 50);
+		$short_description = preg_replace('/ .*?$/', '', $short_description);
+?>
                         <li>
-                            <img class="preview" src="img/featured-persona-example.jpg">
-                            <h4>Firefox Robot</h4>
-                            <p class="try"><a href="#">try it now »</a></p>
+                            <img class="preview" src="<?= PERSONAS_LIVE_PREFIX . '/' . url_prefix($persona['id']) ?>/preview_featured.jpg">
+                            <h4><?= $persona['name'] ?></h4>
                             <hr />
-                            <p class="designer"><strong>Designer:</strong> NoBox</p>
-                            <p class="added"><strong>Added:</strong> 01/19/09</p>
+                            <p class="designer"><strong>Designer:</strong> <?= $persona['author'] ?></p>
+                            <p class="added"><strong>Added:</strong> <?= $persona['approve'] ?></p>
                             <hr />
-                            <p class="description"><strong>Description:</strong> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam a nulla. Nulla...</p>
+                            <p class="description"><strong>Description:</strong> <?= $short_description ?></p>
                         </li>
-                        <li>
-                            <img class="preview" src="img/featured-persona-example.jpg">
-                            <h4>Firefox Robot</h4>
-                            <p class="try"><a href="#">try it now »</a></p>
-                            <hr />
-                            <p class="designer"><strong>Designer:</strong> NoBox</p>
-                            <p class="added"><strong>Added:</strong> 01/19/09</p>
-                            <hr />
-                            <p class="description"><strong>Description:</strong> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam a nulla. Nulla...</p>
-                        </li>
-                        <li>
-                            <img class="preview" src="img/featured-persona-example.jpg">
-                            <h4>Firefox Robot</h4>
-                            <p class="try"><a href="#">try it now »</a></p>
-                            <hr />
-                            <p class="designer"><strong>Designer:</strong> NoBox</p>
-                            <p class="added"><strong>Added:</strong> 01/19/09</p>
-                            <hr />
-                            <p class="description"><strong>Description:</strong> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam a nulla. Nulla...</p>
-                        </li>
-                        <li>
-                            <img class="preview" src="img/featured-persona-example.jpg">
-                            <h4>Firefox Robot</h4>
-                            <p class="try"><a href="#">try it now »</a></p>
-                            <hr />
-                            <p class="designer"><strong>Designer:</strong> NoBox</p>
-                            <p class="added"><strong>Added:</strong> 01/19/09</p>
-                            <hr />
-                            <p class="description"><strong>Description:</strong> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam a nulla. Nulla...</p>
-                        </li>
+<?php
+	}
+?>
                     </ul>
                     
                 </div>
@@ -105,12 +90,6 @@
                 <h3>Most Popular Personas</h3>
                 <ol class="popular">
 <?php
-	require_once 'lib/personas_constants.php';	
-	require_once 'lib/personas_functions.php';	
-	require_once 'lib/storage.php';
-
-
-	$db = new PersonaStorage();
 	$list = $db->get_popular_personas(null,3);
 	foreach ($list as $persona)
 	{
@@ -121,7 +100,6 @@
                             <hr />
                             <img alt="<?= $persona['name'] ?>" persona="<?= $persona_json ?>" src="<?= PERSONAS_LIVE_PREFIX . '/' . url_prefix($persona['id']) ?>/preview_popular.jpg">
                             <p class="downloads"><strong>Current Users:</strong> <?= $persona['popularity'] ?></p>
-                            <p class="try"><a href="#">try it now »</a></p>
                     </li>
 <?php
 	}
