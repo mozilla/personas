@@ -100,10 +100,16 @@
             
         </div>
     </div>
-    <script src="js/jquery.js"></script>
-    <script src="js/script.js"></script>
+    
     <div id="footer">
         <p>Copyright © <?= date("Y") ?> Mozilla. Personas for Firefox is a Mozilla Labs Beta Project | <a href="http://labs.mozilla.com/about-labs/">About Mozilla Labs</a>    |  <a href="http://www.getpersonas.com/store/privacy.html">Privacy</a></p>
     </div>
+    <script src="/store/js/jquery.js"></script>
+    <script src="/store/js/script.js"></script>
+    <script type="text/javascript" charset="utf-8">
+        $(document).ready(function () {
+            $("#header").ie6Warning({"message":'<div id="ie6">Upgrade your browser to get the most out of this website. <a href="%LINK%">Download Firefox for free</a>.</div>'});
+        });
+    </script>
 </body>
 </html>
