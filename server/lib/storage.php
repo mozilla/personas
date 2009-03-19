@@ -517,7 +517,7 @@ class PersonaStorage
 	{
 		try
 		{
-			$statement = 'replace into edits (id, author, name, header, footer, category,  accentcolor, textcolor, description, reason, reason_other) values (:id, :author, :name, :header, :footer, :category,  :accentcolor, :textcolor, :description, :reason, :reasonother)';
+			$statement = 'replace into edits (id, author, name, header, footer, category,  accentcolor, textcolor, description, reason, reason_other, submit) values (:id, :author, :name, :header, :footer, :category,  :accentcolor, :textcolor, :description, :reason, :reasonother, NOW())';
 			$sth = $this->_dbh->prepare($statement);
 			$sth->bindParam(':id', $id);
 			$sth->bindParam(':author', $author);

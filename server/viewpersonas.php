@@ -90,7 +90,7 @@
                                 </div>
                                 <p class="designer"><strong>Designer:</strong> <?= $item['author'] ?></p>
                                 <p class="added"><strong>Added:</strong> <?= $persona_date ?></p>
-                                <p><?= htmlspecialchars($item['description']) ?></p>
+                                <p><?= $item['description'] ?></p>
                                 <p><a href="<?= $detail_url ?>" class="view">view details »</a></p>
 <?php
 				if ($tab == 'My' || $user->has_admin_privs())
