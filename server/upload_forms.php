@@ -90,6 +90,8 @@
 		$upload_errors['name'] = "name cannot start with a period";
 	elseif ($upload_submitted['name'] == '')
 		$upload_errors['name'] = "Please use alphanumeric characters in your persona name";
+	elseif (strlen($upload_submitted['name']) > 32)
+		$upload_errors['name'] = "Please limit your persona name to 32 characters";
 	else
 	{
 		$collision_id = $db->check_persona_name($upload_submitted['name']);
