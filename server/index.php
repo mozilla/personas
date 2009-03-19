@@ -133,7 +133,7 @@
         </div>
     </div>
     <div id="footer">
-        <p>Copyright © <?= date("Y") ?> Mozilla. Personas is a Mozilla Labs Project.   |  <a href="http://www.getpersonas.com/store/privacy.html">Privacy</a></p>
+        <p>Copyright © <?= date("Y") ?> Mozilla. Personas for Firefox is a Mozilla Labs Beta Project | <a href="http://labs.mozilla.com/about-labs/">About Mozilla Labs</a>    |  <a href="http://www.getpersonas.com/store/privacy.html">Privacy</a></p>
     </div>
     <script src="/store/js/jquery.js"></script>
     <script src="/store/js/script.js"></script>

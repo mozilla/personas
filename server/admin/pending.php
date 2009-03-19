@@ -280,7 +280,7 @@
         });
     </script>
     <div id="footer">
-        <p>Copyright ' <?= date("Y") ?> Mozilla. Personas is a Mozilla Labs Project.   |  <a href="privacy.html">Privacy</a></p>
+        <p>Copyright ' <?= date("Y") ?> Mozilla. Personas for Firefox is a Mozilla Labs Beta Project | <a href="http://labs.mozilla.com/about-labs/">About Mozilla Labs</a>    |  <a href="privacy.html">Privacy</a></p>
     </div>
 </body>
 </html>
