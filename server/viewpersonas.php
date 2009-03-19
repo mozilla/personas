@@ -46,8 +46,8 @@
                 <ul>
                     <li class="gallery"><a href="http://www.getpersonas.com/store/gallery/All/Popular">Gallery</a></li>
                     <li class="create"><a href="https://personas.services.mozilla.com/upload">Create <br/>Your Own</a></li>
-                    <li class="demo"><a href="http://www.getpersonas.com/store/demo_install.html">Demo</a></li>
-                    <li class="faq"><a href="http://www.getpersonas.com/store/faq.html">Frequent <br/>Questions</a></li>
+                    <li class="demo"><a href="https://www.getpersonas.com/store/demo_install.html">Demo</a></li>
+                    <li class="faq"><a href="https://www.getpersonas.com/store/faq.html">Frequent <br/>Questions</a></li>
                 </ul>
             </div>
             <div id="header">
@@ -78,14 +78,18 @@
 				$list = $db->get_popular_personas($category == 'All' ? null : $category, $page_size, $start);
 			}
 			
+			$description_max = 50;
 			foreach ($list as $item)
 			{
 				$preview_url = PERSONAS_LIVE_PREFIX . '/' . url_prefix($item['id']) . '/' . "preview.jpg";
 				$persona_json = htmlentities(json_encode(extract_record_data($item)));
 				$persona_date = date("n/j/Y", strtotime($item['approve']));
 				$detail_url = $no_my ? ("/store/gallery/persona/" . url_prefix($item['id'])) : ("/store/dynamic/persona/" . $item['id']);
-				$short_description = substr($item['description'], 0, 150);
-				$short_description = preg_replace('/ .*?$/', '', $short_description);
+				if ($item['description'] > $description_max)
+				{
+					$short_description = substr($item['description'], 0, $description_max);
+					$short_description = preg_replace('/ .*?$/', '', $short_description) . '...';
+				}
 ?>
                         <li class="gallery-item">
                             <div>
@@ -168,7 +172,7 @@
 						echo "		<li";
 						if ($list_tab == $tab)
 							echo ' class="active"';
-						if ($list_tab == 'All')
+						if ($list_tab == 'All' && $list_category != 'All')
 							$tab_url .= "/1";
 						echo "><a href=\"$tab_url\">$list_tab</a></li>\n";						
 					}

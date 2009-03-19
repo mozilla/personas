@@ -27,7 +27,6 @@
 		$persona_path = make_persona_path(PERSONAS_STORAGE_PREFIX, $persona_id);
 		$persona_path .= "/" . $persona_id;
 		if (!is_dir($persona_path)) { mkdir($persona_path); }
-		error_log("storage - " . $persona_path);
 		return $persona_path;
 	}
 	
@@ -36,7 +35,6 @@
 		$persona_path = make_persona_path(PERSONAS_PENDING_PREFIX, $persona_id);
 		$persona_path .= "/" . $persona_id;
 		if (!is_dir($persona_path)) { mkdir($persona_path); }
-		error_log("pending - " . $persona_path);
 		return $persona_path;
 	}
 	
@@ -47,7 +45,6 @@
 		$persona_path .= '/persona';
 		if (!is_dir($persona_path)) { mkdir($persona_path); }
 		$persona_path = make_persona_path($persona_path, $persona_id);
-		error_log("detail - " . $persona_path);
 		return $persona_path;
 	}
 

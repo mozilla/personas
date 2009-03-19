@@ -58,10 +58,14 @@
 
 	$db = new PersonaStorage();
 	$featured = $db->get_featured_personas();
+	$description_max = 50;
 	foreach ($featured as $persona)
 	{
-		$short_description = substr($persona['description'], 0, 50);
-		$short_description = preg_replace('/ .*?$/', '', $short_description);
+		if (strlen($persona['description']) > $description_max)
+		{
+			$short_description = substr($persona['description'], 0, $description_max);
+			$short_description = preg_replace('/ .*?$/', '', $short_description) . '...';
+		}
 		$persona_date = date("n/j/Y", strtotime($persona['approve']));
 ?>
                         <li>
