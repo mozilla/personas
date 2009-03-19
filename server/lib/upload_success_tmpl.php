@@ -54,7 +54,7 @@
     <script src="js/jquery.js"></script>
     <script src="js/script.js"></script>
     <div id="footer">
-        <p>Copyright © 2009 Mozilla. Personas is a Mozilla Labs Project.  |  Terms of Use  |  Privacy</p>
+        <p>Copyright © 2009 Mozilla. Personas is a Mozilla Labs Project.   |  <a href="http://www.getpersonas.com/store/privacy.html">Privacy</a></p>
     </div>
 </body>
 </html>

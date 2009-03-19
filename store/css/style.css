@@ -352,7 +352,7 @@ a.get-personas span.arrow {
 }
 
 #info h4 {
-    background: url('../img/main-sprites.png') no-repeat scroll -92px -310px;
+    background: url('../img/main-sprites.png') no-repeat scroll -92px -500px;
     padding: 16px 25px 10px;
     color: #00a1e2;
     font-size: 138.5%;
@@ -1149,6 +1149,16 @@ img.preview  {
 
 #footer p {
     padding: 0;
+}
+
+#get-more-personas {
+    background: url('../img/main-sprites.png') 0 -436px no-repeat;
+    display: inline;
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+    padding: 12px 63px 38px 53px;
+    margin: 0;
 }
 
 
