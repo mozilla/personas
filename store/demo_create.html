@@ -11,12 +11,12 @@
         <div id="inner-wrapper">
             <p id="account"><a href="https://personas.services.mozilla.com/upload">Designer Tools</a></p>
             <div id="nav">
-                <h1><a href="http://www.getpersonas.com/"><img src="/store/img/logo.png" alt="Mozilla Labs Personas"></a></h1>
+                <h1><a href="https://www.getpersonas.com/"><img src="/store/img/logo.png" alt="Mozilla Labs Personas"></a></h1>
                 <ul>
-                    <li class="gallery"><a href="http://www.getpersonas.com/store/gallery/All/Popular">Gallery</a></li>
+                    <li class="gallery"><a href="https://www.getpersonas.com/store/gallery/All/Popular">Gallery</a></li>
                     <li class="create"><a href="https://personas.services.mozilla.com/upload">Create <br/>Your Own</a></li>
-                    <li class="demo"><a href="http://www.getpersonas.com/store/demo_install.html">Demo</a></li>
-                    <li class="faq"><a href="http://www.getpersonas.com/store/faq.html">Frequent <br/>Questions</a></li>
+                    <li class="demo"><a href="https://www.getpersonas.com/store/demo_install.html">Demo</a></li>
+                    <li class="faq"><a href="https://www.getpersonas.com/store/faq.html">Frequent <br/>Questions</a></li>
                 </ul>
             </div>
             <div id="header">
@@ -31,9 +31,203 @@
                 
                 <img src="img/video-tmpl.jpg">
                 
-                <p><strong>Description:</strong> Nullam sollicitudin aliquet massa. Cras varius elit ut ligula. Aliquam a metus. Duis accumsan dui at lacus. Etiam ut lacus. Sed commodo, diam ac pellentesque dictum, quam lorem condimentum sem, non ultrices dolor sem in ligula. Etiam auctor vestibulum ante. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. In placerat diam sed dolor. Phasellus mattis nulla nec eros. Aliquam turpis. Ut interdum, libero quis bibendum tempor, purus arcu accumsan ipsum, sit amet elementum enim est ac risus.</p>
                 
-                <button type="submit" class="button"><span>continue</span><span class="arrow">&nbsp;</span></button>
+                <div id="tutorial">
+
+
+                	<!-- STEP 1 -->
+
+
+                		<div class="tut_Title">Step 1: Understanding and Designing Persona Header and Footer Images</div>
+
+                		<div class="tut_Copy">
+
+
+                		Personas are made up of two graphic image files - a "header" image and a "footer" image - which skin
+                		the default Firefox UI background.</div>
+
+                		<div class="tut_SubTitle">An example of a header image</div>
+
+                		<div class="tut_Copy">
+
+                		The header image is displayed as the background of the top of the browser window, nestling in behind
+                		the toolbars, address bar, search bar and the tab strip.
+
+                		<p><span class="tutBold">Whatever header image you create, it will be anchored to the top-right corner of the
+                		browser window</span>.  The right-hand side of the image is always visible, and as a user
+                		increases the width of the browser window, the browser reveals more of the left-hand side of the
+                		image. This means that the most valuable visual information should be placed in the upper right area
+                		of the header image.</p>
+
+                		<p>The browser might reveal more of the lower portion of the image as well if it (or an extension)
+                		adds another toolbar (like the toolbar that comes with the StumbleUpon extension) or other UI
+                		elements to the top of the window.</p>
+
+                		<p>The header image should be PNG or JPG, <span class="tutBold">3000 pixels wide and 200 pixels tall</span> and <span class="tutBold">no
+                		larger than 300kb in filesize.</span></p></div>
+
+
+                		<div class="tut_Image"><a href="images/Persona_Header_LABS.jpg"><img src="images/tut_headerimage.jpg"
+                		border="0"></a></div>
+
+                		<div class="tut_SubTitle">Header image as seen in OSX, XP and Vista</div>
+
+                		<div class="tut_Image"><img src="images/tut_OSXheader.jpg" border="0"><span
+                		class="caption">OSX</span></div> <div class="tut_Image"><img src="images/tut_XPheader.jpg"
+                		border="0"><span class="caption">Windows XP</span></div> <div class="tut_Image"><img
+                		src="images/tut_VISTAheader.jpg" border="0"><span class="caption">Windows Vista</span></div>
+
+                		<div class="tut_SubTitle">An example of a footer image</div>
+
+                		<div class="tut_Copy">
+
+
+                		The footer image is displayed as the background of the bottom of the browser window, behind the
+                		status and find bars.
+
+                		<p><span class="tutBold">The footer image, unlike the header, is anchored to the bottom-left corner of the browser
+                		window</span>, so the left-hand side of the image is always visible. As a user increases the width
+                		of the browser window, the browser reveals more of the right-hand side of the image.</p>
+
+                		<p>When the status bar is in its default state, there is very little of the footer image shown
+                		vertically, and this should be taken into account in your designs.  The browser might reveal more of
+                		the upper portion of the image as well if it (or an extension) adds another bar (like the Find bar)
+                		or other UI elements to the bottom of the window.</p>
+
+                		<p>The footer image should be PNG or JPG, <span class="tutBold">3000 pixels wide and 100 pixels tall</span> and <span class="tutBold">no
+                		larger than 300kb in filesize.</span></p></div>
+
+                		<div class="tut_Image"><a href="images/Persona_Footer_LABS.jpg"><img src="images/tut_footerimage.jpg"
+                		border="0"></a></div>
+
+                		<div class="tut_SubTitle">Footer image as seen in OSX, XP and Vista</div>
+
+                		<div class="tut_Image"><img src="images/tut_OSXfooter.jpg" border="0"><span
+                		class="caption">OSX</span></div> <div class="tut_Image"><img src="images/tut_XPfooter.jpg"
+                		border="0"><span class="caption">Windows XP</span></div> <div class="tut_Image"><img
+                		src="images/tut_VISTAfooter.jpg" border="0"><span class="caption">Windows Vista</span></div>
+
+
+
+                	<!-- STEP 2 -->
+
+
+                		<div class="tut_Title">Step 2: Testing your Persona Header and Footer Images</div>
+
+                		<div class="tut_Copy">
+
+                		In general, designs that feature rich content areas in the top-right corner of the browser work
+                		best. Though that may be true, you should always check to see where the UI elements sit on top of
+                		your designs within the different platform versions of Firefox. <p>This may be a critical step in
+                		finalizing your image, depending on the importance of the visual information you are including in
+                		your designs.</div>
+
+                		<br><br>
+
+                		<div class="tut_SubTitle">Option 1: Using the Custom Persona setting within Firefox</div> 
+
+                		<div class="tut_Copy">
+
+
+                		Within the Personas menu in the bottom left of the browser's status bar, you can enable an "offline" Persona on your own personal computer by enabling a setting within Preferences.
+                		In doing this, you can test your Personas before submitting them to the online catalog.  Follow these four steps to get the Custom Personas option up and running in your browser:
+
+                		</div>
+
+                		<div class="tut_Image"><img src="images/tut_custom_1.jpg" border="0"><br><span
+                		class="caption"><span class="tutBold">STEP 1)</span> select "Preferences..."  <span class="tutBold">STEP 2)</span> check "Show Custom Persona in menu" <span class="tutBold">STEP 3)</span> select the Custom Persona and "Edit"</span></div>
+
+                		<div class="tut_Image"><img src="images/tut_custom_2.jpg" border="0"><br><span
+                		class="caption"><span class="tutBold">STEP 4)</span> Build the Persona using the upload fields and additional settings</span></div>
+
+
+                		<div class="tut_Copy">
+
+                		Once your images are playing nice with the UI for all the OS flavors of Firefox, save final copies (PNG or JPG) -
+                		but be sure to check to <span class="tutBold">ensure they don't exceed 300k in filesize!</span>. (Note: This will only test your Persona on the platform you are currently using)
+
+                		</div>
+
+                		<br><br>
+
+                		<div class="tut_SubTitle">Option 2: Cross-Platform Photoshop PSD Header Template</div> 
+
+                		<div class="tut_Copy">
+
+                		We've created a positioning template that can be used to help figure out placement of your
+                		artwork. The template is structured to allow testing of your Persona header within OSX, Windows XP and Windows Vista
+                		flavors of the browser. </div>
+
+                		<div class="link">Download the Personas Header Template:  <a
+                		href="images/Persona_Header_TEMPLATE.psd"><img class="button" src="images/tut_btn_download.gif"
+                		border="0"></a></div>
+
+
+                		<div class="tut_Copy">
+
+                		The key to using this PSD template is to simply layer your Persona header image underneath one of
+                		the three OS layers.  Be sure to turn off any of the OS layers you aren't using, as they will
+                		overlap each other due to their transparency.</div>
+
+                		<div class="tut_Image center"><img src="images/tut_PSpalette.jpg" border="0"><br><span
+                		class="caption">Photoshop overlay layerset</span></div>
+
+                		<div class="tut_Copy">
+
+                		<p>Once you turn on an OS layer, you will be able to see where the UI elements will sit on top of
+                		your designs and you can flag any conflicts that may arise. </p></div>
+
+                		<div class="tut_SubTitle">Layer Overlays in Header Template PSD</div>
+
+                		<div class="tut_Image"><img src="images/tut_OSXmask.jpg" border="0"><span class="caption">OSX layer
+                		overlay</span></div> <div class="tut_Image"><img src="images/tut_XPmask.jpg" border="0"><span
+                		class="caption">Windows XP layer overlay</span></div> <div class="tut_Image"><img
+                		src="images/tut_VISTAmask.jpg" border="0"><span class="caption">Windows Vista layer
+                		overlay</span></div>
+
+
+                		<div class="tut_Copy">
+
+                		The example below shows our tutorial header image layered underneath the XP overlay, highlighting
+                		where the UI will interact with the design and warning of any issues that you may want to address.
+                		The secondary dark bar below the toolbar images is the location of the tabstrip.</div>
+
+                		<div class="tut_Image"><img src="images/tut_XPoverlay.jpg" border="0"><span class="caption">XP
+                		overlay on top of header image</span></div>
+
+                		<div class="tut_Copy">
+
+                		Once your images are playing nice with the UI for all the OS flavors of Firefox, save final copies (PNG or JPG) -
+                		but be sure to check to <span class="tutBold">ensure they don't exceed 300k in filesize!</span>.</div>
+
+
+
+                	<!-- STEP 3 -->
+
+
+
+                		<div class="tut_Title">Step 3: Submit your Persona!</div>
+
+                		<div class="tut_Copy">
+
+                		Now that you have finalized the artwork, it is time to share! One thing to note, please do be sure
+                		that you have the rights to use whatever image or design you use in your Persona. (We don't want to
+                		get any nasty lawyer letters!)
+
+                		<p>Follow the link below to start the process and add your creations to the constantly growing
+                		catalog of Firefox Personas!</p></div>
+
+                		<div class="link">Go create your first Persona:  <a href="images/Personas_Header_Template.psd"><img
+                		class="button" src="images/tut_btn_getStarted.gif" border="0"></a></div>
+
+
+
+
+                	</div>
+                
+                
+         
+         
             </div>
             <div id="secondary-content">
               <ol id="demo-nav">
@@ -48,7 +242,7 @@
               </ol>
               
               <div class="info-box">
-                <h3><a href="http://www.getpersonas.com">Get Personas Free</a></h3>
+                <h3><a href="https://www.getpersonas.com">Get Personas Free</a></h3>
                 <div class="body">
                     <p>Easy to install and easy to change "skins" for your Firefox web browser.</p>
                 </div>
