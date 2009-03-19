@@ -65,7 +65,7 @@
 		if (strlen($item_description) > $description_max)
 		{
 			$item_description = substr($item_description, 0, $description_max);
-			$item_description = preg_replace('/ .*?$/', '', $item_description) . '...';
+			$item_description = preg_replace('/ [^ ]+$/', '', $item_description) . '...';
 		}
 		$persona_date = date("n/j/Y", strtotime($persona['approve']));
 ?>
