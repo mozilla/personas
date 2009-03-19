@@ -107,7 +107,7 @@
 				{
 					print "<p><a href=\"/upload?id=${item['id']}\" target=\"_blank\">Edit</a>";
 					if ($user->has_admin_privs())
-						print " | <a href=\"/admin/pull?id=${item['id']}\" target=\"_blank\" onClick=\"return confirm('Confirm Deletion');\">Pull</a>";
+						print " | <a href=\"/admin/pending.php?verdict=pull&id=${item['id']}\" target=\"_blank\" onClick=\"return confirm('Confirm Deletion');\">Pull</a>";
 					print "</p>";
 				}
 ?>
