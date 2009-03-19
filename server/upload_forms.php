@@ -141,7 +141,7 @@
 		$upload_submitted['footer'] = preg_replace('/[^A-Za-z0-9_\-\.]/', '', $_FILES['footer-image']['name']);
 	}
 	
-	if ($upload_submitted['header'] == $upload_submitted['footer'])
+	if ($upload_submitted['header'] && $upload_submitted['header'] == $upload_submitted['footer'])
 		$upload_errors['footer-image'] = "Please use different names for the header and the footer";
 	
 	if (count($upload_errors) > 0)
