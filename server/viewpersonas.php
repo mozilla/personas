@@ -166,7 +166,7 @@
 						echo "		<li";
 						if ($list_tab == $tab)
 							echo ' class="active"';
-						if ($list_tab == 'All')
+						if ($list_tab == 'All' && $list_category != 'All')
 							$tab_url .= "/1";
 						echo "><a href=\"$tab_url\">$list_tab</a></li>\n";						
 					}
