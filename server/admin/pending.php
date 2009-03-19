@@ -156,6 +156,10 @@
 			case 'rebuild_live':
 				build_persona_files(make_persona_storage_path($id), $persona);
 				break;			
+			case 'pull':
+				rename (make_persona_storage_path($id), make_persona_pending_path($id));
+				$db->reject_persona($persona['id']);
+				print "Persona " . $persona['id'] . " pulled";
 			case 'reject':
 				$db->reject_persona($persona['id']);
 				send_problem_email($user->get_email($persona['author']), $_GET['reason'], $persona['name']);
@@ -223,7 +227,7 @@
 	else
 	{
 		$results = $db->get_pending_personas($category);
-		if (!$count = count($results))
+		if (count($results))
 		{
 			print "There are no more pending personas";
 		}
