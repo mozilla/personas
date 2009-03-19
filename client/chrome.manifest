@@ -38,4 +38,4 @@ locale   personas   pt-BR       chrome/locale/pt-BR/
 #locale   personas   sv-SE       chrome/locale/sv-SE/
 #locale   personas   tr-TR       chrome/locale/tr-TR/
 #locale   personas   zh-CN       chrome/locale/zh-CN/
-#locale   personas   zh-TW       chrome/locale/zh-TW/
+locale   personas   zh-TW       chrome/locale/zh-TW/
