@@ -48,7 +48,7 @@
 	try 
 	{
 		$user = new PersonaUser();
-		$user->authenticate();
+		$user->authenticate(1);
 		if (!$user->has_admin_privs())
 		{
 			$error = "This account does not have privileges for this operation. Please log in with an account that does.";
