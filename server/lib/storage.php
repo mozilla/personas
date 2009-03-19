@@ -311,6 +311,29 @@ class PersonaStorage
 		return $personas;
 	}
 	
+	function get_featured_personas()
+	{
+		try
+		{
+			$statement = 'select * from personas where status = 1 and featured > 0 order by featured desc';
+			$sth = $this->_dbh->prepare($statement);
+			$sth->execute();
+		}
+		catch( PDOException $exception )
+		{
+			error_log($exception->getMessage());
+			throw new Exception("Database unavailable", 503);
+		}
+		
+		$personas = array();
+		
+		while ($result = $sth->fetch(PDO::FETCH_ASSOC))
+		{
+			$personas[] = $result;
+		}		
+		return $personas;
+	}
+
 	function change_persona_category($id, $category)
 	{
 		try
