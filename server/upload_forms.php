@@ -78,7 +78,7 @@
 	$upload_submitted['name'] = trim(ini_get('magic_quotes_gpc') ? stripslashes($_POST['name']) : $_POST['name']);
 	$upload_submitted['accentcolor'] = ini_get('magic_quotes_gpc') ? stripslashes($_POST['accentcolor']) : $_POST['accentcolor'];
 	$upload_submitted['textcolor'] = ini_get('magic_quotes_gpc') ? stripslashes($_POST['textcolor']) : $_POST['textcolor'];
-	$upload_submitted['description'] = ini_get('magic_quotes_gpc') ? stripslashes($_POST['description']) : $_POST['description'];
+	$upload_submitted['description'] = htmlspecialchars(ini_get('magic_quotes_gpc') ? stripslashes($_POST['description']) : $_POST['description']);
 	$upload_submitted['reason'] = ini_get('magic_quotes_gpc') ? stripslashes($_POST['reason']) : $_POST['reason'];
 	$upload_submitted['other-reason'] = ini_get('magic_quotes_gpc') ? stripslashes($_POST['other-reason']) : $_POST['other-reason'];
 
@@ -112,9 +112,7 @@
 	
 	if (strlen($upload_submitted['description']) > 500)
 		$upload_errors['description'] = "Please limit your description to 500 characters";
-	
-	$description = htmlspecialchars($description);
-	
+		
 	#basic non-committal image upload checks
 
 	if (!(array_key_exists('id', $upload_submitted) && $_FILES['header-image']['size'] == 0)) #images are optional on edit
