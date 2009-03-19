@@ -73,6 +73,8 @@
 		exec($imgcommand2);
 		$imgcommand3 = "convert " . $persona_path . "/" . $persona['header'] . " -gravity NorthEast -crop 320x220+0+0  -scale 64x44 " . $persona_path . "/preview_popular.jpg";
 		exec($imgcommand3);
+		$imgcommand4 = "convert " . $persona_path . "/" . $persona['header'] . " -gravity NorthEast -crop 592x200+0+0  -scale 296x106 " . $persona_path . "/preview_featured.jpg";
+		exec($imgcommand4);
 
 		file_put_contents($persona_path . '/index_1.json', json_encode(extract_record_data($persona)));
 	}
