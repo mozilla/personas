@@ -102,8 +102,8 @@
                 <ul>
                     <li class="gallery"><a href="http://www.getpersonas.com/store/gallery/All/Popular">Gallery</a></li>
                     <li class="create"><a href="https://personas.services.mozilla.com/upload">Create <br/>Your Own</a></li>
-                    <li class="demo"><a href="https://www.getpersonas.com/store/demo_install.html">Demo</a></li>
-                    <li class="faq"><a href="https://www.getpersonas.com/store/faq.html">Frequent <br/>Questions</a></li>
+                    <li class="demo"><a href="http://www.getpersonas.com/store/demo_install.html">Demo</a></li>
+                    <li class="faq"><a href="http://www.getpersonas.com/store/faq.html">Frequent <br/>Questions</a></li>
                 </ul>
             </div>
             <div id="header">
@@ -233,19 +233,16 @@
 			$preview_url =  $path . "/preview.jpg";
 			$preview_large =  $path . "/preview_large.jpg";
 			$preview_popular =  $path . "/preview_popular.jpg";
-			$preview_featured =  $path . "/preview_featured.jpg";
 			$header_url =  $path . "/" . $result['header'];
 
 			$old_preview_url =  $old_path . "/preview.jpg";
 			$old_preview_large =  $old_path . "/preview_large.jpg";
 			$old_preview_popular =  $old_path . "/preview_popular.jpg";
-			$old_preview_featured =  $old_path . "/preview_featured.jpg";
 			$old_header_url =  $old_path . "/" . $original_data['header'];
 			
 			print "<div style=\"outline: red solid thin\">Preview: <img src=\"$preview_url\"> Original: <img src=\"$old_preview_url\">\n";
 			print "<P>Detail Preview: <br><img src=\"$preview_large\"> <br>Original: <br><img src=\"$old_preview_large\">\n";
 			print "<P>Popular Preview: <br><img src=\"$preview_popular\"> <br>Original: <br><img src=\"$old_preview_popular\">\n";
-			print "<P>Featured Preview: <br><img src=\"$preview_featured\"> <br>Original: <br><img src=\"$old_preview_featured\">\n";
 			print "<P>Header: <br><img src=\"$header_url\"> <br>Original: <br><img src=\"$old_header_url\">\n";
 			print "</div>";
 		}
