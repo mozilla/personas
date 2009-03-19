@@ -40,7 +40,7 @@
 	
 	function make_persona_detail_path($persona_id)
 	{
-		$persona_path = PERSONAS_STORAGE_PREFIX . '/store/gallery';
+		$persona_path = PERSONAS_STORAGE_PREFIX . '/gallery';
 		if (!is_dir($persona_path)) { mkdir($persona_path); }
 		$persona_path .= '/persona';
 		if (!is_dir($persona_path)) { mkdir($persona_path); }
