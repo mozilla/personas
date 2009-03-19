@@ -544,6 +544,7 @@ img.preview  {
     position: relative;
     min-height: 50px;
     margin: 0 0 27px 0;
+    list-style-type:none;
 }
 
 .popular h4 {
