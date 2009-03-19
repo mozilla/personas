@@ -34,7 +34,7 @@
                 <div id="more-info">
                     <div id="info">
                         <h4>Theme your browser according to your mood, hobby or season. </h4>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam a nulla. Nulla ipsum turpis, facilisis.</p>                  
+                        <p>Click the green download button to get started!</p>                  
                     </div>
                 </div>
             </div>

@@ -363,9 +363,9 @@ a.get-personas span.arrow {
 
 #info p {
     background: url('../img/main-sprites.png') no-repeat scroll -92px bottom;
-    padding: 0 25px 40px;
+    padding: 0 25px 33px;
     color: #868585;
-    font-size: 93%;
+    font-size: 110%;
     line-height: 1.4em;
     margin: 0;
 }
