@@ -183,7 +183,7 @@
 
 	if (array_key_exists('id', $upload_submitted))
 	{
-		$db->submit_persona_edit($upload_submitted['id'], $auth_user, $upload_submitted['name'], $upload_submitted['category'], $upload_submitted['accentcolor'], $upload_submitted['textcolor'], $upload_submitted['header'], $upload_submitted['footer'], $upload_submitted['description'], $upload_submitted['reason'], $upload_submitted['reason-other']);
+		$db->submit_persona_edit($upload_submitted['id'], $auth_user, $upload_submitted['name'], $upload_submitted['category'], $upload_submitted['accentcolor'], $upload_submitted['textcolor'], $upload_submitted['description'], $upload_submitted['header'], $upload_submitted['footer'], $upload_submitted['reason'], $upload_submitted['reason-other']);
 		$db->log_action($auth_user, $id, "Edited");
 	}
 	else
