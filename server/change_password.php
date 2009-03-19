@@ -14,7 +14,7 @@
 			$username = array_key_exists('userreq', $_POST) ? (ini_get('magic_quotes_gpc') ? stripslashes($_POST['userreq']) : $_POST['userreq']) : null;
 			if (!$user->user_exists($username))
 			{
-				$error = "Oops!  We are unable to locate the username you entered.  Please try again, or create a new one.";
+				$error = "Oops!  We are unable to locate the username you entered.  Please try again, or <a href='https://personas.services.mozilla.com/upload'>create a new one</a>.";
 				include "lib/forgot_password_tmpl.php";
 				exit;
 			}
