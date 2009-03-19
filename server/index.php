@@ -61,10 +61,11 @@
 	$description_max = 50;
 	foreach ($featured as $persona)
 	{
-		if (strlen($persona['description']) > $description_max)
+		$item_description = $persona['description'];
+		if (strlen($item_description) > $description_max)
 		{
-			$short_description = substr($persona['description'], 0, $description_max);
-			$short_description = preg_replace('/ .*?$/', '', $short_description) . '...';
+			$item_description = substr($item_description, 0, $description_max);
+			$item_description = preg_replace('/ .*?$/', '', $item_description) . '...';
 		}
 		$persona_date = date("n/j/Y", strtotime($persona['approve']));
 ?>
@@ -75,7 +76,7 @@
                             <p class="designer"><strong>Designer:</strong> <?= $persona['author'] ?></p>
                             <p class="added"><strong>Added:</strong> <?= $persona_date?></p>
                             <hr />
-                            <p class="description"><strong>Description:</strong> <?= $short_description ?></p>
+                            <p class="description"><strong>Description:</strong> <?= $item_description ?></p>
                         </li>
 <?php
 	}
