@@ -35,6 +35,10 @@
 		}
 		$upload_submitted = $db->get_persona_by_id($id);
 		$upload_submitted['agree'] = 1;
+		
+		#need to clean out the header and footer so we don't transfer old ones to the edit
+		$upload_submitted['header'] = null;
+		$upload_submitted['footer'] = null;
 	}
 	else
 	{
