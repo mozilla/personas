@@ -21,6 +21,9 @@
 	$tab = $tab && in_array(ucfirst($tab), $tabs) ? ucfirst($tab) : 'Popular';
 	$page = $page && is_numeric($page) ? $page : 1;
 
+	if ($tab == 'All' and $category == 'All')
+		$page_size = null;
+		
 	$user = new PersonaUser();
 	$user->authenticate_user_from_cookie($_COOKIE['PERSONA_USER']);
 ?>
@@ -109,7 +112,7 @@
                     </ul>
                 </div>
 <?php 
-			if ($tab == 'All')
+			if ($tab == 'All' && $category != 'All')
 			{
 				$category_total = $db->get_personas_by_category_count($category);
 				$pages = floor($category_total/$page_size) + 1;
@@ -157,8 +160,8 @@
 					{
 						if ($list_tab == 'My' && $no_my == 1)
 							continue;
-						if ($list_tab == 'All' && $list_category == 'All')
-							continue;
+						#if ($list_tab == 'All' && $list_category == 'All')
+						#	continue;
 						$tab_url = "$url_prefix/$list_category/$list_tab";
 						echo "		<li";
 						if ($list_tab == $tab)

@@ -86,7 +86,8 @@
 		fclose($fp);	
 	}
 
-	
+	get_directory_html('All', 'All');
+
 	#Top level popular page
 	$popular_list = $db->get_popular_personas(null, 21);
 	foreach ($popular_list as $item)
