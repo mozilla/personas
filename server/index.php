@@ -62,13 +62,14 @@
 	{
 		$short_description = substr($persona['description'], 0, 50);
 		$short_description = preg_replace('/ .*?$/', '', $short_description);
+		$persona_date = date("n/j/Y", strtotime($persona['approve']));
 ?>
                         <li>
                             <img class="preview" src="<?= PERSONAS_LIVE_PREFIX . '/' . url_prefix($persona['id']) ?>/preview_featured.jpg">
                             <h4><?= $persona['name'] ?></h4>
                             <hr />
                             <p class="designer"><strong>Designer:</strong> <?= $persona['author'] ?></p>
-                            <p class="added"><strong>Added:</strong> <?= $persona['approve'] ?></p>
+                            <p class="added"><strong>Added:</strong> <?= $persona_date?></p>
                             <hr />
                             <p class="description"><strong>Description:</strong> <?= $short_description ?></p>
                         </li>
