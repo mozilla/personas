@@ -12,6 +12,7 @@ class PersonaUser
 	var $_email = null;
 	var $_privs = 0;
 	var $_errors = array();
+	var $_no_signup = 0;
 	
 	function __construct($username = null, $password = null, $hostname = null, $dbname = null) 
 	{
@@ -169,9 +170,11 @@ class PersonaUser
 	
 	}
 
-	function authenticate()
+	function authenticate($no_signup = null)
 	{
-		
+		if ($no_signup)
+			$this->_no_signup = 1;
+			
 		if (array_key_exists('logout', $_POST))
 		{
 			$this->log_out();

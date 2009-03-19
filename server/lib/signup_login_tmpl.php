@@ -45,7 +45,9 @@
                         <p class="forgot"><a href="/forgot_password">Forgot your password?</a></p>
                     </form>
                 </div>
-                
+<?php if (!$this->_no_signup)    
+		{
+?>
                 <div id="signup">
                     <h4>New Personas Designer?</h3>
                     <form action="" method="post">
@@ -95,7 +97,10 @@
                     <button type="submit" class="button"><span>sign me up</span><span class="arrow"></span></button>
                     </form>
                 </div>
-                <p class="disclaimer">Mozilla values your privacy. We will not sell or rent your email address</p>
+			<p class="disclaimer">Mozilla values your privacy. We will not sell or rent your email address</p>
+<?php 
+		} 
+?>
             </div>
         </div>
     </div>

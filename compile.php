@@ -64,7 +64,7 @@
 
 	function get_persona_html($id)
 	{
-		$path = make_persona_storage_path($id);
+		$path = make_persona_detail_path($id);
 
 		$ch = curl_init();
 		$fp = fopen("$path/$id", "w");	
