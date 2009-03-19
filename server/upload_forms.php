@@ -93,7 +93,7 @@
 	else
 	{
 		$collision_id = $db->check_persona_name($upload_submitted['name']);
-		if ($collision_id != $id)
+		if ($collision_id && $collision_id != $id)
 			$upload_errors['name'] = "That name is already in use. Please select another one";
 	}
 	
@@ -110,6 +110,8 @@
 	
 	if (strlen($upload_submitted['description']) > 500)
 		$upload_errors['description'] = "Please limit your description to 500 characters";
+	
+	$description = htmlspecialchars($description);
 	
 	#basic non-committal image upload checks
 

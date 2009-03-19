@@ -195,7 +195,7 @@
 		?>
 		</select><input type="submit" name="verdict" value="change">
 		<br>
-		Description: <?= htmlspecialchars($result['description']) ?>
+		Description: <?= $result['description'] ?>
 		<p>
 		Preview:
 		<br>

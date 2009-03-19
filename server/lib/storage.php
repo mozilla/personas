@@ -358,12 +358,16 @@ class PersonaStorage
 	}
 	
 	
-	function get_pending_edits()
+	function get_pending_edits($category = null)
 	{
 		try
 		{
-			$statement = 'select * from edits';
+			$statement = 'select * from edits' . ($category ? " where category = :category" : "");
 			$sth = $this->_dbh->prepare($statement);
+			if ($category)
+			{
+				$sth->bindParam(':category', $category);
+			}
 			$sth->execute();
 		}
 		catch( PDOException $exception )
@@ -513,7 +517,7 @@ class PersonaStorage
 	{
 		try
 		{
-			$statement = 'replace into edits (id, author, name, header, footer, category,  accentcolor, textcolor, description, reason, reason_other) values (:id, :author, :name, :header, :footer, :category,  :accentcolor, :textcolor, :description, :reason, :reasonother)';
+			$statement = 'replace into edits (id, author, name, header, footer, category,  accentcolor, textcolor, description, reason, reason_other, submit) values (:id, :author, :name, :header, :footer, :category,  :accentcolor, :textcolor, :description, :reason, :reasonother, NOW())';
 			$sth = $this->_dbh->prepare($statement);
 			$sth->bindParam(':id', $id);
 			$sth->bindParam(':author', $author);
