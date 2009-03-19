@@ -1160,8 +1160,10 @@ img.preview  {
     position: absolute;
     bottom: 0px;
     left: 0px;
-    padding: 12px 63px 38px 53px;
+    padding: 13px 63px 20px 34px;
     margin: 0;
+    font-weight: bold;
+    color: #fff;
 }
 
 
