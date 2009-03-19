@@ -227,7 +227,7 @@
 	else
 	{
 		$results = $db->get_pending_personas($category);
-		if (count($results))
+		if (!count($results))
 		{
 			print "There are no more pending personas";
 		}
