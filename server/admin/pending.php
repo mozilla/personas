@@ -175,6 +175,7 @@
 		$preview_url =  $path . "/preview.jpg";
 		$preview_large =  $path . "/preview_large.jpg";
 		$preview_popular =  $path . "/preview_popular.jpg";
+		$preview_featured =  $path . "/preview_featured.jpg";
 		$header_url =  $path . "/" . $result['header'];
 		$footer_url =  $path . "/" . $result['footer'];
 ?>
@@ -206,6 +207,9 @@
 		Preview Popular:
 		<br>
 		<img src="<?= $preview_popular ?>"><p>
+		Preview Featured:
+		<br>
+		<img src="<?= $preview_featured ?>"><p>
 		Header:<br>
 		<img src="<?= $header_url ?>"><p>
 		Footer:<br>
