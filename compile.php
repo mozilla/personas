@@ -86,6 +86,19 @@
 		fclose($fp);	
 	}
 
+	function get_featured_html()
+	{
+		$path = PERSONAS_STORAGE_PREFIX . "/featured";
+		$persona = $db->get_persona_by_id(FEATURE_DESIGNER_PERSONA_ID);
+
+		$ch = curl_init();
+		$fp = fopen("$path", "w");	
+		curl_setopt($ch, CURLOPT_URL, "http://localhost/store/dynamic/Designer/" . $persona['author']);
+		curl_setopt($ch, CURLOPT_FILE, $fp);
+		curl_exec($ch);
+		fclose($fp);	
+	}
+
 	get_directory_html('All', 'All');
 
 	#Top level popular page
