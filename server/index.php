@@ -68,9 +68,10 @@
 			$item_description = preg_replace('/ [^ ]+$/', '', $item_description) . '...';
 		}
 		$persona_date = date("n/j/Y", strtotime($persona['approve']));
+		$persona_json = htmlentities(json_encode(extract_record_data($persona)));
 ?>
                         <li>
-                            <img class="preview" src="<?= PERSONAS_LIVE_PREFIX . '/' . url_prefix($persona['id']) ?>/preview_featured.jpg">
+                            <img class="preview" src="<?= PERSONAS_LIVE_PREFIX . '/' . url_prefix($persona['id']) ?>/preview_featured.jpg" persona="<?= $persona_json ?>>
                             <h4><?= $persona['name'] ?></h4>
                             <hr />
                             <p class="designer"><strong>Designer:</strong> <?= $persona['author'] ?></p>
