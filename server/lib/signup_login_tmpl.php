@@ -26,7 +26,7 @@
                 <div id="breadcrumbs">
                     Personas Home : Login    
                 </div>
-     <?php if (array_key_exists('success_message', $this->_errors)) echo '<p class="logout-success">' . $this->_errors['general_message'] . '</p>' ?>
+     <?php if (array_key_exists('success_message', $this->_errors)) echo '<p class="logout-success">' . $this->_errors['success_message'] . '</p>' ?>
                 <div id="login">
                     <h4>Already a Personas Designer?</h3>
                     <form action="" method="post">
