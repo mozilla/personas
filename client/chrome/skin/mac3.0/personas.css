@@ -89,6 +89,8 @@
   font-weight: normal !important;
 }
 
+
+/******************************************************************************/
 /* Make some elements a little transparent so the persona flavors their look. */
 #main-window[persona] #urlbar,
 #main-window[persona] #searchbar {
@@ -127,6 +129,24 @@
 #main-window[persona] #paste-button,
 #main-window[persona] #back-forward-dropmarker {
   list-style-image: url("chrome://personas/skin/Toolbar.png");
+}
+
+#main-window[persona] .findbar-find-next,
+#main-window[persona] .findbar-find-previous,
+#main-window[persona] .findbar-highlight {
+  background: url("chrome://personas/skin/white-gray-gradient.png") repeat-x top center;
+  color: inherit !important;
+}
+
+#main-window[persona] .findbar-container > toolbarbutton:not([disabled]):hover:active,
+#main-window[persona] .findbar-container > hbox > toolbarbutton:not([disabled]):hover:active {
+  background-image: url("chrome://personas/skin/white-gray-gradient-active.png");
+  color: inherit !important;
+}
+
+.findbar-container > toolbarbutton[disabled],
+.findbar-container > hbox > toolbarbutton[disabled] {
+  opacity: 0.5;
 }
 
 
