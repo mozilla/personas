@@ -167,12 +167,12 @@
 		$result = $db->get_edits_by_id($id);
 		$original_data = $db->get_persona_by_id($id);
 
-		$category = $result['category'];
 		$path = PERSONAS_URL_PREFIX . '/' . url_prefix($id);
 		$old_path = PERSONAS_LIVE_PREFIX . '/' . url_prefix($id);
 ?>
 		<form action="/admin/editing.php" method="GET">
 		<input type=hidden name=id value=<?= $result{'id'} ?>>
+		<input type=hidden name=category value="<?= $category ?>">
 
 <?php
 		if ($original_data['name'] != $result['name'])

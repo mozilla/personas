@@ -132,7 +132,7 @@
 	$categories = $db->get_categories();
 	
 	$id = array_key_exists('id', $_GET) ? $_GET['id'] : null;
-	$category = array_key_exists('category', $_GET) && $_GET['category'] != 'All' ? $_GET['category'] : null;
+	$page_category = array_key_exists('category', $_GET) && $_GET['category'] != 'All' ? $_GET['category'] : null;
 	
 	if (array_key_exists('verdict', $_GET) && $id)
 	{
@@ -147,8 +147,8 @@
 				$id = null;
 				break;
 			case 'change':
-				$category = ini_get('magic_quotes_gpc') ? stripslashes($_GET['category']) : $_GET['category'];
-				$db->change_persona_category($persona['id'], $category);
+				$change_category = ini_get('magic_quotes_gpc') ? stripslashes($_GET['changecategory']) : $_GET['changecategory'];
+				$db->change_persona_category($persona['id'], $change_category);
 				break;			
 			case 'rebuild':
 				build_persona_files(make_persona_pending_path($id), $persona);
@@ -184,13 +184,14 @@
 ?>
 		<form action="/admin/pending.php" method="GET">
 		<input type=hidden name=id value=<?= $result{'id'} ?>>
+		<input type=hidden name=category value="<?= $page_category ?>">
 		Internal ID: <?= $result{'id'} ?>
 		<br>
 		Name: <?= $result['name'] ?>
 		<br>
 		User: <?= $result['author'] ?>
 		<br>
-		Category: <select name="category">
+		Category: <select name="changecategory">
 		<?php
 			foreach ($categories as $pcategory)
 			{
@@ -226,7 +227,7 @@
 	}
 	else
 	{
-		$results = $db->get_pending_personas($category);
+		$results = $db->get_pending_personas($page_category);
 		if (!count($results))
 		{
 			print "There are no more pending personas";
@@ -250,7 +251,7 @@
                                 <p class="designer"><strong>Category:</strong> <?= $item['category'] ?></p>
                                 <p class="added"><strong>Submitted:</strong> <?= $item['submit'] ?></p>
                                 <p><?= $item['description'] ?></p>
-                                <p><a href="/admin/pending.php?id=<?= $item['id'] ?>" class="view">Administer »</a></p>
+                                <p><a href="/admin/pending.php?id=<?= $item['id'] ?>&category=<?= $item['category'] ?>" class="view">Administer »</a></p>
                             </div>
                         </li>
  <?php
@@ -269,8 +270,7 @@
 			array_unshift($categories, 'All');
 			foreach ($categories as $list_category)
 			{
-				$active = ($category == $list_category) ? 'class="active"' : null;
-				print "		<li" . ($category == $list_category ? ' class="active"' : "") . "><a href=\"/admin/pending.php?category=$list_category\">$list_category</a></li>\n";
+				print "		<li" . ($page_category == $list_category ? ' class="active"' : "") . "><a href=\"/admin/pending.php?category=$list_category\">$list_category</a></li>\n";
 			}
 ?>
             </div>
