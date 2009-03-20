@@ -204,6 +204,12 @@ em {
     height: 111px;
 }
 
+.updated #header {
+    padding: 51px 90px 0 15px;
+    background: none;
+    height: 95px;
+}
+
 .forgot-password #header {
     background: none;
 }
@@ -216,6 +222,10 @@ em {
 }
 
 .firstrun #header h2 {
+    font-size: 260%;
+}
+
+.updated #header h2 {
     font-size: 260%;
 }
 

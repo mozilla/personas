@@ -67,8 +67,7 @@
                 <p class="description"><strong>Description:</strong> <?= $persona_data['description'] ?></p>
                 
                 <p id="buttons">
-                    <a href="#" class="button"><span>try it now</span><span>&nbsp;</span></a>
-                    
+                    <a href="#" class="button" id="try-button" persona="<?= $persona_json ?>"><span>try it now</span><span>&nbsp;</span></a>
                 </p>
                 <p class="numb-users"><?= $persona_data['popularity'] ?> users</p>
 <?php
@@ -109,6 +108,11 @@
     <script type="text/javascript" charset="utf-8">
         $(document).ready(function () {
             $("#header").ie6Warning({"message":'<div id="ie6">Upgrade your browser to get the most out of this website. <a href="%LINK%">Download Firefox for free</a>.</div>'});
+            $("#try-button").personaButton({
+                                        'hasPersonas':'<span>wear this</span><span>&nbsp;</span>',
+                                        'hasFirefox':'<span>get personas now!</span><span>&nbsp;</span>',
+                                        'noFirefox':'<span>get personas with firefox</span><span>&nbsp;</span>'
+                                        });
         });
     </script>
 </body>

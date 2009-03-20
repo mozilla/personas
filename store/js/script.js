@@ -11,10 +11,10 @@ $.fn.slider = function (options) {
         "nav"           : "#slideshow-nav",
         "previous"      : "#slideshow-previous",
         "next"          : "#slideshow-next",
-        "nextImg"       : "img/nav-next.png",
-        "nextOverImg"   : "img/nav-next-over.png",
-        "prevOverImg"   : "img/nav-prev-over.png",
-        "prevImg"       : "img/nav-prev.png"
+        "nextImg"       : "/store/img/nav-next.png",
+        "nextOverImg"   : "/store/img/nav-next-over.png",
+        "prevOverImg"   : "/store/img/nav-prev-over.png",
+        "prevImg"       : "/store/img/nav-prev.png"
     }, options);
     
     var items = jQuery(settings['slides']);
@@ -140,6 +140,24 @@ $.fn.ie6Warning = function(options) {
     if(jQuery.browser.msie && jQuery.browser.version == 6.0) {
         var message = options['message'].replace("%LINK%", PERSONAS_URLS['win_bundle']);
         jQuery(this).prepend(message);
+    }
+};
+
+$.fn.personasButton = function(options) {
+    if(jQuery.browser.mozilla) {
+        if(jQuery.hasPersonas()) {
+            jQuery(this).html(options['hasPersonas']);
+            jQuery(this).click(function(event) {
+                dispatchPersonaEvent('SelectPersona', event.originalTarget);
+            });
+        } else {
+            jQuery(this).html(options['hasFirefox']);
+            jQuery(this).attr("href", PERSONAS_URLS['addon']);
+        }
+    } else {
+        jQuery(this).html(options['noFirefox']);
+        var downloadUrl = jQuery.os.mac ? PERSONAS_URLS['mac_bundle'] : jQuery.os.win ? PERSONAS_URLS['win_bundle'] : PERSONAS_URLS['linux_bundle'];
+        jQuery(this).attr("href", downloadUrl);
     }
 };
 
