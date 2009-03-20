@@ -8,7 +8,14 @@
 	
 	#step 1: Authenticate
 	$user = new PersonaUser();
+
+	if (array_key_exists('action', $_GET) && $_GET['action'] == 'logout')
+	{
+		$user->log_out();
+	}
+
 	$auth_user = $user->authenticate();
+
 
 	$db = new PersonaStorage();
 	
