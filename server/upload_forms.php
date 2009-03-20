@@ -89,11 +89,16 @@
 	if (!in_array($upload_submitted['category'], $categories))
 		$upload_errors['category'] = "Unknown category";
 	
-	$upload_submitted['name'] = preg_replace('/[^A-Za-z0-9_\-\. \&]/', '', $upload_submitted['name']);
-	if ($upload_submitted['name'][0] == '.')
+	if(preg_match('/[^A-Za-z0-9_\-\. \&]/', $upload_submitted['name']))
+		$upload_errors['name'] = "Please use only alphanumerics, underscore, hyphen, space, period and ampersand in your persona name";	
+	elseif(!preg_match('/^[A-Za-z]/', $upload_submitted['name']))
+		$upload_errors['name'] = "Please begin your persona name with a letter";	
+	elseif ($upload_submitted['name'][0] == '.')
 		$upload_errors['name'] = "name cannot start with a period";
 	elseif ($upload_submitted['name'] == '')
 		$upload_errors['name'] = "Please use alphanumeric characters in your persona name";
+	elseif (strlen($upload_submitted['name']) < 5)
+		$upload_errors['name'] = "Please use at least 5 characters in your persona name";
 	elseif (strlen($upload_submitted['name']) > 32)
 		$upload_errors['name'] = "Please limit your persona name to 32 characters";
 	else

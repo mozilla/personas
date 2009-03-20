@@ -205,9 +205,10 @@ class PersonaUser
 
 			if (!preg_match('/^[A-Z0-9._-]+$/i', $username)) 
 				$this->_errors['create_username'] = "Illegal characters in the username (alphanumerics, period, underscore and dash only)";
-			
-			if (strlen($username) > 32)
+			elseif (strlen($username) > 32)
 				$this->_errors['create_username'] = "Please limit your username to 32 characters or less";
+			elseif (strlen($username) < 6)
+				$this->_errors['create_username'] = "Please use at least 6 characters in your username";
 				
 			if (strlen($password) < 6)
 				$this->_errors['create_password'] = "Password must be at least 6 characters long";

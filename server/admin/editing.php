@@ -120,7 +120,7 @@
 	$categories = $db->get_categories();
 	
 	$id = array_key_exists('id', $_GET) ? $_GET['id'] : null;
-	$category = array_key_exists('category', $_GET) && $_GET['category'] != 'All' ? $_GET['category'] : null;
+	$page_category = array_key_exists('category', $_GET) && $_GET['category'] != 'All' ? $_GET['category'] : null;
 	
 	if (array_key_exists('verdict', $_GET) && $id)
 	{
@@ -172,7 +172,7 @@
 ?>
 		<form action="/admin/editing.php" method="GET">
 		<input type=hidden name=id value=<?= $result{'id'} ?>>
-		<input type=hidden name=category value="<?= $category ?>">
+		<input type=hidden name=category value="<?= $page_category ?>">
 
 <?php
 		if ($original_data['name'] != $result['name'])
@@ -283,7 +283,7 @@
 	}
 	else
 	{
-		$results = $db->get_pending_edits($category);
+		$results = $db->get_pending_edits($page_category);
 		if (!$count = count($results))
 		{
 			print "There are no more pending edits";
@@ -307,7 +307,7 @@
                                 <p class="designer"><strong>Category:</strong> <?= $item['category'] ?></p>
                                 <p class="added"><strong>Submitted:</strong> <?= $item['submit'] ?></p>
                                 <p><?= $item['description'] ?></p>
-                                <p><a href="/admin/editing.php?id=<?= $item['id'] ?>" class="view">Administer »</a></p>
+                                <p><a href="/admin/editing.php?id=<?= $item['id'] ?>&category=<?= $page_category ?>" class="view">Administer »</a></p>
                             </div>
                         </li>
  <?php
@@ -326,8 +326,7 @@
 			array_unshift($categories, 'All');
 			foreach ($categories as $list_category)
 			{
-				$active = ($category == $list_category) ? 'class="active"' : null;
-				print "		<li" . ($category == $list_category ? ' class="active"' : "") . "><a href=\"/admin/editing.php?category=$list_category\">$list_category</a></li>\n";
+				print "		<li" . ($page_category == $list_category ? ' class="active"' : "") . "><a href=\"/admin/editing.php?category=$list_category\">$list_category</a></li>\n";
 			}
 ?>
             </div>
