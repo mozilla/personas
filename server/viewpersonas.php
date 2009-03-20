@@ -17,8 +17,8 @@
 
 	$no_my = array_key_exists('no_my', $_GET) ? 1 : 0;
 	$url_prefix = $no_my ? '/store/gallery' : '/store/dynamic/gallery';
-	$category = $category && in_array(ucfirst($category), $categories) ? ucfirst($category) : "All";
-	$tab = $tab && in_array(ucfirst($tab), $tabs) ? ucfirst($tab) : 'Popular';
+	$category = $category && ($category == 'Designer' || in_array(ucfirst($category), $categories)) ? ucfirst($category) : "All";
+	$tab = $tab && ($category == 'Designer' || in_array(ucfirst($tab), $tabs)) ? ucfirst($tab) : 'Popular';
 	$page = $page && is_numeric($page) ? $page : 1;
 
 	if ($tab == 'All' and $category == 'All')
@@ -60,7 +60,11 @@
                 <div id="gallery">
                     <ul>
 <?php
-			if ($tab == 'Recent')
+			if ($category == 'Designer')
+			{
+				$list = $db->get_persona_by_author($tab);				
+			}
+			elseif ($tab == 'Recent')
 			{
 				$list = $db->get_recent_personas($category == 'All' ? null : $category, $page_size);
 			}
