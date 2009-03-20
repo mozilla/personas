@@ -193,7 +193,7 @@ class PersonaStorage
 		return $result;
 	}
 	
-	function get_persona_by_author($author, $category = null, $sort)
+	function get_persona_by_author($author, $category = null, $sort = null)
 	{
 		if (!$author) { return 0; }
 		if (!$sort) { $sort = 'all'; }
