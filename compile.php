@@ -99,6 +99,18 @@
 		fclose($fp);	
 	}
 
+	function get_updated_html()
+	{
+		$path = PERSONAS_STORAGE_PREFIX . "/updated";
+
+		$ch = curl_init();
+		$fp = fopen("$path", "w");	
+		curl_setopt($ch, CURLOPT_URL, "http://localhost/store/dynamic/updated");
+		curl_setopt($ch, CURLOPT_FILE, $fp);
+		curl_exec($ch);
+		fclose($fp);	
+	}
+
 	get_directory_html('All', 'All');
 
 	#Top level popular page
