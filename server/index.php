@@ -71,8 +71,9 @@
 		$persona_json = htmlentities(json_encode(extract_record_data($persona)));
 ?>
                         <li>
-                            <img class="preview" src="<?= PERSONAS_LIVE_PREFIX . '/' . url_prefix($persona['id']) ?>/preview_featured.jpg" persona="<?= $persona_json ?>>
+                            <img class="preview persona" src="<?= PERSONAS_LIVE_PREFIX . '/' . url_prefix($persona['id']) ?>/preview_featured.jpg" persona="<?= $persona_json ?>>
                             <h4><?= $persona['name'] ?></h4>
+                            <p class="try"><a href="#">view details »</a></p>
                             <hr />
                             <p class="designer"><strong>Designer:</strong> <?= $persona['author'] ?></p>
                             <p class="added"><strong>Added:</strong> <?= $persona_date?></p>
@@ -90,7 +91,7 @@
                  <h3>Featured Designer</h3>
                     <img src="/store/img/greenpeace-featured.jpg" class="preview">
                     <h4>GreenPeace</h4>
-                
+                    <p class="try"><a href="#">view details »</a></p>
             </div>
             <div class="feature last">
                 <h3>Most Popular Personas</h3>
@@ -104,7 +105,7 @@
 					<li>
                             <h4><?= $persona['name'] ?></h4>
                             <hr />
-                            <img alt="<?= $persona['name'] ?>" persona="<?= $persona_json ?>" src="<?= PERSONAS_LIVE_PREFIX . '/' . url_prefix($persona['id']) ?>/preview_popular.jpg">
+                            <img class="persona" alt="<?= $persona['name'] ?>" persona="<?= $persona_json ?>" src="<?= PERSONAS_LIVE_PREFIX . '/' . url_prefix($persona['id']) ?>/preview_popular.jpg">
                             <p class="downloads"><strong>Current Users:</strong> <?= $persona['popularity'] ?></p>
                     </li>
 <?php
@@ -127,6 +128,7 @@
             $("#more-info").popup();
             $("#download").personasDownload({"bundle":"bundle-url", "bundle-text":'<span>Get Firefox and Personas - Free</span><span class="arrow"></span>'});
             $("#header").ie6Warning({"message":'<div id="ie6">Upgrade your browser to get the most out of this website. <a href="%LINK%">Download Firefox for free</a>.</div>'});
+            $("img.persona").previewPersona();
         });
     </script>
 </body>
