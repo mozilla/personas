@@ -112,7 +112,7 @@
                 Firefox.</h3>
             </div>
             <div id="maincontent">
-                <p id="breadcrumbs">Personas Home : Admin </p>
+                <p id="breadcrumbs"><a href="https://www.getpersonas.com">Personas Home</a> : Admin </p>
                 <div id="gallery">
 <?php
 

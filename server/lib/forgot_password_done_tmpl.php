@@ -23,7 +23,7 @@
                 <h2>Forgot Your Password?</h2>
             </div>
             <div id="maincontent">
-                <p id="breadcrumbs">Personas Home : Sign In: Forgot Your Password?</p>
+                <p id="breadcrumbs"><a href="https://www.getpersonas.com">Personas Home</a> : <a href="https://personas.services.mozilla.com/upload">Sign In</a> : Forgot Your Password?</p>
                 <p>Your password has been reset. You may <a href="/upload">login</a> now.</p>
             </div>
         </div>

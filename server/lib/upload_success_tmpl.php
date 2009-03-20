@@ -25,7 +25,7 @@
             </div>
             <div id="maincontent" class="success">
                 <div id="breadcrumbs">
-                    Personas Home : Create Your Own    
+                    <a href="https://www.getpersonas.com">Personas Home</a> : Create Your Own    
                 </div>
                 <h2>Success!</h2>
                 <h3>You have successfully created your Persona.</h3>

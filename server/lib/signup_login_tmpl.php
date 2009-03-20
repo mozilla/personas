@@ -24,7 +24,7 @@
             </div>
             <div id="maincontent" class="login-signup">
                 <div id="breadcrumbs">
-                    Personas Home : Login    
+                    <a href="https://www.getpersonas.com">Personas Home</a> : Login    
                 </div>
      <?php if (array_key_exists('success_message', $this->_errors)) echo '<p class="logout-success">' . $this->_errors['success_message'] . '</p>' ?>
                 <div id="login">

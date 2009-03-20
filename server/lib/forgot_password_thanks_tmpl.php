@@ -25,7 +25,7 @@
                 <h3>Follow the easy steps below to start dressing up your browser!</h3>
             </div>
             <div id="maincontent">
-                <p id="breadcrumbs">Personas Home : Sign In: Forgot Your Password?</p>
+                <p id="breadcrumbs"><a href="https://www.getpersonas.com">Personas Home</a> : <a href="https://personas.services.mozilla.com/upload">Sign In</a> : Forgot Your Password?</p>
                 
                 <p>Your password reset information has been e-mailed to you.</p>
             </div>

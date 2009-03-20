@@ -56,7 +56,7 @@
                 Firefox.</h3>
             </div>
             <div id="maincontent">
-                <p id="breadcrumbs">Personas Home : Gallery : <?= $category ?><?php if ($tab != "All") { echo " : $tab"; } ?></p>
+                <p id="breadcrumbs"><a href="https://www.getpersonas.com">Personas Home</a> : <a href="https://www.getpersonas.com/store/gallery/All/Popular">Gallery</a> : <?= $category ?><?php if ($tab != "All") { echo " : $tab"; } ?></p>
                 <div id="gallery">
                     <ul>
 <?php

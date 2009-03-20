@@ -25,7 +25,7 @@
                 <h3>Follow the easy steps below to start dressing up your browser!</h3>
             </div>
             <div id="maincontent">
-                <p id="breadcrumbs">Personas Home : Create Your Own</p>
+                <p id="breadcrumbs"><a href="https://www.getpersonas.com">Personas Home</a> : Create Your Own</p>
                 
                 <h4>Terms of Service</h4>
                <form action="upload" method="post">

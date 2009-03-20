@@ -55,7 +55,7 @@
                 Firefox.</h3>
             </div>
             <div id="maincontent">
-                <p id="breadcrumbs">Personas Home : View Personas</p>
+                <p id="breadcrumbs"><a href="https://www.getpersonas.com">Personas Home</a> : View Personas</p>
 <?php
 	if ($persona_data['id'])
 	{

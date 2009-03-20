@@ -584,6 +584,22 @@ img.preview  {
     margin: 0 0 10px 0;
 }
 
+#breadcrumbs a:link {
+    color: #747474;
+}
+
+#breadcrumbs a:visited {
+    color: #747474;
+}
+
+#breadcrumbs a:hover {
+    color: #747474;
+}
+
+#breadcrumbs a:active {
+    color: #747474;
+}
+
 #maincontent, #secondary-content {
     margin: 20px 0 0 0;
     color: #707070;

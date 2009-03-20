@@ -25,7 +25,7 @@
                 <h3>Follow the easy steps below to start dressing up your browser!</h3>
             </div>
             <div id="maincontent">
-                <p id="breadcrumbs">Personas Home : <?= $upload_submitted['id'] ? "Edit" : "Create" ?> Your Own</p>
+                <p id="breadcrumbs"><a href="https://www.getpersonas.com">Personas Home</a> : <?= $upload_submitted['id'] ? "Edit" : "Create" ?> Your Own</p>
                 
                 <h4><?= $upload_submitted['id'] ? "Edit" : "Create" ?> Your Persona</h4>
                 <form method="POST" action="upload" enctype='multipart/form-data'>
