@@ -957,6 +957,10 @@ img.preview  {
     margin: 0 0 20px 0;
 }
 
+.logout-success {
+    color: #7FC32A;
+}
+
 #agreement {
     width: 100%;
     height: 3   00px;
