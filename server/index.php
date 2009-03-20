@@ -79,7 +79,7 @@
                             <p class="designer"><strong>Designer:</strong> <?= $persona['author'] ?></p>
                             <p class="added"><strong>Added:</strong> <?= $persona_date?></p>
                             <hr />
-                            <p class="description"><strong>Description:</strong> <?= $item_description ?></p>
+
                         </li>
 <?php
 	}
