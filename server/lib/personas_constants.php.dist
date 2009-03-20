@@ -37,4 +37,7 @@ if (!defined('PERSONAS_LIVE_PREFIX'))
 #salt for login cookie generation
 if (!defined('PERSONAS_LOGIN_SALT')) { define('PERSONAS_LOGIN_SALT', 'OurSalt'); }
 
+#id of the persona being featured for the featured designer
+if (!defined('FEATURE_DESIGNER_PERSONA_ID')) { define('FEATURE_DESIGNER_PERSONA_ID', 1); }
+
 ?>

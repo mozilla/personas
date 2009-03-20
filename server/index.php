@@ -97,7 +97,7 @@
 ?>
 					<img class="preview persona" src="<?= PERSONAS_LIVE_PREFIX . '/' . url_prefix($persona['id']) ?>/preview_featured.jpg" persona="<?= $persona_json ?>>
                     <h4><?= $persona['author'] ?></h4>
-                    <p class="try"><a href="<?= $detail_url ?>">view details »</a></p>
+                    <p class="try"><a href="/store/featured">view more »</a></p>
             </div>
             <div class="feature last">
                 <h3>Most Popular Personas</h3>
