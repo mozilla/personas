@@ -71,7 +71,7 @@
                 </p>
 <?php
 		if ($persona_data['popularity'])
-			print '<p class="numb-users">' . $persona_data['popularity'] . ($persona_data['popularity'] == 1 ? "user" : "users") . '</p>';
+			print '<p class="numb-users">' . $persona_data['popularity'] . ($persona_data['popularity'] == 1 ? " user" : " users") . '</p>';
 	
 	} else {
 ?>            
