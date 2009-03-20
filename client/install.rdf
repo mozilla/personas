@@ -12,18 +12,18 @@
     <em:contributor>Myk Melez</em:contributor>
 
     <!-- Babelzilla users who contributed to localizations -->
-    <em:translator>drry</em:translator>
-    <em:translator>jooliaan</em:translator>
-    <em:translator>Lisman</em:translator>
-    <em:translator>jojaba</em:translator>
     <em:translator>dogi</em:translator>
+    <em:translator>drry</em:translator>
+    <em:translator>fernph</em:translator>
+    <em:translator>Funkin2x</em:translator>
     <em:translator>funTomas</em:translator>
     <em:translator>Joergen</em:translator>
+    <em:translator>jojaba</em:translator>
+    <em:translator>jooliaan</em:translator>
+    <em:translator>Lisman</em:translator>
     <em:translator>SiiiE</em:translator>
-    <em:translator>wtspout</em:translator>
-    <em:translator>fernph</em:translator>
     <em:translator>stoyan</em:translator>
-    <em:translator>Funkin2x</em:translator>
+    <em:translator>wtspout</em:translator>
 
     <em:homepageURL>http://labs.mozilla.com/projects/personas/</em:homepageURL>
     <em:iconURL>chrome://personas/content/personas_32x32.png</em:iconURL>
