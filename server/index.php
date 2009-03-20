@@ -86,11 +86,10 @@
                 </div>
             </div>
             <div class="feature">
-                <h3>Featured Designer</h3>
-                <img src="img/featured-designer-example.jpg" class="preview">
-                <h4>NoBox Marketing</h4>
-                <hr />
-                <p class="description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed eget magna vel nibh posuere sodales. Vivamus sit amet elit vel diam pellentesque venenatis. </p>
+                 <h3>Featured Designer</h3>
+                    <img src="/store/img/greenpeace-featured.jpg" class="preview">
+                    <h4>GreenPeace</h4>
+                
             </div>
             <div class="feature last">
                 <h3>Most Popular Personas</h3>
