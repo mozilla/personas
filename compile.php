@@ -86,14 +86,14 @@
 		fclose($fp);	
 	}
 
-	function get_featured_html()
+	function get_featured_html($db)
 	{
 		$path = PERSONAS_STORAGE_PREFIX . "/featured";
 		$persona = $db->get_persona_by_id(FEATURE_DESIGNER_PERSONA_ID);
 
 		$ch = curl_init();
 		$fp = fopen("$path", "w");	
-		curl_setopt($ch, CURLOPT_URL, "http://localhost/store/dynamic/Designer/" . $persona['author']);
+		curl_setopt($ch, CURLOPT_URL, "http://localhost/store/dynamic/gallery/Designer/" . $persona['author']);
 		curl_setopt($ch, CURLOPT_FILE, $fp);
 		curl_exec($ch);
 		fclose($fp);	
@@ -176,7 +176,7 @@
 	get_mainpage_html();
 
 	#featured designers
-	get_featured_html();
+	get_featured_html($db);
 
 
 ?>
