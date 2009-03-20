@@ -110,7 +110,7 @@
     <script type="text/javascript" charset="utf-8">
         $(document).ready(function () {
             $("#header").ie6Warning({"message":'<div id="ie6">Upgrade your browser to get the most out of this website. <a href="%LINK%">Download Firefox for free</a>.</div>'});
-            $("#try-button").personaButton({
+            $("#try-button").personasButton({
                                         'hasPersonas':'<span>wear this</span><span>&nbsp;</span>',
                                         'hasFirefox':'<span>get personas now!</span><span>&nbsp;</span>',
                                         'noFirefox':'<span>get personas with firefox</span><span>&nbsp;</span>'

@@ -1106,8 +1106,9 @@ img.preview  {
     padding: 5px 0 0 0;
 }
 
-#buttons {
+#maincontent #buttons {
     float: left;
+    font-size: 100%;
 }
 
 .success-options {

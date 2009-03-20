@@ -144,6 +144,7 @@ $.fn.ie6Warning = function(options) {
 };
 
 $.fn.personasButton = function(options) {
+
     if(jQuery.browser.mozilla) {
         if(jQuery.hasPersonas()) {
             jQuery(this).html(options['hasPersonas']);
@@ -162,7 +163,7 @@ $.fn.personasButton = function(options) {
 };
 
 $.hasPersonas = function() {
-    var body = document.getElementById("body");
+    var body = document.getElementsByTagName("body")[0];
     var status = document.getElementById("status");
     
     try {
