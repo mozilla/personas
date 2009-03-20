@@ -126,7 +126,7 @@
 
 	if (!(array_key_exists('id', $upload_submitted) && $_FILES['header-image']['size'] == 0)) #images are optional on edit
 	{
-		if (!array_key_exists('header-image', $_FILES))
+		if ($_FILES['header-image']['size'] == 0)
 			$upload_errors['header-image'] = "Please include a header image";
 		elseif ($_FILES['header-image']['size'] > 307200)
 			$upload_errors['header-image'] = "Please limit your header file size to 300K";
@@ -137,7 +137,7 @@
 	
 	if (!(array_key_exists('id', $upload_submitted) && $_FILES['footer-image']['size'] == 0)) #images are optional on edit
 	{
-		if (!array_key_exists('footer-image', $_FILES))
+		if ($_FILES['footer-image']['size'] == 0)
 			$upload_errors['footer-image'] = "Please include a footer image";
 		elseif ($_FILES['footer-image']['size'] > 307200)
 			$upload_errors['footer-image'] = "Please limit your footer file size to 300K";
