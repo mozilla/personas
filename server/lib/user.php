@@ -200,10 +200,10 @@ class PersonaUser
 			if (!$captcha_response->is_valid) 
 				$this->_errors['captcha'] = "Invalid captcha response. Please try again.";
 
-			if (!preg_match('/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i', $email)) 
+			if (!preg_match('/^[A-Z0-9\._%+-]+@[A-Z0-9\.-]+\.[A-Z]{2,4}$/i', $email)) 
 				$this->_errors['create_email'] = "Invalid email address";
 
-			if (!preg_match('/^[A-Z0-9._-]+$/i', $username)) 
+			if (!preg_match('/^[A-Z0-9\._-]+$/i', $username)) 
 				$this->_errors['create_username'] = "Illegal characters in the username (alphanumerics, period, underscore and dash only)";
 			elseif (strlen($username) > 32)
 				$this->_errors['create_username'] = "Please limit your username to 32 characters or less";
