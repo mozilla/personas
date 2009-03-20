@@ -69,8 +69,10 @@
                 <p id="buttons">
                     <a href="#" class="button" id="try-button" persona="<?= $persona_json ?>"><span>try it now</span><span>&nbsp;</span></a>
                 </p>
-                <p class="numb-users"><?= $persona_data['popularity'] ?> users</p>
 <?php
+		if ($persona_data['popularity'])
+			print '<p class="numb-users">' . $persona_data['popularity'] . ($persona_data['popularity'] == 1 ? "user" : "users") . '</p>';
+	
 	} else {
 ?>            
                 <p class="description">We are unable to find this persona. Please return to the gallery and try again.</p>
