@@ -105,7 +105,7 @@
 	elseif ($upload_submitted['name'] == '')
 		$upload_errors['name'] = "Please use alphanumeric characters in your persona name";
 	elseif (strlen($upload_submitted['name']) < 6)
-		$upload_errors['name'] = "Please use at least 5 characters in your persona name";
+		$upload_errors['name'] = "Please use at least 6 characters in your persona name";
 	elseif (strlen($upload_submitted['name']) > 32)
 		$upload_errors['name'] = "Please limit your persona name to 32 characters";
 	else
