@@ -256,7 +256,7 @@
                                 <p class="designer"><strong>Category:</strong> <?= $item['category'] ?></p>
                                 <p class="added"><strong>Submitted:</strong> <?= $item['submit'] ?></p>
                                 <p><?= $item['description'] ?></p>
-                                <p><a href="/admin/pending.php?id=<?= $item['id'] ?>&category=<?= $item['category'] ?>" class="view">Administer »</a></p>
+                                <p><a href="/admin/pending.php?id=<?= $item['id'] ?>&category=<?= $page_category ?>" class="view">Administer »</a></p>
                             </div>
                         </li>
  <?php
