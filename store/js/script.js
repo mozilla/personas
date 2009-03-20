@@ -148,6 +148,14 @@ $.fn.personasButton = function(options) {
     if(jQuery.browser.mozilla) {
         if(jQuery.hasPersonas()) {
             jQuery(this).html(options['hasPersonas']);
+            jQuery(this).hover(
+                function(event) {
+                    dispatchPersonaEvent('PreviewPersona', event.originalTarget);
+                },
+                function(event) {
+                    dispatchPersonaEvent('ResetPersona', event.originalTarget);
+                }
+            );
             jQuery(this).click(function(event) {
                 dispatchPersonaEvent('SelectPersona', event.originalTarget);
             });
