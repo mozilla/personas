@@ -175,5 +175,8 @@
 	#and the index
 	get_mainpage_html();
 
+	#featured designers
+	get_featured_html();
+
 
 ?>
