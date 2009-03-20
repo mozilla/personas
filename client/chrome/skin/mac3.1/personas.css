@@ -198,8 +198,8 @@
   color: inherit !important;
 }
 
-.findbar-container > toolbarbutton[disabled],
-.findbar-container > hbox > toolbarbutton[disabled] {
+#main-window[persona] .findbar-container > toolbarbutton[disabled],
+#main-window[persona] .findbar-container > hbox > toolbarbutton[disabled] {
   opacity: 0.5;
 }
 
