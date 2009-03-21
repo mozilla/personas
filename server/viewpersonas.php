@@ -25,7 +25,7 @@
 		$page_size = null;
 		
 	$user = new PersonaUser();
-	if (array_key_exists('PERSONA_USER', $_COOKIE)
+	if (array_key_exists('PERSONA_USER', $_COOKIE))
 		$user->authenticate_user_from_cookie($_COOKIE['PERSONA_USER']);
 ?>
 
