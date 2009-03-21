@@ -102,11 +102,10 @@
 	function get_updated_html()
 	{
 		$path = PERSONAS_STORAGE_PREFIX . "/updated";
-		if (!is_dir($path)) { mkdir($path); }
 
 		$ch = curl_init();
 		$fp = fopen("$path", "w");	
-		curl_setopt($ch, CURLOPT_URL, "http://localhost/store/dynamic/updated/index.html");
+		curl_setopt($ch, CURLOPT_URL, "http://localhost/store/dynamic/updated");
 		curl_setopt($ch, CURLOPT_FILE, $fp);
 		curl_exec($ch);
 		fclose($fp);	
@@ -192,7 +191,7 @@
 	get_featured_html($db);
 
 	#update page
-	get_updated_html($db);
+	get_updated_html();
 
 
 ?>
