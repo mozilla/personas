@@ -191,5 +191,8 @@
 	#featured designers
 	get_featured_html($db);
 
+	#update page
+	get_updated_html($db);
+
 
 ?>
