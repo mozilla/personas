@@ -62,7 +62,7 @@
 ?>
 				<h2><?= $persona_data['name'] ?></h2>
                 <h3>created by <?= $persona_data['author'] ?></h3>
-                <img class="detailed-view"  alt="<?= $item['name'] ?>" persona="<?= $persona_json ?>" src="<?= PERSONAS_LIVE_PREFIX . '/' . url_prefix($persona_id) ?>/preview_large.jpg" >
+                <img class="detailed-view"  alt="<?= $persona_data['name'] ?>" persona="<?= $persona_json ?>" src="<?= PERSONAS_LIVE_PREFIX . '/' . url_prefix($persona_id) ?>/preview_large.jpg" >
                 
                 <p class="description"><strong>Description:</strong> <?= $persona_data['description'] ?></p>
                 

@@ -303,6 +303,9 @@ class PersonaUser
 	
 	function authenticate_user_from_cookie($auth_cookie) 
 	{
+		if (!$auth_cookie)
+			return 0;
+		
 		list($username, $token) = explode(' ', $auth_cookie);
 		
 		try

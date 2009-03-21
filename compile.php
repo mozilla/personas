@@ -102,6 +102,7 @@
 	function get_updated_html()
 	{
 		$path = PERSONAS_STORAGE_PREFIX . "/updated";
+		if (!is_dir($path)) { mkdir($path); }
 
 		$ch = curl_init();
 		$fp = fopen("$path", "w");	
