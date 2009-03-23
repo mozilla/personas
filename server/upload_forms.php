@@ -20,7 +20,7 @@
 	$db = new PersonaStorage();
 	
 	$upload_errors = array();
-	$upload_submitted = array();
+	$upload_submitted = array('id' => null);
 
 	#is this an edit?
 	
@@ -207,7 +207,7 @@
 	}
 	else
 	{
-		$upload_submitted['id'] = $db->submit_persona($upload_submitted['name'], $upload_submitted['category'], $upload_submitted['header'], $upload_submitted['footer'], $auth_user, $upload_submitted['accentcolor'], $upload_submitted['textcolor'], $upload_submitted['description'], $upload_submitted['license'], $upload_submitted['reason'], $upload_submitted['reason-other']);
+		$upload_submitted['id'] = $db->submit_persona($upload_submitted['name'], $upload_submitted['category'], $upload_submitted['header'], $upload_submitted['footer'], $auth_user, $upload_submitted['accentcolor'], $upload_submitted['textcolor'], $upload_submitted['description'], $upload_submitted['license'], $upload_submitted['reason'], $upload_submitted['other-reason']);
 		$db->log_action($auth_user, $upload_submitted['id'], "Added");
 	}
 	$persona_path = make_persona_pending_path($upload_submitted['id']);
