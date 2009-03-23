@@ -753,15 +753,16 @@ img.preview  {
 
 .gallery-item {
     width: 200px;
-    min-height: 200px;
+    min-height: 160px;
     display: -moz-inline-stack;
     display: inline-block;
     vertical-align: top;
     margin: 5px 22px 5px 5px;
     zoom: 1;
     *display: inline;
-    _height: 250px;
+    _height: 160px;
     color: #a4a4a4;
+    padding: 70px 0 0 0;
 }
 
 #gallery .gallery-item h3 {
@@ -769,7 +770,7 @@ img.preview  {
     font-size: 116%;
     font-weight: bold;
     font-family: Helvetica, sans-serif;
-    margin: 70px 0 0 0;
+    margin: 0 0 0 0;
     position: relative;
 }
 
@@ -793,6 +794,7 @@ img.preview  {
 
 .gallery-item .preview {
     top: -76px;
+    left: 0;
     position: absolute;
 }
 

@@ -5,6 +5,22 @@ var PERSONAS_URLS = {
    'addon'          : 'https://addons.mozilla.org/en-US/firefox/downloads/latest/10900'
 }
 
+/**
+    Bubbles up persona event to tell Firefox to load a persona
+**/
+function dispatchPersonaEvent(aType, aNode) 
+{
+    try {
+        if (!aNode.hasAttribute("persona"))
+			return;	
+		
+	    var event = document.createEvent("Events");
+		event.initEvent(aType, true, false);
+		aNode.dispatchEvent(event);
+    } catch(e) {}
+}
+
+
 $.fn.slider = function (options) {
     var settings = jQuery.extend({
         "slides"        : "#slides li",
@@ -110,18 +126,6 @@ $.fn.previewPersona = function() {
             dispatchPersonaEvent('ResetPersona', event.originalTarget);
         }
     );
-    
-    /**
-        Bubbles up persona event to tell Firefox to load a persona
-    **/
-    function dispatchPersonaEvent(aType, aNode) 
-	{
-		if (!aNode.hasAttribute("persona"))
-			return;
-		var event = document.createEvent("Events");
-		event.initEvent(aType, true, false);
-		aNode.dispatchEvent(event);
-	}
 };
 
 /**
