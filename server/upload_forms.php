@@ -24,7 +24,7 @@
 
 	#is this an edit?
 	
-	$id == null;
+	$id = null;
 	
 	if (array_key_exists('id', $_GET))
 		$id = $_GET['id'];
@@ -96,12 +96,11 @@
 	if (!in_array($upload_submitted['category'], $categories))
 		$upload_errors['category'] = "Unknown category";
 	
-error_log(strlen($upload_submitted['description']));
 	if (strlen($upload_submitted['description']) > 500)
 		$upload_errors['description'] = "Please limit your description to 500 characters";
 	
 	#sanitize it
-	$upload_errors['description'] = htmlspecialchars($upload_errors['description']); 
+	$upload_submitted['description'] = htmlspecialchars($upload_submitted['description']); 
 	
 	
 	
