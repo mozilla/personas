@@ -28,7 +28,7 @@
 			}
 			
 			$code = $user->generate_password_change_code($username);
-			$mail_message = "URL to visit: http://sm-personas01.mozilla.org/forgot_password?username=$username&code=$code";
+			$mail_message = "URL to visit: https://personas.services.mozilla.org/forgot_password?username=$username&code=$code";
 			if (!mail($email, 'Resetting your personas password', $mail_message, "From: personas-devel@mozilla.com\r\n"))
 			{
 				$error = "There was a problem with our mail server. Please try again in a few minutes. If it continues to not work, please contact personas-devel@mozilla.com";
