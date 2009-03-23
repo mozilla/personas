@@ -30,7 +30,7 @@
                 <h2>Success!</h2>
                 <h3>You have successfully created your Persona.</h3>
                 <ul class="success-options">
-                    <li><a href="#">view Personas directory »</a></li>
+                    <li><a href="https://www.getpersonas.com/store/gallery/All/Popular">View Personas Gallery »</a></li>
                 </ul>
             </div>
             <div id="secondary-content">
