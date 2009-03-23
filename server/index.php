@@ -46,8 +46,8 @@
                     <li><a href="#">3</a></li>
                     <li><a href="#">4</a></li>
                 </ul>
-                <a href="#" id="slideshow-previous"><img src="img/nav-prev.png" alt="Previous"/></a>
-                <a href="#" id="slideshow-next"><img src="img/nav-next.png" alt="Next"/></a>
+                <a href="#" id="slideshow-previous"><img src="/store/img/nav-prev.png" alt="Previous"/></a>
+                <a href="#" id="slideshow-next"><img src="/store/img/nav-next.png" alt="Next"/></a>
                 <div id="slideshow">
                     <ul id="slides">
 <?php
