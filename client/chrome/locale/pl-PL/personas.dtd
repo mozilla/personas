@@ -1,2 +1,17 @@
-<!ENTITY personas_app_title "Personas for Firefox">
-<!ENTITY useDefaultPersona.label "Użyj domyślnej">
+<!ENTITY personas_app_title "Schematy dla Firefoxa">
+<!ENTITY useDefaultPersona.label "Domyślny schemat">
+<!ENTITY preferences.label "Preferencje">
+<!ENTITY viewDirectory.label "Wyświetl katalog">
+<!ENTITY customPersona.label "Niestandardowy schemat">
+<!ENTITY customName.label "Nazwa:">
+<!ENTITY header.label "Nagłówek:">
+<!ENTITY selectBackground.label "Przeglądaj...">
+<!ENTITY footer.label "Stopka:">
+<!ENTITY textColorPicker.label "Kolor tekstu:">
+<!ENTITY accentColorPicker.label "Kolor akcentu:">
+<!ENTITY useDefaultColor.label "Użyj domyślnych">
+<!ENTITY okButton.label "OK">
+<!ENTITY contextHomePage.label "Strona domowa">
+<!ENTITY contextPreferences.label "Ustawienia">
+<!ENTITY contextEdit.label "Edytuj">
+<!ENTITY contextApply.label "Akceptuj">

@@ -31,7 +31,7 @@ locale   personas   it-IT       chrome/locale/it-IT/
 locale   personas   ja-JP       chrome/locale/ja-JP/
 locale   personas   ko-KR       chrome/locale/ko-KR/
 #locale   personas   nb-NO       chrome/locale/nb-NO/
-#locale   personas   pl-PL       chrome/locale/pl-PL/
+locale   personas   pl-PL       chrome/locale/pl-PL/
 locale   personas   pt-BR       chrome/locale/pt-BR/
 #locale   personas   ru-RU       chrome/locale/ru-RU/
 #locale   personas   sk-SK       chrome/locale/sk-SK/

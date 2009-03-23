@@ -1,0 +1,10 @@
+<!ENTITY preferences.title "Preferencje schematów">
+<!ENTITY generalSettings.label "Ogólne">
+<!ENTITY previewEnabled.label "Wyświetlaj podgląd po zaznaczeniu w menu">
+<!ENTITY reportSelection.label "Uczestnicz w badaniu popularności">
+<!ENTITY reportSelection.title "Szczegóły">
+<!ENTITY displaySettings.label "Wyświetlanie">
+<!ENTITY useTextColor.label "Zmieniaj kolor tekstu">
+<!ENTITY useAccentColor.label "Zmieniaj kolor akcentu">
+<!ENTITY advancedSettings.label "Zaawansowane">
+<!ENTITY showCustomMenu.label "Wyświetlaj niestandardowe schematy w menu">
