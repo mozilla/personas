@@ -89,12 +89,20 @@
 	$upload_submitted['name'] = trim(ini_get('magic_quotes_gpc') ? stripslashes($_POST['name']) : $_POST['name']);
 	$upload_submitted['accentcolor'] = ini_get('magic_quotes_gpc') ? stripslashes($_POST['accentcolor']) : $_POST['accentcolor'];
 	$upload_submitted['textcolor'] = ini_get('magic_quotes_gpc') ? stripslashes($_POST['textcolor']) : $_POST['textcolor'];
-	$upload_submitted['description'] = htmlspecialchars(ini_get('magic_quotes_gpc') ? stripslashes($_POST['description']) : $_POST['description']);
+	$upload_submitted['description'] = ini_get('magic_quotes_gpc') ? stripslashes($_POST['description']) : $_POST['description'];
 	$upload_submitted['reason'] = ini_get('magic_quotes_gpc') ? stripslashes($_POST['reason']) : $_POST['reason'];
 	$upload_submitted['other-reason'] = ini_get('magic_quotes_gpc') ? stripslashes($_POST['other-reason']) : $_POST['other-reason'];
 
 	if (!in_array($upload_submitted['category'], $categories))
 		$upload_errors['category'] = "Unknown category";
+	
+	if (strlen($upload_submitted['description']) > 500)
+		$upload_errors['description'] = "Please limit your description to 500 characters";
+	
+	#sanitize it
+	$upload_errors['description'] = htmlspecialchars($upload_errors['description']); 
+	
+	
 	
 	if(preg_match('/[^A-Za-z0-9_\-\. \&]/', $upload_submitted['name']))
 		$upload_errors['name'] = "Please use only alphanumerics, underscore, hyphen, space, period and ampersand in your persona name";	
@@ -126,9 +134,6 @@
 	if ($upload_submitted['license'] == 'restricted' && !$upload_submitted['reason'])
 		$upload_errors['reason'] = "Please provide a reason for creating this persona";
 	
-	if (strlen($upload_submitted['description']) > 500)
-		$upload_errors['description'] = "Please limit your description to 500 characters";
-		
 	#basic non-committal image upload checks
 
 	if (!(array_key_exists('id', $upload_submitted) && $_FILES['header-image']['size'] == 0)) #images are optional on edit
