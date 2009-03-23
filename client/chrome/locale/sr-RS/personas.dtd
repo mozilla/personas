@@ -1,0 +1,17 @@
+<!ENTITY personas_app_title "Personas за Firefox">
+<!ENTITY useDefaultPersona.label "Подразумевана">
+<!ENTITY preferences.label "Подешавања...">
+<!ENTITY viewDirectory.label "Прикажи деректоријум...">
+<!ENTITY customPersona.label "Прилагођена персона">
+<!ENTITY customName.label "Име:">
+<!ENTITY header.label "Заглавље:">
+<!ENTITY selectBackground.label "Претражи...">
+<!ENTITY footer.label "Поглавље:">
+<!ENTITY textColorPicker.label "Боја текста:">
+<!ENTITY accentColorPicker.label "Боја нагласка:">
+<!ENTITY useDefaultColor.label "Користи подразумевану">
+<!ENTITY okButton.label "У реду">
+<!ENTITY contextHomePage.label "Матична страна">
+<!ENTITY contextPreferences.label "Подешавања">
+<!ENTITY contextEdit.label "Измени">
+<!ENTITY contextApply.label "Примени">
