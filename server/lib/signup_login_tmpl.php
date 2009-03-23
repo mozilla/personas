@@ -41,7 +41,7 @@
                         </p>
                         
                         <p><label for="login_remember"><input type="checkbox" name="login_remember" id="remember" value="1" /> Remember me on this computer</label></p>
-                        <button type="submit" class="button"><span>sign in</span><span class="arrow"></span></button>
+                        <button type="submit" class="button"><span>sign in</span><span class="arrow">&nbsp;</span></button>
                         
                         <p class="forgot"><a href="/forgot_password">Forgot your password?</a></p>
                     </form>
@@ -95,7 +95,7 @@
                         
                     </div>
                     
-                    <button type="submit" class="button"><span>sign me up</span><span class="arrow"></span></button>
+                    <button type="submit" class="button"><span>sign me up</span><span class="arrow">&nbsp;</span></button>
                     </form>
                 </div>
 			<p class="disclaimer">Mozilla values your privacy. We will not sell or rent your email address</p>
