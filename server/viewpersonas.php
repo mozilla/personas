@@ -87,7 +87,7 @@
 			foreach ($list as $item)
 			{
 				if ($tab == 'Popular' and !$item['popularity'])
-					continue
+					continue;
 				$preview_url = PERSONAS_LIVE_PREFIX . '/' . url_prefix($item['id']) . '/' . "preview.jpg";
 				$persona_json = htmlentities(json_encode(extract_record_data($item)));
 				$persona_date = date("n/j/Y", strtotime($item['approve']));
