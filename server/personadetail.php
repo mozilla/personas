@@ -39,7 +39,7 @@
 <body>
     <div id="outer-wrapper">
         <div id="inner-wrapper">
-            <p id="account"><a href="https://personas.services.mozilla.com/upload">Designer Tools</a></p>
+            <p id="account"></p>
             <div id="nav">
                 <h1><a href="https://www.getpersonas.com/"><img src="/store/img/logo.png" alt="Mozilla Labs Personas"></a></h1>
                 <ul>

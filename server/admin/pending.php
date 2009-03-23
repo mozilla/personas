@@ -108,7 +108,7 @@
 <body>
     <div id="outer-wrapper">
         <div id="inner-wrapper">
-            <p id="account"><a href="https://personas.services.mozilla.com/upload">Designer Tools</a></p>
+            <p id="account"></p>
             <div id="nav">
                 <h1><a href="https://www.getpersonas.com/"><img src="/store/img/logo.png" alt="Mozilla Labs Personas"></a></h1>
                 <ul>
@@ -221,10 +221,10 @@
 		Footer:<br>
 		<img src="<?= $footer_url ?>"><p>
 		<p>
-		If reject, reason to tell the user: <input type=text id=formreason name=reason>
+		If reject, reason to tell the user: <input type=text name=reason>
 		<p>
 		<input type="submit" name="verdict" value="accept">
-		<input type="submit" name="verdict" value="reject" onclick="if ($('#formreason').val() == '') {alert('Please provide a reason for rejection'); return false;}">
+		<input type="submit" name="verdict" value="reject">
 		<input type="submit" name="verdict" value="rebuild">
 		</form>
 <?php

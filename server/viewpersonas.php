@@ -41,7 +41,7 @@
 <body>
     <div id="outer-wrapper">
         <div id="inner-wrapper">
-            <p id="account"><a href="https://personas.services.mozilla.com/upload">Designer Tools</a></p>
+            <p id="account"></p>
             <div id="nav">
                 <h1><a href="https://www.getpersonas.com/"><img src="/store/img/logo.png" alt="Mozilla Labs Personas"></a></h1>
                 <ul>
@@ -86,8 +86,6 @@
 			$description_max = 50;
 			foreach ($list as $item)
 			{
-				if ($tab == 'Popular' and !$item['popularity'])
-					continue;
 				$preview_url = PERSONAS_LIVE_PREFIX . '/' . url_prefix($item['id']) . '/' . "preview.jpg";
 				$persona_json = htmlentities(json_encode(extract_record_data($item)));
 				$persona_date = date("n/j/Y", strtotime($item['approve']));
