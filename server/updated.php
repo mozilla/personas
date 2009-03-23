@@ -121,6 +121,7 @@
         $(document).ready(function () {
             $("#slideshow").slider();
         });
+        $("img.persona").previewPersona();
     </script>
 </body>
 </html>
