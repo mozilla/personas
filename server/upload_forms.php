@@ -96,6 +96,7 @@
 	if (!in_array($upload_submitted['category'], $categories))
 		$upload_errors['category'] = "Unknown category";
 	
+error_log(strlen($upload_submitted['description']));
 	if (strlen($upload_submitted['description']) > 500)
 		$upload_errors['description'] = "Please limit your description to 500 characters";
 	

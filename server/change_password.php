@@ -96,12 +96,21 @@
 				exit;
 			}
 	
+			if (strlen($password) < 6)
+			{
+				$error = "Password must be at least 6 characters long";
+				include "lib/forgot_password_reset_tmpl.php";
+				exit;
+			}
+
 			if ($password != $conf)
 			{
 				$error = "The password and confirmation do not match. Please try again";
 				include "lib/forgot_password_reset_tmpl.php";
 				exit;
 			}
+
+			
 	
 			#do some password strength validation here?
 			$user->update_password($username, $password);
