@@ -20,9 +20,11 @@
 	$db = new PersonaStorage();
 	
 	$upload_errors = array();
-	$upload_submitted = array('id' => null);
+	$upload_submitted = array();
 
 	#is this an edit?
+	
+	$id = null;
 	
 	if (array_key_exists('id', $_GET))
 		$id = $_GET['id'];
