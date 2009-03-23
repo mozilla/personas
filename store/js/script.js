@@ -154,14 +154,14 @@ $.fn.personasButton = function(options) {
             jQuery(this).html(options['hasPersonas']);
             jQuery(this).hover(
                 function(event) {
-                    dispatchPersonaEvent('PreviewPersona', event.originalTarget);
+                    dispatchPersonaEvent('PreviewPersona', event.currentTarget);
                 },
                 function(event) {
-                    dispatchPersonaEvent('ResetPersona', event.originalTarget);
+                    dispatchPersonaEvent('ResetPersona', event.currentTarget);
                 }
             );
             jQuery(this).click(function(event) {
-                dispatchPersonaEvent('SelectPersona', event.originalTarget);
+                dispatchPersonaEvent('SelectPersona', event.currentTarget);
             });
         } else {
             jQuery(this).html(options['hasFirefox']);
