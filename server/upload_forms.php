@@ -204,11 +204,13 @@
 	{
 		$db->submit_persona_edit($upload_submitted['id'], $auth_user, $upload_submitted['name'], $upload_submitted['category'], $upload_submitted['accentcolor'], $upload_submitted['textcolor'], $upload_submitted['description'], $upload_submitted['header'], $upload_submitted['footer'], $upload_submitted['reason'], $upload_submitted['reason-other']);
 		$db->log_action($auth_user, $id, "Edited");
+		$action_verb = "edited";
 	}
 	else
 	{
 		$upload_submitted['id'] = $db->submit_persona($upload_submitted['name'], $upload_submitted['category'], $upload_submitted['header'], $upload_submitted['footer'], $auth_user, $upload_submitted['accentcolor'], $upload_submitted['textcolor'], $upload_submitted['description'], $upload_submitted['license'], $upload_submitted['reason'], $upload_submitted['other-reason']);
 		$db->log_action($auth_user, $upload_submitted['id'], "Added");
+		$action_verb = "added";
 	}
 	$persona_path = make_persona_pending_path($upload_submitted['id']);
 	
