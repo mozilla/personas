@@ -34,13 +34,13 @@
 		
 	if ($id)	
 	{
+		$upload_submitted = $db->get_persona_by_id($id);
 		if (!$user->has_admin_privs() && $upload_submitted['author'] != $auth_user)
 		{
 			#include something bad here
 			echo "You don't have permission to edit that";
 			exit;
 		}
-		$upload_submitted = $db->get_persona_by_id($id);
 		$upload_submitted['agree'] = 1;
 		
 		#need to clean out the header and footer so we don't transfer old ones to the edit
