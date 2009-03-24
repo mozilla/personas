@@ -117,7 +117,6 @@
 #main-window[persona] #forward-button,
 #main-window[persona] #reload-button,
 #main-window[persona] #stop-button,
-#main-window[persona] #home-button,
 #main-window[persona] #print-button,
 #main-window[persona] #downloads-button,
 #main-window[persona] #history-button,
@@ -128,6 +127,14 @@
 #main-window[persona] #copy-button,
 #main-window[persona] #paste-button,
 #main-window[persona] #back-forward-dropmarker {
+  list-style-image: url("chrome://personas/skin/Toolbar.png");
+}
+
+/* The Home button gets styled specially when placed on the Bookmarks Toolbar.
+ * There it takes on the appearance of a bookmark.  And we don't want to hork
+ * that.  So here we only apply the persona-specific style when the button
+ * is not a bookmark item. */
+#main-window[persona] #home-button:not(.bookmark-item) {
   list-style-image: url("chrome://personas/skin/Toolbar.png");
 }
 
