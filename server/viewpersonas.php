@@ -43,12 +43,12 @@
         <div id="inner-wrapper">
             <p id="account"></p>
             <div id="nav">
-                <h1><a href="http://www.getpersonas.com/"><img src="/store/img/logo.png" alt="Mozilla Labs Personas"></a></h1>
+                <h1><a href="https://www.getpersonas.com/"><img src="/store/img/logo.png" alt="Mozilla Labs Personas"></a></h1>
                 <ul>
-                    <li class="gallery"><a href="http://www.getpersonas.com/store/gallery/All/Popular" class="active">Gallery</a></li>
+                    <li class="gallery"><a href="https://www.getpersonas.com/store/gallery/All/Popular" class="active">Gallery</a></li>
                     <li class="create"><a href="https://personas.services.mozilla.com/upload">Create <br/>Your Own</a></li>
-                    <li class="demo"><a href="http://www.getpersonas.com/store/demo_install.html">Demo</a></li>
-                    <li class="faq"><a href="http://www.getpersonas.com/store/faq.html">Frequent <br/>Questions</a></li>
+                    <li class="demo"><a href="https://www.getpersonas.com/store/demo_install.html">Demo</a></li>
+                    <li class="faq"><a href="https://www.getpersonas.com/store/faq.html">Frequent <br/>Questions</a></li>
                 </ul>
             </div>
             <div id="header">
@@ -57,7 +57,7 @@
                 Firefox.</h3>
             </div>
             <div id="maincontent">
-                <p id="breadcrumbs"><a href="http://www.getpersonas.com">Personas Home</a> : <a href="http://www.getpersonas.com/store/gallery/All/Popular">Gallery</a> : <?= $category ?><?php if ($tab != "All") { echo " : $tab"; } ?></p>
+                <p id="breadcrumbs"><a href="https://www.getpersonas.com">Personas Home</a> : <a href="https://www.getpersonas.com/store/gallery/All/Popular">Gallery</a> : <?= $category ?><?php if ($tab != "All") { echo " : $tab"; } ?></p>
                 <div id="gallery">
                     <ul>
 <?php
@@ -71,7 +71,7 @@
 			}
 			elseif ($tab == 'Popular')
 			{
-				$list = $db->get_recent_personas($category == 'All' ? null : $category, $page_size);			
+				$list = $db->get_popular_personas($category == 'All' ? null : $category, $page_size);			
 			}
 			elseif ($tab == 'My')
 			{
@@ -80,7 +80,7 @@
 			else
 			{
 				$start = ($page - 1) * $page_size;
-				$list = $db->get_popular_personas($category == 'All' ? null : $category, $page_size, $start);
+				$list = $db->get_recent_personas($category == 'All' ? null : $category, $page_size, $start);
 			}
 			
 			$description_max = 50;
@@ -202,7 +202,7 @@
         });
     </script>
     <div id="footer">
-        <p>Copyright © <?= date("Y") ?> Mozilla. Personas for Firefox is a Mozilla Labs Beta Project | <a href="http://labs.mozilla.com/about-labs/">About Mozilla Labs</a>    |  <a href="http://www.getpersonas.com/store/privacy.html">Privacy</a></p>
+        <p>Copyright © <?= date("Y") ?> Mozilla. Personas for Firefox is a Mozilla Labs Beta Project | <a href="http://labs.mozilla.com/about-labs/">About Mozilla Labs</a>    |  <a href="https://www.getpersonas.com/store/privacy.html">Privacy</a></p>
     </div>
 </body>
 </html>
