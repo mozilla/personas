@@ -30,7 +30,7 @@
     <em:translator>Wareczek</em:translator>       <!-- pl-PL, Babelzilla -->
     <em:translator>wtspout</em:translator>
 
-    <em:homepageURL>http://labs.mozilla.com/projects/personas/</em:homepageURL>
+    <em:homepageURL>http://www.getpersonas.com/</em:homepageURL>
     <em:iconURL>chrome://personas/content/personas_32x32.png</em:iconURL>
     <em:optionsURL>chrome://personas/content/preferences.xul</em:optionsURL>
 
