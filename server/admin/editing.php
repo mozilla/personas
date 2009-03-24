@@ -132,24 +132,19 @@
 			case 'accept':
 				if ($edits['header'])
 				{
-					unlink(make_persona_pending_path($id) . '/' . $persona['header']);
+					unlink(make_persona_storage_path($id) . '/' . $persona['header']);
 					rename (make_persona_pending_path($id) . '/' . $edits['header'], make_persona_storage_path($id) . '/' . $edits['header']);
-					rename (make_persona_pending_path($id) . '/preview.jpg', make_persona_storage_path($id) . '/preview.jpg');
-					rename (make_persona_pending_path($id) . '/preview_large.jpg', make_persona_storage_path($id) . '/preview_large.jpg');
-					rename (make_persona_pending_path($id) . '/preview_popular.jpg', make_persona_storage_path($id) . '/preview_popular.jpg');
 				}
 				
 				if ($edits['footer'])
 				{
-					unlink(make_persona_pending_path($id) . '/' . $persona['footer']);
+					unlink(make_persona_storage_path($id) . '/' . $persona['footer']);
 					rename (make_persona_pending_path($id) . '/' . $edits['footer'], make_persona_storage_path($id) . '/' . $edits['footer']);
 				}
 				
 				$db->approve_persona_edit($persona{'id'});
 				
-				#should pull this out into its own function
-				$new_persona = $db->get_persona_by_id($id);
-				file_put_contents(make_persona_storage_path($id) . '/index_1.json', json_encode(extract_record_data($new_persona)));
+				build_persona_files(make_persona_storage_path($id), $db->get_persona_by_id($id));
 
 				if ($persona['author'] == $edits['author'])
 					send_accept_email($user->get_email($persona['author']), $edits['name']);
