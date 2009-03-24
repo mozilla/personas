@@ -111,7 +111,7 @@
 
 	function get_updated_html()
 	{
-		$path = PERSONAS_STORAGE_PREFIX . "/updated";
+		$path = PERSONAS_STORAGE_PREFIX . "/updated/index.html";
 
 		$ch = curl_init();
 		$fp = fopen("$path", "w");	
