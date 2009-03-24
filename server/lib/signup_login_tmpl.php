@@ -9,14 +9,14 @@
 <body>
     <div id="outer-wrapper">
         <div id="inner-wrapper">
-            <p id="account"></p>
+            <p id="account"><a href="https://personas.services.mozilla.com/upload">Designer Tools</a></p>
             <div id="nav">
-                <h1><a href="http://www.getpersonas.com/"><img src="/store/img/logo.png" alt="Mozilla Labs Personas"></a></h1>
+                <h1><a href="https://www.getpersonas.com/"><img src="/store/img/logo.png" alt="Mozilla Labs Personas"></a></h1>
                 <ul>
-                    <li class="gallery"><a href="http://www.getpersonas.com/store/gallery/All/Popular">Gallery</a></li>
+                    <li class="gallery"><a href="https://www.getpersonas.com/store/gallery/All/Popular">Gallery</a></li>
                     <li class="create"><a href="https://personas.services.mozilla.com/upload">Create <br/>Your Own</a></li>
-                    <li class="demo"><a href="http://www.getpersonas.com/store/demo_install.html">Demo</a></li>
-                    <li class="faq"><a href="http://www.getpersonas.com/store/faq.html">Frequent <br/>Questions</a></li>
+                    <li class="demo"><a href="https://www.getpersonas.com/store/demo_install.html">Demo</a></li>
+                    <li class="faq"><a href="https://www.getpersonas.com/store/faq.html">Frequent <br/>Questions</a></li>
                 </ul>
             </div>
             <div id="header">
@@ -24,12 +24,11 @@
             </div>
             <div id="maincontent" class="login-signup">
                 <div id="breadcrumbs">
-                    <a href="http://www.getpersonas.com">Personas Home</a> : Login    
+                    Personas Home : Login    
                 </div>
-     <?php if (array_key_exists('success_message', $this->_errors)) echo '<p class="logout-success">' . $this->_errors['success_message'] . '</p>' ?>
                 <div id="login">
                     <h4>Already a Personas Designer?</h3>
-                    <form action="" method="post">
+                    <form action="<?= $_SERVER['SCRIPT_NAME'] ?>" method="post">
                         <p><label for="login_user">Username</label>
                         <input type="text" name="login_user" value="" id="" <?php if (array_key_exists('login_user', $this->_errors)) echo 'class="error"' ?> />
                         <?php if (array_key_exists('login_user', $this->_errors)) echo '<span class="error-message">' . $this->_errors['login_user'] . '</span>' ?>
@@ -41,7 +40,7 @@
                         </p>
                         
                         <p><label for="login_remember"><input type="checkbox" name="login_remember" id="remember" value="1" /> Remember me on this computer</label></p>
-                        <button type="submit" class="button"><span>sign in</span><span class="arrow">&nbsp;</span></button>
+                        <button type="submit" class="button"><span>sign in</span><span class="arrow"></span></button>
                         
                         <p class="forgot"><a href="/forgot_password">Forgot your password?</a></p>
                     </form>
@@ -51,7 +50,7 @@
 ?>
                 <div id="signup">
                     <h4>New Personas Designer?</h3>
-                    <form action="" method="post">
+                    <form action="<?= $_SERVER['SCRIPT_NAME'] ?>" method="post">
                     <p><label for="email">Email</label>
                     <input type="text" name="create_email" value="" id="" <?php if (array_key_exists('create_email', $this->_errors)) echo 'class="error"' ?>/>
 					<?php if (array_key_exists('create_email', $this->_errors)) echo '<span class="error-message">' . $this->_errors['create_email'] . '</span>' ?>
@@ -95,7 +94,7 @@
                         
                     </div>
                     
-                    <button type="submit" class="button"><span>sign me up</span><span class="arrow">&nbsp;</span></button>
+                    <button type="submit" class="button"><span>sign me up</span><span class="arrow"></span></button>
                     </form>
                 </div>
 			<p class="disclaimer">Mozilla values your privacy. We will not sell or rent your email address</p>
@@ -108,7 +107,7 @@
     <script src="js/jquery.js"></script>
     <script src="js/script.js"></script>
     <div id="footer">
-        <p>Copyright © 2009 Mozilla. Personas for Firefox is a Mozilla Labs Beta Project | <a href="http://labs.mozilla.com/about-labs/">About Mozilla Labs</a>    |  <a href="http://www.getpersonas.com/store/privacy.html">Privacy</a></p>
+        <p>Copyright © 2009 Mozilla. Personas for Firefox is a Mozilla Labs Beta Project | <a href="http://labs.mozilla.com/about-labs/">About Mozilla Labs</a>    |  <a href="https://www.getpersonas.com/store/privacy.html">Privacy</a></p>
     </div>
 </body>
 </html>
