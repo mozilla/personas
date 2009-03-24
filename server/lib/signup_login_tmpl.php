@@ -11,12 +11,12 @@
         <div id="inner-wrapper">
             <p id="account"></p>
             <div id="nav">
-                <h1><a href="https://www.getpersonas.com/"><img src="/store/img/logo.png" alt="Mozilla Labs Personas"></a></h1>
+                <h1><a href="http://www.getpersonas.com/"><img src="/store/img/logo.png" alt="Mozilla Labs Personas"></a></h1>
                 <ul>
-                    <li class="gallery"><a href="https://www.getpersonas.com/store/gallery/All/Popular">Gallery</a></li>
+                    <li class="gallery"><a href="http://www.getpersonas.com/store/gallery/All/Popular">Gallery</a></li>
                     <li class="create"><a href="https://personas.services.mozilla.com/upload">Create <br/>Your Own</a></li>
-                    <li class="demo"><a href="https://www.getpersonas.com/store/demo_install.html">Demo</a></li>
-                    <li class="faq"><a href="https://www.getpersonas.com/store/faq.html">Frequent <br/>Questions</a></li>
+                    <li class="demo"><a href="http://www.getpersonas.com/store/demo_install.html">Demo</a></li>
+                    <li class="faq"><a href="http://www.getpersonas.com/store/faq.html">Frequent <br/>Questions</a></li>
                 </ul>
             </div>
             <div id="header">
@@ -24,7 +24,7 @@
             </div>
             <div id="maincontent" class="login-signup">
                 <div id="breadcrumbs">
-                    <a href="https://www.getpersonas.com">Personas Home</a> : Login    
+                    <a href="http://www.getpersonas.com">Personas Home</a> : Login    
                 </div>
      <?php if (array_key_exists('success_message', $this->_errors)) echo '<p class="logout-success">' . $this->_errors['success_message'] . '</p>' ?>
                 <div id="login">
@@ -108,7 +108,7 @@
     <script src="js/jquery.js"></script>
     <script src="js/script.js"></script>
     <div id="footer">
-        <p>Copyright © 2009 Mozilla. Personas for Firefox is a Mozilla Labs Beta Project | <a href="http://labs.mozilla.com/about-labs/">About Mozilla Labs</a>    |  <a href="https://www.getpersonas.com/store/privacy.html">Privacy</a></p>
+        <p>Copyright © 2009 Mozilla. Personas for Firefox is a Mozilla Labs Beta Project | <a href="http://labs.mozilla.com/about-labs/">About Mozilla Labs</a>    |  <a href="http://www.getpersonas.com/store/privacy.html">Privacy</a></p>
     </div>
 </body>
 </html>

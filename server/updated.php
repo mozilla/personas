@@ -11,7 +11,7 @@
         <div id="inner-wrapper">
             <p id="account"></p>
             <div id="nav">
-                <h1><a href="https://www.getpersonas.com"><img src="/store/img/logo.png" alt="Mozilla Labs Personas"></a></h1>
+                <h1><a href="http://www.getpersonas.com"><img src="/store/img/logo.png" alt="Mozilla Labs Personas"></a></h1>
                 
                 <div id="check-it-out">
                     <div class="hd">
