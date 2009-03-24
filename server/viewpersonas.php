@@ -71,7 +71,7 @@
 			}
 			elseif ($tab == 'Popular')
 			{
-				$list = $db->get_popular_personas($category == 'All' ? null : $category, $page_size);			
+				$list = $db->get_recent_personas($category == 'All' ? null : $category, $page_size);			
 			}
 			elseif ($tab == 'My')
 			{
