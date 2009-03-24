@@ -146,6 +146,11 @@
 				}
 				
 				$db->approve_persona_edit($persona{'id'});
+				
+				#should pull this out into its own function
+				$new_persona = $db->get_persona_by_id($id);
+				file_put_contents(make_persona_storage_path($id) . '/index_1.json', json_encode(extract_record_data($new_persona)));
+
 				if ($persona['author'] == $edits['author'])
 					send_accept_email($user->get_email($persona['author']), $edits['name']);
 				$id = null;
