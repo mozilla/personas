@@ -288,7 +288,7 @@ class PersonaStorage
 	{
 		try
 		{
-			$statement = 'select * from personas where status = 1' . ($category ? " and category = :category" : "") . ' order by popularity desc' . ($limit ? " limit $limit" : "") . ($offset ? " offset $offset" : "");
+			$statement = 'select * from personas where status = 1' . ($category ? " and category = :category" : "") . ' and popularity > 0 order by popularity desc' . ($limit ? " limit $limit" : "") . ($offset ? " offset $offset" : "");
 			$sth = $this->_dbh->prepare($statement);
 			if ($category)
 			{
