@@ -46,6 +46,16 @@
 	$db = new PersonaStorage();
 	$categories = $db->get_categories();
 
+	####HACK to be removed after launch and replacing all the other files
+	function get_recent_page_hack()
+	{
+		$ch = curl_init();
+		$fp = fopen(PERSONAS_STORAGE_PREFIX . "/recent.html", "w");	
+		curl_setopt($ch, CURLOPT_URL, "http://localhost/store/dynamic/gallery/All/Recent?no_my=1");
+		curl_setopt($ch, CURLOPT_FILE, $fp);
+		curl_exec($ch);
+		fclose($fp);	
+	}
 
 	function get_directory_html($path, $file)
 	{
@@ -192,6 +202,9 @@
 
 	#update page
 	get_updated_html();
+
+	#hack to provide a recent.html page during the transition
+	get_recent_page_hack();
 
 
 ?>
