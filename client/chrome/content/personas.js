@@ -562,11 +562,6 @@ let PersonaController = {
       window.openUILinkIn(editorUrl, "tab");
   },
 
-  onSelectAbout: function(event) {
-    if (PersonaService.currentPersona && PersonaService.currentPersona.id)
-      window.openUILinkIn(this._siteURL + "about/?persona=" + PersonaService.currentPersona.id, "tab");
-  },
-
   /**
    * Ensure the host that loaded the document from which the given DOM event
    * came matches an entry in the personas whitelist.  The host matches if it
