@@ -264,8 +264,6 @@ class PersonaUser
 	{
 		setcookie('PERSONA_USER', '', time() - 3600, '/');		
 		$this->_errors['success_message'] = "You have been logged out. <a href=\"http://www.getpersonas.com/\">Return to the Personas Homepage</a>";
-		$this->auth_form();
-		exit;
 	}
 
 	function auth_form()
