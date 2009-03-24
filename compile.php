@@ -111,11 +111,11 @@
 
 	function get_updated_html()
 	{
-		$path = PERSONAS_STORAGE_PREFIX . "/updated";
+		$path = PERSONAS_STORAGE_PREFIX . "/updated/index.html";
 
 		$ch = curl_init();
 		$fp = fopen("$path", "w");	
-		curl_setopt($ch, CURLOPT_URL, "http://localhost/store/dynamic/updated/index.html");
+		curl_setopt($ch, CURLOPT_URL, "http://localhost/store/dynamic/updated");
 		curl_setopt($ch, CURLOPT_FILE, $fp);
 		curl_exec($ch);
 		fclose($fp);	
