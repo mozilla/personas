@@ -40,11 +40,23 @@
 // the global namespace after the controller definition below so they don't
 // conflict with modules with the same names imported by other extensions.
 
+// Define Components as var here as they are already defined for Firefox. See Bug 484062 for details.
+  if (typeof Cc == "undefined")
+    var Cc = Components.classes;
+  if (typeof Ci == "undefined")
+    var Ci = Components.interfaces;
+  if (typeof Cr == "undefined")
+    var Cr = Components.results;
+  if (typeof Cu == "undefined")
+    var Cu = Components.utils;
+
 // It's OK to import the service module into the global namespace because its
 // exported symbols all contain the word "persona" (f.e. PersonaService).
 Cu.import("resource://personas/modules/service.js");
 
 let PersonaController = {
+  THUNDERBIRD_ID: "{3550f703-e582-4d05-9a08-453d09bdfdc6}",
+  FIREFOX_ID:     "{ec8030f7-c20a-464f-9b0e-13a3a9e97384}",
   _defaultHeaderBackgroundImage: null,
   _defaultFooterBackgroundImage: null,
   _defaultTitlebarColor: null,
@@ -96,6 +108,12 @@ let PersonaController = {
 
   get _previewTimeout() {
     return this._prefs.get("previewTimeout");
+  },
+
+  get _appInfo() {
+    delete this._appInfo;
+    return this._appInfo =
+    Cc["@mozilla.org/xre/app-info;1"].getService(Ci.nsIXULAppInfo);
   },
 
   // XXX We used to use this to direct users to locale-specific directories
@@ -170,39 +188,48 @@ let PersonaController = {
   // Initialization & Destruction
 
   startUp: function() {
+    let header, footer;
+
     // Set the label for the tooltip that informs users when personas data
     // is unavailable.
     // FIXME: make this a DTD entity rather than a properties string.
     document.getElementById("personasDataUnavailableTooltip").label =
-      this._strings.get("dataUnavailable");
+    this._strings.get("dataUnavailable");
 
-    // Make sure there's a bottombox element enclosing the items below
-    // the browser widget.  Firefox 3 beta 4 and later have one, but earlier
-    // releases of the browser don't, and that's what we style.
-    if (!document.getElementById("browser-bottombox")) {
-      let bottomBox = document.createElement("vbox");
-      bottomBox.setAttribute("id", "browser-bottombox");
-      let previousNode =
-        // #ifdef TOOLBAR_CUSTOMIZATION_SHEET
-        document.getElementById("customizeToolbarSheetPopup") ||
-        // Firefox 2
-        document.getElementById("browser-stack") ||
-        // Firefox 3
-        document.getElementById("browser");
-      let parentNode = document.getElementById("main-window");
-      parentNode.insertBefore(bottomBox, previousNode.nextSibling);
-      while (bottomBox.nextSibling)
-        bottomBox.appendChild(bottomBox.nextSibling);
+    // Set header and footer for Thunderbird elements
+    if(this._appInfo.ID == this.THUNDERBIRD_ID){
+      header = document.getElementById("messengerWindow");
+      footer = document.getElementById("status-bar");
+    }
+    // Set header and footer for Firefox elements
+    if(this._appInfo.ID == this.FIREFOX_ID) {
+      // Make sure there's a bottombox element enclosing the items below
+      // the browser widget.  Firefox 3 beta 4 and later have one, but earlier
+      // releases of the browser don't, and that's what we style.
+      if (!document.getElementById("browser-bottombox")) {
+        let bottomBox = document.createElement("vbox");
+        bottomBox.setAttribute("id", "browser-bottombox");
+        let previousNode =
+          // #ifdef TOOLBAR_CUSTOMIZATION_SHEET
+          document.getElementById("customizeToolbarSheetPopup") ||
+          // Firefox 2
+          document.getElementById("browser-stack") ||
+          // Firefox 3
+          document.getElementById("browser");
+        let parentNode = document.getElementById("main-window");
+        parentNode.insertBefore(bottomBox, previousNode.nextSibling);
+        while (bottomBox.nextSibling)
+          bottomBox.appendChild(bottomBox.nextSibling);
+      }
+      header = document.getElementById("main-window");
+      footer = document.getElementById("browser-bottombox");
     }
 
     // Record the default header and footer background images so we can
-    // revert to them if the user selects the default persona.
-    let header = document.getElementById("main-window");
+    // revert to them if the user selects the default personas
     this._defaultHeaderBackgroundImage = header.style.backgroundImage;
-    let footer = document.getElementById("browser-bottombox");
     if (footer)
       this._defaultFooterBackgroundImage = footer.style.backgroundImage;
-
     // Save the titlebar color.
     this._defaultTitlebarColor = "#C9C9C9";
 
@@ -255,8 +282,20 @@ let PersonaController = {
   // Appearance Updates
 
   _applyPersona: function(persona) {
+    let header, footer;
+
+    // Set header and footer for Thunderbird elements
+    if(this._appInfo.ID == this.THUNDERBIRD_ID){
+      header = document.getElementById("messengerWindow");
+      footer = document.getElementById("status-bar");
+    }
+    // Set header and footer for Firefox elements
+    if(this._appInfo.ID == this.FIREFOX_ID) {
+      header = document.getElementById("main-window");
+      footer = document.getElementById("browser-bottombox");
+    }
+
     // Style the header.
-    let header = document.getElementById("main-window");
     header.setAttribute("persona", persona.id);
     // Use the URI module to resolve the possibly relative URI to an absolute one.
     let headerURI = this.URI.get(persona.header,
@@ -265,7 +304,6 @@ let PersonaController = {
     header.style.backgroundImage = "url(" + this._escapeURLForCSS(headerURI.spec) + ")";
 
     // Style the footer.
-    let footer = document.getElementById("browser-bottombox");
     footer.setAttribute("persona", persona.id);
     // Use the URI module to resolve the possibly relative URI to an absolute one.
     let footerURI = this.URI.get(persona.footer,

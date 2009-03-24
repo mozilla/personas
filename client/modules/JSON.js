@@ -41,15 +41,27 @@ const Ci = Components.interfaces;
 const Cr = Components.results;
 const Cu = Components.utils;
 
-// This module wraps the inconsistent Firefox 3.0 and 3.1 JSON APIs, presenting
-// the 3.1 API on both versions.  We only need this while we support Firefox 3.0
-// so we don't have to branch each time we want to do JSON work.
+THUNDERBIRD_ID: "{3550f703-e582-4d05-9a08-453d09bdfdc6}";
+FIREFOX_ID: "{ec8030f7-c20a-464f-9b0e-13a3a9e97384}";
 
-if (Cc["@mozilla.org/xre/app-info;1"].getService(Ci.nsIXULAppInfo).version.indexOf("3.0") == 0) {
-  var JSON = {
-    JSON: null,
-    parse: function(jsonString) { return this.JSON.fromString(jsonString) },
-    stringify: function(jsObject) { return this.JSON.toString(jsObject) }
+var appInfo = Cc["@mozilla.org/xre/app-info;1"].getService(Ci.nsIXULAppInfo);
+
+// Firefox
+if(appInfo.ID == this.FIREFOX_ID) {
+  // This module wraps the inconsistent Firefox 3.0 and 3.1 JSON APIs, presenting
+  // the 3.1 API on both versions.  We only need this while we support Firefox 3.0
+  // so we don't have to branch each time we want to do JSON work.
+  if (Cc["@mozilla.org/xre/app-info;1"].getService(Ci.nsIXULAppInfo).version.indexOf("3.0") == 0) {
+      var JSON = {
+          JSON: null,
+          parse: function(jsonString) { return this.JSON.fromString(jsonString) },
+          stringify: function(jsObject) { return this.JSON.toString(jsObject) }
+      }
   }
   Cu.import("resource://gre/modules/JSON.jsm", JSON);
+}
+
+// Thunderbird
+if(appInfo.ID == this.THUNDERBIRD_ID) {
+    
 }
