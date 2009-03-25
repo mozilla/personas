@@ -323,14 +323,25 @@ let PersonaController = {
           while (styleSheet.cssRules.length > 0)
             styleSheet.deleteRule(0);
 
+          // On Mac we do two things differently:
+          // 1. make text be regular weight, not bold (not sure why);
+          // 2. explicitly style the Find toolbar label ("Find:" or "Quick Find:"
+          //    in en-US) and status message ("Phrase not found"), which otherwise
+          //    would be custom colors specified in findBar.css.
+          // In order to style the Find toolbar text, we have to both explicitly
+          // reference it (.findbar-find-fast, .findbar-find-status) and make
+          // the declaration !important to override an !important declaration
+          // for the status text in findBar.css.
           if (os == "Darwin") {
             styleSheet.insertRule(
               "#main-window[persona] .tabbrowser-tab, " +
               "#navigator-toolbox menubar > menu, " +
               "#navigator-toolbox toolbarbutton, " +
               "#browser-bottombox, " +
+              ".findbar-find-fast, " +
+              ".findbar-find-status, " +
               "#browser-bottombox toolbarbutton " +
-              "{ color: " + textColor + "; font-weight: normal; }",
+              "{ color: " + textColor + " !important; font-weight: normal; }",
               0
             );
           }
