@@ -2,6 +2,9 @@
 	require_once 'lib/personas_constants.php';
 	require_once 'lib/user.php';	
 
+	header('Cache-Control: no-store, must-revalidate, post-check=0, pre-check=0, private, max-age=0');
+	header('Pragma: private');
+	
 	$user = new PersonaUser();
 	$error = null;
 	
