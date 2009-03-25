@@ -221,10 +221,10 @@
 		Footer:<br>
 		<img src="<?= $footer_url ?>"><p>
 		<p>
-		If reject, reason to tell the user: <input type=text name=reason>
+		If reject, reason to tell the user: <input type=text id=formreason name=reason>
 		<p>
 		<input type="submit" name="verdict" value="accept">
-		<input type="submit" name="verdict" value="reject">
+		<input type="submit" name="verdict" value="reject" onclick="if ($('#formreason').val() == '') {alert('Please provide a reason for rejection'); return false;}">
 		<input type="submit" name="verdict" value="rebuild">
 		</form>
 <?php
