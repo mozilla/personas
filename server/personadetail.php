@@ -3,6 +3,9 @@
 	require_once 'lib/personas_functions.php';	
 	require_once 'lib/storage.php';
 	
+	header('Cache-Control: no-store, must-revalidate, post-check=0, pre-check=0, private, max-age=0');
+	header('Pragma: private');
+	
 
 	$db = new PersonaStorage();
 	$categories = $db->get_categories();
