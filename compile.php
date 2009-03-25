@@ -103,7 +103,7 @@
 
 		$ch = curl_init();
 		$fp = fopen("$path", "w");	
-		curl_setopt($ch, CURLOPT_URL, "http://localhost/store/dynamic/gallery/Designer/" . $persona['author']);
+		curl_setopt($ch, CURLOPT_URL, "http://localhost/store/dynamic/gallery/Designer/" . $persona['author'] . "?no_my=1");
 		curl_setopt($ch, CURLOPT_FILE, $fp);
 		curl_exec($ch);
 		fclose($fp);	
