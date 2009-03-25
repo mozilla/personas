@@ -34,6 +34,12 @@
             <div class="feature">
                 <h3>Featured Designer</h3>
 <?php
+	require_once 'lib/personas_constants.php';	
+	require_once 'lib/personas_functions.php';	
+	require_once 'lib/storage.php';
+
+
+	$db = new PersonaStorage();
 	$persona = $db->get_persona_by_id(FEATURE_DESIGNER_PERSONA_ID); 
 	$persona_json = htmlentities(json_encode(extract_record_data($persona)));
 	$detail_url = "/store/gallery/persona/" . url_prefix($persona['id']);
