@@ -64,7 +64,7 @@ If you upload a “persona” design for the Firefox® web browser (each a “Pe
                    
                    
                    <h4>How Would You Like to Share Your Personas Design?</h4>
-                   <p>We encourage you to make your design publicly available, though you may choose not to submit your design under an open source license.  Please select the option below that you prefer. </p>
+                   
                    
                    <div id="license-options">
                        <p><label for="license-cc"><input type="checkbox" name="license" value="cc" id="license-cc" <?php if ($upload_submitted['license'] == 'cc') echo "checked "; ?>/>Yes, I want to make my design available to everyone under a Creative Commons license.</label></p>
