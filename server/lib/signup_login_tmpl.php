@@ -28,7 +28,7 @@
                 </div>
 				<?php if (array_key_exists('success_message', $this->_errors)) echo '<p class="logout-success">' . $this->_errors['success_message'] . '</p>' ?>
                 <div id="login">
-                    <h4>Already a Personas Designer?</h3>
+                    <h4>Already a Personas Designer?</h4>
                     <form action="<?= $_SERVER['SCRIPT_NAME'] ?>" method="post">
                         <p><label for="login_user">Username</label>
                         <input type="text" name="login_user" value="" id="" <?php if (array_key_exists('login_user', $this->_errors)) echo 'class="error"' ?> />
