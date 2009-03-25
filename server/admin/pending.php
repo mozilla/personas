@@ -77,6 +77,9 @@
 		return mail($address, 'Your Persona has been successfully edited', $message, $header);
 	}
 	 
+	header('Cache-Control: no-store, must-revalidate, post-check=0, pre-check=0, private, max-age=0');
+	header('Pragma: private');
+	
 
 	try 
 	{

@@ -41,6 +41,9 @@
 	require_once '../lib/storage.php';
 	require_once '../lib/user.php';
 
+	header('Cache-Control: no-store, must-revalidate, post-check=0, pre-check=0, private, max-age=0');
+	header('Pragma: private');
+	
 	try 
 	{
 		$user = new PersonaUser();
