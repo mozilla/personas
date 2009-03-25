@@ -121,6 +121,18 @@
 		fclose($fp);	
 	}
 
+	function get_firstrun_html()
+	{
+		$path = PERSONAS_STORAGE_PREFIX . "/firstrun/index.html";
+
+		$ch = curl_init();
+		$fp = fopen("$path", "w");	
+		curl_setopt($ch, CURLOPT_URL, "http://localhost/store/dynamic/firstrun");
+		curl_setopt($ch, CURLOPT_FILE, $fp);
+		curl_exec($ch);
+		fclose($fp);	
+	}
+
 	get_directory_html('All', 'All');
 
 	#Top level popular page
@@ -202,6 +214,9 @@
 
 	#update page
 	get_updated_html();
+
+	#firstrun page
+	get_firstrun_html();
 
 	#hack to provide a recent.html page during the transition
 	get_recent_page_hack();
