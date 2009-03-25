@@ -4,14 +4,14 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<title>Personas For Firefox | Firstrun</title>
-	<link href="../css/style.css" rel="stylesheet" type="text/css" media="all" />
+	<link href="/store/css/style.css" rel="stylesheet" type="text/css" media="all" />
 </head>
 <body class="firstrun">
     <div id="outer-wrapper">
         <div id="inner-wrapper">
             <p id="account"></p>
             <div id="nav">
-                <h1><a href="http://www.getpersonas.com"><img src="../img/logo.png" alt="Mozilla Labs Personas"></a></h1>
+                <h1><a href="http://www.getpersonas.com"><img src="/store/img/logo.png" alt="Mozilla Labs Personas"></a></h1>
                 
                 <div id="check-it-out">
                     <div class="hd">
