@@ -67,8 +67,14 @@
                 <h3>created by <?= $persona_data['author'] ?></h3>
                 <img class="detailed-view"  alt="<?= $persona_data['name'] ?>" persona="<?= $persona_json ?>" src="<?= PERSONAS_LIVE_PREFIX . '/' . url_prefix($persona_id) ?>/preview_large.jpg" >
                 
-                <p class="description"><strong>Description:</strong> <?= $persona_data['description'] ?></p>
-                
+<?php
+		if ($persona_data['description'])
+		{
+?>
+				<p class="description"><strong>Description:</strong> <?= $persona_data['description'] ?></p>
+<?php
+		}
+?>
                 <p id="buttons">
                     <a href="#" class="button" id="try-button" persona="<?= $persona_json ?>"><span>try it now</span><span>&nbsp;</span></a>
                 </p>

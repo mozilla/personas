@@ -212,6 +212,8 @@ class PersonaUser
 				
 			if (strlen($password) < 6)
 				$this->_errors['create_password'] = "Password must be at least 6 characters long";
+			elseif (!preg_match('/[A-Z]/i', $password) || !preg_match('/[^A-Z]/i', $password) )
+				$this->_errors['create_password'] = "Password should contain at least one alphabetic character and at least one non-alphabetic character";
 			
 			if ($password != $passwordconf)
 				$this->_errors['create_passconf'] = "Password does not match confirmation";

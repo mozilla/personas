@@ -87,6 +87,11 @@
 			}
 			
 			$description_max = 50;
+			if (count($list) == 0
+			{
+				echo "There are no personas available here. Please use the navigation on the left to choose another category.";
+			}
+			
 			foreach ($list as $item)
 			{
 				$preview_url = PERSONAS_LIVE_PREFIX . '/' . url_prefix($item['id']) . '/' . "preview.jpg";
