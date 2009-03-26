@@ -60,6 +60,8 @@ let PersonaController = {
   _defaultHeaderBackgroundImage: null,
   _defaultFooterBackgroundImage: null,
   _defaultTitlebarColor: null,
+  _defaultActiveTitlebarColor: null,
+  _defaultInactiveTitlebarColor: null,
   _previewTimeoutID: null,
   _resetTimeoutID: null,
 
@@ -102,6 +104,30 @@ let PersonaController = {
     return this._menuPopup = document.getElementById("personas-selector-menu");
   },
 
+  get _header() {
+    delete this._header;
+    switch (this._appInfo.ID) {
+      case this.THUNDERBIRD_ID:
+        return this._header = document.getElementById("messengerWindow");
+      case this.FIREFOX_ID:
+        return this._header = document.getElementById("main-window");
+      default:
+        throw "unknown application ID " + this._appInfo.ID;
+    }
+  },
+
+  get _footer() {
+    delete this._footer;
+    switch (this._appInfo.ID) {
+      case this.THUNDERBIRD_ID:
+        return this._footer = document.getElementById("status-bar");
+      case this.FIREFOX_ID:
+        return this._footer = document.getElementById("browser-bottombox");
+      default:
+        throw "unknown application ID " + this._appInfo.ID;
+    }
+  },
+
   get _siteURL() {
     return this._prefs.get("siteURL");
   },
@@ -112,8 +138,9 @@ let PersonaController = {
 
   get _appInfo() {
     delete this._appInfo;
-    return this._appInfo =
-    Cc["@mozilla.org/xre/app-info;1"].getService(Ci.nsIXULAppInfo);
+    return this._appInfo = Cc["@mozilla.org/xre/app-info;1"].
+                           getService(Ci.nsIXULAppInfo).
+                           QueryInterface(Ci.nsIXULRuntime);
   },
 
   // XXX We used to use this to direct users to locale-specific directories
@@ -188,50 +215,21 @@ let PersonaController = {
   // Initialization & Destruction
 
   startUp: function() {
-    let header, footer;
-
     // Set the label for the tooltip that informs users when personas data
     // is unavailable.
     // FIXME: make this a DTD entity rather than a properties string.
     document.getElementById("personasDataUnavailableTooltip").label =
     this._strings.get("dataUnavailable");
 
-    // Set header and footer for Thunderbird elements
-    if(this._appInfo.ID == this.THUNDERBIRD_ID){
-      header = document.getElementById("messengerWindow");
-      footer = document.getElementById("status-bar");
-    }
-    // Set header and footer for Firefox elements
-    if(this._appInfo.ID == this.FIREFOX_ID) {
-      // Make sure there's a bottombox element enclosing the items below
-      // the browser widget.  Firefox 3 beta 4 and later have one, but earlier
-      // releases of the browser don't, and that's what we style.
-      if (!document.getElementById("browser-bottombox")) {
-        let bottomBox = document.createElement("vbox");
-        bottomBox.setAttribute("id", "browser-bottombox");
-        let previousNode =
-          // #ifdef TOOLBAR_CUSTOMIZATION_SHEET
-          document.getElementById("customizeToolbarSheetPopup") ||
-          // Firefox 2
-          document.getElementById("browser-stack") ||
-          // Firefox 3
-          document.getElementById("browser");
-        let parentNode = document.getElementById("main-window");
-        parentNode.insertBefore(bottomBox, previousNode.nextSibling);
-        while (bottomBox.nextSibling)
-          bottomBox.appendChild(bottomBox.nextSibling);
-      }
-      header = document.getElementById("main-window");
-      footer = document.getElementById("browser-bottombox");
-    }
-
     // Record the default header and footer background images so we can
-    // revert to them if the user selects the default personas
-    this._defaultHeaderBackgroundImage = header.style.backgroundImage;
-    if (footer)
-      this._defaultFooterBackgroundImage = footer.style.backgroundImage;
-    // Save the titlebar color.
-    this._defaultTitlebarColor = "#C9C9C9";
+    // revert to them if the user selects the default persona.
+    this._defaultHeaderBackgroundImage = this._header.style.backgroundImage;
+    this._defaultFooterBackgroundImage = this._footer.style.backgroundImage;
+
+    // Save the titlebar colors.
+    this._defaultTitlebarColor         = this._header.getAttribute("titlebarcolor");
+    this._defaultActiveTitlebarColor   = this._header.getAttribute("activetitlebarcolor");
+    this._defaultInactiveTitlebarColor = this._header.getAttribute("inactivetitlebarcolor");
 
     // Observe various changes that we should apply to the browser window.
     this.Observers.add("personas:persona:changed", this);
@@ -282,36 +280,21 @@ let PersonaController = {
   // Appearance Updates
 
   _applyPersona: function(persona) {
-    let header, footer;
-
-    // Set header and footer for Thunderbird elements
-    if(this._appInfo.ID == this.THUNDERBIRD_ID){
-      header = document.getElementById("messengerWindow");
-      footer = document.getElementById("status-bar");
-    }
-    // Set header and footer for Firefox elements
-    if(this._appInfo.ID == this.FIREFOX_ID) {
-      header = document.getElementById("main-window");
-      footer = document.getElementById("browser-bottombox");
-    }
-
     // Style the header.
-    header.setAttribute("persona", persona.id);
+    this._header.setAttribute("persona", persona.id);
     // Use the URI module to resolve the possibly relative URI to an absolute one.
     let headerURI = this.URI.get(persona.header,
                                  null,
                                  this.URI.get(PersonaService.baseURI));
-    header.style.backgroundImage = "url(" + this._escapeURLForCSS(headerURI.spec) + ")";
+    this._header.style.backgroundImage = "url(" + this._escapeURLForCSS(headerURI.spec) + ")";
 
     // Style the footer.
-    footer.setAttribute("persona", persona.id);
+    this._footer.setAttribute("persona", persona.id);
     // Use the URI module to resolve the possibly relative URI to an absolute one.
     let footerURI = this.URI.get(persona.footer,
                                  null,
                                  this.URI.get(PersonaService.baseURI));
-    footer.style.backgroundImage = "url(" + this._escapeURLForCSS(footerURI.spec) + ")";
-
-    let os = Cc["@mozilla.org/xre/app-info;1"].getService(Ci.nsIXULRuntime).OS;
+    this._footer.style.backgroundImage = "url(" + this._escapeURLForCSS(footerURI.spec) + ")";
 
     // Style the text color.
     if (this._prefs.get("useTextColor")) {
@@ -332,7 +315,7 @@ let PersonaController = {
           // reference it (.findbar-find-fast, .findbar-find-status) and make
           // the declaration !important to override an !important declaration
           // for the status text in findBar.css.
-          if (os == "Darwin") {
+          if (this._appInfo.OS == "Darwin") {
             styleSheet.insertRule(
               "#main-window[persona] .tabbrowser-tab, " +
               "#navigator-toolbox menubar > menu, " +
@@ -371,47 +354,30 @@ let PersonaController = {
     }
 
     // Style the titlebar with the accent color.
-    // Note: we only do this on Mac, since it's the only OS that supports
-    // this capability.  It's also the only OS where our hack for applying
-    // the change doesn't cause the window to un-maximize.
     if (this._prefs.get("useAccentColor")) {
-      if (os == "Darwin") {
-        let titlebarColor = persona.accentcolor || this._defaultTitlebarColor;
-        if (titlebarColor != header.getAttribute("titlebarcolor")) {
-          header.setAttribute("activetitlebarcolor", titlebarColor);
-          header.setAttribute("inactivetitlebarcolor", titlebarColor);
-          header.setAttribute("titlebarcolor", titlebarColor);
-
-          // FIXME: Incredibly gross hack in order to force a window redraw
-          // event that ensures that the titlebar color change is applied.
-          //
-          // This will unmaximize a maximized window on Windows and Linux,
-          // but we only do this on Mac (which is the only place
-          // the "titlebarcolor" attribute has any effect anyway at the moment),
-          // so that's ok for now.
-          //
-          // This will unminimize a minimized window on Mac, so we can't do it
-          // if the window is minimized.
-          if (window.windowState != Ci.nsIDOMChromeWindow.STATE_MINIMIZED) {
-            window.resizeTo(parseInt(window.outerWidth)+1, window.outerHeight);
-            window.resizeTo(parseInt(window.outerWidth)-1, window.outerHeight);
-          }
-        }
+      let general, active, inactive;
+      if (persona.accentcolor) {
+        general  = persona.accentcolor;
+        active   = persona.accentcolor;
+        inactive = persona.accentcolor;
       }
+      else {
+        general  = this._defaultTitlebarColor;
+        active   = this._defaultActiveTitlebarColor;
+        inactive = this._defaultInactiveTitlebarColor;
+      }
+      this._setTitlebarColors(general, active, inactive);
     }
-
   },
 
   _applyDefault: function() {
     // Reset the header.
-    let header = document.getElementById("main-window");
-    header.removeAttribute("persona");
-    header.style.backgroundImage = this._defaultHeaderBackgroundImage;
+    this._header.removeAttribute("persona");
+    this._header.style.backgroundImage = this._defaultHeaderBackgroundImage;
 
     // Reset the footer.
-    let footer = document.getElementById("browser-bottombox");
-    footer.removeAttribute("persona");
-    footer.style.backgroundImage = this._defaultFooterBackgroundImage;
+    this._footer.removeAttribute("persona");
+    this._footer.style.backgroundImage = this._defaultFooterBackgroundImage;
 
     // Reset the text color.
     for (let i = 0; i < document.styleSheets.length; i++) {
@@ -423,27 +389,46 @@ let PersonaController = {
       }
     }
 
-    // Reset the titlebar to the default color.
-    // Note: we only do this on Mac, since it's the only OS that supports
-    // this capability.  It's also the only OS where our hack for applying
-    // the change doesn't cause the window to un-maximize.
-    let os = Cc["@mozilla.org/xre/app-info;1"].getService(Ci.nsIXULRuntime).OS;
-    if (os == "Darwin") {
-      if (header.getAttribute("titlebarcolor") != this._defaultTitlebarColor) {
-        // FIXME: set the active and inactive titlebar colors back to their
-        // original values rather than the original value of the plain titlebar
-        // color.
-        header.setAttribute("activetitlebarcolor", this._defaultTitlebarColor);
-        header.setAttribute("inactivetitlebarcolor", this._defaultTitlebarColor);
-        header.setAttribute("titlebarcolor", this._defaultTitlebarColor);
-          // FIXME: Incredibly gross hack in order to force a window redraw event
-          // that ensures that the titlebar color change is applied.  Note that
-          // this will unmaximize a maximized window on Windows and Linux, but
-          // we only do this on Mac (which is the only place the "titlebarcolor"
-          // attribute has any effect anyway at the moment), so it's ok for now.
-          // If we ever make this work on Windows and Linux, we'll have to
-          // determine the maximized state of the window beforehand and restore
-          // it to that state afterwards.
+    // Reset the titlebar color.
+    if (this._prefs.get("useAccentColor")) {
+      this._setTitlebarColors(this._defaultTitlebarColor,
+                              this._defaultActiveTitlebarColor,
+                              this._defaultInactiveTitlebarColor);
+    }
+  },
+
+  _setTitlebarColors: function(general, active, inactive) {
+    // Titlebar colors only have an effect on Mac.
+    if (this._appInfo.OS != "Darwin")
+      return;
+
+    let changed = false;
+
+    if (general != this._header.getAttribute("titlebarcolor")) {
+      document.documentElement.setAttribute("titlebarcolor", general);
+      changed = true;
+    }
+    if (active != this._header.getAttribute("activetitlebarcolor")) {
+      document.documentElement.setAttribute("activetitlebarcolor", active);
+      changed = true;
+    }
+    if (inactive != this._header.getAttribute("inactivetitlebarcolor")) {
+      document.documentElement.setAttribute("inactivetitlebarcolor", inactive);
+      changed = true;
+    }
+
+    if (changed) {
+      // FIXME: Incredibly gross hack in order to force a window redraw
+      // event that ensures that the titlebar color change is applied.
+      //
+      // This will unmaximize a maximized window on Windows and Linux,
+      // but we only do this on Mac (which is the only place
+      // the "titlebarcolor" attribute has any effect anyway at the moment),
+      // so that's ok for now.
+      //
+      // This will unminimize a minimized window on Mac, so we can't do it
+      // if the window is minimized.
+      if (window.windowState != Ci.nsIDOMChromeWindow.STATE_MINIMIZED) {
         window.resizeTo(parseInt(window.outerWidth)+1, window.outerHeight);
         window.resizeTo(parseInt(window.outerWidth)-1, window.outerHeight);
       }
