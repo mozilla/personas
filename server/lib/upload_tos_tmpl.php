@@ -59,7 +59,7 @@ If you upload a “persona” design for the Firefox® web browser (each a “Pe
 
 10) Termination. You may terminate your use of the Persona Services at any time.  Mozilla may modify or discontinue the Persona Services at its discretion.</textarea>
                            <label class="agree" for="agree"><input type="checkbox" name="agree" value="1" id="agree" <?php if ($upload_submitted['agree'] == 1) echo "checked "; ?>/> I agree to the user agreement</label>
-<?php if (array_key_exists('agree', $upload_errors)) echo '<span class="error-message">' . $upload_errors['agree'] . '</span>' ?>
+<?php if (array_key_exists('agree', $upload_errors)) echo '<span class="error-message tos-error">' . $upload_errors['agree'] . '</span>' ?>
               
                    
                    
@@ -74,7 +74,7 @@ If you upload a “persona” design for the Firefox® web browser (each a “Pe
                               <li>My design will be quickly added to the directory and hosted for free.</li>
                           </ul>
                           
-<?php if (array_key_exists('license', $upload_errors)) echo '<span class="error-message">' . $upload_errors['license'] . '</span>' ?>
+<?php if (array_key_exists('license', $upload_errors)) echo '<span class="error-message tos-error">' . $upload_errors['license'] . '</span>' ?>
                     
                    </div>
                    

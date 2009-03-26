@@ -938,6 +938,11 @@ img.preview  {
     font-size:91%;
 }
 
+.tos-error {
+    background: transparent url(/store/img/main-sprites.png) no-repeat scroll -663px -130px;
+    padding: 3px 0 3px 20px;
+}
+
 .button {
     font-weight: bold;
     color: #0077a6;
