@@ -34,12 +34,27 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-// This module wraps the inconsistent Firefox 3.0 and 3.1 JSON APIs, presenting
-// the 3.1 API on both versions.  We only need this while we support Firefox 3.0
-// (so we don't have to branch each time we want to do JSON work).
-
-// Note: we don't need to wrap the API for Thunderbird 3.0, since it comes with
-// Firefox 3.1's API.
+/**
+ * This module wraps the incompatible Firefox 3.0 and 3.5 JSON APIs, presenting
+ * the 3.5 API on both versions.  Import this module to parse and stringify JSON
+ * in both 3.0 and 3.5 without checking the application's version each time.
+ *
+ * Note: don't import this into the global namespace!  If you do, you'll hork
+ * native Firefox 3.0 code that expects the 3.0 API.  Instead, import it into
+ * your own object like this:
+ *
+ *   let MyExtension = {
+ *     JSON: null,
+ *     ...
+ *   };
+ *   Components.utils.import("chrome://myextension/modules/JSON.js", MyExtension);
+ *   // Now MyExtension.JSON is an object implementing the Firefox 3.5 JSON API.
+ *
+ * This module also works in Thunderbird 3.0, which uses Firefox 3.5's API.
+ *
+ * The Firefox 3.5 JSON API is documented at:
+ *   https://developer.mozilla.org/En/Using_JSON_in_Firefox
+ */
 
 let EXPORTED_SYMBOLS = ["JSON"];
 
