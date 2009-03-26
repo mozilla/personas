@@ -87,7 +87,7 @@
 			}
 			
 			$description_max = 50;
-			if (count($list) == 0
+			if (count($list) == 0)
 			{
 				echo "There are no personas available here. Please use the navigation on the left to choose another category.";
 			}
