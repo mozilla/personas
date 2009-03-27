@@ -351,7 +351,21 @@ $.hasPersonas = function() {
 					cal: $(this).parent(),
 					pos: $(this).offset()
 				};
+                
 				current.preview = current.cal.data('colorpicker').livePreview;
+				
+				change.apply(
+					current.cal.data('colorpicker')
+						.fields
+						.eq(6)
+						.val(parseInt(100*(150 - Math.max(0,Math.min(150,(ev.pageY - current.pos.top))))/150, 10))
+						.end()
+						.eq(5)
+						.val(parseInt(100*(Math.max(0,Math.min(150,(ev.pageX - current.pos.left))))/150, 10))
+						.get(0),
+					[current.preview]
+				);
+				
 				$(document).bind('mouseup', current, upSelector);
 				$(document).bind('mousemove', current, moveSelector);
 			},
