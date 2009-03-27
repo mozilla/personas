@@ -31,9 +31,9 @@
 			}
 			
 			$code = $user->generate_password_change_code($username);
-			$mail_message = "So many passwords to remember! You asked to reset your personas password. To do so, please visit:\n\n"
+			$mail_message = "So many passwords to remember! You asked to reset your personas password. To do so, please visit:\n\n";
 			$mail_message .= "https://personas.services.mozilla.com/forgot_password?username=$username&code=$code\n\n";
-			$mail_message .= "This link will let you change your password to something new. If you didn't ask for this, don't worry, we'll keep your password safe.\n\n"
+			$mail_message .= "This link will let you change your password to something new. If you didn't ask for this, don't worry, we'll keep your password safe.\n\n";
 			$mail_message .= "Best Wishes,\n";
 			$mail_message .= "The Personas Team\n";
 			
