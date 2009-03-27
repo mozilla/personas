@@ -126,7 +126,7 @@
               <ol id="upload-steps">
                    <li class="completed">                         
                           	<h3>Step 1:</h3>
-                          	<h4>Persona Agreement</h4>
+                          	<h4>Terms of Service</h4>
                       </li>
                 <li class="current">
                     <div class="wrapper">
