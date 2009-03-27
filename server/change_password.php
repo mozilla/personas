@@ -31,7 +31,12 @@
 			}
 			
 			$code = $user->generate_password_change_code($username);
-			$mail_message = "URL to visit: https://personas.services.mozilla.com/forgot_password?username=$username&code=$code";
+			$mail_message = "So many passwords to remember! You asked to reset your personas password. To do so, please visit:\n\n"
+			$mail_message .= "https://personas.services.mozilla.com/forgot_password?username=$username&code=$code\n\n";
+			$mail_message .= "This link will let you change your password to something new. If you didn't ask for this, don't worry, we'll keep your password safe.\n\n"
+			$mail_message .= "Best Wishes,\n";
+			$mail_message .= "The Personas Team\n";
+			
 			if (!mail($email, 'Resetting your personas password', $mail_message, "From: personas-devel@mozilla.com\r\n"))
 			{
 				$error = "There was a problem with our mail server. Please try again in a few minutes. If it continues to not work, please contact personas-devel@mozilla.com";
@@ -106,16 +111,20 @@
 				exit;
 			}
 
+			if (!preg_match('/[A-Z]/i', $password) || !preg_match('/[^A-Z]/i', $password))
+			{
+				$error = "The password should contain at least one alphabetic character and at least one non-alphabetic character";
+				include "lib/forgot_password_reset_tmpl.php";
+				exit;
+			}
+			
 			if ($password != $conf)
 			{
 				$error = "The password and confirmation do not match. Please try again";
 				include "lib/forgot_password_reset_tmpl.php";
 				exit;
-			}
-
-			
+			}			
 	
-			#do some password strength validation here?
 			$user->update_password($username, $password);
 			
 			include "lib/forgot_password_done_tmpl.php";

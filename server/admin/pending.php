@@ -63,7 +63,7 @@
 		$message .= "The Personas Team\n";
 		
 		$header = "From: personas-devel@mozilla.com\r\n";
-		return mail($address, 'Thank you for your Persona', $message, $header);
+		return mail($address, 'Thanks for submitting your Firefox persona', $message, $header);
 	}
 	
 	function send_edit_email($address, $name)
