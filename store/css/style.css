@@ -302,6 +302,11 @@ div.get-personas {
     display: inline-block;
     zoom: 1;
     *display: inline;
+    
+}
+
+div.get-personas div {
+    min-width: 330px;
 }
 
 div.get-personas p {

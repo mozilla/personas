@@ -168,7 +168,7 @@ $.fn.previewPersona = function() {
     Changes the innerhtml of the download button if the user is not using Firefox
 **/
 $.fn.personasDownload = function(options) {
-    if(!jQuery.browser.mozilla) {
+    if(!jQuery.browser.mozilla || (navigator.userAgent.indexOf('Camino') != -1)) {
         jQuery(this).html(options["bundle-text"]);
         
         var downloadUrl = jQuery.os.mac ? PERSONAS_URLS['mac_bundle'] : jQuery.os.win ? PERSONAS_URLS['win_bundle'] : PERSONAS_URLS['linux_bundle'];
