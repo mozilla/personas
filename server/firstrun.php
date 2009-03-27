@@ -73,7 +73,7 @@
         </div>
     </div>
     <div id="footer">
-        <p>Copyright © 2009 Mozilla. Personas for Firefox is a Mozilla Labs Beta Project | <a href="http://labs.mozilla.com/about-labs/">About Mozilla Labs</a>    |  <a href="../privacy.html">Privacy</a></p>
+        <p>Copyright © 2009 Mozilla. <a href="http://labs.mozilla.com/projects/firefox-personas/">Personas</a> is a <a href="http://labs.mozilla.com">Mozilla Labs</a> experiment. | <a href="http://labs.mozilla.com/about-labs/">About Mozilla Labs</a>    |  <a href="../privacy.html">Privacy</a></p>
     </div>
     <p id="get-more-personas">
        Click on the fox mask to get started!

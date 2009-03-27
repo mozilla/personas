@@ -4,7 +4,7 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<title>Personas for Firefox | Create Your Persona</title>
-	<link href="../store/css/style.css" rel="stylesheet" type="text/css" media="all" />
+	<link href="/store/css/style.css" rel="stylesheet" type="text/css" media="all" />
 
 </head>
 <body>
@@ -60,7 +60,6 @@ If you upload a “persona” design for the Firefox® web browser (each a “Pe
 10) Termination. You may terminate your use of the Persona Services at any time.  Mozilla may modify or discontinue the Persona Services at its discretion.</textarea>
                            <label class="agree" for="agree"><input type="checkbox" name="agree" value="1" id="agree" <?php if ($upload_submitted['agree'] == 1) echo "checked "; ?>/> I agree to the user agreement</label>
 <?php if (array_key_exists('agree', $upload_errors)) echo '<span class="error-message tos-error">' . $upload_errors['agree'] . '</span>' ?>
-              
                    
                    
                    <h4>How Would You Like to Share Your Personas Design?</h4>
@@ -109,7 +108,7 @@ If you upload a “persona” design for the Firefox® web browser (each a “Pe
     
    
     <div id="footer">
-        <p>Copyright © 2009 Mozilla. Personas for Firefox is a Mozilla Labs Beta Project | <a href="http://labs.mozilla.com/about-labs/">About Mozilla Labs</a>    |  <a href="http://www.getpersonas.com/store/privacy.html">Privacy</a></p>
+        <p>Copyright © 2009 Mozilla. <a href="http://labs.mozilla.com/projects/firefox-personas/">Personas</a> is a <a href="http://labs.mozilla.com">Mozilla Labs</a> experiment. | <a href="http://labs.mozilla.com/about-labs/">About Mozilla Labs</a>    |  <a href="http://www.getpersonas.com/store/privacy.html">Privacy</a></p>
     </div>
 </body>
 </html>

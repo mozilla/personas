@@ -116,7 +116,7 @@
         </div>
     </div>
     <div id="footer">
-        <p>Copyright © 2009 Mozilla. Personas for Firefox is a Mozilla Labs Beta Project | <a href="http://labs.mozilla.com/about-labs/">About Mozilla Labs</a>    |  <a href="../privacy.html">Privacy</a></p>
+        <p>Copyright © 2009 Mozilla. <a href="http://labs.mozilla.com/projects/firefox-personas/">Personas</a> is a <a href="http://labs.mozilla.com">Mozilla Labs</a> experiment. | <a href="http://labs.mozilla.com/about-labs/">About Mozilla Labs</a>    |  <a href="../privacy.html">Privacy</a></p>
     </div>
     <script src="/store/js/jquery.js"></script>
     <script src="/store/js/script.js"></script>
