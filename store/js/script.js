@@ -41,13 +41,26 @@ $.fn.slider = function (options) {
 
     jQuery("<img>").attr("src", settings['nextOverImg']);
     jQuery("<img>").attr("src", settings['prevOverImg']);
-
+    
+    if(index == 0) {
+        $(settings['previous']).addClass('disabled');
+    }
+    
     jQuery(settings['next']).click(function() {
         if(numItems != index) {
             jQuery("#slides").animate({left:"-="+viewportWidth+"px"});
             index++; 
             setNav(index);
         }
+        
+        if(index == numItems) {
+            $(settings['next']).addClass('disabled');
+        }
+        
+        if(index != 0) {
+            $(settings['previous']).removeClass('disabled');
+        }
+
         return false;
     });
     
@@ -57,6 +70,13 @@ $.fn.slider = function (options) {
             index--;
             setNav(index);
         }
+        
+        if(index == 0) {
+            $(settings['previous']).addClass('disabled');
+        } else {
+            $(settings['next']).removeClass('disabled');
+        }
+        
         return false;
     });
     
@@ -68,12 +88,26 @@ $.fn.slider = function (options) {
             setNav(value);
             index = value;
         }
+        
+        if(index == 0) {
+            $(settings['previous']).addClass('disabled');
+        } else if (index < numItems) {
+            $(settings['next']).removeClass('disabled');
+            $(settings['previous']).removeClass('disabled');
+        } else {
+            $(settings['next']).addClass('disabled');
+            $(settings['previous']).removeClass('disabled');
+        }
+        
+        
         return false;
     });
     
     jQuery(settings['next']).hover(
         function() {
-            jQuery(this).children('img').attr('src', settings['nextOverImg']);
+            if(index != numItems) {
+                jQuery(this).children('img').attr('src', settings['nextOverImg']);
+            }
         },
         function() {
             jQuery(this).children('img').attr('src', settings['nextImg']);
@@ -82,7 +116,9 @@ $.fn.slider = function (options) {
     
     jQuery(settings['previous']).hover(
         function() {
-            jQuery(this).children('img').attr('src', settings['prevOverImg']);
+            if(index != 0) {
+                jQuery(this).children('img').attr('src', settings['prevOverImg']);
+            }
         },
         function() {
             jQuery(this).children('img').attr('src', settings['prevImg']);
