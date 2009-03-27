@@ -57,8 +57,8 @@
 	function send_accept_email($address, $name)
 	{
 		$message = "Thanks for submitting your Persona '$name'! We're big fans of creativity, and it's fun to see how people are dressing up their browsers.\n\n";
-		$message .= "You can check it out now in the Personas directory.\n\n";
-		$message .= "If you have any questions or want more information, please stop by the Persona message boards and tell us what's on your mind.\n\n";
+		$message .= "You can check it out now in the <a href=\"http://www.getpersonas.com/store/gallery/All/Recent\"Personas directory</a>.\n\n";
+		$message .= "If you have any questions or want more information, please stop by the <a href=\"https://labs.mozilla.com/forum/?CategoryID=18\">Persona message boards</a> and tell us what's on your mind.\n\n";
 		$message .= "Best Wishes,\n";
 		$message .= "The Personas Team\n";
 		
