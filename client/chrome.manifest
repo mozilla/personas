@@ -10,16 +10,18 @@ resource personas   ./
 
 content  personas             chrome/content/
 
-# Register separate skins for each primary platform so we can fit personas
-# into each one's very different skin.
-skin  personas  classic/1.0  chrome/skin/windows/   appversion>=3.0    os=WINNT
-skin  personas  classic/1.0  chrome/skin/mac3.0/    appversion<3.1b2   os=Darwin
-skin  personas  classic/1.0  chrome/skin/mac3.1/    appversion>=3.1b2  os=Darwin
-skin  personas  classic/1.0  chrome/skin/linux/     appversion>=3.0    os=Linux
-
-#For Thunderbird
-skin  personas  classic/1.0  chrome/skin/linux/thunderbird/ application={3550f703-e582-4d05-9a08-453d09bdfdc6} os=Linux
-skin  personas  classic/1.0  chrome/skin/windows/thunderbird/ application={3550f703-e582-4d05-9a08-453d09bdfdc6} os=WINNT
+# Register skins for various combinations of application (Firefox, Thunderbird),
+# application version (3.0, 3.5), and OS (Windows XP, Windows Vista, Mac OS X,
+# and Linux) so we can fit personas into the various app, version, and OS skins.
+# Make sure you're editing the right skin(s) when making changes!
+skin  personas  classic/1.0  chrome/skin/winxp/             application={ec8030f7-c20a-464f-9b0e-13a3a9e97384}                      os=WINNT   osversion<6
+skin  personas  classic/1.0  chrome/skin/vista/             application={ec8030f7-c20a-464f-9b0e-13a3a9e97384}                      os=WINNT   osversion>=6
+skin  personas  classic/1.0  chrome/skin/mac3.0/            application={ec8030f7-c20a-464f-9b0e-13a3a9e97384}  appversion<3.1b2    os=Darwin
+skin  personas  classic/1.0  chrome/skin/mac3.1/            application={ec8030f7-c20a-464f-9b0e-13a3a9e97384}  appversion>=3.1b2   os=Darwin
+skin  personas  classic/1.0  chrome/skin/linux/             application={ec8030f7-c20a-464f-9b0e-13a3a9e97384}  appversion>=3.0     os=Linux
+skin  personas  classic/1.0  chrome/skin/linux/thunderbird/ application={3550f703-e582-4d05-9a08-453d09bdfdc6}                      os=Linux
+skin  personas  classic/1.0  chrome/skin/winxp/thunderbird/ application={3550f703-e582-4d05-9a08-453d09bdfdc6}                      os=WINNT   osversion<6
+skin  personas  classic/1.0  chrome/skin/vista/thunderbird/ application={3550f703-e582-4d05-9a08-453d09bdfdc6}                      os=WINNT   osversion>=6
 
 # localizations in alphabetical order
 # Localizations that are commented out are disabled because they are out of date.
