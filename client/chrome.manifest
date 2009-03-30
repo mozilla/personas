@@ -47,5 +47,6 @@ locale   personas   pt-BR       chrome/locale/pt-BR/
 locale   personas   sr-RS       chrome/locale/sr-RS/
 #locale   personas   sv-SE       chrome/locale/sv-SE/
 locale   personas   tr-TR       chrome/locale/tr-TR/
+locale   personas   vi-VN       chrome/locale/vi-VN/
 locale   personas   zh-CN       chrome/locale/zh-CN/
 locale   personas   zh-TW       chrome/locale/zh-TW/
