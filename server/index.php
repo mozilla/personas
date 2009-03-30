@@ -137,5 +137,6 @@
             $("img.persona").previewPersona();
         });
     </script>
+    <script src="/store/js/urchin.js"></script>
 </body>
 </html>

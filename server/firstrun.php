@@ -78,5 +78,6 @@
     <p id="get-more-personas">
        Click on the fox mask to get started!
     </p>
+    <script src="/store/js/urchin.js"></script>
 </body>
 </html>
