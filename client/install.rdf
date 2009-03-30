@@ -12,24 +12,24 @@
     <em:contributor>Myk Melez</em:contributor>
 
     <!-- Localizers (from Babelzilla and other sources) -->
-    <em:translator>a007son</em:translator>
-    <em:translator>dogi</em:translator>
-    <em:translator>drry</em:translator>
+    <em:translator>a007son</em:translator>        <!-- zh-TW, forum      -->
+    <em:translator>dogi</em:translator>           <!-- de-DE, Babelzilla -->
+    <em:translator>drry</em:translator>           <!-- ja-JP, Babelzilla -->
     <em:translator>Ersen Yoldac</em:translator>   <!-- tr-TR, Babelzilla -->
-    <em:translator>fernph</em:translator>
-    <em:translator>Funkin2x</em:translator>
-    <em:translator>funTomas</em:translator>
-    <em:translator>Joergen</em:translator>
-    <em:translator>jojaba</em:translator>
-    <em:translator>jooliaan</em:translator>
+    <em:translator>fernph</em:translator>         <!-- pt-BR, Babelzilla -->
+    <em:translator>Funkin2x</em:translator>       <!-- es-CL, Babelzilla -->
+    <em:translator>funTomas</em:translator>       <!-- cs-CZ, Babelzilla -->
+    <em:translator>Joergen</em:translator>        <!-- da-DK, Babelzilla -->
+    <em:translator>jojaba</em:translator>         <!-- fr-FR, Babelzilla -->
+    <em:translator>jooliaan</em:translator>       <!-- it-IT, Babelzilla -->
     <em:translator>kustodian</em:translator>      <!-- sr-RS, Babelzilla -->
-    <em:translator>Lisman</em:translator>
+    <em:translator>Lisman</em:translator>         <!-- it-IT, Babelzilla -->
     <em:translator>loveleeyoungae</em:translator> <!-- vi-VN, Babelzilla -->
-    <em:translator>SiiiE</em:translator>
-    <em:translator>steekid</em:translator>
-    <em:translator>stoyan</em:translator>
+    <em:translator>SiiiE</em:translator>          <!-- he-IL, Babelzilla -->
+    <em:translator>steekid</em:translator>        <!-- zh-CN, Babelzilla -->
+    <em:translator>stoyan</em:translator>         <!-- bg-BG, Babelzilla -->
     <em:translator>Wareczek</em:translator>       <!-- pl-PL, Babelzilla -->
-    <em:translator>wtspout</em:translator>
+    <em:translator>wtspout</em:translator>        <!-- ko-KR, Babelzilla -->
 
     <em:homepageURL>http://www.getpersonas.com/</em:homepageURL>
     <em:iconURL>chrome://personas/content/personas_32x32.png</em:iconURL>
