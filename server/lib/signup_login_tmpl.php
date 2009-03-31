@@ -57,7 +57,7 @@
 					<?php if (array_key_exists('create_email', $this->_errors)) echo '<span class="error-message">' . $this->_errors['create_email'] . '</span>' ?>
                     </p>
                     
-                    <p><label for="username">Username</label>
+                    <p><label for="username">Username (displayed in the Personas gallery)</label>
                     <input type="text" name="create_username" value="" id="" <?php if (array_key_exists('create_username', $this->_errors)) echo 'class="error"' ?>/>
 					<?php if (array_key_exists('create_username', $this->_errors)) echo '<span class="error-message">' . $this->_errors['create_username'] . '</span>' ?>
                     </p>

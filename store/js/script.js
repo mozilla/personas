@@ -207,6 +207,9 @@ $.fn.personasButton = function(options) {
         } else {
             jQuery(this).html(options['hasFirefox']);
             jQuery(this).attr("href", PERSONAS_URLS['addon']);
+            jQuery(this).click(function() {
+                window.location = "https://addons.mozilla.org/services/install.php?addon_id=personas";
+            });
         }
     } else {
         jQuery(this).html(options['noFirefox']);
