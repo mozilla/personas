@@ -173,6 +173,12 @@ $.fn.personasDownload = function(options) {
         
         var downloadUrl = jQuery.os.mac ? PERSONAS_URLS['mac_bundle'] : jQuery.os.win ? PERSONAS_URLS['win_bundle'] : PERSONAS_URLS['linux_bundle'];
         jQuery(this).attr("href", downloadUrl);
+    } else {
+        console.log('added click listener');
+        jQuery(this).click(function() {
+            window.location = "https://addons.mozilla.org/services/install.php?addon_id=personas";
+        });
+        
     }
 };
 
