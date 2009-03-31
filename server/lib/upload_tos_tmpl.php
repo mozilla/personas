@@ -78,7 +78,7 @@ If you upload a “persona” design for the Firefox® web browser (each a “Pe
                             <ul>
                              <li>   People may not share, modify, or distribute my design outside of the Personas application.
                              </li>
-                             <li>I would like a free 30-day trial, after which point I will be charged a fee to help Mozilla sustain the program at no cost to users.  Full details will be sent via email as the trial period is expiring.</li>
+                             <li>I would like a free 30-day trial, after which point I may be charged a fee to help Mozilla sustain the program at no cost to users.  Full details will be sent via email as the trial period is expiring.</li>
                             </ul>
   <?php if (array_key_exists('license', $upload_errors)) echo '<span class="error-message">' . $upload_errors['license'] . '</span>' ?>
 
