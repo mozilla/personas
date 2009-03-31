@@ -1,8 +1,6 @@
 <!ENTITY preferences.title "Opzioni di Personas">
 <!ENTITY generalSettings.label "Generale">
 <!ENTITY previewEnabled.label "Visualizza anteprima durante la selezione da menu">
-<!ENTITY reportSelection.label "Partecipa al monitoraggio della popolarità">
-<!ENTITY reportSelection.title "Dettagli">
 <!ENTITY displaySettings.label "Visualizza">
 <!ENTITY useTextColor.label "Utilizza testo colorato">
 <!ENTITY useAccentColor.label "Utilizza evidenziatore">

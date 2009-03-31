@@ -1,8 +1,6 @@
 <!ENTITY preferences.title "Tùy chỉnh Personas">
 <!ENTITY generalSettings.label "Tổng quát">
 <!ENTITY previewEnabled.label "Cho xem thử khi rê chuột chọn trên trình đơn">
-<!ENTITY reportSelection.label "Tham gia vào việc theo dõi mức độ phổ biến">
-<!ENTITY reportSelection.title "Chi tiết">
 <!ENTITY displaySettings.label "Hiển thị">
 <!ENTITY useTextColor.label "Dùng màu chữ">
 <!ENTITY useAccentColor.label "Dùng màu nhấn">

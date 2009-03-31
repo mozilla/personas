@@ -1,8 +1,6 @@
 <!ENTITY preferences.title "העדפות Personas">
 <!ENTITY generalSettings.label "כללי">
 <!ENTITY previewEnabled.label "הצג תצוגה מקדימה כאשר בוחרים מתפריט">
-<!ENTITY reportSelection.label "השתתפות במעקב פופולריות">
-<!ENTITY reportSelection.title "פרטים">
 <!ENTITY displaySettings.label "תצוגה">
 <!ENTITY useTextColor.label "השתמש בצבע טקסט">
 <!ENTITY useAccentColor.label "השתמש בצבע מודגש">

@@ -1,8 +1,6 @@
 <!ENTITY preferences.title "Personas Einstellungen">
 <!ENTITY generalSettings.label "Allgemein">
 <!ENTITY previewEnabled.label "Vorschau anzeigen, wenn im Menü ausgewählt">
-<!ENTITY reportSelection.label "An der Popularitätsermittlung teilnehmen">
-<!ENTITY reportSelection.title "Details">
 <!ENTITY displaySettings.label "Anzeige">
 <!ENTITY useTextColor.label "Textfarbe benutzen">
 <!ENTITY useAccentColor.label "Akzentfarbe benutzen">

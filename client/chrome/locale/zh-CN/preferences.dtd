@@ -1,8 +1,6 @@
 <!ENTITY preferences.title "风格选项">
 <!ENTITY generalSettings.label "常规">
 <!ENTITY previewEnabled.label "从菜单中选择时显示预览">
-<!ENTITY reportSelection.label "参加流行风格跟踪调查">
-<!ENTITY reportSelection.title "详情">
 <!ENTITY displaySettings.label "显示">
 <!ENTITY useTextColor.label "使用文字颜色">
 <!ENTITY useAccentColor.label "使用加重颜色">
