@@ -193,7 +193,7 @@ class PersonaUser
 		if (!$this->_username && $this->_unauthed_username)
 		{
 			#we have a bad cookie.
-			$this->logout();
+			$this->log_out();
 			$this->force_signin();
 		}
 		
