@@ -63,11 +63,9 @@ const Ci = Components.interfaces;
 const Cr = Components.results;
 const Cu = Components.utils;
 
-const FIREFOX_ID = "{ec8030f7-c20a-464f-9b0e-13a3a9e97384}";
-
 let appInfo = Cc["@mozilla.org/xre/app-info;1"].getService(Ci.nsIXULAppInfo);
 
-if (appInfo.ID == FIREFOX_ID && appInfo.version.indexOf("3.0") == 0) {
+if (appInfo.platformVersion.indexOf("1.9.0") == 0) {
   // Declare JSON with |var| so it'll be defined outside the enclosing
   // conditional block.
   var JSON = {
