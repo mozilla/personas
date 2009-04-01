@@ -35,12 +35,16 @@
  * ***** END LICENSE BLOCK ***** */
 
 /**
- * This module wraps the incompatible Firefox 3.0 and 3.5 JSON APIs, presenting
- * the 3.5 API on both versions.  Import this module to parse and stringify JSON
- * in both 3.0 and 3.5 without checking the application's version each time.
+ * This module wraps the incompatible Gecko 1.9.0 (Firefox 3.0) and Gecko 1.9.1
+ * (Firefox 3.5) JSON APIs, presenting the Gecko 1.9.1 API on both versions,
+ * for extensions that support multiple versions of Gecko-based applications.
+ *
+ * Import this module into your extension to parse and stringify JSON in both
+ * Firefox 3.0 and 3.5 (and other Gecko-based applications, like Thunderbird)
+ * without checking the application's version each time.
  *
  * Note: don't import this into the global namespace!  If you do, you'll hork
- * native Firefox 3.0 code that expects the 3.0 API.  Instead, import it into
+ * native application code that expects the 1.9.0 API.  Instead, import it into
  * your own object like this:
  *
  *   let MyExtension = {
@@ -48,11 +52,9 @@
  *     ...
  *   };
  *   Components.utils.import("chrome://myextension/modules/JSON.js", MyExtension);
- *   // Now MyExtension.JSON is an object implementing the Firefox 3.5 JSON API.
+ *   // Now MyExtension.JSON is an object implementing the Gecko 1.9.1 JSON API.
  *
- * This module also works in Thunderbird 3.0, which uses Firefox 3.5's API.
- *
- * The Firefox 3.5 JSON API is documented at:
+ * The Gecko 1.9.1 (Firefox 3.5) JSON API is documented in the article:
  *   https://developer.mozilla.org/En/Using_JSON_in_Firefox
  */
 
