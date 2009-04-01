@@ -174,6 +174,8 @@
 			$upload_errors['header-image'] = "We do not recognize the format of your header image. Please let us know at persona-devel@mozilla.com if you think this is in error.";
 		elseif ($hheight < 200 || $hwidth < 2500)
 			$upload_errors['header-image'] = "Please make sure your header image is at least 2500x200 pixels (it appears to be $hwidth" . "x$hheight)";
+		elseif ($hheight > 500)
+			$upload_errors['header-image'] = "Please make sure your header image is less than 500 pixels tall so that it can appear in the browser (it appears to be $hwidth" . "x$hheight)";
 	}
 	
 	if (!(array_key_exists('id', $upload_submitted) && $_FILES['footer-image']['size'] == 0)) #images are optional on edit
@@ -184,6 +186,8 @@
 			$upload_errors['footer-image'] = "We do not recognize the format of your footer image. Please let us know at persona-devel@mozilla.com if you think this is in error.";
 		elseif ($fheight < 100 || $fwidth < 2500)
 			$upload_errors['footer-image'] = "Please make sure your footer image is at least 2500x100 pixels (it appears to be $fwidth" . "x$fheight)";
+		elseif ($fheight > 250)
+			$upload_errors['header-image'] = "Please make sure your footer image is less than 250 pixels tall so that it can appear in the browser (it appears to be $fwidth" . "x$fheight)";
 	}	
 			
 	if (count($upload_errors) > 0)
