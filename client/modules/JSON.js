@@ -44,8 +44,8 @@
  * without checking the application's version each time.
  *
  * Note: don't import this into the global namespace!  If you do, you'll hork
- * native application code that expects the 1.9.0 API.  Instead, import it into
- * your own object like this:
+ * native application code that expects the Gecko 1.9.0 API.  Instead, import it
+ * into your own object like this:
  *
  *   let MyExtension = {
  *     JSON: null,
