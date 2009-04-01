@@ -12,7 +12,7 @@
 						echo "            <ul>\n";
 						foreach ($tabs as $list_tab)
 						{
-							if ($list_tab == 'My' && $no_my == 1)
+							if ($list_tab == 'My' && (!$user->get_unauthed_username() || $no_my == 1))
 								continue;
 							#if ($list_tab == 'All' && $list_category == 'All')
 							#	continue;
