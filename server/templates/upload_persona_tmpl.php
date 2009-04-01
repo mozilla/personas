@@ -11,7 +11,7 @@
                 <p id="breadcrumbs"><a href="http://www.getpersonas.com">Personas Home</a> : <?= $upload_submitted['id'] ? "Edit" : "Create" ?> Your Own</p>
                 
                 <h4><?= $upload_submitted['id'] ? "Edit" : "Create" ?> Your Persona</h4>
-                <form method="POST" action="upload" enctype='multipart/form-data'>
+                <form method="POST" action="/upload" enctype='multipart/form-data'>
 				<input type="hidden" name="agree" value="<?= htmlspecialchars($upload_submitted['agree']) ?>">
 				<input type="hidden" name="license" value="<?= htmlspecialchars($upload_submitted['license']) ?>">
 				<input type="hidden" name="id" value="<?= htmlspecialchars($upload_submitted['id']) ?>">

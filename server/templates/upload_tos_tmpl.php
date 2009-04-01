@@ -11,7 +11,7 @@
                 <p id="breadcrumbs"><a href="http://www.getpersonas.com">Personas Home</a> : Create Your Own</p>
                 
                 <h4>Terms of Service</h4>
-               <form action="upload" method="post">
+               <form action="/upload" method="post">
                <input type="hidden" name="firstterms" value="1">
                         <textarea name="agreement" id="agreement" readonly>
 Personas Designer Agreement
