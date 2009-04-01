@@ -242,9 +242,9 @@ class PersonaUser
 		$result = $sth->fetch(PDO::FETCH_ASSOC);
 		if ($result && $result['privs'] > 0) #0 is disabled
 		{
-			$this->_username = $username;
+			$this->_username = $result['username'];
 			$this->_privs = $result['privs'];
-			$this->_cookie_value = $username . " " . md5($result['username'] . $result['md5'] . PERSONAS_LOGIN_SALT . $_SERVER['REMOTE_ADDR']);
+			$this->_cookie_value = $result['username'] . " " . md5($result['username'] . $result['md5'] . PERSONAS_LOGIN_SALT . $_SERVER['REMOTE_ADDR']);
 			$this->_email = $result['email'];	
 			return 1;
 		}
