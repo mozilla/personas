@@ -11,7 +11,7 @@
     <em:creator>Chris Beard</em:creator>
     <em:contributor>Myk Melez</em:contributor>
 
-    <!-- Localizers (from Babelzilla and other sources) -->
+    <!-- Localizers (from Babelzilla and other places) in alphabetical order -->
     <em:translator>a007son</em:translator>        <!-- zh-TW, forum      -->
     <em:translator>dogi</em:translator>           <!-- de-DE, Babelzilla -->
     <em:translator>drry</em:translator>           <!-- ja-JP, Babelzilla -->
