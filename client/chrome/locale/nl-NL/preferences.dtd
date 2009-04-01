@@ -1,0 +1,10 @@
+<!ENTITY preferences.title "Personas voarkeuren">
+<!ENTITY generalSettings.label "Algemeen">
+<!ENTITY previewEnabled.label "Toon voarbeeld bij het selecteren uit het menu">
+<!ENTITY reportSelection.label "Doe mee met het populariteitsonderzoek">
+<!ENTITY reportSelection.title "Details">
+<!ENTITY displaySettings.label "Toon">
+<!ENTITY useTextColor.label "Gebruik tekstkleur">
+<!ENTITY useAccentColor.label "Gebruik accentkleur">
+<!ENTITY advancedSettings.label "Geavanceerd">
+<!ENTITY showCustomMenu.label "Toon eigen Persona in menu">

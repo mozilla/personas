@@ -1,3 +1,17 @@
-<!ENTITY personas_app_title 	  "Personas voor Firefox">
-
-<!ENTITY useDefaultPersona.label  "Gebruik Standaard">
+<!ENTITY personas_app_title "Persoanas voor Firefox">
+<!ENTITY useDefaultPersona.label "Standaard">
+<!ENTITY preferences.label "Voorkeuren...">
+<!ENTITY viewDirectory.label "Toon map...">
+<!ENTITY customPersona.label "Eigen Persona">
+<!ENTITY customName.label "Naam:">
+<!ENTITY header.label "Bovenkant:">
+<!ENTITY selectBackground.label "Bladeren...">
+<!ENTITY footer.label "Onderkant:">
+<!ENTITY textColorPicker.label "Tekstkleur:">
+<!ENTITY accentColorPicker.label "Accentkleur:">
+<!ENTITY useDefaultColor.label "Gebruik standaard">
+<!ENTITY okButton.label "OK">
+<!ENTITY contextHomePage.label "Homepage">
+<!ENTITY contextPreferences.label "Instellingen">
+<!ENTITY contextEdit.label "Bewerken">
+<!ENTITY contextApply.label "Toepassen">

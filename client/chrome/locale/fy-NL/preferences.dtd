@@ -1,0 +1,10 @@
+<!ENTITY preferences.title "Personas foarkarren">
+<!ENTITY generalSettings.label "Algemien">
+<!ENTITY previewEnabled.label "Toan foarbyld by it selektearjen út it menu">
+<!ENTITY reportSelection.label "Doch mei mei oan populariteitsûndersyk">
+<!ENTITY reportSelection.title "Details">
+<!ENTITY displaySettings.label "Toan">
+<!ENTITY useTextColor.label "Brûk tekstkleur">
+<!ENTITY useAccentColor.label "Brûk aksentkleur">
+<!ENTITY advancedSettings.label "Avansearre">
+<!ENTITY showCustomMenu.label "Toan eigen Persona yn menu">
