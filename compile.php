@@ -46,17 +46,7 @@
 	$db = new PersonaStorage();
 	$categories = $db->get_categories();
 
-	####HACK to be removed after launch and replacing all the other files
-	function get_recent_page_hack()
-	{
-		$ch = curl_init();
-		$fp = fopen(PERSONAS_STORAGE_PREFIX . "/recent.html", "w");	
-		curl_setopt($ch, CURLOPT_URL, "http://localhost/store/dynamic/gallery/All/Recent?no_my=1");
-		curl_setopt($ch, CURLOPT_FILE, $fp);
-		curl_exec($ch);
-		fclose($fp);	
-	}
-
+	
 	function get_directory_html($path, $file)
 	{
 		if (!is_dir(PERSONAS_STORAGE_PREFIX . "/gallery/$path"))
@@ -72,68 +62,31 @@
 		fclose($fp);	
 	}
 
-	function get_persona_html($id)
+	function make_directory_path($file)
 	{
-		$path = make_persona_detail_path($id);
+		$file = substr($file, 1); #remove leading slash
+		$components = explode("/", $file);
+		array_pop($components); #remove filename
+		$path = "";
+		foreach ($components as $dir)
+		{
+			$path .= "/" . $dir;
+			if (!is_dir($path))
+				mkdir($path);
+		}
+	}
+	
+	function store_page($url, $filename)
+	{
+		make_directory_path($filename);
+		$fp = fopen($filename, "w");
 
 		$ch = curl_init();
-		$fp = fopen("$path/$id", "w");	
-		curl_setopt($ch, CURLOPT_URL, "http://localhost/store/dynamic/persona/$id?no_my=1");
+		curl_setopt($ch, CURLOPT_URL, $url);
 		curl_setopt($ch, CURLOPT_FILE, $fp);
 		curl_exec($ch);
-		fclose($fp);	
+		fclose($fp);		
 	}
-
-	function get_mainpage_html()
-	{
-		$path = PERSONAS_STORAGE_PREFIX . "/index.html";
-
-		$ch = curl_init();
-		$fp = fopen("$path", "w");	
-		curl_setopt($ch, CURLOPT_URL, "http://localhost/store/dynamic/");
-		curl_setopt($ch, CURLOPT_FILE, $fp);
-		curl_exec($ch);
-		fclose($fp);	
-	}
-
-	function get_featured_html($db)
-	{
-		$path = PERSONAS_STORAGE_PREFIX . "/featured";
-		$persona = $db->get_persona_by_id(FEATURE_DESIGNER_PERSONA_ID);
-
-		$ch = curl_init();
-		$fp = fopen("$path", "w");	
-		curl_setopt($ch, CURLOPT_URL, "http://localhost/store/dynamic/gallery/Designer/" . $persona['author'] . "?no_my=1");
-		curl_setopt($ch, CURLOPT_FILE, $fp);
-		curl_exec($ch);
-		fclose($fp);	
-	}
-
-	function get_updated_html()
-	{
-		$path = PERSONAS_STORAGE_PREFIX . "/updated/index.html";
-
-		$ch = curl_init();
-		$fp = fopen("$path", "w");	
-		curl_setopt($ch, CURLOPT_URL, "http://localhost/store/dynamic/updated");
-		curl_setopt($ch, CURLOPT_FILE, $fp);
-		curl_exec($ch);
-		fclose($fp);	
-	}
-
-	function get_firstrun_html()
-	{
-		$path = PERSONAS_STORAGE_PREFIX . "/firstrun/index.html";
-
-		$ch = curl_init();
-		$fp = fopen("$path", "w");	
-		curl_setopt($ch, CURLOPT_URL, "http://localhost/store/dynamic/firstrun");
-		curl_setopt($ch, CURLOPT_FILE, $fp);
-		curl_exec($ch);
-		fclose($fp);	
-	}
-
-	get_directory_html('All', 'All');
 
 	#Top level popular page
 	$popular_list = $db->get_popular_personas(null, 21);
@@ -145,8 +98,6 @@
 	}
 	$master['popular'] = $popular_json;
 
-	get_directory_html('All', 'Popular');
-	
 	#Top level recent page
 	$recent_list = $db->get_recent_personas(null, 21);
 	foreach ($recent_list as $item)
@@ -157,8 +108,6 @@
 	}
 	$master['recent'] = $recent_json;
 
-	get_directory_html('All', 'Recent');
-	
 
 	foreach ($categories as $category)
 	{
@@ -166,12 +115,6 @@
 		$category_total = $db->get_personas_by_category_count($category);
 		$pages = floor($category_total/$page_size) + 1;
 		
-		$storage_path = PERSONAS_STORAGE_PREFIX . '/' . preg_replace('/ /', '_', $category);
-		if (!is_dir($storage_path))
-		{
-			mkdir($storage_path);
-		}
-
 		$popular_list = $db->get_popular_personas($category, 10);
 	
 		$count = 0;
@@ -185,13 +128,16 @@
 		$category_array[] = array('name' => $category, 'personas' => $short_cat_list);
 
 		#get the html
-		get_directory_html("$category", "Popular");
-		get_directory_html("$category", "Recent");
+		#the popular page
+		store_page("http://localhost/gallery/$category/Popular?no_my", PERSONAS_STORAGE_PREFIX . "/gallery/$category/Popular");
+	
+		#the recent page
+		store_page("http://localhost/gallery/$category/Recent?no_my", PERSONAS_STORAGE_PREFIX . "/gallery/$category/Recent");
 
 		$i = 1;
 		while ($i <= $pages)
 		{
-			get_directory_html("$category/All", "$i");
+			store_page("http://localhost/gallery/$category/All/$i?no_my", PERSONAS_STORAGE_PREFIX . "/gallery/$category/All/$i");
 			$i++;
 		}		
 	}
@@ -203,23 +149,45 @@
 	$master_list = $db->get_active_persona_ids();
 	foreach ($master_list as $id)
 	{
-		get_persona_html($id);
+		$path = get_persona_path(PERSONAS_STORAGE_PREFIX . "/gallery/persona", $id);
+		store_page("http://localhost/persona/$id", $path . "/$id");
 	}
-	
+		
 	#and the index
-	get_mainpage_html();
+	store_page("http://localhost/index.html?no_my=1", PERSONAS_STORAGE_PREFIX . "/index.html");
+
+	#the all page
+	store_page("http://localhost/gallery/All/All?no_my", PERSONAS_STORAGE_PREFIX . "/gallery/All/All");
+
+	#the popular page
+	store_page("http://localhost/gallery/All/Popular?no_my", PERSONAS_STORAGE_PREFIX . "/gallery/All/Popular");
+
+	#the recent page
+	store_page("http://localhost/gallery/All/Recent?no_my", PERSONAS_STORAGE_PREFIX . "/gallery/All/Recent");
 
 	#featured designers
-	get_featured_html($db);
-
+	$featured_persona = $db->get_persona_by_id(FEATURE_DESIGNER_PERSONA_ID);
+	store_page("http://localhost/gallery/Designer/" . $featured_persona['author'] . "?no_my=1", PERSONAS_STORAGE_PREFIX . "/featured");
+	
 	#update page
-	get_updated_html();
+	store_page("http://localhost/updated?no_my=1", PERSONAS_STORAGE_PREFIX . "/updated.html");
 
 	#firstrun page
-	get_firstrun_html();
+	store_page("http://localhost/firstrun?no_my=1", PERSONAS_STORAGE_PREFIX . "/firstrun.html");
 
-	#hack to provide a recent.html page during the transition
-	get_recent_page_hack();
+	#recent page hack to provide a backwards compatible recent.html
+	store_page("http://localhost/gallery/All/Recent?no_my=1", PERSONAS_STORAGE_PREFIX . "/recent.html");
 
+	#faq
+	store_page("http://localhost/faq?no_my=1", PERSONAS_STORAGE_PREFIX . "/faq.html");
 
+	#demo_install
+	store_page("http://localhost/demo_install?no_my=1", PERSONAS_STORAGE_PREFIX . "/demo_install.html");
+
+	#demo_create
+	store_page("http://localhost/demo_install?no_my=1", PERSONAS_STORAGE_PREFIX . "/demo_create.html");
+
+	#privacy
+	store_page("http://localhost/demo_install?no_my=1", PERSONAS_STORAGE_PREFIX . "/privacy.html");
+	
 ?>

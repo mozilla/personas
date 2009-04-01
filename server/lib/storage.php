@@ -288,7 +288,7 @@ class PersonaStorage
 	{
 		try
 		{
-			$statement = 'select * from personas where status = 1' . ($category ? " and category = :category" : "") . ' and popularity > 0 order by popularity desc' . ($limit ? " limit $limit" : "") . ($offset ? " offset $offset" : "");
+			$statement = 'select * from personas where status = 1' . ($category ? " and category = :category" : "") . ' and (popularity > 0 or license = "restricted") order by popularity desc' . ($limit ? " limit $limit" : "") . ($offset ? " offset $offset" : "");
 			$sth = $this->_dbh->prepare($statement);
 			if ($category)
 			{
@@ -522,7 +522,7 @@ class PersonaStorage
 			$sth->bindParam(':accentcolor', $accent);
 			$sth->bindParam(':textcolor', $text);
 			$sth->bindParam(':description', $desc);
-			$sth->bindParam(':license', $desc);
+			$sth->bindParam(':license', $license);
 			$sth->bindParam(':reason', $reason);
 			$sth->bindParam(':reasonother', $reasonother);
 			$sth->execute();

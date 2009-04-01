@@ -1,20 +1,20 @@
-<?php 
+<?php
 	require_once 'lib/personas_constants.php';	
 	require_once 'lib/personas_functions.php';	
 	require_once 'lib/storage.php';
-	
-	header('Cache-Control: no-store, must-revalidate, post-check=0, pre-check=0, private, max-age=0');
-	header('Pragma: private');
-	
+	require_once 'lib/user.php';
 
 	$db = new PersonaStorage();
+	$user = new PersonaUser();
+	
+
 	$categories = $db->get_categories();
 	array_unshift($categories, 'All');
 	$category = null;
 	
 	$path = array_key_exists('PATH_INFO', $_SERVER) ? $_SERVER['PATH_INFO'] : '/';
 	$path = substr($path, 1); #chop the lead slash
-	list($persona_id) = explode('/', $path.'');
+	list($persona_id) = explode('/', $path);
 
 	if (!is_numeric($persona_id))
 		$persona_id = null;
@@ -25,33 +25,17 @@
 		$category = $persona_data['category'];
 		$persona_json = htmlentities(json_encode(extract_record_data($persona_data)));
 	}
+
+	$url_prefix = '/gallery';
+	$tabs = null;
 	
-	
+	$title = "Persona Detail"; 
+	include 'templates/header.php'; 
 ?>
-
-
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
-            "http://www.w3.org/TR/html4/strict.dtd">
-<html lang="en">
-<head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	<title>Personas for Firefox | Persona Detail</title>
-	<link href="/store/css/style.css" rel="stylesheet" type="text/css" media="all" />
-
-</head>
 <body>
     <div id="outer-wrapper">
         <div id="inner-wrapper">
-            <p id="account"></p>
-            <div id="nav">
-                <h1><a href="http://www.getpersonas.com/"><img src="/store/img/logo.png" alt="Mozilla Labs Personas"></a></h1>
-                <ul>
-                    <li class="gallery"><a href="http://www.getpersonas.com/store/gallery/All/Popular">Gallery</a></li>
-                    <li class="create"><a href="https://personas.services.mozilla.com/upload">Create <br/>Your Own</a></li>
-                    <li class="demo"><a href="http://www.getpersonas.com/store/demo_install.html">Demo</a></li>
-                    <li class="faq"><a href="http://www.getpersonas.com/store/faq.html">Frequent <br/>Questions</a></li>
-                </ul>
-            </div>
+<?php include 'templates/nav.php'; ?>
             <div id="header">
                 <h2>View Personas</h2>
                 <h3>Your browser, your style! Dress it up with easy-to-change "skins" for your
@@ -89,33 +73,12 @@
 	}
 ?>
             </div>
-	<div id="secondary-content">
-                <ul id="subnav">
-<?php
-			foreach ($categories as $list_category)
-			{
-				$category_url = "/store/gallery/$list_category";
-				if ($list_category == $category)
-				{
-					echo "		<li class=\"active\"><a href=\"$category_url/Popular\">$list_category</a></li>\n";
-				}
-				else
-				{
-					echo "		<li><a href=\"$category_url/Popular\">$list_category</a></li>\n";
-				}
-			}
-?>
-                </ul>
-            </div>
+<?php include 'templates/category_nav.php'; ?>
             
         </div>
     </div>
     
-    <div id="footer">
-        <p>Copyright © <?= date("Y") ?> Mozilla. <a href="http://labs.mozilla.com/projects/firefox-personas/">Personas</a> is a <a href="http://labs.mozilla.com">Mozilla Labs</a> experiment. | <a href="http://labs.mozilla.com/about-labs/">About Mozilla Labs</a>    |  <a href="http://www.getpersonas.com/store/privacy.html">Privacy</a></p>
-    </div>
-    <script src="/store/js/jquery.js"></script>
-    <script src="/store/js/script.js"></script>
+<?php include 'templates/footer.php'; ?>
     <script type="text/javascript" charset="utf-8">
         $(document).ready(function () {
             $("#header").ie6Warning({"message":'<div id="ie6">Upgrade your browser to get the most out of this website. <a href="%LINK%">Download Firefox for free</a>.</div>'});
@@ -126,6 +89,5 @@
                                         });
         });
     </script>
-    <script src="/store/js/urchin.js"></script>
 </body>
 </html>

@@ -65,18 +65,17 @@
 		return mail($address, 'Your Persona has been successfully edited', $message, $header);
 	}
 	 
-	header('Cache-Control: no-store, must-revalidate, post-check=0, pre-check=0, private, max-age=0');
-	header('Pragma: private');
-	
+	$title = "Admin | Edits Pending Approval";
 
 	try 
 	{
 		$user = new PersonaUser();
-		$user->authenticate(1);
+		$user->authenticate();
+		$user->force_signin(1);
 		if (!$user->has_admin_privs())
 		{
-			$this->_errors['login_user'] = "This account does not have privileges for this operation. Please log in with an account that does.";
-			$user->auth_form();
+			$_errors['error'] = 'This account does not have privileges for this operation. Please <a href="/signin?action=logout">log in</a> with an account that does.';
+			include '../templates/user_error.php';
 			exit;
 		}
 	}
@@ -86,29 +85,13 @@
 		print("Database problem. Please try again later.");
 		exit;
 	}
-?>
 
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
-            "http://www.w3.org/TR/html4/strict.dtd">
-<html lang="en">
-<head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	<title>Personas for Firefox | Gallery</title>
-	<link href="/store/css/style.css" rel="stylesheet" type="text/css" media="all" />
-</head>
+	include '../templates/header.php'; ?>
+?>
 <body>
     <div id="outer-wrapper">
         <div id="inner-wrapper">
-            <p id="account"></p>
-            <div id="nav">
-                <h1><a href="http://www.getpersonas.com/"><img src="/store/img/logo.png" alt="Mozilla Labs Personas"></a></h1>
-                <ul>
-                    <li class="gallery"><a href="http://www.getpersonas.com/store/gallery/All/Popular">Gallery</a></li>
-                    <li class="create"><a href="https://personas.services.mozilla.com/upload">Create <br/>Your Own</a></li>
-                    <li class="demo"><a href="http://www.getpersonas.com/store/demo_install.html">Demo</a></li>
-                    <li class="faq"><a href="http://www.getpersonas.com/store/faq.html">Frequent <br/>Questions</a></li>
-                </ul>
-            </div>
+<?php include '../templates/nav.php'; ?>
             <div id="header">
                 <h2>View Personas</h2>
                 <h3>Your browser, your style! Dress it up with easy-to-change "skins" for your
@@ -335,15 +318,11 @@
             </div>
         </div>
     </div>
-    <script src="/store/js/jquery.js"></script>
-    <script src="/store/js/script.js"></script>
+<?php include '../templates/footer.php'; ?>
     <script type="text/javascript" charset="utf-8">
         $(document).ready(function() {
            $("#gallery .preview img").previewPersona();
         });
     </script>
-    <div id="footer">
-        <p>Copyright ' <?= date("Y") ?> Mozilla. <a href="http://labs.mozilla.com/projects/firefox-personas/">Personas</a> is a <a href="http://labs.mozilla.com">Mozilla Labs</a> experiment. | <a href="http://labs.mozilla.com/about-labs/">About Mozilla Labs</a>   |  Terms of Use  |  Privacy</p>
-    </div>
 </body>
 </html>

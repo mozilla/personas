@@ -1,31 +1,22 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
-            "http://www.w3.org/TR/html4/strict.dtd">
-<html lang="en">
-<head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	<title>Personas For Firefox | Privacy Policy</title>
-	<link href="css/style.css" rel="stylesheet" type="text/css" media="all" >
-</head>
+<?php
+	require_once 'lib/personas_constants.php';
+	require_once 'lib/user.php';	
+
+	$user = new PersonaUser();
+	$title = "Privacy Policy"; 
+	include 'templates/header.php'; 
+?>
 <body>
     <div id="outer-wrapper">
         <div id="inner-wrapper">
-            <p id="account"></p>
-            <div id="nav">
-                <h1><a href="http://www.getpersonas.com/"><img src="/store/img/logo.png" alt="Mozilla Labs Personas"></a></h1>
-                <ul>
-                    <li class="gallery"><a href="http://www.getpersonas.com/store/gallery/All/Popular">Gallery</a></li>
-                    <li class="create"><a href="https://personas.services.mozilla.com/upload">Create <br/>Your Own</a></li>
-                    <li class="demo"><a href="http://www.getpersonas.com/store/demo_install.html">Demo</a></li>
-                    <li class="faq"><a href="http://www.getpersonas.com/store/faq.html">Frequent <br/>Questions</a></li>
-                </ul>
-            </div>
+<?php include 'templates/nav.php'; ?>
             <div id="header">
                 <h2>Privacy Policy</h2>
                 
             </div>
             <div id="maincontent" class="demo">
                 <div id="breadcrumbs">
-                    <a href="http://www.getpersonas.com">Personas Home</a> :  Privacy Policy
+                    <a href="/">Personas Home</a> :  Privacy Policy
                 </div>
                
                
@@ -64,21 +55,9 @@
                 <p>If you have questions about this privacy policy, please contact Mozilla at <a href="mailto:privacy@mozilla.com">privacy@mozilla.com</a>.  In your email, please identify the specific product or policy about which you have questions.</p>
                 
             </div>
-            <div id="secondary-content">
-              
-              
-              <div class="info-box">
-                <h3><a href="http://www.getpersonas.com">Get Personas Free</a></h3>
-                <div class="body">
-                    <p>Easy to install and easy to change "skins" for your Firefox web browser.</p>
-                </div>
-              </div>
-            </div>
+<?php include 'templates/get_personas.php'; ?>
         </div>
     </div>
-    <div id="footer">
-        <p>Copyright © 2009 Mozilla. <a href="http://labs.mozilla.com/projects/firefox-personas/">Personas</a> is a <a href="http://labs.mozilla.com">Mozilla Labs</a> experiment. | <a href="http://labs.mozilla.com/about-labs/">About Mozilla Labs</a>    |  <a href="privacy.html">Privacy</a></p>
-    </div>
-    <script src="/store/js/urchin.js"></script>
+<?php include 'templates/footer.php'; ?>
 </body>
 </html>

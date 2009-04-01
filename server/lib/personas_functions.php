@@ -61,6 +61,15 @@
 		return $persona_path;
 		
 	}
+
+	function get_persona_path($base, $persona_id)
+	{
+		$second_folder = $persona_id%10;
+		$first_folder = ($persona_id%100 - $second_folder)/10;
+
+		$base = preg_replace('/\/$/', '', $base);
+		return $base . '/' . $first_folder . "/" . $second_folder;		
+	}
 	
 	function build_persona_files($persona_path, $persona)
 	{

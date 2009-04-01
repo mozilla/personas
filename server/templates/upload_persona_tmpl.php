@@ -1,25 +1,8 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
-            "http://www.w3.org/TR/html4/strict.dtd">
-<html lang="en">
-<head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	<title>Personas for Firefox | <?= $upload_submitted['id'] ? "Edit" : "Create" ?> Your Persona</title>
-	<link href="/store/css/style.css" rel="stylesheet" type="text/css" media="all" />
-
-</head>
+<?php $title = ($upload_submitted['id'] ? "Edit" : "Create") . " your Persona"; include 'header.php'; ?>
 <body>
     <div id="outer-wrapper">
         <div id="inner-wrapper">
-            <p id="account"><a href="https://personas.services.mozilla.com/upload?action=logout">Sign out</a></p>
-            <div id="nav">
-                <h1><a href="http://www.getpersonas.com/"><img src="/store/img/logo.png" alt="Mozilla Labs Personas"></a></h1>
-                <ul>
-                    <li class="gallery"><a href="http://www.getpersonas.com/store/gallery/All/Popular">Gallery</a></li>
-                    <li class="create"><a href="https://personas.services.mozilla.com/upload" class="active">Create <br/>Your Own</a></li>
-                    <li class="demo"><a href="http://www.getpersonas.com/store/demo_install.html">Demo</a></li>
-                    <li class="faq"><a href="http://www.getpersonas.com/store/faq.html">Frequent <br/>Questions</a></li>
-                </ul>
-            </div>
+<?php include 'nav.php'; ?>
             <div id="header">
                 <h2>Create Your Persona</h2>
                 <h3>Follow the easy steps below to start dressing up your browser!</h3>
@@ -131,7 +114,7 @@
                 <li class="current">
                     <div class="wrapper">
                         <h3>Step 2:</h3>
-                        <h4>Create Your Persona</h4>
+                        <h4><?= $title ?></h4>
                     </div>
                 </li>
                
@@ -143,9 +126,7 @@
             </div>
         </div>
     </div>
-    
-    <script src="/store/js/jquery.js"></script>
-    <script src="/store/js/script.js"></script>
+<?php include 'footer.php'; ?>
    <script type="text/javascript" charset="utf-8">
     $('#textcolor').ColorPicker({
     	onSubmit: function(hsb, hex, rgb) {
@@ -188,8 +169,5 @@
         }
     });
   </script>
-    <div id="footer">
-        <p>Copyright © 2009 Mozilla. <a href="http://labs.mozilla.com/projects/firefox-personas/">Personas</a> is a <a href="http://labs.mozilla.com">Mozilla Labs</a> experiment. | <a href="http://labs.mozilla.com/about-labs/">About Mozilla Labs</a>    |  <a href="http://www.getpersonas.com/store/privacy.html">Privacy</a></p>
-    </div>
 </body>
 </html>

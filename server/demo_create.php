@@ -1,24 +1,16 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
-            "http://www.w3.org/TR/html4/strict.dtd">
-<html lang="en">
-<head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	<title>Personas For Firefox | How To Create Personas</title>
-	<link href="css/style.css" rel="stylesheet" type="text/css" media="all" />
-</head>
+<?php
+	require_once 'lib/personas_constants.php';
+	require_once 'lib/user.php';	
+
+
+	$user = new PersonaUser();
+	$title = "How to Create Personas"; 
+	include 'templates/header.php'; 
+?>
 <body>
     <div id="outer-wrapper">
         <div id="inner-wrapper">
-            <p id="account"></p>
-            <div id="nav">
-                <h1><a href="http://www.getpersonas.com/"><img src="/store/img/logo.png" alt="Mozilla Labs Personas"></a></h1>
-                <ul>
-                    <li class="gallery"><a href="http://www.getpersonas.com/store/gallery/All/Popular">Gallery</a></li>
-                    <li class="create"><a href="https://personas.services.mozilla.com/upload">Create <br/>Your Own</a></li>
-                    <li class="demo"><a href="http://www.getpersonas.com/store/demo_install.html" class="active">Demo</a></li>
-                    <li class="faq"><a href="http://www.getpersonas.com/store/faq.html">Frequent <br/>Questions</a></li>
-                </ul>
-            </div>
+<?php include 'templates/nav.php'; ?>
             <div id="header">
                 <h2>Demo</h2>
                 <h3>Personas are lightweight, easy to install and easy to change “skins” for your Firefox web browser.</h3>
@@ -67,15 +59,15 @@
                 		larger than 300kb in filesize.</span></p>
 
 
-                		<div class="tut_Image"><a href="/store/img/Persona_Header_LABS.jpg"><img src="/store/img/tut_headerImage.jpg"
+                		<div class="tut_Image"><a href="/static/img/Persona_Header_LABS.jpg"><img src="/static/img/tut_headerImage.jpg"
                 		border="0"></a></div>
 
                 		<div class="tut_SubTitle">Header image as seen in OSX, XP and Vista</div>
 
-                		<div class="tut_Image"><img src="/store/img/tut_OSXheader.jpg" border="0"><span
-                		class="caption">OSX</span></div> <div class="tut_Image"><img src="/store/img/tut_XPheader.jpg"
+                		<div class="tut_Image"><img src="/static/img/tut_OSXheader.jpg" border="0"><span
+                		class="caption">OSX</span></div> <div class="tut_Image"><img src="/static/img/tut_XPheader.jpg"
                 		border="0"><span class="caption">Windows XP</span></div> <div class="tut_Image"><img
-                		src="/store/img/tut_VISTAheader.jpg" border="0"><span class="caption">Windows Vista</span></div>
+                		src="/static/img/tut_VISTAheader.jpg" border="0"><span class="caption">Windows Vista</span></div>
 
                 		<div class="tut_SubTitle">An example of a footer image</div>
 
@@ -97,15 +89,15 @@
                 		<p>The footer image should be PNG or JPG, <span class="tutBold">3000 pixels wide and 100 pixels tall</span> and <span class="tutBold">no
                 		larger than 300kb in filesize.</span></p>
 
-                		<div class="tut_Image"><a href="/store/img/Persona_Footer_LABS.jpg"><img src="/store/img/tut_footerImage.jpg"
+                		<div class="tut_Image"><a href="/static/img/Persona_Footer_LABS.jpg"><img src="/static/img/tut_footerImage.jpg"
                 		border="0"></a></div>
 
                 		<div class="tut_SubTitle">Footer image as seen in OSX, XP and Vista</div>
 
-                		<div class="tut_Image"><img src="/store/img/tut_OSXfooter.jpg" border="0"><span
-                		class="caption">OSX</span></div> <div class="tut_Image"><img src="/store/img/tut_XPfooter.jpg"
+                		<div class="tut_Image"><img src="/static/img/tut_OSXfooter.jpg" border="0"><span
+                		class="caption">OSX</span></div> <div class="tut_Image"><img src="/static/img/tut_XPfooter.jpg"
                 		border="0"><span class="caption">Windows XP</span></div> <div class="tut_Image"><img
-                		src="/store/img/tut_VISTAfooter.jpg" border="0"><span class="caption">Windows Vista</span></div>
+                		src="/static/img/tut_VISTAfooter.jpg" border="0"><span class="caption">Windows Vista</span></div>
 
 
 
@@ -134,10 +126,10 @@
 
             		</p>
 
-                		<div class="tut_Image"><img src="/store/img/tut_custom_1.jpg" border="0"><br><span
+                		<div class="tut_Image"><img src="/static/img/tut_custom_1.jpg" border="0"><br><span
                 		class="caption"><span class="tutBold">STEP 1)</span> select "Preferences..."  <span class="tutBold">STEP 2)</span> check "Show Custom Persona in menu" <span class="tutBold">STEP 3)</span> select the Custom Persona and "Edit"</span></div>
 
-                		<div class="tut_Image"><img src="/store/img/tut_custom_2.jpg" border="0"><br><span
+                		<div class="tut_Image"><img src="/static/img/tut_custom_2.jpg" border="0"><br><span
                 		class="caption"><span class="tutBold">STEP 4)</span> Build the Persona using the upload fields and additional settings</span></div>
 
 
@@ -159,7 +151,7 @@
                 		flavors of the browser. </p>
 
                 		<div class="link">Download the Personas Header Template:  <a
-                		href="/store/img/Persona_Header_TEMPLATE.psd" class="button"><span>download</span><span>&nbsp;</span></a></div>
+                		href="/static/img/Persona_Header_TEMPLATE.psd" class="button"><span>download</span><span>&nbsp;</span></a></div>
 
 
                         <p>
@@ -167,7 +159,7 @@
                 		the three OS layers.  Be sure to turn off any of the OS layers you aren't using, as they will
                 		overlap each other due to their transparency.</p>
 
-                		<div class="tut_Image center"><img src="/store/img/tut_PSpalette.jpg" border="0"><br><span
+                		<div class="tut_Image center"><img src="/static/img/tut_PSpalette.jpg" border="0"><br><span
                 		class="caption">Photoshop overlay layerset</span></div>
 
                 	
@@ -177,10 +169,10 @@
 
                 		<div class="tut_SubTitle">Layer Overlays in Header Template PSD</div>
 
-                		<div class="tut_Image"><img src="/store/img/tut_OSXmask.jpg" border="0"><span class="caption">OSX layer
-                		overlay</span></div> <div class="tut_Image"><img src="/store/img/tut_XPmask.jpg" border="0"><span
+                		<div class="tut_Image"><img src="/static/img/tut_OSXmask.jpg" border="0"><span class="caption">OSX layer
+                		overlay</span></div> <div class="tut_Image"><img src="/static/img/tut_XPmask.jpg" border="0"><span
                 		class="caption">Windows XP layer overlay</span></div> <div class="tut_Image"><img
-                		src="/store/img/tut_VISTAmask.jpg" border="0"><span class="caption">Windows Vista layer
+                		src="/static/img/tut_VISTAmask.jpg" border="0"><span class="caption">Windows Vista layer
                 		overlay</span></div>
 
 
@@ -190,7 +182,7 @@
                 		where the UI will interact with the design and warning of any issues that you may want to address.
                 		The secondary dark bar below the toolbar images is the location of the tabstrip.</p>
 
-                		<div class="tut_Image"><img src="/store/img/tut_XPoverlay.jpg" border="0"><span class="caption">XP
+                		<div class="tut_Image"><img src="/static/img/tut_XPoverlay.jpg" border="0"><span class="caption">XP
                 		overlay on top of header image</span></div>
 
                 		<p>
@@ -214,7 +206,7 @@
                 		<p>Follow the link below to start the process and add your creations to the constantly growing
                 		catalog of Firefox Personas!</p>
 
-                		<div class="link">Go create your first Persona:  <a href="https://personas.services.mozilla.com/upload" class="button"><span>get started!</span><span>&nbsp;</span></a></div>
+                		<div class="link">Go create your first Persona:  <a href="/upload" class="button"><span>get started!</span><span>&nbsp;</span></a></div>
 
 
 
@@ -225,33 +217,9 @@
          
          
             </div>
-            <div id="secondary-content">
-              <ol id="demo-nav">
-                <li> 
-                    <a href="demo_install.html">How to Get Started</a>
-                </li>
-                <li class="current">
-                    <div class="wrapper">
-                        <span>How to Create Personas</span>
-                    </div>
-                </li>
-              </ol>
-              
-              <div class="info-box">
-                <h3><a href="http://www.getpersonas.com">Get Personas Free</a></h3>
-                <div class="body">
-                    <p>Easy to install and easy to change "skins" for your Firefox web browser.</p>
-                </div>
-              </div>
-            </div>
+<?php include 'templates/get_personas.php'; ?>
         </div>
     </div>
-    <script src="js/jquery.js"></script>
-    <script src="js/script.js"></script>
-    <div id="footer">
-        <p>Copyright © 2009 Mozilla. <a href="http://labs.mozilla.com/projects/firefox-personas/">Personas</a> is a <a href="http://labs.mozilla.com">Mozilla Labs</a> experiment. | <a href="http://labs.mozilla.com/about-labs/">About Mozilla Labs</a>    |  <a href="privacy.html">Privacy</a></p>
-        
-    </div>
-    <script src="/store/js/urchin.js"></script>
+<?php include 'templates/footer.php'; ?>
 </body>
 </html>

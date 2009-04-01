@@ -8,6 +8,7 @@ class PersonaUser
 	var $_dbh;
 
 	var $_username = null;
+	var $_unauthed_username = null;
 	var $_cookie_value = null;
 	var $_email = null;
 	var $_privs = 0;
@@ -26,11 +27,23 @@ class PersonaUser
 				error_log($exception->getMessage());
 				throw new Exception("Database unavailable", 503);
 		}
+
+		if (array_key_exists('PERSONA_USER', $_COOKIE))
+		{
+			list($username, $token) = explode(' ', $_COOKIE['PERSONA_USER']);
+			$this->_unauthed_username = $username;
+		}
+		
 	}
 	
 	function get_username()
 	{
 		return $this->_username;
+	}
+	
+	function get_unauthed_username()
+	{
+		return $this->_unauthed_username;
 	}
 	
 	function get_cookie()
@@ -170,109 +183,44 @@ class PersonaUser
 	
 	}
 
-	function authenticate($no_signup = null)
+	function authenticate()
 	{
-		if ($no_signup)
-			$this->_no_signup = 1;
-			
-		if (array_key_exists('logout', $_POST))
-		{
-			$this->log_out();
-		}
-		
-		if (array_key_exists('create_username', $_POST) && $_POST['create_username'])
-		{
-			#trying to create an account
-			$username = array_key_exists('create_username', $_POST) ? (ini_get('magic_quotes_gpc') ? stripslashes($_POST['create_username']) : $_POST['create_username']) : null;
-			$password = array_key_exists('create_password', $_POST) ? (ini_get('magic_quotes_gpc') ? stripslashes($_POST['create_password']) : $_POST['create_password']) : null;
-			$passwordconf = array_key_exists('create_passconf', $_POST) ? (ini_get('magic_quotes_gpc') ? stripslashes($_POST['create_passconf']) : $_POST['create_passconf']) : null;
-			$email = array_key_exists('create_email', $_POST) ? (ini_get('magic_quotes_gpc') ? stripslashes($_POST['create_email']) : $_POST['create_email']) : null;
-			
-			$username = trim($username);
-
-			$captcha_response = recaptcha_check_answer(
-				RECAPTCHA_PRIVATE_KEY,
-				$_SERVER['REMOTE_ADDR'],
-				$_POST['recaptcha_challenge_field'],
-				$_POST['recaptcha_response_field']
-			);
-			
-			if (!$captcha_response->is_valid) 
-				$this->_errors['captcha'] = "Invalid captcha response. Please try again.";
-
-			if (!preg_match('/^[A-Z0-9\._%+-]+@[A-Z0-9\.-]+\.[A-Z]{2,4}$/i', $email)) 
-				$this->_errors['create_email'] = "Invalid email address";
-
-			if (!preg_match('/^[A-Z0-9\._-]+$/i', $username)) 
-				$this->_errors['create_username'] = "Illegal characters in the username (alphanumerics, period, underscore and dash only)";
-			elseif (strlen($username) > 32)
-				$this->_errors['create_username'] = "Please limit your username to 32 characters or less";
-			elseif (strlen($username) < 6)
-				$this->_errors['create_username'] = "Please use at least 6 characters in your username";
-				
-			if (strlen($password) < 6)
-				$this->_errors['create_password'] = "Password must be at least 6 characters long";
-			elseif (!preg_match('/[A-Z]/i', $password) || !preg_match('/[^A-Z]/i', $password) )
-				$this->_errors['create_password'] = "Password should contain at least one alphabetic character and at least one non-alphabetic character";
-			
-			if ($password != $passwordconf)
-				$this->_errors['create_passconf'] = "Password does not match confirmation";
-			
-			if ($this->user_exists($username))
-				$this->_errors['create_username'] = "Username already in use";
-				
-			if (count($this->_errors) == 0)
-			{
-				if ($this->create_user($username, $password, $email))
-				{
-					setcookie('PERSONA_USER', $this->_cookie_value, null, '/');
-					return $this->_username;
-				}
-			}
-		}
-		
-		if (array_key_exists('login_user', $_POST) && $_POST['login_user'])
-		{
-			#trying to log in with password
-			$auth_user = ini_get('magic_quotes_gpc') ? stripslashes($_POST['login_user']) : $_POST['login_user'];
-			$auth_pass = array_key_exists('login_pass', $_POST) ? (ini_get('magic_quotes_gpc') ? stripslashes($_POST['login_pass']) : $_POST['login_pass']) : null;
-			$auth_remember = array_key_exists('login_remember', $_POST) ? (ini_get('magic_quotes_gpc') ? stripslashes($_POST['login_remember']) : $_POST['login_remember']) : null;
-			if ($this->authenticate_user_from_password($auth_user, $auth_pass))
-			{
-				setcookie('PERSONA_USER', $this->_cookie_value, $auth_remember ? time() + 60*60*24*365 : null, '/');
-				return $this->_username;
-			}
-			else
-			{
-				$this->_errors['login_user'] = "Invalid username or password. Please try again";
-			}
-		}
-		
-		if (!$this->_username && array_key_exists('PERSONA_USER', $_COOKIE))
+		if (array_key_exists('PERSONA_USER', $_COOKIE))
 		{
 			$this->authenticate_user_from_cookie($_COOKIE['PERSONA_USER']);
 		}
-				
+
+		if (!$this->_username && $this->_unauthed_username)
+		{
+			#we have a bad cookie.
+			$this->logout();
+			$this->force_signin();
+		}
+		
+		return $this->_username;
+	}
+	
+	function force_signin($admin = null)
+	{
 		if (!$this->_username)
 		{
-			$this->auth_form();
+			header('Location: /signin?return=' . $_SERVER['SCRIPT_NAME'] . ($admin ? "&admin=1" : ""));
 			exit;
 		}
-
-		return $this->_username;
 	}		
 	
 	function log_out()
 	{
 		setcookie('PERSONA_USER', '', time() - 3600, '/');		
 		$this->_errors['success_message'] = "You have been logged out. <a href=\"http://www.getpersonas.com/\">Return to the Personas Homepage</a>";
-		$this->auth_form();
-		exit;
+#		$this->auth_form();
+#		exit;
 	}
 
 	function auth_form()
 	{
-		include 'signup_login_tmpl.php';
+		#deprecated, I think...
+		#include '../templates/signup_form.php';
 	}
 	
 	function authenticate_user_from_password($username, $password) 

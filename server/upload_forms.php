@@ -4,20 +4,12 @@
 	require_once 'lib/personas_functions.php';
 	require_once 'lib/storage.php';
 	require_once 'lib/user.php';	
-	
-	header('Cache-Control: no-store, must-revalidate, post-check=0, pre-check=0, private, max-age=0');
-	header('Pragma: private');
-	
+		
 	#step 1: Authenticate
 	$user = new PersonaUser();
 
-	if (array_key_exists('action', $_GET) && $_GET['action'] == 'logout')
-	{
-		$user->log_out();
-	}
-
 	$auth_user = $user->authenticate();
-
+	$user->force_signin();
 
 	$db = new PersonaStorage();
 	
@@ -54,7 +46,7 @@
 		#step 2: Terms of Service
 		if (!array_key_exists('agree', $_POST) && !array_key_exists('firstterms', $_POST))
 		{
-			include 'lib/upload_tos_tmpl.php';
+			include 'templates/upload_tos_tmpl.php';
 			exit;
 		}
 		
@@ -71,7 +63,7 @@
 
 		if (count($upload_errors) > 0)
 		{
-			include 'lib/upload_tos_tmpl.php';
+			include 'templates/upload_tos_tmpl.php';
 			exit;
 		}
 	}
@@ -81,7 +73,7 @@
 
 	if (!array_key_exists('name', $_POST))
 	{
-		include 'lib/upload_persona_tmpl.php';
+		include 'templates/upload_persona_tmpl.php';
 		exit;
 	}
 	
@@ -165,7 +157,7 @@
 	
 	if (count($upload_errors) > 0)
 	{
-		include 'lib/upload_persona_tmpl.php';
+		include 'templates/upload_persona_tmpl.php';
 		exit;
 	}
 	
@@ -196,7 +188,7 @@
 			
 	if (count($upload_errors) > 0)
 	{
-		include 'lib/upload_persona_tmpl.php';
+		include 'templates/upload_persona_tmpl.php';
 		exit;
 	}
 	
@@ -221,7 +213,7 @@
 		$upload_errors['footer-image'] = "A problem occured uploading your persona. Please contact persona-devel@mozilla.com to let us know about this issue. Thank you.";
 		if (!array_key_exists('id', $_POST))
 			$db->reject_persona($upload_submitted['id']);
-		include 'lib/upload_persona_tmpl.php';
+		include 'templates/upload_persona_tmpl.php';
 		exit;					
 	}
 
@@ -232,7 +224,7 @@
 			$upload_errors['header-image'] = "A problem occured uploading your persona. Please contact persona-devel@mozilla.com to let us know about this issue. Thank you.";
 			if (!array_key_exists('id', $_POST))
 				$db->reject_persona($upload_submitted['id']);
-			include 'lib/upload_persona_tmpl.php';
+			include 'templates/upload_persona_tmpl.php';
 			exit;					
 		}
 		build_persona_files($persona_path, $upload_submitted);
@@ -242,7 +234,7 @@
 		file_put_contents($persona_path . '/index_1.json', json_encode(extract_record_data($upload_submitted)));
 	}
 
-	include 'lib/upload_success_tmpl.php';
+	include 'templates/upload_success_tmpl.php';
 
 
 ?>

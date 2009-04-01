@@ -1,25 +1,8 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
-            "http://www.w3.org/TR/html4/strict.dtd">
-<html lang="en">
-<head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	<title>Personas for Firefox | Create Your Persona</title>
-	<link href="/store/css/style.css" rel="stylesheet" type="text/css" media="all" />
-
-</head>
+<?php $title = "Create your Persona"; include 'header.php'; ?>
 <body>
     <div id="outer-wrapper">
         <div id="inner-wrapper">
-            <p id="account"><a href="https://personas.services.mozilla.com/upload?action=logout">Sign out</a></p>
-            <div id="nav">
-                <h1><a href="http://www.getpersonas.com/"><img src="/store/img/logo.png" alt="Mozilla Labs Personas"></a></h1>
-                <ul>
-                    <li class="gallery"><a href="http://www.getpersonas.com/store/gallery/All/Popular">Gallery</a></li>
-                    <li class="create"><a href="https://personas.services.mozilla.com/upload" class="active">Create <br/>Your Own</a></li>
-                    <li class="demo"><a href="http://www.getpersonas.com/store/demo_install.html">Demo</a></li>
-                    <li class="faq"><a href="http://www.getpersonas.com/store/faq.html">Frequent <br/>Questions</a></li>
-                </ul>
-            </div>
+<?php include 'nav.php'; ?>
             <div id="header">
                 <h2>Create Your Persona</h2>
                 <h3>Follow the easy steps below to start dressing up your browser!</h3>
@@ -60,11 +43,13 @@ If you upload a “persona” design for the Firefox® web browser (each a “Pe
 10) Termination. You may terminate your use of the Persona Services at any time.  Mozilla may modify or discontinue the Persona Services at its discretion.</textarea>
                            <label class="agree" for="agree"><input type="checkbox" name="agree" value="1" id="agree" <?php if ($upload_submitted['agree'] == 1) echo "checked "; ?>/> I agree to the user agreement</label>
 <?php if (array_key_exists('agree', $upload_errors)) echo '<span class="error-message tos-error">' . $upload_errors['agree'] . '</span>' ?>
+              
                    
                    
-                  <h4>How Would You Like to Share Your Personas Design?</h4>
+                   <h4>How Would You Like to Share Your Personas Design?</h4>
                      <p>We encourage you to make your design publicly available, though you may choose not to submit your design under an open source license.  Please select the option below that you prefer. </p>
-
+                   
+                   
                      <div id="license-options">
                          <p><label for="license-cc"><input type="radio" name="license" value="cc" id="license-cc" <?php if ($upload_submitted['license'] == 'cc') echo "checked "; ?>/>Yes, I want to make my design available to everyone under a Creative Commons license.</label></p>
 
@@ -114,8 +99,6 @@ If you upload a “persona” design for the Firefox® web browser (each a “Pe
     </div>
     
    
-    <div id="footer">
-        <p>Copyright © 2009 Mozilla. <a href="http://labs.mozilla.com/projects/firefox-personas/">Personas</a> is a <a href="http://labs.mozilla.com">Mozilla Labs</a> experiment. | <a href="http://labs.mozilla.com/about-labs/">About Mozilla Labs</a>    |  <a href="http://www.getpersonas.com/store/privacy.html">Privacy</a></p>
-    </div>
+<?php include 'footer.php'; ?>
 </body>
 </html>

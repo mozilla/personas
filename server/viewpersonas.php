@@ -4,9 +4,9 @@
 	require_once 'lib/storage.php';
 	require_once 'lib/user.php';
 	
-	header('Cache-Control: no-store, must-revalidate, post-check=0, pre-check=0, private, max-age=0');
-	header('Pragma: private');
-	
+	$user = new PersonaUser();
+	$user->authenticate();
+		
 	$page_size = 21;
 
 	$db = new PersonaStorage();
@@ -19,41 +19,21 @@
 	list($category, $tab, $page) = explode('/', $path.'//');
 
 	$no_my = array_key_exists('no_my', $_GET) ? 1 : 0;
-	$url_prefix = $no_my ? '/store/gallery' : '/store/dynamic/gallery';
+	$url_prefix = '/gallery';
 	$category = $category && ($category == 'Designer' || in_array(ucfirst($category), $categories)) ? ucfirst($category) : "All";
 	$tab = $tab && ($category == 'Designer' || in_array(ucfirst($tab), $tabs)) ? ucfirst($tab) : 'Popular';
 	$page = $page && is_numeric($page) ? $page : 1;
 
 	if ($tab == 'All' and $category == 'All')
 		$page_size = null;
-		
-	$user = new PersonaUser();
-	if (array_key_exists('PERSONA_USER', $_COOKIE))
-		$user->authenticate_user_from_cookie($_COOKIE['PERSONA_USER']);
+	
+	$title = "Gallery"; 
+	include 'templates/header.php'; 
 ?>
-
-
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
-            "http://www.w3.org/TR/html4/strict.dtd">
-<html lang="en">
-<head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	<title>Personas for Firefox | Gallery</title>
-	<link href="/store/css/style.css" rel="stylesheet" type="text/css" media="all" />
-</head>
 <body>
     <div id="outer-wrapper">
         <div id="inner-wrapper">
-            <p id="account"></p>
-            <div id="nav">
-                <h1><a href="http://www.getpersonas.com/"><img src="/store/img/logo.png" alt="Mozilla Labs Personas"></a></h1>
-                <ul>
-                    <li class="gallery"><a href="http://www.getpersonas.com/store/gallery/All/Popular" class="active">Gallery</a></li>
-                    <li class="create"><a href="https://personas.services.mozilla.com/upload">Create <br/>Your Own</a></li>
-                    <li class="demo"><a href="http://www.getpersonas.com/store/demo_install.html">Demo</a></li>
-                    <li class="faq"><a href="http://www.getpersonas.com/store/faq.html">Frequent <br/>Questions</a></li>
-                </ul>
-            </div>
+<?php include 'templates/nav.php'; ?>
             <div id="header">
                 <h2>View Personas</h2>
                 <h3>Your browser, your style! Dress it up with easy-to-change "skins" for your
@@ -97,7 +77,6 @@
 				$preview_url = PERSONAS_LIVE_PREFIX . '/' . url_prefix($item['id']) . '/' . "preview.jpg";
 				$persona_json = htmlentities(json_encode(extract_record_data($item)));
 				$persona_date = date("n/j/Y", strtotime($item['approve']));
-				$detail_url = $no_my ? ("/store/gallery/persona/" . url_prefix($item['id'])) : ("/store/dynamic/persona/" . $item['id']);
 				$item_description = $item['description'];
 				if (strlen($item_description) > $description_max)
 				{
@@ -114,7 +93,7 @@
                                 <p class="designer"><strong>Designer:</strong> <?= $item['author'] ?></p>
                                 <p class="added"><strong>Added:</strong> <?= $persona_date ?></p>
                                 <p><?= $item_description ?></p>
-                                <p><a href="<?= $detail_url ?>" class="view">view details »</a></p>
+                                <p><a href="<?= "/persona/" . $item['id'] ?>" class="view">view details »</a></p>
 <?php
 				if ($tab == 'My' || $user->has_admin_privs())
 				{
@@ -166,52 +145,14 @@
 			}
 ?>
             </div>
-	<div id="secondary-content">
-                <ul id="subnav">
-<?php
-			foreach ($categories as $list_category)
-			{
-				$category_url = "$url_prefix/$list_category";
-				if ($list_category == $category)
-				{
-					echo "		<li class=\"active\">$list_category\n";
-					echo "            <ul>\n";
-					foreach ($tabs as $list_tab)
-					{
-						if ($list_tab == 'My' && $no_my == 1)
-							continue;
-						#if ($list_tab == 'All' && $list_category == 'All')
-						#	continue;
-						$tab_url = "$url_prefix/$list_category/$list_tab";
-						echo "		<li";
-						if ($list_tab == $tab)
-							echo ' class="active"';
-						if ($list_tab == 'All' && $list_category != 'All')
-							$tab_url .= "/1";
-						echo "><a href=\"$tab_url\">$list_tab</a></li>\n";						
-					}
-					echo "                        </ul></li>\n";
-				}
-				else
-				{
-					echo "		<li><a href=\"$category_url/Popular\">$list_category</a></li>";
-				}
-			}
-?>
-                </ul>
-            </div>
+<?php include 'templates/category_nav.php'; ?>
         </div>
     </div>
-    <script src="/store/js/jquery.js"></script>
-    <script src="/store/js/script.js"></script>
+<?php include 'templates/footer.php'; ?>
     <script type="text/javascript" charset="utf-8">
         $(document).ready(function() {
            $("#gallery .preview img").previewPersona();
         });
     </script>
-    <div id="footer">
-        <p>Copyright © <?= date("Y") ?> Mozilla. <a href="http://labs.mozilla.com/projects/firefox-personas/">Personas</a> is a <a href="http://labs.mozilla.com">Mozilla Labs</a> experiment. | <a href="http://labs.mozilla.com/about-labs/">About Mozilla Labs</a>    |  <a href="http://www.getpersonas.com/store/privacy.html">Privacy</a></p>
-    </div>
-    <script src="/store/js/urchin.js"></script>
 </body>
 </html>

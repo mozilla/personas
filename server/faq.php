@@ -1,24 +1,17 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
-            "http://www.w3.org/TR/html4/strict.dtd">
-<html lang="en">
-<head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	<title>Personas For Firefox | Frequent Questions</title>
-	<link href="css/style.css" rel="stylesheet" type="text/css" media="all" >
-</head>
+<?php
+	require_once 'lib/personas_constants.php';
+	require_once 'lib/user.php';	
+
+
+	$user = new PersonaUser();
+
+	$title = "Frequent Questions"; 
+	include 'templates/header.php'; 
+?>
 <body>
     <div id="outer-wrapper">
         <div id="inner-wrapper">
-            <p id="account"></p>
-            <div id="nav">
-                <h1><a href="http://www.getpersonas.com/"><img src="/store/img/logo.png" alt="Mozilla Labs Personas"></a></h1>
-                <ul>
-                    <li class="gallery"><a href="http://www.getpersonas.com/store/gallery/All/Popular">Gallery</a></li>
-                    <li class="create"><a href="https://personas.services.mozilla.com/upload">Create <br/>Your Own</a></li>
-                    <li class="demo"><a href="http://www.getpersonas.com/store/demo_install.html">Demo</a></li>
-                    <li class="faq"><a href="http://www.getpersonas.com/store/faq.html" class="active">Frequent <br/>Questions</a></li>
-                </ul>
-            </div>
+<?php include 'templates/nav.php'; ?>
             <div id="header">
                 <h2>Frequent Questions</h2>
                 <h3>Personas are lightweight, easy to install and easy to change “skins” for your Firefox web browser.</h3>
@@ -36,7 +29,7 @@
                     <dt>How do I add Personas to my Firefox?</dt>
                     <dd><p>In less than 60 seconds, you can install a Persona and transform the look of your Firefox web browser. Visit <a href="http://getpersonas.com">GetPersonas.com</a> and click the download button. After installation, you will be asked to restart Firefox.</p>
 
-                    <p>If you want to see how it works, you can watch a quick video demonstration <a href="demo_install.html">here</a>.</p>
+                    <p>If you want to see how it works, you can watch a quick video demonstration <a href="/demo_install">here</a>.</p>
 
                     <p>Once Personas are installed, you’ll be able to choose and change your selected Persona any time simply by clicking on the little fox mask in the lower left-hand corner of your browser window.</p></dd>
                 
@@ -54,7 +47,7 @@
                
                <dt>Can I create my own Persona?</dt>
 
-               <dd><p>Absolutely! All you need to do is create two graphics files in your favorite graphics editing program (<em>e.g.</em>, Photoshop). To get started read more about how to <a href="demo_create.html">create a Persona</a>.</p></dd>
+               <dd><p>Absolutely! All you need to do is create two graphics files in your favorite graphics editing program (<em>e.g.</em>, Photoshop). To get started read more about how to <a href="/demo_create">create a Persona</a>.</p></dd>
                
                <dt>What's the maximum file size allowable for my persona?</dt>
 
@@ -131,27 +124,15 @@
                <dd><p>Yes. The source code for Personas is available under the MPL/GPL/LGPL tri-license. You can view the source <a href="http://hg.mozilla.org/labs/personas/personas">here</a>.</p>
 
          </dd>       
-                 <dt>Are Partnership Opportunities Available?</dt>
-                 <dd><p>Yes. If you want to learn more about how Personas can work with your organization and brand, send us an <a href="mailto:personas@mozilla.com">email</a>. Be sure to include your name, title, organization, and the purpose of your Persona.</p></dd>                
+			   <dt>Are Partnership Opportunities Available?</dt>
+ 			  <dd><p>Yes. If you want to learn more about how Personas can work with your organization and brand, send us an <a href="mailto:personas@mozilla.com">email</a>. Be sure to include your name, title, organization, and the purpose of your Persona.</p></dd> 
                
       </dl>
                 
             </div>
-            <div id="secondary-content">
-              
-              
-              <div class="info-box">
-                <h3><a href="http://www.getpersonas.com">Get Personas Free</a></h3>
-                <div class="body">
-                    <p>Easy to install and easy to change "skins" for your Firefox web browser.</p>
-                </div>
-              </div>
-            </div>
+<?php include 'templates/get_personas.php'; ?>
         </div>
     </div>
-    <div id="footer">
-        <p>Copyright © 2009 Mozilla. <a href="http://labs.mozilla.com/projects/firefox-personas/">Personas</a> is a <a href="http://labs.mozilla.com">Mozilla Labs</a> experiment. | <a href="http://labs.mozilla.com/about-labs/">About Mozilla Labs</a>    |  <a href="privacy.html">Privacy</a></p>
-    </div>
-    <script src="/store/js/urchin.js"></script>
+<?php include 'templates/footer.php'; ?>
 </body>
 </html>

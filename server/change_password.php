@@ -1,10 +1,8 @@
 <?php
 	require_once 'lib/personas_constants.php';
 	require_once 'lib/user.php';	
-
-	header('Cache-Control: no-store, must-revalidate, post-check=0, pre-check=0, private, max-age=0');
-	header('Pragma: private');
 	
+	$_GET['no_my'] = 1;
 	$user = new PersonaUser();
 	$error = null;
 	
@@ -18,7 +16,7 @@
 			if (!$user->user_exists($username))
 			{
 				$error = "Oops!  We are unable to locate the username you entered.  Please try again, or <a href='https://personas.services.mozilla.com/upload'>create a new one</a>.";
-				include "lib/forgot_password_tmpl.php";
+				include "templates/forgot_password_tmpl.php";
 				exit;
 			}
 			
@@ -26,7 +24,7 @@
 			if (!$email)
 			{
 				$error = "We have no email address on file for you. Please contact personas-devel@mozilla.com";
-				include "lib/forgot_password_tmpl.php";
+				include "templates/forgot_password_tmpl.php";
 				exit;
 			}
 			
@@ -40,18 +38,18 @@
 			if (!mail($email, 'Resetting your personas password', $mail_message, "From: personas-devel@mozilla.com\r\n"))
 			{
 				$error = "There was a problem with our mail server. Please try again in a few minutes. If it continues to not work, please contact personas-devel@mozilla.com";
-				include "lib/forgot_password_tmpl.php";
+				include "templates/forgot_password_tmpl.php";
 				exit;
 			}
 			
-			include "lib/forgot_password_thanks_tmpl.php";
+			include "templates/forgot_password_thanks_tmpl.php";
 			exit;
 		}
 		catch (Exception $e)
 		{
 			$error = "There was an internal error. Please contact personas-devel@mozilla.com";
 			error_log($e->getMessage());
-			include "lib/forgot_password_tmpl.php";
+			include "templates/forgot_password_tmpl.php";
 			exit;
 		}
 	}
@@ -67,18 +65,18 @@
 			if (!$user->check_password_change_code($username, $code))
 			{
 				$error = "The code you submitted is not valid for that username. Please request another one";
-				include "lib/forgot_password_tmpl.php";
+				include "templates/forgot_password_tmpl.php";
 				exit;
 			}
 			
-			include "lib/forgot_password_reset_tmpl.php";
+			include "templates/forgot_password_reset_tmpl.php";
 			exit;
 		}
 		catch (Exception $e)
 		{
 			$error = "There was an internal error. Please contact personas-devel@mozilla.com";
 			error_log($e->getMessage());
-			include "lib/forgot_password_reset_tmpl.php";
+			include "templates/forgot_password_reset_tmpl.php";
 			exit;
 		}
 	}
@@ -94,52 +92,52 @@
 	
 			if (!$code)
 			{
-				include "lib/forgot_password_tmpl.php";
+				include "templates/forgot_password_tmpl.php";
 				exit;
 			}
 			if (!$user->check_password_change_code($username, $code))
 			{
 				$error = "The code you submitted is not valid for that username. Please request another one";
-				include "lib/forgot_password_tmpl.php";
+				include "templates/forgot_password_tmpl.php";
 				exit;
 			}
 	
 			if (strlen($password) < 6)
 			{
 				$error = "Password must be at least 6 characters long";
-				include "lib/forgot_password_reset_tmpl.php";
+				include "templates/forgot_password_reset_tmpl.php";
 				exit;
 			}
 
 			if (!preg_match('/[A-Z]/i', $password) || !preg_match('/[^A-Z]/i', $password))
 			{
 				$error = "The password should contain at least one alphabetic character and at least one non-alphabetic character";
-				include "lib/forgot_password_reset_tmpl.php";
+				include "templates/forgot_password_reset_tmpl.php";
 				exit;
 			}
 			
 			if ($password != $conf)
 			{
 				$error = "The password and confirmation do not match. Please try again";
-				include "lib/forgot_password_reset_tmpl.php";
+				include "templates/forgot_password_reset_tmpl.php";
 				exit;
 			}			
 	
 			$user->update_password($username, $password);
 			
-			include "lib/forgot_password_done_tmpl.php";
+			include "templates/forgot_password_done_tmpl.php";
 			exit;			
 		}
 		catch (Exception $e)
 		{
 			$error = "There was an internal error. Please contact personas-devel@mozilla.com";
 			error_log($e->getMessage());
-			include "lib/forgot_password_reset_tmpl.php";
+			include "templates/forgot_password_reset_tmpl.php";
 			exit;			
 		}
 	}		
 
-	include "lib/forgot_password_tmpl.php";
+	include "templates/forgot_password_tmpl.php";
 	exit;
 
 ?>
