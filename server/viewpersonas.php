@@ -7,7 +7,7 @@
 	$user = new PersonaUser();
 	$user->authenticate();
 		
-	$page_size = 21;
+	$page_size = 42;
 
 	$db = new PersonaStorage();
 	$categories = $db->get_categories();
