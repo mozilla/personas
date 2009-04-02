@@ -36,8 +36,11 @@
  * ***** END LICENSE BLOCK ***** */
 
 
+/* Note: pan-OS styles live in the content/personas.css stylesheet. */
+
+
 /******************************************************************************/
-/* Personas Selector Menu & Toolbar Button */
+/* Personas Menu/Toolbarbutton */
 
 /* Show the Personas icon to the Personas Tools menu item.  This is OS-specific
  * because it doesn't look good on Mac, which also doesn't seem to respect
@@ -53,13 +56,19 @@
 
 #main-window[persona] {
   -moz-appearance: none;
-  background-repeat: no-repeat;
-  background-position: top right;
 }
 
-#main-window[persona] #navigator-toolbox > toolbar {
+#main-window[persona] #navigator-toolbox toolbar {
   -moz-appearance: none;
 }
+
+#main-window[persona] #navigator-toolbox toolbarbutton {
+  -moz-appearance: none;
+}
+
+
+/******************************************************************************/
+/* Make some elements a little transparent so the persona flavors their look. */
 
 #main-window[persona] #urlbar,
 #main-window[persona] #searchbar,
@@ -69,31 +78,7 @@
 
 
 /******************************************************************************/
-/* Ensure transparency of all toolbar items in their various states */
-/* (e.g. active, inactive, hover, etc.). */
-
-#main-window[persona] toolbarbutton {
-  -moz-appearance: none;
-}
-
-
-/* Note: we don't have to eliminate top/bottom borders from toolbars on Linux,
- * as they go away by themselves when we set -moz-appearance: none on toolbars.
- * Nor do we have to compensate for the lack of borders to prevent jumping
- * when the user switches from the default theme to a persona, as the toolbars
- * retain the same height, probably because the default theme specifies
- * top and bottom padding that applies when -moz-appearance: none and which is
- * the exact same height as the borders with -moz-appearance: toolbar. */
-
-
-/******************************************************************************/
-/* Eliminate top/bottom borders from statusbars so they don't mar the persona. */
-
-/* IMPORTANT: these rules are very carefully devised to remove or hide borders
- * without changing the overall height of the bottom chrome, so content doesn't
- * jump up or down when the user switches from the default theme to a persona.
- * So when changing these rules, be very careful that you don't inadvertently
- * change the overall height of the toolbar. */
+/* Footer */
 
 #browser-bottombox[persona] #status-bar {
   border-left: none;
