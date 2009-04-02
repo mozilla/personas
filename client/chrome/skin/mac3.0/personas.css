@@ -35,28 +35,43 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
+
+/******************************************************************************/
 /* Header */
 
-/* IMPORTANT: these rules are very carefully devised to work in conjunction
- * with additional rules below to add the persona image and remove borders
- * between toolbars in the top chrome without changing the overall height
- * of the top chrome, so content doesn't jump up or down when the user switches
- * from the default theme to a persona. So when changing these rules, be very
- * careful that you don't inadvertently change the overall height of the toolbar. */
-
-/* Anchor the image to the top-right corner of the window. */
 #main-window[persona] {
   -moz-appearance: none;
-  background-repeat: no-repeat;
-  background-position: top right;
 }
 
-/* Make the toolbox and tabs transparent so the image shines through them. */
-#main-window[persona] .tabbrowser-tabs,
-#main-window[persona] #navigator-toolbox > toolbar {
+#main-window[persona] #navigator-toolbox toolbar {
   -moz-appearance: none;
   background-image: none; 
   background-color: transparent;
+}
+
+#main-window[persona] #nav-bar {
+  /* When we set -moz-appearance: none so the persona will appear, the toolbar
+   * gains 1px tall top and bottom borders.  This causes the toolbar to become
+   * 2px bigger overall, which would make content jump down two pixels.
+   * To prevent that jump, we remove the top and bottom borders, matching their
+   * state in the default theme with -moz-appearance: -moz-mac-unified-toolbar.
+   */
+  border-top: none;
+  border-bottom: none;
+}
+
+#main-window[persona] #PersonalToolbar {
+  /* The personal (a.k.a. bookmarks) toolbar doesn't have a -moz-appearance,
+   * but it does have top and bottom borders, which we simply hide by setting
+   * their color to transparent.  Note that the bottom border is set via both
+   * border-bottom-color and -moz-border-bottom-colors in the default theme.
+   * The latter appears to override the former, so we probably only need to set
+   * -moz-border-bottom-colors to transparent, but we set them both anyway
+   * just in case.
+   */
+  border-top-color: transparent;
+  border-bottom-color: transparent;
+  -moz-border-bottom-colors: transparent;
 }
 
 /* Gray out the window slightly when it's not active. */
@@ -69,41 +84,6 @@
   border-top-color: transparent;
   border-bottom-color: transparent;
   -moz-border-bottom-colors: transparent;
-}
-
-/* Style the tabs. */
-#main-window[persona] .tabbrowser-strip {
-  -moz-appearance: none;
-  background-image: url(chrome://personas/skin/tabbrowser-tabs-bkgnd.png);
-  background-color: transparent; 
-}
-#main-window[persona] .tabbrowser-tab {
-  /*opacity: 0.6;*/
-}
-#main-window[persona] .tabbrowser-tab[selected="true"],
-#main-window[persona] .tabbrowser-tab:hover {
-  opacity: 0.8;
-}
-#main-window[persona] .tabbrowser-tab:not([selected="true"]),
-#main-window[persona] .tab-text {
-  font-weight: normal !important;
-}
-
-
-/******************************************************************************/
-/* Make some elements a little transparent so the persona flavors their look. */
-#main-window[persona] #urlbar,
-#main-window[persona] #searchbar {
-  opacity: 0.8;
-}
-
-#main-window[persona] .toolbarbutton-1, #back-forward-dropmarker {
-  /*opacity: 0.9;*/
-}
-
-#main-window[persona] toolbarbutton.bookmark-item {
-  -moz-appearance: none;
-  background-color: transparent;
 }
 
 /* Change the toolbarbutton icons for the default toolbarbuttons when a persona
@@ -138,6 +118,56 @@
   list-style-image: url("chrome://personas/skin/Toolbar.png");
 }
 
+/* Eliminate text shadows from toolbarbutton and tab text so it doesn't create
+ * an unnatural color stroke on the bottom half of the text. */
+#main-window[persona] .toolbarbutton-text-shadow,
+#main-window[persona] .tab-text-shadow {
+  display: none;
+}
+
+#main-window[persona] .tabbrowser-tabs {
+  -moz-appearance: none;
+  background-image: none; 
+  background-color: transparent;
+}
+
+#main-window[persona] .tabbrowser-strip {
+  -moz-appearance: none;
+  background-image: url(chrome://personas/skin/tabbrowser-tabs-bkgnd.png);
+  background-color: transparent; 
+}
+
+#main-window[persona] .tabbrowser-tab {
+  /*opacity: 0.6;*/
+}
+
+#main-window[persona] .tabbrowser-tab[selected="true"],
+#main-window[persona] .tabbrowser-tab:hover {
+  opacity: 0.8;
+}
+
+#main-window[persona] .tabbrowser-tab:not([selected="true"]),
+#main-window[persona] .tab-text {
+  font-weight: normal !important;
+}
+
+
+/******************************************************************************/
+/* Make some elements a little transparent so the persona flavors their look. */
+#main-window[persona] #urlbar,
+#main-window[persona] #searchbar {
+  opacity: 0.8;
+}
+
+#main-window[persona] .toolbarbutton-1, #back-forward-dropmarker {
+  /*opacity: 0.9;*/
+}
+
+#main-window[persona] toolbarbutton.bookmark-item {
+  -moz-appearance: none;
+  background-color: transparent;
+}
+
 #main-window[persona] .findbar-find-next,
 #main-window[persona] .findbar-find-previous,
 #main-window[persona] .findbar-highlight {
@@ -158,42 +188,7 @@
 
 
 /******************************************************************************/
-/* Eliminate top/bottom borders from toolbars so they don't mar the persona. */
-
-/* IMPORTANT: these rules are very carefully devised to remove or hide borders
- * without changing the overall height of the top chrome, so content doesn't
- * jump up or down when the user switches from the default theme to a persona.
- * So when changing these rules, be very careful that you don't inadvertently
- * change the overall height of the toolbar. */
-
-#main-window[persona] #nav-bar {
-  /* When we set -moz-appearance: none so the persona will appear, the toolbar
-   * gains 1px tall top and bottom borders.  This causes the toolbar to become
-   * 2px bigger overall, which would make content jump down two pixels.
-   * To prevent that jump, we remove the top and bottom borders, matching their
-   * state in the default theme with -moz-appearance: -moz-mac-unified-toolbar.
-   */
-  border-top: none;
-  border-bottom: none;
-}
-
-#main-window[persona] #PersonalToolbar {
-  /* The personal (a.k.a. bookmarks) toolbar doesn't have a -moz-appearance,
-   * but it does have top and bottom borders, which we simply hide by setting
-   * their color to transparent.  Note that the bottom border is set via both
-   * border-bottom-color and -moz-border-bottom-colors in the default theme.
-   * The latter appears to override the former, so we probably only need to set
-   * -moz-border-bottom-colors to transparent, but we set them both anyway
-   * just in case.
-   */
-  border-top-color: transparent;
-  border-bottom-color: transparent;
-  -moz-border-bottom-colors: transparent;
-}
-
-
-/******************************************************************************/
-/* Eliminate top/bottom borders from statusbars so they don't mar the persona. */
+/* Footer */
 
 #browser-bottombox[persona] statusbar {
   border-top-width: 1px !important;
@@ -203,14 +198,4 @@
 #browser-bottombox[persona] #FindToolbar {
   border-top-width: 1px;
   border-top-color: transparent;
-}
-
-
-/******************************************************************************/
-/* Eliminate text shadows from toolbarbutton and tab text so it doesn't create
- * an unnatural color stroke on the bottom half of the text. */
-
-#main-window[persona] .toolbarbutton-text-shadow,
-#main-window[persona] .tab-text-shadow {
-  display: none;
 }
