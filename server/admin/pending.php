@@ -132,6 +132,7 @@
 				rename (make_persona_pending_path($id), make_persona_storage_path($id));
 				$db->approve_persona($persona{'id'});
 				send_accept_email($user->get_email($persona['author']), $persona['name'], $persona['id']);
+				$db->log_action($user->get_username(), $persona['id'], "Approved");
 				$id = null;
 				break;
 			case 'change':
@@ -148,10 +149,12 @@
 				rename (make_persona_storage_path($id), make_persona_pending_path($id));
 				$db->reject_persona($persona['id']);
 				print "Persona " . $persona['id'] . " pulled";
+				$db->log_action($user->get_username(), $persona['id'], "Pulled");
 				break;
 			case 'reject':
 				$db->reject_persona($persona['id']);
 				send_problem_email($user->get_email($persona['author']), $_GET['reason'], $persona['name']);
+				$db->log_action($user->get_username(), $persona['id'], "Rejected - " . $_GET['reason']);
 				$id = null;
 				break;
 			default:

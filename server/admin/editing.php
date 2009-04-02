@@ -134,12 +134,18 @@
 
 				if ($persona['author'] == $edits['author'])
 					send_accept_email($user->get_email($persona['author']), $edits['name']);
+
+				$db->log_action($user->get_username(), $persona['id'], "Edit Approved");
+
 				$id = null;
 				break;
 			case 'reject':
 				$db->reject_persona_edit($persona['id']);
 				if ($persona['author'] == $edits['author'])
 					send_problem_email($user->get_email($persona['author']), $_GET['reason'], $persona['name']);
+
+				$db->log_action($user->get_username(), $persona['id'], "Edit Rejected - " . $_GET['reason']);
+
 				$id = null;
 				break;
 			default:
