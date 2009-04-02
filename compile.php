@@ -41,7 +41,7 @@
 	require_once 'server/lib/personas_functions.php';	
 	require_once 'server/lib/storage.php';
 
-	$page_size = 21;
+	$page_size = 42;
 	
 	$db = new PersonaStorage();
 	$categories = $db->get_categories();
