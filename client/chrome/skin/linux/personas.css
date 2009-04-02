@@ -51,14 +51,14 @@
 /******************************************************************************/
 /* Header */
 
-#main-window[persona],
-#main-window[persona] toolbar {
-  -moz-appearance: none;
-}
-
 #main-window[persona] {
+  -moz-appearance: none;
   background-repeat: no-repeat;
   background-position: top right;
+}
+
+#main-window[persona] #navigator-toolbox > toolbar {
+  -moz-appearance: none;
 }
 
 #main-window[persona] #urlbar,

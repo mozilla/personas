@@ -53,7 +53,7 @@
 
 /* Make the toolbox and tabs transparent so the image shines through them. */
 #main-window[persona] .tabbrowser-tabs,
-#main-window[persona] toolbar {
+#main-window[persona] #navigator-toolbox > toolbar {
   -moz-appearance: none;
   background-image: none; 
   background-color: transparent;
