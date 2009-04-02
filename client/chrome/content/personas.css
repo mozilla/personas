@@ -36,11 +36,11 @@
  * ***** END LICENSE BLOCK ***** */
 
 
-/* Note: Styles that don't apply to all OSes are in OS-specific stylesheets
- * in the skin/ subdirectories. */
+/* Note: OS-specific styles live in the stylesheets in the skin/ directory. */
 
 
-/* Personas Selector Menu & Toolbar Button */
+/******************************************************************************/
+/* Personas Menu/Toolbarbutton */
 
 #personas-selector-button {
   list-style-image: url("chrome://personas/content/personas_16x16.png");
@@ -68,16 +68,37 @@
 }
 
 
+/**
+ * Header and footer rules are designed to do four things:
+ *
+ *   1. position the personas background images behind header/footer chrome;
+ *   1. make element backgrounds transparent so you can see the images;
+ *   2. hide or remove element borders so they don't mar the look of the images;
+ *   3. maintain the size of elements whether or not a persona is selected
+ *      so chrome doesn't change size when a user switches from the default
+ *      theme to a persona.
+ *
+ * Maintaining the size of elements is particularly challenging given that
+ * -moz-appearance applies style that you can't introspect, and removing it
+ * (as we often do to make backgrounds transparent or hide/remove borders)
+ * applies different style that changes element heights or widths.
+ *
+ * Make sure you test for changes to chrome width and height in the transition
+ * from the default theme to a persona when making changes to these rules!
+ */
+
+
+/******************************************************************************/
+/* Header */
+
+#main-window[persona] {
+  background-repeat: no-repeat;
+  background-position: top right;
+}
+
+
 /******************************************************************************/
 /* Footer */
-
-/* IMPORTANT: these rules are very carefully devised to work in conjunction
- * with rules in the OS-specific files to add the persona image and remove
- * borders between the bottom chrome and the content area without changing
- * the overall height of the bottom chrome, so content doesn't jump up or down
- * when the user switches from the default theme to a persona. So when changing
- * these rules, be very careful that you don't inadvertently change the overall
- * height of the toolbar. */
 
 #browser-bottombox[persona] {
   background-repeat: no-repeat;
@@ -85,13 +106,6 @@
   background-color: transparent;
 }
 
-/**
- * Everything inside the bottom box should have no native appearance
- * (since that could override the persona's specified background image),
- * no background color (which would bleed through the persona), and no
- * border (not sure why; perhaps it looks cleaner and messes up the
- * persona less).
- */
 #browser-bottombox[persona] > * {
   -moz-appearance: none;
   background-color: transparent;
