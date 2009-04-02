@@ -45,8 +45,8 @@
 
 #main-window[persona] #navigator-toolbox toolbar {
   -moz-appearance: none;
-  background-image: none; 
   background-color: transparent;
+  background-image: none; 
 }
 
 #main-window[persona] #nav-bar {
