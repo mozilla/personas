@@ -93,7 +93,7 @@
 
 
 /******************************************************************************/
-/* Make some elements partly transparent so the persona flavors their look. */
+/* Make some elements a little transparent so the persona flavors their look. */
 
 #main-window[persona] .tabbrowser-tab {
   background-color: -moz-dialog;
