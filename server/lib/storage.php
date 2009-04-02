@@ -151,13 +151,18 @@ class PersonaStorage
 		return 1;
 		
 	}
-	
-	function get_active_persona_count()
+		
+	function get_active_persona_count($category = null)
 	{
+		if ($category == 'All')
+			$category = null;
+			
 		try
 		{
-			$statement = 'select count(*) from personas where status = 1';
+			$statement = 'select count(*) from personas where status = 1' . ($category ? " and category = :category" : "");
 			$sth = $this->_dbh->prepare($statement);
+			if ($category)
+				$sth->bindParam(':category', $category);
 			$sth->execute();
 		}
 		catch( PDOException $exception )
@@ -165,10 +170,8 @@ class PersonaStorage
 			error_log($exception->getMessage());
 			throw new Exception("Database unavailable", 503);
 		}
-
-		$result = $sth->fetchColumn();
 		
-		return $result;
+		return $sth->fetchColumn();
 	}
 	
 	
@@ -286,6 +289,9 @@ class PersonaStorage
 
 	function get_popular_personas($category = null, $limit = null, $offset = null)
 	{
+		if ($category == 'All')
+			$category = null;
+		
 		try
 		{
 			$statement = 'select * from personas where status = 1' . ($category ? " and category = :category" : "") . ' and (popularity > 0 or license = "restricted") order by popularity desc' . ($limit ? " limit $limit" : "") . ($offset ? " offset $offset" : "");
@@ -429,11 +435,15 @@ class PersonaStorage
 	
 	function get_personas_by_category($category)
 	{
+		if ($category == 'All')
+			$category = null;
+			
 		try
 		{
-			$statement = 'select * from personas where status = 1 and category = :category order by name';
+			$statement = 'select * from personas where status = 1' . ($category ? " and category = :category" : "") . " order by name";
 			$sth = $this->_dbh->prepare($statement);
-			$sth->bindParam(':category', $category);
+			if ($category)
+				$sth->bindParam(':category', $category);
 			$sth->execute();
 		}
 		catch( PDOException $exception )
@@ -449,24 +459,6 @@ class PersonaStorage
 			$personas[] = $result;
 		}		
 		return $personas;
-	}
-	
-	function get_personas_by_category_count($category)
-	{
-		try
-		{
-			$statement = 'select count(*) from personas where status = 1 and category = :category';
-			$sth = $this->_dbh->prepare($statement);
-			$sth->bindParam(':category', $category);
-			$sth->execute();
-		}
-		catch( PDOException $exception )
-		{
-			error_log($exception->getMessage());
-			throw new Exception("Database unavailable", 503);
-		}
-		
-		return $sth->fetchColumn();
 	}
 	
 	#see if we're going to get a namespace collision with a persona

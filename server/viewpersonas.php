@@ -113,8 +113,16 @@
 <?php 
 			if ($tab == 'All' && $category != 'All')
 			{
-				$category_total = $db->get_personas_by_category_count($category);
+				$category_total = $db->get_active_persona_count($category);
 				$pages = floor($category_total/$page_size) + 1;
+				
+				$floor = $page - 4;
+				if ($floor < 1)
+					$floor = 1;
+				$ceiling = $page + 4;
+				if ($ceiling > $pages)
+					$ceiling = $pages;
+					
 				echo '<div id="pagination"><p>Page:</p>';
 				echo "<ul>\n";
 				if ($page > 1)
@@ -122,8 +130,16 @@
 					$url = "$url_prefix/$category/$tab/" . ($page - 1);
 					echo "<li><a href=\"$url\">Previous</a></li>\n";
 				}
-				$i = 1;
-				while ($i <= $pages)
+				$i = $floor;
+				if ($floor > 1)
+				{
+					echo "<li><a href=\"$url_prefix/$category/$tab/1\">1</a></li>\n";
+				}
+				if ($floor > 2)
+				{
+					echo "<li><a href=\"$url_prefix/$category/$tab/" . ($floor - 1) . "\">...</a></li>\n";
+				}
+				while ($i <= $ceiling)
 				{
 					if ($page == $i)
 					{
@@ -134,6 +150,14 @@
 						echo "<li><a href=\"$url_prefix/$category/$tab/$i\">$i</a></li>\n";
 					}
 					$i++;
+				}
+				if ($ceiling + 1< $pages)
+				{
+					echo "<li><a href=\"$url_prefix/$category/$tab/" . ($ceiling + 1) . "\">...</a></li>\n";
+				}
+				if ($ceiling < $pages)
+				{
+					echo "<li><a href=\"$url_prefix/$category/$tab/$pages\">$pages</a></li>\n";
 				}
 				if ($page < $pages)
 				{
