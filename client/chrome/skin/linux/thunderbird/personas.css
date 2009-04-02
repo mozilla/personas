@@ -51,14 +51,14 @@
 /******************************************************************************/
 /* Header */
 
-#messengerWindow[persona],
-#messengerWindow[persona] toolbar {
-  -moz-appearance: none;
-}
-
 #messengerWindow[persona] {
+  -moz-appearance: none;
   background-repeat: no-repeat;
   background-position: top right;
+}
+
+#messengerWindow[persona] toolbar {
+  -moz-appearance: none;
 }
 
 #messengerWindow[persona] #urlbar,
