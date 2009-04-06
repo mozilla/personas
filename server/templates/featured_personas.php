@@ -6,8 +6,8 @@
                     <li><a href="#">3</a></li>
                     <li><a href="#">4</a></li>
                 </ul>
-                <a href="#" id="slideshow-previous"><img src="/store/img/nav-prev.png" alt="Previous"/></a>
-                <a href="#" id="slideshow-next"><img src="/store/img/nav-next.png" alt="Next"/></a>
+                <a href="#" id="slideshow-previous"><img src="/static/img/nav-prev.png" alt="Previous"/></a>
+                <a href="#" id="slideshow-next"><img src="/static/img/nav-next.png" alt="Next"/></a>
                 <div id="slideshow">
                     <ul id="slides">
 <?php
@@ -25,7 +25,7 @@
 		}
 		$persona_date = date("n/j/Y", strtotime($persona['approve']));
 		$persona_json = htmlentities(json_encode(extract_record_data($persona)));
-		$detail_url = "/store/gallery/persona/" . url_prefix($persona['id']);
+		$detail_url = "/gallery/persona/" . url_prefix($persona['id']);
 ?>
                         <li>
                             <img class="preview persona" src="<?= PERSONAS_LIVE_PREFIX . '/' . url_prefix($persona['id']) ?>/preview_featured.jpg" persona="<?= $persona_json ?>">

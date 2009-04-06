@@ -13,7 +13,7 @@
 ?>
 			</p>
             <div id="nav">
-                <h1><a href="/"><img src="/store/img/logo.png" alt="Mozilla Labs Personas"></a></h1>
+                <h1><a href="/"><img src="/static/img/logo.png" alt="Mozilla Labs Personas"></a></h1>
                 <ul>
                     <li class="gallery"><a href="/gallery/All/Popular">Gallery</a></li>
                     <li class="create"><a href="/upload">Create <br/>Your Own</a></li>
