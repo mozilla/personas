@@ -21,6 +21,9 @@
                     <div>
                         <p>
                             <a href="https://addons.mozilla.org/en-US/firefox/downloads/latest/10900" class="get-personas" id="download"><span>Get Personas for Firefox - Free</span><span class="arrow"></span></a>
+                            <script type="text/javascript" charset="utf-8">
+                                $("#download").personasDownload({"bundle":"bundle-url", "bundle-text":'<span>Get Firefox and Personas - Free</span><span class="arrow"></span>'});
+                            </script>
                         </p>
                         <p class="platforms-note">Firefox Add-on for Windows, Mac or Linux</p>
                     </div>
@@ -44,7 +47,7 @@
         $(document).ready(function () {
             $("#slideshow").slider();
             $("#more-info").popup();
-            $("#download").personasDownload({"bundle":"bundle-url", "bundle-text":'<span>Get Firefox and Personas - Free</span><span class="arrow"></span>'});
+            
             $("#header").ie6Warning({"message":'<div id="ie6">Upgrade your browser to get the most out of this website. <a href="%LINK%">Download Firefox for free</a>.</div>'});
             $("img.persona").previewPersona();
         });

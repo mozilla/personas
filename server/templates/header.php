@@ -9,4 +9,6 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<title>Personas for Firefox<?= $title ? ("  | $title") : "" ?></title>
 	<link href="/static/css/style.css" rel="stylesheet" type="text/css" media="all" />
+    <script src="/static/js/jquery.js"></script>
+    <script src="/static/js/script.js"></script>
 </head>

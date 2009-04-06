@@ -40,4 +40,7 @@ if (!defined('PERSONAS_LOGIN_SALT')) { define('PERSONAS_LOGIN_SALT', 'OurSalt');
 #id of the persona being featured for the featured designer
 if (!defined('FEATURE_DESIGNER_PERSONA_ID')) { define('FEATURE_DESIGNER_PERSONA_ID', 1); }
 
+#Download URL for add-on
+if (!defined('PERSONAS_ADDON_URL')) { define('PERSONAS_ADDON_URL', 'https://addons.mozilla.org/en-US/firefox/downloads/latest/10900'); }
+
 ?>
