@@ -167,7 +167,7 @@
 
 	#featured designers
 	$featured_persona = $db->get_persona_by_id(FEATURE_DESIGNER_PERSONA_ID);
-	store_page(PERSONAS_BUILD_SERVER . "/gallery/Designer/" . $featured_persona['author'] . "?no_my=1", PERSONAS_STORAGE_PREFIX . "/featured");
+	store_page(PERSONAS_BUILD_SERVER . "/gallery/Designer/" . $featured_persona['author'] . "?no_my=1", PERSONAS_STORAGE_PREFIX . "/featured.html");
 	
 	#update page
 	store_page(PERSONAS_BUILD_SERVER . "/updated?no_my=1", PERSONAS_STORAGE_PREFIX . "/updated.html");
