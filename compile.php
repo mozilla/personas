@@ -112,7 +112,7 @@
 	foreach ($categories as $category)
 	{
 		#get category counts for pagination
-		$category_total = $db->get_personas_by_category_count($category);
+		$category_total = $db->get_active_persona_count($category);
 		$pages = floor($category_total/$page_size) + 1;
 		
 		$popular_list = $db->get_popular_personas($category, 10);
