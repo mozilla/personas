@@ -185,9 +185,9 @@
 	store_page("http://localhost/demo_install?no_my=1", PERSONAS_STORAGE_PREFIX . "/demo_install.html");
 
 	#demo_create
-	store_page("http://localhost/demo_install?no_my=1", PERSONAS_STORAGE_PREFIX . "/demo_create.html");
+	store_page("http://localhost/demo_create?no_my=1", PERSONAS_STORAGE_PREFIX . "/demo_create.html");
 
 	#privacy
-	store_page("http://localhost/demo_install?no_my=1", PERSONAS_STORAGE_PREFIX . "/privacy.html");
+	store_page("http://localhost/privacy?no_my=1", PERSONAS_STORAGE_PREFIX . "/privacy.html");
 	
 ?>
