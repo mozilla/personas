@@ -150,7 +150,7 @@
 	foreach ($master_list as $id)
 	{
 		$path = get_persona_path(PERSONAS_STORAGE_PREFIX . "/gallery/persona", $id);
-		store_page("http://localhost/persona/$id", $path . "/$id");
+		store_page("http://localhost/persona/$id", $path . "/" . ($id < 10 ? '0' : '') .  $id);
 	}
 		
 	#and the index
