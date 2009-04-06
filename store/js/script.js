@@ -176,8 +176,8 @@ $.fn.personasDownload = function(options) {
     } else {
         jQuery(this).click(function() {
             window.location = "https://addons.mozilla.org/services/install.php?addon_id=personas";
+            return false;
         });
-        
     }
 };
 
