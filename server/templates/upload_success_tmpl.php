@@ -14,7 +14,7 @@
                 <h2>Success!</h2>
                 <h3>You have successfully <?= $action_verb ? $action_verb : "added" ?> your Persona. Once it's approved, you'll be able to view it in the Gallery.</h3>
                 <ul class="success-options">
-                    <li><a href="http://www.getpersonas.com/store/gallery/All/Popular">View Personas Gallery »</a></li>
+                    <li><a href="http://www.getpersonas.com/gallery/All/Popular">View Personas Gallery »</a></li>
                 </ul>
             </div>
             <div id="secondary-content">
