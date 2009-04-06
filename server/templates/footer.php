@@ -4,3 +4,6 @@
     <script src="/static/js/jquery.js"></script>
     <script src="/static/js/script.js"></script>
 	<script src="/static/js/urchin.js"></script>
+    <script type="text/javascript">
+          urchinTracker();
+    </script>
