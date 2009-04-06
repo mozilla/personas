@@ -34,6 +34,12 @@ if (!defined('PERSONAS_LIVE_PREFIX'))
 	define('PERSONAS_LIVE_PREFIX', '/personas/store'); 
 }
 
+if (!defined('PERSONAS_BUILD_SERVER')) 
+{ 
+	define('PERSONAS_BUILD_SERVER', 'http://localhost'); 
+}
+
+
 #salt for login cookie generation
 if (!defined('PERSONAS_LOGIN_SALT')) { define('PERSONAS_LOGIN_SALT', 'OurSalt'); }
 

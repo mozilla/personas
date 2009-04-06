@@ -56,7 +56,7 @@
 
 		$ch = curl_init();
 		$fp = fopen(PERSONAS_STORAGE_PREFIX . "/gallery/$path/$file", "w");	
-		curl_setopt($ch, CURLOPT_URL, "https://localhost/store/dynamic/gallery/$path/$file?no_my=1");
+		curl_setopt($ch, CURLOPT_URL, PERSONAS_BUILD_SERVER . "/store/dynamic/gallery/$path/$file?no_my=1");
 		curl_setopt($ch, CURLOPT_FILE, $fp);
 		curl_exec($ch);
 		fclose($fp);	
@@ -129,15 +129,15 @@
 
 		#get the html
 		#the popular page
-		store_page("https://localhost/gallery/$category/Popular?no_my", PERSONAS_STORAGE_PREFIX . "/gallery/$category/Popular");
+		store_page(PERSONAS_BUILD_SERVER . "/gallery/$category/Popular?no_my", PERSONAS_STORAGE_PREFIX . "/gallery/$category/Popular");
 	
 		#the recent page
-		store_page("https://localhost/gallery/$category/Recent?no_my", PERSONAS_STORAGE_PREFIX . "/gallery/$category/Recent");
+		store_page(PERSONAS_BUILD_SERVER . "/gallery/$category/Recent?no_my", PERSONAS_STORAGE_PREFIX . "/gallery/$category/Recent");
 
 		$i = 1;
 		while ($i <= $pages)
 		{
-			store_page("https://localhost/gallery/$category/All/$i?no_my", PERSONAS_STORAGE_PREFIX . "/gallery/$category/All/$i");
+			store_page(PERSONAS_BUILD_SERVER . "/gallery/$category/All/$i?no_my", PERSONAS_STORAGE_PREFIX . "/gallery/$category/All/$i");
 			$i++;
 		}		
 	}
@@ -150,44 +150,44 @@
 	foreach ($master_list as $id)
 	{
 		$path = get_persona_path(PERSONAS_STORAGE_PREFIX . "/gallery/persona", $id);
-		store_page("https://localhost/persona/$id", $path . "/" . ($id < 10 ? '0' : '') .  $id);
+		store_page(PERSONAS_BUILD_SERVER . "/persona/$id", $path . "/" . ($id < 10 ? '0' : '') .  $id);
 	}
 		
 	#and the index
-	store_page("https://localhost/index.html?no_my=1", PERSONAS_STORAGE_PREFIX . "/index.html");
+	store_page(PERSONAS_BUILD_SERVER . "/index.html?no_my=1", PERSONAS_STORAGE_PREFIX . "/index.html");
 
 	#the all page
-	store_page("https://localhost/gallery/All/All?no_my", PERSONAS_STORAGE_PREFIX . "/gallery/All/All");
+	store_page(PERSONAS_BUILD_SERVER . "/gallery/All/All?no_my", PERSONAS_STORAGE_PREFIX . "/gallery/All/All");
 
 	#the popular page
-	store_page("https://localhost/gallery/All/Popular?no_my", PERSONAS_STORAGE_PREFIX . "/gallery/All/Popular");
+	store_page(PERSONAS_BUILD_SERVER . "/gallery/All/Popular?no_my", PERSONAS_STORAGE_PREFIX . "/gallery/All/Popular");
 
 	#the recent page
-	store_page("https://localhost/gallery/All/Recent?no_my", PERSONAS_STORAGE_PREFIX . "/gallery/All/Recent");
+	store_page(PERSONAS_BUILD_SERVER . "/gallery/All/Recent?no_my", PERSONAS_STORAGE_PREFIX . "/gallery/All/Recent");
 
 	#featured designers
 	$featured_persona = $db->get_persona_by_id(FEATURE_DESIGNER_PERSONA_ID);
-	store_page("https://localhost/gallery/Designer/" . $featured_persona['author'] . "?no_my=1", PERSONAS_STORAGE_PREFIX . "/featured");
+	store_page(PERSONAS_BUILD_SERVER . "/gallery/Designer/" . $featured_persona['author'] . "?no_my=1", PERSONAS_STORAGE_PREFIX . "/featured");
 	
 	#update page
-	store_page("https://localhost/updated?no_my=1", PERSONAS_STORAGE_PREFIX . "/updated.html");
+	store_page(PERSONAS_BUILD_SERVER . "/updated?no_my=1", PERSONAS_STORAGE_PREFIX . "/updated.html");
 
 	#firstrun page
-	store_page("https://localhost/firstrun?no_my=1", PERSONAS_STORAGE_PREFIX . "/firstrun.html");
+	store_page(PERSONAS_BUILD_SERVER . "/firstrun?no_my=1", PERSONAS_STORAGE_PREFIX . "/firstrun.html");
 
 	#recent page hack to provide a backwards compatible recent.html
-	store_page("https://localhost/gallery/All/Recent?no_my=1", PERSONAS_STORAGE_PREFIX . "/recent.html");
+	store_page(PERSONAS_BUILD_SERVER . "/gallery/All/Recent?no_my=1", PERSONAS_STORAGE_PREFIX . "/recent.html");
 
 	#faq
-	store_page("https://localhost/faq?no_my=1", PERSONAS_STORAGE_PREFIX . "/faq.html");
+	store_page(PERSONAS_BUILD_SERVER . "/faq?no_my=1", PERSONAS_STORAGE_PREFIX . "/faq.html");
 
 	#demo_install
-	store_page("https://localhost/demo_install?no_my=1", PERSONAS_STORAGE_PREFIX . "/demo_install.html");
+	store_page(PERSONAS_BUILD_SERVER . "/demo_install?no_my=1", PERSONAS_STORAGE_PREFIX . "/demo_install.html");
 
 	#demo_create
-	store_page("https://localhost/demo_create?no_my=1", PERSONAS_STORAGE_PREFIX . "/demo_create.html");
+	store_page(PERSONAS_BUILD_SERVER . "/demo_create?no_my=1", PERSONAS_STORAGE_PREFIX . "/demo_create.html");
 
 	#privacy
-	store_page("https://localhost/privacy?no_my=1", PERSONAS_STORAGE_PREFIX . "/privacy.html");
+	store_page(PERSONAS_BUILD_SERVER . "/privacy?no_my=1", PERSONAS_STORAGE_PREFIX . "/privacy.html");
 	
 ?>
