@@ -17,7 +17,7 @@
                 <ul>
                     <li class="gallery"><a href="/gallery/All/Popular">Gallery</a></li>
                     <li class="create"><a href="/upload">Create <br/>Your Own</a></li>
-                    <li class="demo"><a href="/demo_install/">Demo</a></li>
-                    <li class="faq"><a href="/faq/">Frequent <br/>Questions</a></li>
+                    <li class="demo"><a href="/demo_install">Demo</a></li>
+                    <li class="faq"><a href="/faq">Frequent <br/>Questions</a></li>
                 </ul>
             </div>
