@@ -56,7 +56,7 @@
 
 		$ch = curl_init();
 		$fp = fopen(PERSONAS_STORAGE_PREFIX . "/gallery/$path/$file", "w");	
-		curl_setopt($ch, CURLOPT_URL, "http://localhost/store/dynamic/gallery/$path/$file?no_my=1");
+		curl_setopt($ch, CURLOPT_URL, "https://localhost/store/dynamic/gallery/$path/$file?no_my=1");
 		curl_setopt($ch, CURLOPT_FILE, $fp);
 		curl_exec($ch);
 		fclose($fp);	
