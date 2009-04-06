@@ -93,7 +93,7 @@
                                 <p class="designer"><strong>Designer:</strong> <?= $item['author'] ?></p>
                                 <p class="added"><strong>Added:</strong> <?= $persona_date ?></p>
                                 <p><?= $item_description ?></p>
-                                <p><a href="<?= "/persona/" . $item['id'] ?>" class="view">view details »</a></p>
+                                <p><a href="<?= "/persona/" . ($item['id'] < 10 ? "0" : "") . $item['id'] ?>" class="view">view details »</a></p>
 <?php
 				if ($tab == 'My' || $user->has_admin_privs())
 				{
