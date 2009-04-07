@@ -38,24 +38,35 @@
 # ***** END LICENSE BLOCK *****
 	
 	require_once '../lib/personas_constants.php';
+	require_once '../lib/personas_functions.php';
 	require_once '../lib/storage.php';
 	require_once '../lib/user.php';
 
+	try 
+	{
+		$user = new PersonaUser();
+		$user->authenticate();
+		$user->force_signin(1);
+		if (!$user->has_admin_privs())
+		{
+			$_errors['error'] = 'This account does not have privileges for this operation. Please <a href="/signin?action=logout">log in</a> with an account that does.';
+			include '../templates/user_error.php';
+			exit;
+		}
+	}
+	catch(Exception $e)
+	{
+		error_log($e->getMessage());
+		print("Database problem. Please try again later.");
+		exit;
+	}
+	
 	
 	
 	$result = "";
 	
 	try 
 	{
-		$user = new PersonaUser();
-		$user->authenticate(1);
-		if (!$user->has_admin_privs())
-		{
-			$error = "This account does not have privileges for this operation. Please log in with an account that does.";
-			$user->auth_form();
-			exit;
-		}
-
 		$db = new PersonaStorage();
 		$categories = $db->get_categories();
 

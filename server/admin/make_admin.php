@@ -37,17 +37,20 @@
 #
 # ***** END LICENSE BLOCK *****
 	
+	require_once '../lib/personas_constants.php';
+	require_once '../lib/personas_functions.php';
 	require_once '../lib/storage.php';
 	require_once '../lib/user.php';
 
 	try 
 	{
 		$user = new PersonaUser();
-		$user->authenticate(1);
+		$user->authenticate();
+		$user->force_signin(1);
 		if (!$user->has_admin_privs())
 		{
-			$error = "This account does not have privileges for this operation. Please log in with an account that does.";
-			$user->auth_form();
+			$_errors['error'] = 'This account does not have privileges for this operation. Please <a href="/signin?action=logout">log in</a> with an account that does.';
+			include '../templates/user_error.php';
 			exit;
 		}
 	}
@@ -57,21 +60,21 @@
 		print("Database problem. Please try again later.");
 		exit;
 	}
-
 	
 	try 
 	{
-		$db = new PersonaStorage();
 		if (array_key_exists('username', $_GET))
 		{
-			if ($db->user_exists($_GET['username']))
+			if ($user->user_exists($_GET['username']))
 			{
-				echo $db->promote_admin($_GET['username']);
-				exit;
+				if ($user->promote_admin($_GET['username']))
+					echo "Success<p>";
+				else
+					echo "DB Problem<p>";
 			}
 			else
 			{
-				echo "User not found";
+				echo "User not found<p>";
 			}
 		}
 	}
@@ -83,3 +86,8 @@
 
 	
 ?>
+<form method=GET action="">
+Username: <input type=text name=username>
+<br>
+<input type=submit>
+</form>
