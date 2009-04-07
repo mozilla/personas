@@ -77,7 +77,6 @@
     <div id="outer-wrapper">
         <div id="inner-wrapper">
 <?php include '../templates/nav.php'; ?>
-            <div id="maincontent">
 
 Personas Status:
 <p>
