@@ -266,13 +266,14 @@ em {
 }
 
 #check-it-out {
-    font-weight: bold;
-    color: #fff;
-    padding: 0;
-    margin: 0;
-    position: absolute;
-    left: 660px;
-    top: 50px;
+    color:#fff;
+    font-weight:bold;
+    left:620px;
+    margin:0;
+    min-width:330px;
+    padding:0;
+    position:absolute;
+    top:26px;
 }
 
 #check-it-out div, #check-it-out p {
