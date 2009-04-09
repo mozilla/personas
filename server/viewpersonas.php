@@ -24,8 +24,8 @@
 	$tab = $tab && ($category == 'Designer' || in_array(ucfirst($tab), $tabs)) ? ucfirst($tab) : 'Popular';
 	$page = $page && is_numeric($page) ? $page : 1;
 
-	if ($tab == 'All' and $category == 'All')
-		$page_size = null;
+	if ($tab == 'All')
+		$page_size = 501;
 	
 	$title = "Gallery"; 
 	include 'templates/header.php'; 
@@ -111,61 +111,64 @@
                     </ul>
                 </div>
 <?php 
-			if ($tab == 'All' && $category != 'All')
+			if ($tab == 'All')
 			{
 				$category_total = $db->get_active_persona_count($category);
-				$pages = floor($category_total/$page_size) + 1;
-				
-				$floor = $page - 4;
-				if ($floor < 1)
-					$floor = 1;
-				$ceiling = $page + 4;
-				if ($ceiling > $pages)
-					$ceiling = $pages;
+				if ($category_total < $page_size)
+				{
+					$pages = floor($category_total/$page_size) + 1;
 					
-				echo '<div id="pagination"><p>Page:</p>';
-				echo "<ul>\n";
-				if ($page > 1)
-				{
-					$url = "$url_prefix/$category/$tab/" . ($page - 1);
-					echo "<li><a href=\"$url\">Previous</a></li>\n";
-				}
-				$i = $floor;
-				if ($floor > 1)
-				{
-					echo "<li><a href=\"$url_prefix/$category/$tab/1\">1</a></li>\n";
-				}
-				if ($floor > 2)
-				{
-					echo "<li><a href=\"$url_prefix/$category/$tab/" . ($floor - 1) . "\">...</a></li>\n";
-				}
-				while ($i <= $ceiling)
-				{
-					if ($page == $i)
+					$floor = $page - 4;
+					if ($floor < 1)
+						$floor = 1;
+					$ceiling = $page + 4;
+					if ($ceiling > $pages)
+						$ceiling = $pages;
+						
+					echo '<div id="pagination"><p>Page:</p>';
+					echo "<ul>\n";
+					if ($page > 1)
 					{
-						echo "<li class=\"current\">$i</li>\n";
+						$url = "$url_prefix/$category/$tab/" . ($page - 1);
+						echo "<li><a href=\"$url\">Previous</a></li>\n";
 					}
-					else
+					$i = $floor;
+					if ($floor > 1)
 					{
-						echo "<li><a href=\"$url_prefix/$category/$tab/$i\">$i</a></li>\n";
+						echo "<li><a href=\"$url_prefix/$category/$tab/1\">1</a></li>\n";
 					}
-					$i++;
+					if ($floor > 2)
+					{
+						echo "<li><a href=\"$url_prefix/$category/$tab/" . ($floor - 1) . "\">...</a></li>\n";
+					}
+					while ($i <= $ceiling)
+					{
+						if ($page == $i)
+						{
+							echo "<li class=\"current\">$i</li>\n";
+						}
+						else
+						{
+							echo "<li><a href=\"$url_prefix/$category/$tab/$i\">$i</a></li>\n";
+						}
+						$i++;
+					}
+					if ($ceiling + 1< $pages)
+					{
+						echo "<li><a href=\"$url_prefix/$category/$tab/" . ($ceiling + 1) . "\">...</a></li>\n";
+					}
+					if ($ceiling < $pages)
+					{
+						echo "<li><a href=\"$url_prefix/$category/$tab/$pages\">$pages</a></li>\n";
+					}
+					if ($page < $pages)
+					{
+						$url = "$url_prefix/$category/$tab/" . ($page + 1);
+						echo "<li><a href=\"$url\">Next</a></li>\n";
+					}
+					echo "</ul>\n";
+					echo "</div>\n";
 				}
-				if ($ceiling + 1< $pages)
-				{
-					echo "<li><a href=\"$url_prefix/$category/$tab/" . ($ceiling + 1) . "\">...</a></li>\n";
-				}
-				if ($ceiling < $pages)
-				{
-					echo "<li><a href=\"$url_prefix/$category/$tab/$pages\">$pages</a></li>\n";
-				}
-				if ($page < $pages)
-				{
-					$url = "$url_prefix/$category/$tab/" . ($page + 1);
-					echo "<li><a href=\"$url\">Next</a></li>\n";
-				}
-				echo "</ul>\n";
-				echo "</div>\n";
 			}
 ?>
             </div>
