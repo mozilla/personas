@@ -7,7 +7,7 @@
 	$db = new PersonaStorage();
 	$user = new PersonaUser();
 
-	$title = "Firstrun"; 
+	$title = "Updated"; 
 	include 'templates/header.php'; 
 ?>
 <body class="updated">
