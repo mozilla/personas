@@ -49,4 +49,8 @@ if (!defined('FEATURE_DESIGNER_PERSONA_ID')) { define('FEATURE_DESIGNER_PERSONA_
 #Download URL for add-on
 if (!defined('PERSONAS_ADDON_URL')) { define('PERSONAS_ADDON_URL', 'https://addons.mozilla.org/en-US/firefox/downloads/latest/10900'); }
 
+#optional memcached constants. Set to null to disable
+if (!defined('MEMCACHE_PORT')) { define('MEMCACHE_PORT', null); }
+if (!defined('MEMCACHE_DECAY')) { define('MEMCACHE_DECAY', null); }
+
 ?>

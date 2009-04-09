@@ -37,47 +37,23 @@
 #
 # ***** END LICENSE BLOCK *****
 	
-	
-# create table personas
-# (
-#  id integer primary key not null auto_increment,
-#  name varchar(32) unique,
-#  header varchar(64),
-#  footer varchar(64),
-#  category varchar(32),
-#  status tinyint,
-#  submit varchar(32),
-#  approve varchar(32),
-#  author varchar(32),
-#  description text,
-#  license varbinary(10)
-#  accentcolor varchar(10),
-#  textcolor varchar(10),
-#  popularity integer
-# );
-#
-# create table categories
-# (
-#  id integer primary key not null auto_increment,
-#  name varchar(32)
-# );
-#
-# create table users
-# (
-#  username varchar(32) primary key,
-#  md5 varchar(32),
-#  email varchar(64),
-#  admin tinyint default 0
-# );
-#
 
 require_once 'personas_constants.php';
 
 class PersonaStorage
 {
 	var $_dbh;
-
+	var $_memcache;
+	
 	function __construct($username = null, $password = null, $hostname = null, $dbname = null) 
+	{
+		if (MEMCACHE_PORT)
+		{
+			$this->memcache_connect();
+		}
+	}
+	
+	function db_connect()
 	{
 		try
 		{
@@ -88,34 +64,23 @@ class PersonaStorage
 		{
 				error_log($exception->getMessage());
 				throw new Exception("Database unavailable", 503);
-		}
+		}	
 	}
 	
-	function add_popularity($id)
+	function memcache_connect()
 	{
-		if (!$name) { return 0; }
-
-		try
-		{
-			$statement = 'update personas set popularity = popularity + 1 where name = :id';
-			$sth = $this->_dbh->prepare($statement);
-			$sth->bindParam(':id', $id);
-			$sth->execute();
-		}
-		catch( PDOException $exception )
-		{
-			error_log($exception->getMessage());
-			throw new Exception("Database unavailable", 503);
-		}
-		return 1;
-		
+		$memc = new Memcache;
+		if ($memc->connect('localhost', MEMCACHE_PORT))
+			$this->_memcache = $memc;
 	}
-	
-	
+		
 	function approve_persona($id)
 	{
 		if (!$id) { return 0; }
 
+		if (!$this->_dbh)
+			$this->db_connect();
+		
 		try
 		{
 			$statement = 'update personas set status = 1, approve = current_timestamp where id = :id';
@@ -128,6 +93,19 @@ class PersonaStorage
 			error_log($exception->getMessage());
 			throw new Exception("Database unavailable", 503);
 		}
+
+		if ($this->_memcache)
+		{
+			$this->_memcache->delete("p$id");
+			$persona = $this->get_persona_by_id($id);
+			
+			$this->_memcache->delete('ca0' . $persona['category']); #category first all page. Rest will rebuild soon
+			$this->_memcache->delete('cr0' . $persona['category']); #category recent page
+			$this->_memcache->delete('crAll'); #All recent page			
+			$this->_memcache->delete('apcAll'); #All persona count			
+			$this->_memcache->delete('apc' . $persona['category']); #Category persona count			
+		}
+
 		return 1;
 		
 	}
@@ -135,6 +113,9 @@ class PersonaStorage
 	function reject_persona($id)
 	{
 		if (!$id) { return 0; }
+
+		if (!$this->_dbh)
+			$this->db_connect();
 		
 		try
 		{
@@ -149,35 +130,31 @@ class PersonaStorage
 			throw new Exception("Database unavailable", 503);
 		}
 		return 1;
-		
 	}
-		
-	function get_active_persona_count($category = null)
+
+	function pull_persona($id)
 	{
-		if ($category == 'All')
-			$category = null;
-			
-		try
+		$this->reject_persona($id);
+		if ($this->_memcache)
 		{
-			$statement = 'select count(*) from personas where status = 1' . ($category ? " and category = :category" : "");
-			$sth = $this->_dbh->prepare($statement);
-			if ($category)
-				$sth->bindParam(':category', $category);
-			$sth->execute();
-		}
-		catch( PDOException $exception )
-		{
-			error_log($exception->getMessage());
-			throw new Exception("Database unavailable", 503);
-		}
-		
-		return $sth->fetchColumn();
+			$this->_memcache->delete("p$id");
+		}		
 	}
-	
-	
+		
 	function get_persona_by_id($id)
 	{
 		if (!$id) { return 0; }
+		
+		if ($this->_memcache)
+		{
+			$result = $this->_memcache->get("p$id");
+			if ($result)
+				return $result;
+		}
+		
+		if (!$this->_dbh)
+			$this->db_connect();
+
 		try
 		{
 			$statement = 'select * from personas where id = :id';
@@ -193,14 +170,67 @@ class PersonaStorage
 
 		$result = $sth->fetch(PDO::FETCH_ASSOC);
 		
+		if ($this->_memcache)
+			$this->_memcache->set("p$id", $result, MEMCACHE_DECAY);
+			
 		return $result;
 	}
+
+
+	#gets the count of personas in a category. Usually used for pagination, back when we had pagination
+	#May make a comeback. Also used in compile.php
+	function get_active_persona_count($category = null)
+	{
+		if ($category == 'All')
+			$category = null;
+			
+		if ($this->_memcache)
+		{
+			$result = $this->_memcache->get("apc" . ($category ? $category : 'All'));
+			if ($result)
+				return $result;
+		}
+
+		if (!$this->_dbh)
+			$this->db_connect();
+
+		try
+		{
+			$statement = 'select count(*) from personas where status = 1' . ($category ? " and category = :category" : "");
+			$sth = $this->_dbh->prepare($statement);
+			if ($category)
+				$sth->bindParam(':category', $category);
+			$sth->execute();
+		}
+		catch( PDOException $exception )
+		{
+			error_log($exception->getMessage());
+			throw new Exception("Database unavailable", 503);
+		}
+		
+		if ($this->_memcache)
+			$this->_memcache->set("apc" . ($category ? $category : 'All'), $result, MEMCACHE_DECAY);
+
+		return $sth->fetchColumn();
+	}
 	
+		
 	function get_persona_by_author($author, $category = null, $sort = null)
 	{
 		if (!$author) { return 0; }
 		if (!$sort) { $sort = 'all'; }
 		$sortkeys = array('all' => 'name', 'recent' => 'submit desc', 'popular' => 'popularity desc');
+		
+		if ($this->_memcache)
+		{
+			$result = $this->_memcache->get("a$author");
+			if ($result)
+				return $result;
+		}
+
+		if (!$this->_dbh)
+			$this->db_connect();		
+		
 		try
 		{
 			$statement = 'select * from personas where status = 1 and author = ?';
@@ -229,11 +259,19 @@ class PersonaStorage
 		{
 			$personas[] = $result;
 		}		
+
+		if ($this->_memcache)
+			$this->_memcache->set("a$author", $personas, MEMCACHE_DECAY);
+
 		return $personas;
 	}
 	
 	function get_active_persona_ids($category = null)
 	{
+		#no memcache here, this is just used for site compilation
+		if (!$this->_dbh)
+			$this->db_connect();		
+		
 		try
 		{
 			$statement = 'select id from personas where status = 1' . ($category ? " and category = :category" : "");
@@ -262,6 +300,23 @@ class PersonaStorage
 	
 	function get_recent_personas($category = null, $limit = null, $offset = null)
 	{
+		$key = null;
+		
+		if ($this->_memcache)
+		{
+			if ($limit)
+				$key = "cr$offset" . ($category ? $category : 'All');
+			else
+				$key = "ca" . ($category ? $category : 'All');
+				
+			$result = $this->_memcache->get($key);
+			if ($result)
+				return $result;
+		}
+
+		if (!$this->_dbh)
+			$this->db_connect();		
+		
 		try
 		{
 			$statement = 'select * from personas where status = 1' . ($category ? " and category = :category" : "") . ' order by approve desc' . ($limit ? " limit $limit" : "") . ($offset ? " offset $offset" : "");
@@ -283,7 +338,11 @@ class PersonaStorage
 		while ($result = $sth->fetch(PDO::FETCH_ASSOC))
 		{
 			$personas[] = $result;
-		}		
+		}	
+		
+		if ($this->_memcache)
+			$this->_memcache->set($key, $personas, MEMCACHE_DECAY);
+		
 		return $personas;
 	}
 
@@ -291,6 +350,16 @@ class PersonaStorage
 	{
 		if ($category == 'All')
 			$category = null;
+		
+		if ($this->_memcache)
+		{
+			$result = $this->_memcache->get("cp" . ($category ? $category : 'All'));
+			if ($result)
+				return $result;
+		}
+
+		if (!$this->_dbh)
+			$this->db_connect();		
 		
 		try
 		{
@@ -314,11 +383,25 @@ class PersonaStorage
 		{
 			$personas[] = $result;
 		}		
+
+		if ($this->_memcache)
+			$this->_memcache->set("cp" . ($category ? $category : 'All'), $personas, MEMCACHE_DECAY);
+
 		return $personas;
 	}
 	
 	function get_featured_personas()
 	{
+		if ($this->_memcache)
+		{
+			$result = $this->_memcache->get("feat");
+			if ($result)
+				return $result;
+		}
+
+		if (!$this->_dbh)
+			$this->db_connect();		
+
 		try
 		{
 			$statement = 'select * from personas where status = 1 and featured > 0 order by featured desc';
@@ -337,11 +420,19 @@ class PersonaStorage
 		{
 			$personas[] = $result;
 		}		
+
+		if ($this->_memcache)
+			$this->_memcache->set("feat", $personas, MEMCACHE_DECAY);
+
 		return $personas;
 	}
 
 	function change_persona_category($id, $category)
 	{
+		#no need for memcache here, as it's usually pre-approval.
+		if (!$this->_dbh)
+			$this->db_connect();		
+
 		try
 		{
 			$statement = 'update personas set category = :category where id = :id';
@@ -361,6 +452,9 @@ class PersonaStorage
 	
 	function get_pending_personas($category = null)
 	{
+		if (!$this->_dbh)
+			$this->db_connect();		
+
 		try
 		{
 			$statement = 'select * from personas where status = 0' . ($category ? " and category = :category" : "") . ' order by submit';
@@ -389,6 +483,9 @@ class PersonaStorage
 	
 	function get_pending_edits($category = null)
 	{
+		if (!$this->_dbh)
+			$this->db_connect();		
+
 		try
 		{
 			$statement = 'select * from edits' . ($category ? " where category = :category" : "");
@@ -415,6 +512,9 @@ class PersonaStorage
 	
 	function get_edits_by_id($id)
 	{
+		if (!$this->_dbh)
+			$this->db_connect();		
+
 		try
 		{
 			$statement = 'select * from edits where id = :id';
@@ -433,37 +533,13 @@ class PersonaStorage
 	}
 	
 	
-	function get_personas_by_category($category)
-	{
-		if ($category == 'All')
-			$category = null;
-			
-		try
-		{
-			$statement = 'select * from personas where status = 1' . ($category ? " and category = :category" : "") . " order by name";
-			$sth = $this->_dbh->prepare($statement);
-			if ($category)
-				$sth->bindParam(':category', $category);
-			$sth->execute();
-		}
-		catch( PDOException $exception )
-		{
-			error_log($exception->getMessage());
-			throw new Exception("Database unavailable", 503);
-		}
-		
-		$personas = array();
-		
-		while ($result = $sth->fetch(PDO::FETCH_ASSOC))
-		{
-			$personas[] = $result;
-		}		
-		return $personas;
-	}
 	
 	#see if we're going to get a namespace collision with a persona
 	function check_persona_name($name)
 	{
+		if (!$this->_dbh)
+			$this->db_connect();		
+
 		try
 		{
 			$statement = 'select id from personas where name = :name limit 1';
@@ -502,6 +578,9 @@ class PersonaStorage
 	
 	function submit_persona($name, $category, $header, $footer, $author, $accent, $text, $desc, $license, $reason, $reasonother)
 	{
+		if (!$this->_dbh)
+			$this->db_connect();		
+
 		try
 		{
 			$statement = 'insert into personas (name, status, header, footer, category, submit, author, accentcolor, textcolor, description, license, reason, reason_other) values (:name, 0, :header, :footer, :category, NOW(), :author, :accentcolor, :textcolor, :description, :license, :reason, :reasonother)';
@@ -530,6 +609,9 @@ class PersonaStorage
 	
 	function submit_persona_edit($id, $author, $name, $category, $accent, $text, $desc, $header = null, $footer = null, $reason = null, $reason_other = null)
 	{
+		if (!$this->_dbh)
+			$this->db_connect();		
+
 		try
 		{
 			$statement = 'replace into edits (id, author, name, header, footer, category,  accentcolor, textcolor, description, reason, reason_other, submit) values (:id, :author, :name, :header, :footer, :category,  :accentcolor, :textcolor, :description, :reason, :reasonother, NOW())';
@@ -558,7 +640,12 @@ class PersonaStorage
 	
 	function approve_persona_edit($id)
 	{
+		if (!$this->_dbh)
+			$this->db_connect();		
+
 		$edits = $this->get_edits_by_id($id);
+		
+		#Don't need memcache deletes here. Odds are it isn't on any front pages that require urgency
 		
 		$update = "update personas set name = ?, category = ?, accentcolor = ?, textcolor = ?, description = ?";
 		$params = array($edits['name'], $edits['category'], $edits['accentcolor'], $edits['textcolor'], $edits['description']);
@@ -607,6 +694,9 @@ class PersonaStorage
 	
 	function reject_persona_edit($id)
 	{
+		if (!$this->_dbh)
+			$this->db_connect();		
+
 		try
 		{
 			$statement = 'delete from edits where id = :id';
@@ -625,6 +715,9 @@ class PersonaStorage
 	
 	function log_action($name, $id, $action)
 	{
+		if (!$this->_dbh)
+			$this->db_connect();		
+
 		try
 		{
 			$statement = 'insert into log (id, username, action) values (:id, :username, :action)';
@@ -644,6 +737,17 @@ class PersonaStorage
 		
 	function get_categories()
 	{
+		error_log("GETTING CATEGORIES");
+		if ($this->_memcache)
+		{
+			$result = $this->_memcache->get("categories");
+			if ($result)
+				return $result;
+		}
+
+		if (!$this->_dbh)
+			$this->db_connect();		
+
 		try
 		{
 			$statement = 'select name from categories order by name';
@@ -662,6 +766,10 @@ class PersonaStorage
 		{
 			$categories[] = $result[0];
 		}		
+
+		if ($this->_memcache)
+			$this->_memcache->set("categories", $categories, MEMCACHE_DECAY);
+
 		return $categories;
 	}
 	
@@ -671,7 +779,7 @@ class PersonaStorage
 		{
 			return 0;
 		}
-
+		
 		try
 		{
 			$stmt = 'insert into categories (name) values (:category)';
@@ -685,8 +793,13 @@ class PersonaStorage
 			error_log("add_category: " . $exception->getMessage());
 			throw new Exception("Database unavailable");
 		}
-		return 1;
-		
+
+		if ($this->_memcache)
+		{
+			$this->_memcache->delete("categories");
+		}
+
+		return 1;		
 	}
 
 	function category_exists($category) 
@@ -728,6 +841,11 @@ class PersonaStorage
 		{
 			error_log("delete category: " . $exception->getMessage());
 			throw new Exception("Database unavailable");
+		}
+
+		if ($this->_memcache)
+		{
+			$this->_memcache->delete("categories");
 		}
 		return 1;
 	}
