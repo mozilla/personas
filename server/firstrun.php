@@ -12,8 +12,29 @@
 ?>
 <body class="firstrun">
     <div id="outer-wrapper">
+        
+         
         <div id="inner-wrapper">
-<?php include 'templates/nav.php'; ?>
+                       <p id="account">
+           
+            			</p>
+                        <div id="nav">
+                            <h1><a href="/"><img src="/static/img/logo.png" alt="Mozilla Labs Personas"></a></h1>
+                                <div id="check-it-out">
+                                    <div class="hd">
+                                        &nbsp;
+                                    </div>
+                                    <p class="bd">
+                                        Check it out! Your browser's all dressed up.                        
+                                    </p>
+
+                                    <div class="ft">
+                                        &nbsp;
+                                    </div>
+                                </div>
+                        </div>
+
+            
             <div id="header">
                 <h2>Thanks for Installing Personas for Firefox!</h2>
                 <h2>The Easiest Way to Dress Up Your Browser.</h2>

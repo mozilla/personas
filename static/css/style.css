@@ -142,6 +142,7 @@ em {
 #nav {
     z-index: 45;
     height: 80px;
+    position: relative;
 }
 
 #nav h1 {

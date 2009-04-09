@@ -14,10 +14,27 @@
 			</p>
             <div id="nav">
                 <h1><a href="/"><img src="/static/img/logo.png" alt="Mozilla Labs Personas"></a></h1>
-                <ul>
-                    <li class="gallery"><a href="/gallery/All/Popular">Gallery</a></li>
-                    <li class="create"><a href="/upload">Create <br/>Your Own</a></li>
-                    <li class="demo"><a href="/demo_install">Demo</a></li>
-                    <li class="faq"><a href="/faq">Frequent <br/>Questions</a></li>
-                </ul>
+                
+                <?php if($showCheckItOut) { ?>
+                    <div id="check-it-out">
+                        <div class="hd">
+                            &nbsp;
+                        </div>
+                        <p class="bd">
+                            Check it out! Your browser's all dressed up.                        
+                        </p>
+
+                        <div class="ft">
+                            &nbsp;
+                        </div>
+                    </div>
+                <?php } ?>
+                <?php if(!$hideNav) { ?>
+                    <ul>
+                        <li class="gallery"><a href="/gallery/All/Popular">Gallery</a></li>
+                        <li class="create"><a href="/upload">Create <br/>Your Own</a></li>
+                        <li class="demo"><a href="/demo_install">Demo</a></li>
+                        <li class="faq"><a href="/faq">Frequent <br/>Questions</a></li>
+                    </ul>
+                <?php } ?>
             </div>
