@@ -17,11 +17,13 @@ body{font:13px/1.231 arial,helvetica,clean,sans-serif;*font-size:small;*font:x-s
 
 html {
     background:#ececec;
+    min-width: 980px;
 }
 
 body {
     background: #ececec;
     font-family: Helvetica, Arial , sans-serif;
+    min-width: 980px;
 }
 
 strong {
