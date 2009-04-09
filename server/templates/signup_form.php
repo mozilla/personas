@@ -49,4 +49,4 @@
                     <button type="submit" class="button"><span>sign me up</span><span class="arrow"></span></button>
                     </form>
                 </div>
-			<p class="disclaimer">Mozilla values your privacy. We will not sell or rent your email address</p>
+			<p class="disclaimer">Mozilla values your privacy. We will not sell or rent your email address.</p>
