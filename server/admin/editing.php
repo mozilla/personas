@@ -86,7 +86,7 @@
 		exit;
 	}
 
-	include '../templates/header.php'; ?>
+	include '../templates/header.php';
 ?>
 <body>
     <div id="outer-wrapper">
