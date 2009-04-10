@@ -41,7 +41,7 @@
 	require_once 'server/lib/personas_functions.php';	
 	require_once 'server/lib/storage.php';
 
-	$page_size = 42;
+	$page_size = 501;
 	
 	$db = new PersonaStorage();
 	$categories = $db->get_categories();
@@ -157,7 +157,14 @@
 	store_page(PERSONAS_BUILD_SERVER . "/index.html?no_my=1", PERSONAS_STORAGE_PREFIX . "/index.html");
 
 	#the all page
-	store_page(PERSONAS_BUILD_SERVER . "/gallery/All/All?no_my", PERSONAS_STORAGE_PREFIX . "/gallery/All/All");
+	$category_total = $db->get_active_persona_count();
+	$pages = floor($category_total/$page_size) + 1;
+	$i = 1;
+	while ($i <= $pages)
+	{
+		store_page(PERSONAS_BUILD_SERVER . "/gallery/All/All/$i?no_my", PERSONAS_STORAGE_PREFIX . "/gallery/All/All/$i");
+		$i++;
+	}		
 
 	#the popular page
 	store_page(PERSONAS_BUILD_SERVER . "/gallery/All/Popular?no_my", PERSONAS_STORAGE_PREFIX . "/gallery/All/Popular");

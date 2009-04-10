@@ -14,13 +14,11 @@
 						{
 							if ($list_tab == 'My' && (!$user->get_unauthed_username() || $no_my == 1))
 								continue;
-							#if ($list_tab == 'All' && $list_category == 'All')
-							#	continue;
 							$tab_url = "$url_prefix/$list_category/$list_tab";
 							echo "		<li";
 							if ($list_tab == $tab)
 								echo ' class="active"';
-							if ($list_tab == 'All' && $list_category != 'All')
+							if ($list_tab == 'All')
 								$tab_url .= "/1";
 							echo "><a href=\"$tab_url\">$list_tab</a></li>\n";						
 						}
