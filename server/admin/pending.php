@@ -46,6 +46,7 @@
 	{
 		$message = "Thanks for submitting your Persona '$name'. Unfortunately, we cannot add your Persona because of the following reason: $reason.\n\n"; 
 		$message .= "We apologize for the disappointment, and we hope you will give it another shot and send us a new Persona.\n\n";
+		$message .= "If you want to use this image on your own browser, you are able to do so. Simply select Custom Persona > Edit from the Personas menu at the bottom left of your browser.\n\n";
 		$message .= "If you have any questions or want more information, please stop by the Persona message boards and tell us what's on your mind.\n\n";
 		$message .= "Best Wishes,\n";
 		$message .= "The Personas Team\n";
