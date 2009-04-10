@@ -737,7 +737,6 @@ class PersonaStorage
 		
 	function get_categories()
 	{
-		error_log("GETTING CATEGORIES");
 		if ($this->_memcache)
 		{
 			$result = $this->_memcache->get("categories");
