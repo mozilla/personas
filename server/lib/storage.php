@@ -233,7 +233,7 @@ class PersonaStorage
 		
 		try
 		{
-			$statement = 'select * from personas where status = 1 and author = ?';
+			$statement = 'select * from personas where status = 1 and author = ? order by popularity desc';
 			$params = array($author);
 			
 			if ($category)
