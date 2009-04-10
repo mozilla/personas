@@ -30,6 +30,11 @@ strong {
     font-weight: bold;
 }
 
+strong.legal {
+    text-decoration: underline;
+    font-weight: normal;
+}
+
 a {
     outline: none;
     color: #00a1e2;
@@ -87,6 +92,14 @@ ul li {
 
 em {
     font-style: italic;
+}
+
+blockquote {
+    margin: 1em 3em;
+}
+
+ol li ol li {
+    list-style-type: lower-alpha;
 }
 
 #inner-wrapper:after, #nav ul:after{
@@ -640,9 +653,17 @@ img.preview  {
     font-weight: bold;
 }
 
-#maincontent p, #secondary-content p, #maincontent li {
+#maincontent p, #secondary-content p, #maincontent li, #maincontent blockquote {
     line-height: 1.4em;
     font-size: 93%;
+}
+
+#maincontent li ul li {
+    font-size: 100%;
+}
+
+#maincontent ul {
+    margin: 1em 0;
 }
 
 #secondary-content {
@@ -893,6 +914,13 @@ img.preview  {
 #maincontent h3 {
     font-family: Helvetica, sans-serif;
     color: #09344f;
+    font-weight: bold;
+}
+
+#maincontent h5 {
+    color:#007AAB;
+    font-size:123.1%;
+    margin: 10px 0 10px;
     font-weight: bold;
 }
 
