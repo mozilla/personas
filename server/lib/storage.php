@@ -219,7 +219,7 @@ class PersonaStorage
 	{
 		if (!$author) { return 0; }
 		if (!$sort) { $sort = 'all'; }
-		$sortkeys = array('all' => 'name', 'recent' => 'submit desc', 'popular' => 'popularity desc');
+		$sortkeys = array('all' => 'popularity desc', 'recent' => 'submit desc', 'popular' => 'popularity desc');
 		
 		if ($this->_memcache)
 		{
@@ -233,7 +233,7 @@ class PersonaStorage
 		
 		try
 		{
-			$statement = 'select * from personas where status = 1 and author = ? order by popularity desc';
+			$statement = 'select * from personas where status = 1 and author = ?';
 			$params = array($author);
 			
 			if ($category)
