@@ -9,15 +9,15 @@
 		return  $first_folder . '/' . $second_folder .  '/'. $id ;
 	}
 
-	function extract_record_data($item)
+	function extract_record_data($item, $url_root = null)
 	{
 		$padded_id = $item['id'] < 10 ? '0' . $item['id'] : $item['id'];
 		$extracted = array('id' => $item['id'], 
 						'name' => $item['name'],
 						'accentcolor' => $item['accentcolor'] ? '#' . $item['accentcolor'] : null,
 						'textcolor' => $item['textcolor'] ? '#' . $item['textcolor'] : null,
-						'header' => url_prefix($item['id']) . '/' . $item['header'], 
-						'footer' => url_prefix($item['id']) . '/' . $item['footer']);
+						'header' => $url_root . url_prefix($item['id']) . '/' . $item['header'], 
+						'footer' => $url_root . url_prefix($item['id']) . '/' . $item['footer']);
 		return $extracted;	
 	}
 

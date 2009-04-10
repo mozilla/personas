@@ -181,6 +181,7 @@
 	if (!(array_key_exists('id', $upload_submitted) && $_FILES['footer-image']['size'] == 0)) #images are optional on edit
 	{
 		$footer_specs = exec($imgcommand . $_FILES['footer-image']['tmp_name']);
+error_log($footer_specs);
 		list($fheight, $fwidth, $ftype) = explode(" ", $footer_specs);
 		if (!($ftype == 'JPEG' || $ftype == 'PNG'))
 			$upload_errors['footer-image'] = "We do not recognize the format of your footer image. Please let us know at persona-devel@mozilla.com if you think this is in error.";
@@ -216,7 +217,10 @@
 	{
 		$upload_errors['footer-image'] = "A problem occured uploading your persona. Please contact persona-devel@mozilla.com to let us know about this issue. Thank you.";
 		if (!array_key_exists('id', $_POST))
+		{
 			$db->reject_persona($upload_submitted['id']);
+			$upload_submitted['id'] = null;
+		}
 		include 'templates/upload_persona_tmpl.php';
 		exit;					
 	}
@@ -227,7 +231,10 @@
 		{
 			$upload_errors['header-image'] = "A problem occured uploading your persona. Please contact persona-devel@mozilla.com to let us know about this issue. Thank you.";
 			if (!array_key_exists('id', $_POST))
+			{
 				$db->reject_persona($upload_submitted['id']);
+				$upload_submitted['id'] = null;
+			}
 			include 'templates/upload_persona_tmpl.php';
 			exit;					
 		}

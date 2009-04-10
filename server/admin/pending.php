@@ -236,7 +236,7 @@
 			{
 				$path = PERSONAS_URL_PREFIX . '/' . url_prefix($item['id']);
 				$preview_url =  $path . "/preview.jpg";
-				$persona_json = htmlentities(json_encode(extract_record_data($item)));
+				$persona_json = htmlentities(json_encode(extract_record_data($item, 'http://' . $_SERVER['SERVER_NAME'] . '/pending/')));
 ?>
                         <li class="gallery-item">
                             <div>
