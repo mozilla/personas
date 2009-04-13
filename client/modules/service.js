@@ -231,11 +231,13 @@ let PersonaService = {
   },
 
   _refreshPersona: function() {
-    // Only refresh the persona if the user selected a specific persona.
-    // If the user selected a random persona, we'll change it the next time
-    // we refresh the directory, and if the user selected the default persona,
-    // we don't need to refresh it, as it doesn't change.
-    if (this.selected != "current" || !this.currentPersona)
+    // Only refresh the persona if the user selected a specific persona
+    // from the gallery.  If the user selected a random persona, we'll change it
+    // the next time we refresh the directory; if the user selected
+    // the default persona, we don't need to refresh it, as it doesn't change;
+    // and if the user selected a custom persona (which doesn't have an ID),
+    // it's not clear what refreshing it would mean.
+    if (this.selected != "current" || !this.currentPersona || !this.currentPersona.id)
       return;
 
     let lastTwoDigits = new String(this.currentPersona.id).substr(-2).split("");
