@@ -152,6 +152,13 @@
 				print "Persona " . $persona['id'] . " pulled";
 				$db->log_action($user->get_username(), $persona['id'], "Pulled");
 				break;
+			case 'copyrightreject':
+				$reason = 'We are unable to confirm that you own the content contained in the persona design. If you are the rightful owner of the content, please confirm it with us at personas@mozilla.com and we\'ll get your persona up as soon as possible';
+				$db->reject_persona($persona['id']);
+				send_problem_email($user->get_email($persona['author']), $reason, $persona['name']);
+				$db->log_action($user->get_username(), $persona['id'], "Rejected - " . $_GET['reason']);
+				$id = null;
+				break;				
 			case 'reject':
 				$db->reject_persona($persona['id']);
 				send_problem_email($user->get_email($persona['author']), $_GET['reason'], $persona['name']);
@@ -217,6 +224,7 @@
 		<p>
 		<input type="submit" name="verdict" value="accept">
 		<input type="submit" name="verdict" value="reject" onclick="if ($('#formreason').val() == '') {alert('Please provide a reason for rejection'); return false;}">
+		<input type="submit" name="verdict" value="copyrightreject">
 		<input type="submit" name="verdict" value="rebuild">
 		</form>
 <?php
