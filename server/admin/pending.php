@@ -243,7 +243,7 @@
 		}
 		else
 		{
-            print count($results) . "pending personas";
+            print count($results) . " pending personas";
             print "<ul>\n";
 			foreach ($results as $item)
 			{
