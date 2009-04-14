@@ -43,7 +43,7 @@ locale   personas   ko-KR       chrome/locale/ko-KR/
 locale   personas   nl-NL       chrome/locale/nl-NL/
 locale   personas   pl-PL       chrome/locale/pl-PL/
 locale   personas   pt-BR       chrome/locale/pt-BR/
-#locale   personas   ru-RU       chrome/locale/ru-RU/
+locale   personas   ru-RU       chrome/locale/ru-RU/
 #locale   personas   sk-SK       chrome/locale/sk-SK/
 locale   personas   sr-RS       chrome/locale/sr-RS/
 #locale   personas   sv-SE       chrome/locale/sv-SE/
