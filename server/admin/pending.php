@@ -156,7 +156,7 @@
 				$reason = 'We are unable to confirm that you own the content contained in the persona design. If you are the rightful owner of the content, please confirm it with us at personas@mozilla.com and we\'ll get your persona up as soon as possible';
 				$db->reject_persona($persona['id']);
 				send_problem_email($user->get_email($persona['author']), $reason, $persona['name']);
-				$db->log_action($user->get_username(), $persona['id'], "Rejected - " . $_GET['reason']);
+				$db->log_action($user->get_username(), $persona['id'], "Rejected - Copyright concern");
 				$id = null;
 				break;				
 			case 'reject':
