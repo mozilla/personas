@@ -204,6 +204,10 @@
 		?>
 		</select><input type="submit" name="verdict" value="change">
 		<br>
+		License: <?= $result['license'] ?>
+		<br>
+		Reason: <?= $result['reason'] ?>
+		<br>
 		Description: <?= $result['description'] ?>
 		<p>
 		Preview:
