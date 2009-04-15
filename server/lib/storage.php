@@ -444,7 +444,7 @@ class PersonaStorage
 			throw new Exception("Database unavailable", 503);
 		}
 		
-		$result = $sth->fetchAll(PDO::FETCH_COLUMN)
+		$result = $sth->fetchAll(PDO::FETCH_COLUMN);
 		return $result;
 	
 	}
