@@ -427,6 +427,29 @@ class PersonaStorage
 		return $personas;
 	}
 
+	function get_active_designers()
+	{
+		if (!$this->_dbh)
+			$this->db_connect();		
+
+		try
+		{
+			$statement = 'select distinct(author) from personas where status = 1';
+			$sth = $this->_dbh->prepare($statement);
+			$sth->execute();
+		}
+		catch( PDOException $exception )
+		{
+			error_log($exception->getMessage());
+			throw new Exception("Database unavailable", 503);
+		}
+		
+		$result = $sth->fetchAll(PDO::FETCH_COLUMN)
+		return $result;
+	
+	}
+	
+	
 	function change_persona_category($id, $category)
 	{
 		#no need for memcache here, as it's usually pre-approval.
