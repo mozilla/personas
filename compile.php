@@ -202,7 +202,6 @@
 	$designer_list = $db->get_active_designers();
 	foreach ($designer_list as $designer)
 	{
-		$path = get_persona_path(PERSONAS_STORAGE_PREFIX . "/gallery/persona", $id);
 		store_page(PERSONAS_BUILD_SERVER . "/gallery/Designer/" . $designer . "?no_my=1", PERSONAS_STORAGE_PREFIX . "/gallery/Designer/" . $designer);		
 	}
 	
