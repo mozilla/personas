@@ -88,7 +88,7 @@ Personas Awaiting Edit Approval: <a href="editing.php" target="_blank"><?= $edit
 <p><hr><p>
 <a href="/store/dynamic/gallery/All/" target="_blank">Edit/Pull Personas</a>
 <p>
-<a href="https://labs.mozilla.com/forum/?CategoryID=18" target="_blank">Personas Discussion Board</a>
+<a href="http://groups.google.com/group/mozilla-labs-personas/topics" target="_blank">Personas Discussion Board</a>
 
 
 <?php include '../templates/footer.php'; ?>
