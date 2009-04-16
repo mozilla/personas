@@ -292,7 +292,7 @@
                 <ul id="subnav">
 <?php
 			array_unshift($categories, 'All');
-			array_unshift($categories, 'Legal');
+			array_push($categories, 'Legal');
 			if (!$page_category)
 				$page_category = 'All';
 			foreach ($categories as $list_category)
