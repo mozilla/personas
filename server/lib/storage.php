@@ -449,6 +449,55 @@ class PersonaStorage
 	
 	}
 	
+	function flag_persona_for_legal($id)
+	{
+		#no need for memcache here, as it's usually pre-approval.
+		if (!$this->_dbh)
+			$this->db_connect();		
+
+		try
+		{
+			$statement = 'update personas set status = 3 where id = :id';
+			$sth = $this->_dbh->prepare($statement);
+			$sth->bindParam(':id', $id);
+			$sth->execute();
+		}
+		catch( PDOException $exception )
+		{
+			error_log($exception->getMessage());
+			throw new Exception("Database unavailable", 503);
+		}
+		
+		return 1;
+	}
+		
+	function get_legal_flagged_personas()
+	{
+
+		if (!$this->_dbh)
+			$this->db_connect();		
+		
+		try
+		{
+			$statement = 'select * from personas where status = 3';
+			$sth = $this->_dbh->prepare($statement);
+			$sth->execute();
+		}
+		catch( PDOException $exception )
+		{
+			error_log($exception->getMessage());
+			throw new Exception("Database unavailable", 503);
+		}
+		
+		$personas = array();
+		
+		while ($result = $sth->fetch(PDO::FETCH_ASSOC))
+		{
+			$personas[] = $result;
+		}		
+
+		return $personas;
+	}
 	
 	function change_persona_category($id, $category)
 	{

@@ -157,10 +157,15 @@
 				$db->log_action($user->get_username(), $persona['id'], "Pulled");
 				break;
 			case 'copyrightreject':
-				$reason = 'We are unable to confirm that you own the content contained in the persona design. If you are the rightful owner of the content, please confirm it with us at personas@mozilla.com and we\'ll get your persona up as soon as possible';
+				$reason = 'We are unable to confirm that you own the content contained in the persona design. If you are the rightful owner of the content (including the images, logos, etc.), please confirm it with us at personas@mozilla.com and we\'ll get your persona up as soon as possible';
 				$db->reject_persona($persona['id']);
 				send_problem_email($user->get_email($persona['author']), $reason, $persona['name']);
 				$db->log_action($user->get_username(), $persona['id'], "Rejected - Copyright concern");
+				$id = null;
+				break;				
+			case 'flagforlegal':
+				$db->flag_persona_for_legal($persona['id']);
+				$db->log_action($user->get_username(), $persona['id'], "Flagged for Legal");
 				$id = null;
 				break;				
 			case 'reject':
@@ -233,6 +238,7 @@
 		<input type="submit" name="verdict" value="accept">
 		<input type="submit" name="verdict" value="reject" onclick="if ($('#formreason').val() == '') {alert('Please provide a reason for rejection'); return false;}">
 		<input type="submit" name="verdict" value="copyrightreject">
+		<input type="submit" name="verdict" value="flagforlegal">
 		<input type="submit" name="verdict" value="rebuild">
 		</form>
 <?php
@@ -240,7 +246,11 @@
 	}
 	else
 	{
-		$results = $db->get_pending_personas($page_category);
+		if ($page_category == 'Legal')
+			$results = $db->get_legal_flagged_personas();			
+		else	
+			$results = $db->get_pending_personas($page_category);
+			
 		if (!count($results))
 		{
 			print "There are no more pending personas";
@@ -282,6 +292,7 @@
                 <ul id="subnav">
 <?php
 			array_unshift($categories, 'All');
+			array_unshift($categories, 'Legal');
 			if (!$page_category)
 				$page_category = 'All';
 			foreach ($categories as $list_category)
