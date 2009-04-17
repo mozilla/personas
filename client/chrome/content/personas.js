@@ -571,7 +571,7 @@ let PersonaController = {
   },
 
   onViewDirectory: function() {
-    window.openUILinkIn(this._siteURL + "gallery/All/Recent", "tab");
+    window.openUILinkIn(this._siteURL + "gallery/All/Popular", "tab");
   },
 
   onEditCustomPersona: function() {
