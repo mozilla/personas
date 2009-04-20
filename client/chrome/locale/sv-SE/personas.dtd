@@ -1,2 +1,17 @@
 <!ENTITY personas_app_title "Personas för Firefox">
 <!ENTITY useDefaultPersona.label "Standard">
+<!ENTITY preferences.label "Inställningar">
+<!ENTITY viewDirectory.label "Visa Directory">
+<!ENTITY customPersona.label "Anpassd Persona">
+<!ENTITY customName.label "Namn:">
+<!ENTITY header.label "Header:">
+<!ENTITY selectBackground.label "Bläddra...">
+<!ENTITY footer.label "Footer:">
+<!ENTITY textColorPicker.label "Textfärg:">
+<!ENTITY accentColorPicker.label "Accent färg:">
+<!ENTITY useDefaultColor.label "Använd standard">
+<!ENTITY okButton.label "OK">
+<!ENTITY contextHomePage.label "Hemsidda">
+<!ENTITY contextPreferences.label "Inställningar">
+<!ENTITY contextEdit.label "Hantera">
+<!ENTITY contextApply.label "Använd">
