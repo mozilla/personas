@@ -427,6 +427,42 @@ class PersonaStorage
 		return $personas;
 	}
 
+	function search_personas($string, $category = null, $limit = null)
+	{
+		$string = str_replace(',', ' ', $string);
+
+		if (!$this->_dbh)
+			$this->db_connect();		
+
+		try
+		{
+			$statement = 'select *, match(name, description) AGAINST(:string1 in boolean mode) AS score from personas where status = 1 ';
+			if ($category && $category != 'All')
+				$statement .= 'and category = :category ';
+			$statement .= 'and match(name, description) against(:string2 in boolean mode)';
+			$statement .= ' order by score desc' . ($limit ? " limit $limit" : "");
+			$sth = $this->_dbh->prepare($statement);
+			$sth->bindParam(':string1', $string);
+			$sth->bindParam(':string2', $string);
+			if ($category && $category != 'All')
+				$sth->bindParam(':category', $category);
+			$sth->execute();
+		}
+		catch( PDOException $exception )
+		{
+			error_log($exception->getMessage());
+			throw new Exception("Database unavailable", 503);
+		}
+		
+		$personas = array();
+		
+		while ($result = $sth->fetch(PDO::FETCH_ASSOC))
+		{
+			$personas[] = $result;
+		}		
+		return $personas;
+	}
+	
 	function get_active_designers()
 	{
 		if (!$this->_dbh)

@@ -12,7 +12,7 @@
 	$db = new PersonaStorage();
 	$categories = $db->get_categories();
 	array_unshift($categories, 'All');
-	$tabs = array('Popular', 'Recent', 'All', 'My');
+	$tabs = array('Popular', 'Recent', 'All', 'Search', 'My');
 	
 	$path = array_key_exists('PATH_INFO', $_SERVER) ? $_SERVER['PATH_INFO'] : '/';
 	$path = substr($path, 1); #chop the lead slash
@@ -44,6 +44,7 @@
                 <div id="gallery">
                     <ul>
 <?php
+			$list = array();
 			if ($category == 'Designer')
 			{
 				$list = $db->get_persona_by_author($tab);				
@@ -60,6 +61,13 @@
 			{
 				$list = $db->get_persona_by_author($user->get_username(), $category == 'All' ? null : $category);			
 			}
+			elseif ($tab == 'Search')
+			{
+				if (array_key_exists('p', $_GET) && $_GET['p'])
+				{
+					$list = $db->search_personas($_GET['p'], $category, $page_size);
+				}
+			}
 			else
 			{
 				$start = ($page - 1) * $page_size;
@@ -67,7 +75,19 @@
 			}
 			
 			$description_max = 50;
-			if (count($list) == 0)
+			if ($tab == 'Search')
+			{
+?>
+				<form action="" method=GET>
+				<input type=text name=p value='<?= array_key_exists('p', $_GET) ? $_GET['p'] : '' ?>'><input type=submit><p>
+				</form>
+<?php
+				if (count($list) == 0 && array_key_exists('p', $_GET))
+				{
+					echo "We were unable to locate any personas that match those search terms. Please try again";
+				}
+			}
+			elseif (count($list) == 0)
 			{
 				echo "There are no personas available here. Please use the navigation on the left to choose another category.";
 			}
