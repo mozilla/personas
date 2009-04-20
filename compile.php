@@ -127,24 +127,34 @@
 		}
 		$category_array[] = array('name' => $category, 'personas' => $short_cat_list);
 
-		#get the html
-		#the popular page
-		store_page(PERSONAS_BUILD_SERVER . "/gallery/$category/Popular?no_my", PERSONAS_STORAGE_PREFIX . "/gallery/$category/Popular");
-	
-		#the recent page
-		store_page(PERSONAS_BUILD_SERVER . "/gallery/$category/Recent?no_my", PERSONAS_STORAGE_PREFIX . "/gallery/$category/Recent");
-
-		$i = 1;
-		while ($i <= $pages)
+		if (PERSONAS_BUILD_SERVER)
 		{
-			store_page(PERSONAS_BUILD_SERVER . "/gallery/$category/All/$i?no_my", PERSONAS_STORAGE_PREFIX . "/gallery/$category/All/$i");
-			$i++;
-		}		
+			#get the html
+			#the popular page
+			store_page(PERSONAS_BUILD_SERVER . "/gallery/$category/Popular?no_my", PERSONAS_STORAGE_PREFIX . "/gallery/$category/Popular");
+		
+			#the recent page
+			store_page(PERSONAS_BUILD_SERVER . "/gallery/$category/Recent?no_my", PERSONAS_STORAGE_PREFIX . "/gallery/$category/Recent");
+
+			$i = 1;
+			while ($i <= $pages)
+			{
+				store_page(PERSONAS_BUILD_SERVER . "/gallery/$category/All/$i?no_my", PERSONAS_STORAGE_PREFIX . "/gallery/$category/All/$i");
+				$i++;
+			}		
+		}
 	}
 	$master['categories'] = $category_array;
 
 	file_put_contents(PERSONAS_STORAGE_PREFIX . '/index_1.json', json_encode($master));
 
+	#we're done unless you need a static tree
+	if (!PERSONAS_BUILD_SERVER)
+		exit;
+	
+	
+	
+	
 	#now write out the individual pages
 	$master_list = $db->get_active_persona_ids();
 	foreach ($master_list as $id)
