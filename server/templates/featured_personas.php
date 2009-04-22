@@ -1,22 +1,26 @@
-            <div class="feature slideshow">
+<?php
+	$featured = explode(":", FEATURED_PERSONAS); 
+?>
+<div class="feature slideshow">
                 <h3>Featured Personas</h3>
                 <ul id="slideshow-nav">
-                    <li><a href="#" class="active">1</a></li>
-                    <li><a href="#">2</a></li>
-                    <li><a href="#">3</a></li>
-                    <li><a href="#">4</a></li>
-                </ul>
+<?php
+				for ($i = 1; $i <= count($featured); $i++)
+				{
+					echo '<li><a href="#"' . ($i == 1 ? 'class="active"' : '') . ">$i</a></li>";
+				}
+?>
+				</ul>
                 <a href="#" id="slideshow-previous"><img src="/static/img/nav-prev.png" alt="Previous"/></a>
                 <a href="#" id="slideshow-next"><img src="/static/img/nav-next.png" alt="Next"/></a>
                 <div id="slideshow">
                     <ul id="slides">
 <?php
-
-
-	$featured = $db->get_featured_personas();
 	$description_max = 50;
-	foreach ($featured as $persona)
+	foreach ($featured as $id)
 	{
+		$persona = $db->get_persona_by_id($id); 
+
 		$item_description = $persona['description'];
 		if (strlen($item_description) > $description_max)
 		{
