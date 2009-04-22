@@ -605,6 +605,10 @@ img.preview  {
     font-size: 85%;
 }
 
+.popular a {
+    font-weight: normal;
+}
+
 #breadcrumbs {
     color: #747474;
     font-size: 85%;
