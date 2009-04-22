@@ -36,7 +36,7 @@
                             <h4><?= $persona['name'] ?></h4>
                             <p class="try"><a href="<?= $detail_url ?>">view details »</a></p>
                             <hr />
-                            <p class="designer"><strong>Designer:</strong> <?= $persona['author'] ?></p>
+                            <p class="designer"><strong>Designer:</strong> <a href="/gallery/Designer/<?= $item['author'] ?>"><?= $persona['author'] ?></a></p>
                             <p class="added"><strong>Added:</strong> <?= $persona_date?></p>
                             <hr />
 
