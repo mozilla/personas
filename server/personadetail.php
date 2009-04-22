@@ -65,7 +65,7 @@
                 </p>
 <?php
 		if ($persona_data['popularity'])
-			print '<p class="numb-users">' . number_format($persona_data['popularity']) . ($persona_data['popularity'] == 1 ? " user" : " users") . '</p>';
+			print '<p class="numb-users">' . number_format($persona_data['popularity']) . ' active daily users</p>';
 	
 	} else {
 ?>            
