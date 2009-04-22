@@ -38,8 +38,7 @@
 <?php include 'templates/nav.php'; ?>
             <div id="header">
                 <h2>View Personas</h2>
-                <h3>Your browser, your style! Dress it up with easy-to-change "skins" for your
-                Firefox.</h3>
+                <h3>Your browser, your style! Dress it up with easy-to-change "skins" for your Firefox.</h3>
             </div>
             <div id="maincontent">
                 <p id="breadcrumbs"><a href="http://www.getpersonas.com">Personas Home</a> : <a href="http://www.getpersonas.com/gallery/All/Popular">Gallery</a> : <?= $category ?><?php if ($tab != "All") { echo " : $tab"; } ?></p>
