@@ -116,6 +116,7 @@
                                 <p class="designer"><strong>Designer:</strong> <a href="/gallery/Designer/<?= $item['author'] ?>"><?= $item['author'] ?></a></p>
                                 <p class="added"><strong>Added:</strong> <?= $persona_date ?></p>
                                 <p><?= $item_description ?></p>
+                                <p><?= number_format($item['popularity']) ?> active daily users</p>
                                 <p><a href="<?= "/persona/" . ($item['id'] < 10 ? "0" : "") . $item['id'] ?>" class="view">view details »</a></p>
 <?php
 				if ($tab == 'My' || $user->has_admin_privs())
