@@ -66,6 +66,11 @@
         </div>
     </div>
 <?php include 'templates/footer.php'; ?>
+    <script type="text/javascript" charset="utf-8">
+        $(document).ready(function () {
+            $("img.persona").previewPersona();
+        });
+    </script>
     <p id="get-more-personas">
        Click on the fox mask to get started!
     </p>
