@@ -27,7 +27,6 @@
 			$item_description = substr($item_description, 0, $description_max);
 			$item_description = preg_replace('/ [^ ]+$/', '', $item_description) . '...';
 		}
-		$persona_date = date("n/j/Y", strtotime($persona['approve']));
 		$persona_json = htmlentities(json_encode(extract_record_data($persona)));
 		$detail_url = "/gallery/persona/" . url_prefix($persona['id']);
 ?>
@@ -37,8 +36,7 @@
                             <p class="try"><a href="<?= $detail_url ?>">view details »</a></p>
                             <hr />
                             <p class="designer"><strong>Designer:</strong> <a href="/gallery/Designer/<?= $persona['author'] ?>"><?= $persona['author'] ?></a></p>
-                            <p class="added"><strong>Added:</strong> <?= $persona_date?></p>
-                            <p> <?= number_format($persona['popularity']) ?> active daily users</p>
+                            <p class="added"><strong>number_format($persona['popularity'])</strong> active daily users</p>
                             <hr />
 
                         </li>
