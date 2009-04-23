@@ -8,6 +8,7 @@
 	$user->authenticate();
 		
 	$page_size = 42;
+	$description_max = 50;
 
 	$db = new PersonaStorage();
 	$categories = $db->get_categories();
@@ -21,7 +22,8 @@
 	$no_my = array_key_exists('no_my', $_GET) ? 1 : 0;
 	$url_prefix = '/gallery';
 	$category = $category && ($category == 'Designer' || in_array(ucfirst($category), $categories)) ? ucfirst($category) : "All";
-	$tab = $tab && ($category == 'Designer' || in_array(ucfirst($tab), $tabs)) ? ucfirst($tab) : 'Popular';
+	if ($category != 'Designer')
+		$tab = $tab && in_array(ucfirst($tab), $tabs) ? ucfirst($tab) : 'Popular';
 	$page = $page && is_numeric($page) ? $page : 1;
 	
 	$category_total = $db->get_active_persona_count($category);
@@ -31,13 +33,47 @@
 	
 	$title = "Gallery"; 
 	include 'templates/header.php'; 
+
+	$page_header = "View Personas";
+
+	$list = array();
+	if ($category == 'Designer')
+	{
+		$list = $db->get_persona_by_author($tab);
+		$page_header = "Personas by $tab";
+	}
+	elseif ($tab == 'Recent')
+	{
+		$list = $db->get_recent_personas($category == 'All' ? null : $category, $page_size);
+	}
+	elseif ($tab == 'Popular')
+	{
+		$list = $db->get_popular_personas($category == 'All' ? null : $category, $page_size);			
+	}
+	elseif ($tab == 'My')
+	{
+		$list = $db->get_persona_by_author($user->get_username(), $category == 'All' ? null : $category);			
+	}
+	elseif ($tab == 'Search')
+	{
+		if (array_key_exists('p', $_GET) && $_GET['p'])
+		{
+			$list = $db->search_personas($_GET['p'], $category, $page_size);
+		}
+	}
+	else
+	{
+		$start = ($page - 1) * $page_size;
+		$list = $db->get_recent_personas($category == 'All' ? null : $category, $page_size, $start);
+	}
+
 ?>
 <body>
     <div id="outer-wrapper">
         <div id="inner-wrapper">
 <?php include 'templates/nav.php'; ?>
             <div id="header">
-                <h2>View Personas</h2>
+                <h2><?= $page_header ?></h2>
                 <h3>Your browser, your style! Dress it up with easy-to-change "skins" for your Firefox.</h3>
             </div>
             <div id="maincontent">
@@ -45,37 +81,7 @@
                 <div id="gallery">
                     <ul>
 <?php
-			$list = array();
-			if ($category == 'Designer')
-			{
-				$list = $db->get_persona_by_author($tab);				
-			}
-			elseif ($tab == 'Recent')
-			{
-				$list = $db->get_recent_personas($category == 'All' ? null : $category, $page_size);
-			}
-			elseif ($tab == 'Popular')
-			{
-				$list = $db->get_popular_personas($category == 'All' ? null : $category, $page_size);			
-			}
-			elseif ($tab == 'My')
-			{
-				$list = $db->get_persona_by_author($user->get_username(), $category == 'All' ? null : $category);			
-			}
-			elseif ($tab == 'Search')
-			{
-				if (array_key_exists('p', $_GET) && $_GET['p'])
-				{
-					$list = $db->search_personas($_GET['p'], $category, $page_size);
-				}
-			}
-			else
-			{
-				$start = ($page - 1) * $page_size;
-				$list = $db->get_recent_personas($category == 'All' ? null : $category, $page_size, $start);
-			}
 			
-			$description_max = 50;
 			if ($tab == 'Search')
 			{
 ?>
@@ -116,7 +122,7 @@
                                 <p class="designer"><strong>Designer:</strong> <a href="/gallery/Designer/<?= $item['author'] ?>"><?= $item['author'] ?></a></p>
                                 <p class="added"><strong>Added:</strong> <?= $persona_date ?></p>
                                 <p><?= $item_description ?></p>
-                                <p><?= number_format($item['popularity']) ?> active daily users</p>
+                                <p><?=  number_format($item['popularity']) ?> active daily users</p>
                                 <p><a href="<?= "/persona/" . ($item['id'] < 10 ? "0" : "") . $item['id'] ?>" class="view">view details »</a></p>
 <?php
 				if ($tab == 'My' || $user->has_admin_privs())
