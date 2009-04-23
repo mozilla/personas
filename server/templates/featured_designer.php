@@ -4,11 +4,10 @@
 	$personas = explode(":", FEATURED_DESIGNERS); 
 	$persona = $db->get_persona_by_id($personas[0]); 
 	$persona_json = htmlentities(json_encode(extract_record_data($persona)));
-	$detail_url = "/gallery/persona/" . url_prefix($persona['id']);
 ?>
-					<img class="preview persona" src="<?= PERSONAS_LIVE_PREFIX . '/' . url_prefix($persona['id']) ?>/preview_featured.jpg" persona="<?= $persona_json ?>">
-                    <h4><?= $persona['author'] ?></h4>
-                    <p class="try"><a href="/featured">view more »</a></p>
+				<img class="preview persona" src="<?= PERSONAS_LIVE_PREFIX . '/' . url_prefix($persona['id']) ?>/preview_featured.jpg" persona="<?= $persona_json ?>">
+				<h4><a href="/gallery/Designer/<?= $persona['author'] ?>"><?= $persona['author'] ?></a></h4>
+				<p class="try"><a href="/gallery/Designer/<?= $persona['author'] ?>">view designer »</a></p>
             </div>
 
 <?php
@@ -43,12 +42,11 @@ if (0) { #new version not launching this rev
 		$persona = $db->get_persona_by_id($id); 
 
 		$persona_json = htmlentities(json_encode(extract_record_data($persona)));
-		$detail_url = "/gallery/persona/" . url_prefix($persona['id']);
 ?>
                         <li>
                             <img class="preview persona" src="<?= PERSONAS_LIVE_PREFIX . '/' . url_prefix($persona['id']) ?>/preview_featured.jpg" persona="<?= $persona_json ?>">
                             <h4><a href="/gallery/Designer/<?= $persona['author'] ?>"><?= $persona['author'] ?></a></h4>
-                            <p class="try"><a href="<?= $detail_url ?>">view designer »</a></p>
+                            <p class="try"><a href="/gallery/Designer/<?= $persona['author'] ?>">view designer »</a></p>
                             <hr />
                         </li>
 <?php
