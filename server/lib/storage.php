@@ -305,9 +305,9 @@ class PersonaStorage
 		if ($this->_memcache)
 		{
 			if ($limit)
-				$key = "cr$offset" . ($category ? $category : 'All');
+				$key = "cr$limit:$offset" . ($category ? $category : 'All');
 			else
-				$key = "ca" . ($category ? $category : 'All');
+				$key = "ca$offset" . ($category ? $category : 'All');
 				
 			$result = $this->_memcache->get($key);
 			if ($result)
@@ -353,7 +353,7 @@ class PersonaStorage
 		
 		if ($this->_memcache)
 		{
-			$result = $this->_memcache->get("cp" . ($category ? $category : 'All'));
+			$result = $this->_memcache->get("cp$limit:$offset" . ($category ? $category : 'All'));
 			if ($result)
 				return $result;
 		}
@@ -385,7 +385,7 @@ class PersonaStorage
 		}		
 
 		if ($this->_memcache)
-			$this->_memcache->set("cp" . ($category ? $category : 'All'), $personas, MEMCACHE_DECAY);
+			$this->_memcache->set("cp$limit:$offset" . ($category ? $category : 'All'), $personas, MEMCACHE_DECAY);
 
 		return $personas;
 	}
