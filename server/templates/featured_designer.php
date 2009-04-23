@@ -1,7 +1,8 @@
             <div class="feature">
                  <h3>Featured Designer</h3>
 <?php
-	$persona = $db->get_persona_by_id(FEATURE_DESIGNER_PERSONA_ID); 
+	$personas = explode(":", FEATURED_DESIGNERS); 
+	$persona = $personas[0];
 	$persona_json = htmlentities(json_encode(extract_record_data($persona)));
 	$detail_url = "/gallery/persona/" . url_prefix($persona['id']);
 ?>
