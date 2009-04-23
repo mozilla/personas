@@ -36,7 +36,7 @@
                             <p class="try"><a href="<?= $detail_url ?>">view details »</a></p>
                             <hr />
                             <p class="designer"><strong>Designer:</strong> <a href="/gallery/Designer/<?= $persona['author'] ?>"><?= $persona['author'] ?></a></p>
-                            <p class="added"><strong>number_format($persona['popularity'])</strong> active daily users</p>
+                            <p class="added"><strong><?= number_format($persona['popularity']) ?></strong> active daily users</p>
                             <hr />
 
                         </li>
