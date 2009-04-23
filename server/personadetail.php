@@ -15,13 +15,15 @@
 	$path = array_key_exists('PATH_INFO', $_SERVER) ? $_SERVER['PATH_INFO'] : '/';
 	$path = substr($path, 1); #chop the lead slash
 	list($persona_id) = explode('/', $path);
-
+	$page_header = 'View Personas';
+	
 	if (!is_numeric($persona_id))
 		$persona_id = null;
 	else
 	{
 		$persona_id = intval($persona_id);
 		$persona_data = $db->get_persona_by_id($persona_id);
+		$page_header = $persona_data['name'] . ' by ' . $persona_data['author'];
 		$category = $persona_data['category'];
 		$persona_json = htmlentities(json_encode(extract_record_data($persona_data)));
 	}
@@ -37,7 +39,7 @@
         <div id="inner-wrapper">
 <?php include 'templates/nav.php'; ?>
             <div id="header">
-                <h2>View Personas</h2>
+                <h2><?= $page_header ?></h2>
                 <h3>Your browser, your style! Dress it up with easy-to-change "skins" for your
                 Firefox.</h3>
             </div>
