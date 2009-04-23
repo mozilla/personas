@@ -27,7 +27,7 @@
                         <li>
                             <img class="preview persona" src="<?= PERSONAS_LIVE_PREFIX . '/' . url_prefix($persona['id']) ?>/preview_featured.jpg" persona="<?= $persona_json ?>">
                             <h4><a href="/gallery/Designer/<?= $persona['author'] ?>"><?= $persona['author'] ?></a></h4>
-                            <p class="try"><a href="<?= $detail_url ?>">view details »</a></p>
+                            <p class="try"><a href="<?= $detail_url ?>">view designer »</a></p>
                             <hr />
                         </li>
 <?php

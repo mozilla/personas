@@ -283,23 +283,23 @@
 		else
 		{
             print "<ul>\n";
-			foreach ($results as $item)
+			foreach ($results as $persona)
 			{
-				$path = PERSONAS_URL_PREFIX . '/' . url_prefix($item['id']);
+				$path = PERSONAS_URL_PREFIX . '/' . url_prefix($persona['id']);
 				$preview_url =  $path . "/preview.jpg";
-				$persona_json = htmlentities(json_encode(extract_record_data($item)));
+				$persona_json = htmlentities(json_encode(extract_record_data($persona)));
 ?>
                         <li class="gallery-item">
                             <div>
-                                <h3><a href="/admin/editing.php?id=<?= $item['id'] ?>"><?= $item['name'] ?></a></h3>
+                                <h3><a href="/admin/editing.php?id=<?= $persona['id'] ?>"><?= $persona['name'] ?></a></h3>
                                 <div class="preview">
-                                    <img src="<?= $preview_url ?>" alt="<?= $item['name'] ?>" persona="<?= $persona_json ?>"/>
+                                    <img src="<?= $preview_url ?>" alt="<?= $persona['name'] ?>" persona="<?= $persona_json ?>"/>
                                 </div>
-                                <p class="designer"><strong>Designer:</strong> <?= $item['author'] ?></p>
-                                <p class="designer"><strong>Category:</strong> <?= $item['category'] ?></p>
-                                <p class="added"><strong>Submitted:</strong> <?= $item['submit'] ?></p>
-                                <p><?= $item['description'] ?></p>
-                                <p><a href="/admin/editing.php?id=<?= $item['id'] ?>&category=<?= $page_category ?>" class="view">Administer »</a></p>
+                                <p class="designer"><strong>Designer:</strong> <?= $persona['author'] ?></p>
+                                <p class="designer"><strong>Category:</strong> <?= $persona['category'] ?></p>
+                                <p class="added"><strong>Submitted:</strong> <?= $persona['submit'] ?></p>
+                                <p><?= $persona['description'] ?></p>
+                                <p><a href="/admin/editing.php?id=<?= $persona['id'] ?>&category=<?= $page_category ?>" class="view">Administer »</a></p>
                             </div>
                         </li>
  <?php

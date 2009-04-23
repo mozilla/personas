@@ -33,11 +33,12 @@
 ?>
                         <li>
                             <img class="preview persona" src="<?= PERSONAS_LIVE_PREFIX . '/' . url_prefix($persona['id']) ?>/preview_featured.jpg" persona="<?= $persona_json ?>">
-                            <h4><?= $persona['name'] ?></h4>
+                            <h4><a href="/persona/<?= $persona['id'] ?>"><?= $persona['name'] ?></a></h4>
                             <p class="try"><a href="<?= $detail_url ?>">view details »</a></p>
                             <hr />
                             <p class="designer"><strong>Designer:</strong> <a href="/gallery/Designer/<?= $persona['author'] ?>"><?= $persona['author'] ?></a></p>
                             <p class="added"><strong>Added:</strong> <?= $persona_date?></p>
+                            <p> <?= number_format($persona['popularity']) ?> active daily users</p>
                             <hr />
 
                         </li>

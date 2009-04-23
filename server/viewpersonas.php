@@ -101,35 +101,35 @@
 			
 			include 'templates/pagination.php';
 			echo '<p>';
-			foreach ($list as $item)
+			foreach ($list as $persona)
 			{
-				$preview_url = PERSONAS_LIVE_PREFIX . '/' . url_prefix($item['id']) . '/' . "preview.jpg";
-				$persona_json = htmlentities(json_encode(extract_record_data($item)));
-				$persona_date = date("n/j/Y", strtotime($item['approve']));
-				$item_description = $item['description'];
-				if (strlen($item_description) > $description_max)
+				$preview_url = PERSONAS_LIVE_PREFIX . '/' . url_prefix($persona['id']) . '/' . "preview.jpg";
+				$persona_json = htmlentities(json_encode(extract_record_data($persona)));
+				$persona_date = date("n/j/Y", strtotime($persona['approve']));
+				$persona_description = $persona['description'];
+				if (strlen($persona_description) > $description_max)
 				{
-					$item_description = substr($item_description, 0, $description_max);
-					$item_description = preg_replace('/ [^ ]+$/', '', $item_description) . '...';
+					$persona_description = substr($persona_description, 0, $description_max);
+					$persona_description = preg_replace('/ [^ ]+$/', '', $persona_description) . '...';
 				}
 ?>
                         <li class="gallery-item">
                             <div>
-                                <h3><?= $item['name'] ?></h3>
+                                <h3><?= $persona['name'] ?></h3>
                                 <div class="preview">
-                                    <img src="<?= $preview_url ?>" alt="<?= $item['name'] ?>" persona="<?= $persona_json ?>"/>
+                                    <img src="<?= $preview_url ?>" alt="<?= $persona['name'] ?>" persona="<?= $persona_json ?>"/>
                                 </div>
-                                <p class="designer"><strong>Designer:</strong> <a href="/gallery/Designer/<?= $item['author'] ?>"><?= $item['author'] ?></a></p>
+                                <p class="designer"><strong>Designer:</strong> <a href="/gallery/Designer/<?= $persona['author'] ?>"><?= $persona['author'] ?></a></p>
                                 <p class="added"><strong>Added:</strong> <?= $persona_date ?></p>
-                                <p><?= $item_description ?></p>
-                                <p><?=  number_format($item['popularity']) ?> active daily users</p>
-                                <p><a href="<?= "/persona/" . ($item['id'] < 10 ? "0" : "") . $item['id'] ?>" class="view">view details »</a></p>
+                                <p><?= $persona_description ?></p>
+                                <p><?= number_format($persona['popularity']) ?> active daily users</p>
+                                <p><a href="<?= "/persona/" . ($persona['id'] < 10 ? "0" : "") . $persona['id'] ?>" class="view">view details »</a></p>
 <?php
 				if ($tab == 'My' || $user->has_admin_privs())
 				{
-					print "<p><a href=\"/upload?id=${item['id']}\" target=\"_blank\">Edit</a>";
+					print "<p><a href=\"/upload?id=${persona['id']}\" target=\"_blank\">Edit</a>";
 					if ($user->has_admin_privs())
-						print " | <a href=\"/admin/pending.php?verdict=pull&id=${item['id']}\" target=\"_blank\" onClick=\"return confirm('Confirm Deletion');\">Pull</a>";
+						print " | <a href=\"/admin/pending.php?verdict=pull&id=${persona['id']}\" target=\"_blank\" onClick=\"return confirm('Confirm Deletion');\">Pull</a>";
 					print "</p>";
 				}
 ?>
