@@ -208,11 +208,13 @@ ol li ol li {
 
 #header {
     margin: -10px 0 0 -10px;
-    padding: 20px 0 0 285px;
+    padding: 16px 0 0 285px;
     background: url('../img/hanger-bg.jpg') top left no-repeat;
-    height: 125px;
+    height: 129px;
     clear: both;
     position: relative;
+    overflow: hidden;
+    
 }
 
 .firstrun #header {
