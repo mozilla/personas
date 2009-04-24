@@ -34,6 +34,7 @@ locale   personas   es-CL       chrome/locale/es-CL/
 #locale   personas   es-VE       chrome/locale/es-VE/
 locale   personas   fr-FR       chrome/locale/fr-FR/
 locale   personas   fy-NL       chrome/locale/fy-NL/
+locale   personas   gl-ES       chrome/locale/gl-ES/
 locale   personas   he-IL       chrome/locale/he-IL/
 #locale   personas   hr-HR       chrome/locale/hr-HR/
 locale   personas   it-IT       chrome/locale/it-IT/

@@ -1,0 +1,17 @@
+<!ENTITY personas_app_title "Personas para Firefox">
+<!ENTITY useDefaultPersona.label "Predeterminado">
+<!ENTITY preferences.label "Preferencias...">
+<!ENTITY viewDirectory.label "Ver Cartafol...">
+<!ENTITY customPersona.label "Personalizar Persona">
+<!ENTITY customName.label "Nome:">
+<!ENTITY header.label "Banda superior:">
+<!ENTITY selectBackground.label "Procurar...">
+<!ENTITY footer.label "Banda inferior:">
+<!ENTITY textColorPicker.label "Cor de texto:">
+<!ENTITY accentColorPicker.label "Cor da barra de título:">
+<!ENTITY useDefaultColor.label "Empregar Predefinido">
+<!ENTITY okButton.label "Aceptar">
+<!ENTITY contextHomePage.label "Páxina inicial">
+<!ENTITY contextPreferences.label "Configuración">
+<!ENTITY contextEdit.label "Editar">
+<!ENTITY contextApply.label "Aplicar">
