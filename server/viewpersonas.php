@@ -86,6 +86,7 @@
 	}
 	elseif ($tab == 'My')
 	{
+		$user->force_signin();
 		$page_header = "My Personas";
 		if ($user->get_username())
 			$list = $db->get_persona_by_author($user->get_username(), $category == 'All' ? null : $category);			
