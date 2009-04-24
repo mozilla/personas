@@ -204,7 +204,7 @@ class PersonaUser
 	{
 		if (!$this->_username)
 		{
-			header('Location: /signin?return=' . $_SERVER['SCRIPT_NAME'] . ($admin ? "&admin=1" : ""));
+			header('Location: /signin?return=' . $_SERVER['SCRIPT_URL'] . ($admin ? "&admin=1" : ""));
 			exit;
 		}
 	}		

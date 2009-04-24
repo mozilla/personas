@@ -55,7 +55,6 @@
 	$db = new PersonaStorage();
 	$persona = $db->get_persona_by_id($id);
 	
-error_log($persona['status']);
 	if(!$persona || $persona['status'] != 1)
 	{
 		echo "We were unable to locate this persona";
