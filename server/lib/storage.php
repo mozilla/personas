@@ -390,43 +390,6 @@ class PersonaStorage
 		return $personas;
 	}
 	
-	function get_featured_personas()
-	{
-		if ($this->_memcache)
-		{
-			$result = $this->_memcache->get("feat");
-			if ($result)
-				return $result;
-		}
-
-		if (!$this->_dbh)
-			$this->db_connect();		
-
-		try
-		{
-			$statement = 'select * from personas where status = 1 and featured > 0 order by featured desc';
-			$sth = $this->_dbh->prepare($statement);
-			$sth->execute();
-		}
-		catch( PDOException $exception )
-		{
-			error_log($exception->getMessage());
-			throw new Exception("Database unavailable", 503);
-		}
-		
-		$personas = array();
-		
-		while ($result = $sth->fetch(PDO::FETCH_ASSOC))
-		{
-			$personas[] = $result;
-		}		
-
-		if ($this->_memcache)
-			$this->_memcache->set("feat", $personas, MEMCACHE_DECAY);
-
-		return $personas;
-	}
-
 	function search_personas($string, $category = null, $limit = null)
 	{
 		$string = str_replace(',', ' ', $string);

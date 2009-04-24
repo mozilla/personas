@@ -4,13 +4,16 @@
 	require_once 'lib/storage.php';
 	require_once 'lib/user.php';
 	
+	$db = new PersonaStorage();
 	$user = new PersonaUser();
 	$user->authenticate();
 		
-	$page_size = 42;
-	$description_max = 50;
+	$page_size = 42; #defalt number of personas per page
+	$description_max = 50; #truncated description size
+	$url_prefix = '/gallery'; #telling the templates the gallery root
+	$title = "Gallery"; #page title for the header template
+	$no_my = array_key_exists('no_my', $_GET) ? 1 : 0; #whether to display all the dynamic stuff
 
-	$db = new PersonaStorage();
 	$categories = $db->get_categories();
 	array_unshift($categories, 'All');
 	$tabs = array('Popular', 'Recent', 'All', 'Search', 'My');
@@ -19,28 +22,22 @@
 	$path = substr($path, 1); #chop the lead slash
 	list($category, $tab, $page) = explode('/', $path.'//');
 
-	$no_my = array_key_exists('no_my', $_GET) ? 1 : 0;
-	$url_prefix = '/gallery';
-	$category = $category && ($category == 'Designer' || in_array(ucfirst($category), $categories)) ? ucfirst($category) : "All";
+	$category = ucfirst($category);
 	if ($category != 'Designer')
-		$tab = $tab && in_array(ucfirst($tab), $tabs) ? ucfirst($tab) : 'Popular';
-	$page = $page && is_numeric($page) ? $page : 1;
-	
-	$category_total = $db->get_active_persona_count($category);
-
-	if ($tab == 'All')
-		$page_size = 501;
-	
-	$title = "Gallery"; 
-	include 'templates/header.php'; 
-
+	{
+		$tab = in_array(ucfirst($tab), $tabs) ? ucfirst($tab) : 'Popular';
+		if (!in_array($category, $categories))
+			$category = 'All';
+	}
+		
 	$page_header = "View Personas";
 
-	$list = array();
+	$list = array(); #grab the appropriate personas for display
 	if ($category == 'Designer')
 	{
-		$list = $db->get_persona_by_author($tab);
 		$page_header = "Personas by $tab";
+		if ($tab) #tab is actually the author here
+			$list = $db->get_persona_by_author($tab); 
 	}
 	elseif ($tab == 'Recent')
 	{
@@ -52,7 +49,9 @@
 	}
 	elseif ($tab == 'My')
 	{
-		$list = $db->get_persona_by_author($user->get_username(), $category == 'All' ? null : $category);			
+		$page_header = "My Personas";
+		if ($user->get_username())
+			$list = $db->get_persona_by_author($user->get_username(), $category == 'All' ? null : $category);			
 	}
 	elseif ($tab == 'Search')
 	{
@@ -61,11 +60,15 @@
 			$list = $db->search_personas($_GET['p'], $category, $page_size);
 		}
 	}
-	else
+	else #tab = all
 	{
+		$page_size = 501;
+		$page = is_integer($page) ? $page : 1;
 		$start = ($page - 1) * $page_size;
 		$list = $db->get_recent_personas($category == 'All' ? null : $category, $page_size, $start);
 	}
+
+	include 'templates/header.php'; 
 
 ?>
 <body>
@@ -86,21 +89,20 @@
 			{
 ?>
 				<form action="" method=GET>
-				<input type=text name=p value='<?= array_key_exists('p', $_GET) ? $_GET['p'] : '' ?>'><input type=submit><p>
+				<input type=text name=p value='<?= array_key_exists('p', $_GET) ? $_GET['p'] : '' ?>'><input type=submit value="Search"><p>
 				</form>
 <?php
 				if (count($list) == 0 && array_key_exists('p', $_GET))
 				{
-					echo "We were unable to locate any personas that match those search terms. Please try again";
+					echo "<p>We were unable to locate any personas that match those search terms. Please try again</p>";
 				}
 			}
 			elseif (count($list) == 0)
 			{
-				echo "There are no personas available here. Please use the navigation on the left to choose another category.";
+				echo "<p>There are no personas available here. Please use the navigation on the left to choose another category.</p>";
 			}
 			
 			include 'templates/pagination.php';
-			echo '<p>';
 			foreach ($list as $persona)
 			{
 				$preview_url = PERSONAS_LIVE_PREFIX . '/' . url_prefix($persona['id']) . '/' . "preview.jpg";
@@ -127,10 +129,10 @@
 <?php
 				if ($tab == 'My' || $user->has_admin_privs())
 				{
-					print "<p><a href=\"/upload?id=${persona['id']}\" target=\"_blank\">Edit</a>";
+					echo '<p><a href="/upload?id=' . $persona['id'] . '" target="_blank">Edit</a>';
 					if ($user->has_admin_privs())
-						print " | <a href=\"/admin/pending.php?verdict=pull&id=${persona['id']}\" target=\"_blank\" onClick=\"return confirm('Confirm Deletion');\">Pull</a>";
-					print "</p>";
+						echo ' | <a href="/admin/pending.php?verdict=pull&id=' . $persona['id'] . '" target="_blank" onClick="return confirm(\'Confirm Deletion\');">Pull</a>';
+					echo "</p>";
 				}
 ?>
                             </div>

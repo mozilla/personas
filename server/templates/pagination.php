@@ -1,6 +1,9 @@
 <?php 
 			if ($tab == 'All')
 			{
+				if (!isset($category_total))
+					$category_total = $db->get_active_persona_count($category);
+				
 				if ($category_total > $page_size)
 				{
 					$pages = floor($category_total/$page_size) + 1;
