@@ -129,6 +129,19 @@ class PersonaStorage
 			error_log($exception->getMessage());
 			throw new Exception("Database unavailable", 503);
 		}
+
+		if ($this->_memcache)
+		{
+			$this->_memcache->delete("p$id");
+			$persona = $this->get_persona_by_id($id);
+			
+			$this->_memcache->delete('ca0' . $persona['category']); #category first all page. Rest will rebuild soon
+			$this->_memcache->delete('cr0' . $persona['category']); #category recent page
+			$this->_memcache->delete('crAll'); #All recent page			
+			$this->_memcache->delete('apcAll'); #All persona count			
+			$this->_memcache->delete('apc' . $persona['category']); #Category persona count			
+		}
+
 		return 1;
 	}
 
