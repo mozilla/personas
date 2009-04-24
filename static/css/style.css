@@ -1178,6 +1178,11 @@ img.preview  {
     font-size: 100%;
 }
 
+#sharethis_0 {
+    display: block;
+    clear: both;
+}
+
 .success-options {
     margin: 20px 0 0 0;
 }
