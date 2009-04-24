@@ -1,6 +1,6 @@
             <div id="secondary-content">
               <ol id="demo-nav">
-<?php if (preg_match('/demo_install/', $_SERVER['SCRIPT_NAME'])) { ?>
+<?php if (preg_match('/demo_install/', $_SERVER['SCRIPT_URL'])) { ?>
                 <li class="current">
                     <div class="wrapper">
                         <span>How to Get Started</span>
@@ -11,7 +11,7 @@
 					<a href="/demo_install">How to Get Started</a>
 				</li>
 <?php } ?>
-<?php if (preg_match('/demo_create/', $_SERVER['SCRIPT_NAME'])) { ?>
+<?php if (preg_match('/demo_create/', $_SERVER['SCRIPT_URL'])) { ?>
                 <li class="current">
                     <div class="wrapper">
                         <span>How to Create Personas</span>
@@ -22,7 +22,7 @@
 					<a href="/demo_create">How to Create Personas</a>
 				</li>
 <?php } ?>
-<?php if (preg_match('/faq/', $_SERVER['SCRIPT_NAME'])) { ?>
+<?php if (preg_match('/faq/', $_SERVER['SCRIPT_URL'])) { ?>
                 <li class="current">
                     <div class="wrapper">
                         <span>Frequent Questions</span>
