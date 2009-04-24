@@ -33,7 +33,7 @@
 				{
 ?>
                         <li>
-                            <img class="preview persona" src="<?= $persona['preview_image'] ?>/preview_featured.jpg" persona="<?= $persona['json'] ?>">
+                            <a href="/persona/<?= $persona['id'] ?>"><img class="preview persona" src="<?= $persona['preview_image'] ?>/preview_featured.jpg" persona="<?= $persona['json'] ?>"></a>
                             <h4><a href="/persona/<?= $persona['id'] ?>"><?= $persona['name'] ?></a></h4>
                             <p class="try"><a href="/persona/<?= $persona['id'] ?>">view details »</a></p>
                             <hr />

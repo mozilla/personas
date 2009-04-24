@@ -160,7 +160,7 @@
                             <div>
                                 <h3><?= $persona['name'] ?></h3>
                                 <div class="preview">
-                                    <img src="<?= $preview_url ?>" alt="<?= $persona['name'] ?>" persona="<?= $persona['json'] ?>"/>
+                                    <a href="/persona/<?= $persona['id'] ?>"><img src="<?= $preview_url ?>" alt="<?= $persona['name'] ?>" persona="<?= $persona['json'] ?>"/></a>
                                 </div>
                                 <p class="designer"><strong>Designer:</strong> <a href="/gallery/Designer/<?= $persona['author'] ?>"><?= $persona['author'] ?></a></p>
                                 <p class="added"><strong>Added:</strong> <?= $persona['date'] ?></p>
