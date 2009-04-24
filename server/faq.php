@@ -49,6 +49,13 @@
 
                <dd><p>Absolutely! All you need to do is create two graphics files in your favorite graphics editing program (<em>e.g.</em>, Photoshop). To get started read more about how to <a href="/demo_create">create a Persona</a>.</p></dd>
                
+               
+               <dt>After creating a Persona, can I edit the design?</dt>
+               <dd><p>Yes. If at any point you need to edit your Persona design 
+                after it has been submitted to the gallery, simply visit <a href="http://personas.services.mozilla.com/gallery/All/My">this link</a>, log in to
+               your account, and go to the "Personas Home : Gallery : All : My" section. 
+               From there, you can make changes to the settings you entered upon creation.</p></dd>
+               
                <dt>What's the maximum file size allowable for my persona?</dt>
 
                <dd><p>The persona that you upload may not exceed 300KB for the header or the footer
