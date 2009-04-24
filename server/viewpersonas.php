@@ -68,7 +68,6 @@
 	}
 		
 	$page_header = "View Personas";
-
 	$list = array(); #grab the appropriate personas for display
 	if ($category == 'Designer')
 	{
@@ -101,7 +100,7 @@
 	else #tab = all
 	{
 		$page_size = 501;
-		$page = is_integer($page) ? $page : 1;
+		$page = is_numeric($page) ? $page : 1;
 		$start = ($page - 1) * $page_size;
 		$list = $db->get_recent_personas($category == 'All' ? null : $category, $page_size, $start);
 	}
