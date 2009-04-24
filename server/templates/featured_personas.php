@@ -13,14 +13,14 @@
 		$persona['short_description'] = $persona['description'];
 		if (strlen($persona['short_description']) > $description_max)
 		{
-			$persona['short_description'] = substr($persona['short_description'], 0, $description_max);
+			$persona['short_description'] = substr($persona['short_description'], 0, $featured_description_max);
 			$persona['short_description'] = preg_replace('/ [^ ]+$/', '', $persona['short_description']) . '...';
 		}
 
 		$personas[] = $persona; 
 	}	
 ?>
-<div class="feature slideshow">
+			<div class="feature slideshow">
                 <h3>Featured Personas</h3>
                 <ul id="slideshow-nav">
 <?php
