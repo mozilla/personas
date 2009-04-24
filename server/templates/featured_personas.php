@@ -1,5 +1,5 @@
 <?php
-	$featured_description_max = 50;
+	$featured_description_max = 140;
 	
 	foreach (explode(":", FEATURED_PERSONAS) as $id)
 	{
@@ -10,6 +10,12 @@
 		$persona['json'] = htmlentities(json_encode(extract_record_data($persona)));
 		$persona['detail_url'] = "/gallery/persona/" . url_prefix($persona['id']);
 		$persona['preview_image'] = PERSONAS_LIVE_PREFIX . '/' . url_prefix($persona['id']);
+		$persona['short_description'] = $persona['description'];
+		if (strlen($persona['short_description']) > $description_max)
+		{
+			$persona['short_description'] = substr($persona['short_description'], 0, $description_max);
+			$persona['short_description'] = preg_replace('/ [^ ]+$/', '', $persona['short_description']) . '...';
+		}
 
 		$personas[] = $persona; 
 	}	
@@ -39,6 +45,7 @@
                             <hr />
                             <p class="designer">By: <a href="/gallery/Designer/<?= $persona['author'] ?>"><?= $persona['author'] ?></a></p>
                             <p class="daily-users"><strong><?= number_format($persona['popularity']) ?></strong> active daily users</p>
+                            <p><?= $persona['short_description'] ?></p>
                             <hr />
 
                         </li>
