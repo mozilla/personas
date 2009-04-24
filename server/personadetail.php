@@ -1,4 +1,41 @@
 <?php
+# ***** BEGIN LICENSE BLOCK *****
+# Version: MPL 1.1/GPL 2.0/LGPL 2.1
+#
+# The contents of this file are subject to the Mozilla Public License Version
+# 1.1 (the "License"); you may not use this file except in compliance with
+# the License. You may obtain a copy of the License at
+# http://www.mozilla.org/MPL/
+#
+# Software distributed under the License is distributed on an "AS IS" basis,
+# WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License
+# for the specific language governing rights and limitations under the
+# License.
+#
+# The Original Code is Personas Server
+#
+# The Initial Developer of the Original Code is
+# Mozilla Labs.
+# Portions created by the Initial Developer are Copyright (C) 2008
+# the Initial Developer. All Rights Reserved.
+#
+# Contributor(s):
+#	Toby Elliott (telliott@mozilla.com)
+#
+# Alternatively, the contents of this file may be used under the terms of
+# either the GNU General Public License Version 2 or later (the "GPL"), or
+# the GNU Lesser General Public License Version 2.1 or later (the "LGPL"),
+# in which case the provisions of the GPL or the LGPL are applicable instead
+# of those above. If you wish to allow use of your version of this file only
+# under the terms of either the GPL or the LGPL, and not to allow others to
+# use your version of this file under the terms of the MPL, indicate your
+# decision by deleting the provisions above and replace them with the notice
+# and other provisions required by the GPL or the LGPL. If you do not delete
+# the provisions above, a recipient may use your version of this file under
+# the terms of any one of the MPL, the GPL or the LGPL.
+#
+# ***** END LICENSE BLOCK *****
+
 	require_once 'lib/personas_constants.php';	
 	require_once 'lib/personas_functions.php';	
 	require_once 'lib/storage.php';
@@ -22,10 +59,10 @@
 	else
 	{
 		$persona_id = intval($persona_id);
-		$persona_data = $db->get_persona_by_id($persona_id);
-		$page_header = $persona_data['name'] . ' by ' . $persona_data['author'];
-		$category = $persona_data['category'];
-		$persona_json = htmlentities(json_encode(extract_record_data($persona_data)));
+		$persona = $db->get_persona_by_id($persona_id);
+		$page_header = $persona['name'] . ' by ' . $persona['author'];
+		$category = $persona['category'];
+		$persona['json'] = htmlentities(json_encode(extract_record_data($persona)));
 	}
 
 	$url_prefix = '/gallery';
@@ -45,40 +82,8 @@
             </div>
             <div id="maincontent">
                 <p id="breadcrumbs"><a href="http://www.getpersonas.com">Personas Home</a> : View Personas</p>
-<?php
-	if ($persona_data['id'])
-	{
-?>
-				<h2><?= $persona_data['name'] ?></h2>
-                <h3>created by <?= $persona_data['author'] ?></h3>
-                <img class="detailed-view"  alt="<?= $persona_data['name'] ?>" persona="<?= $persona_json ?>" src="<?= PERSONAS_LIVE_PREFIX . '/' . url_prefix($persona_id) ?>/preview_large.jpg" >
-                
-<?php
-		if ($persona_data['description'])
-		{
-			$desc = preg_replace('/(https?:\/\/[^ ]+[A-Za-z0-9])/', '<a href="$1">$1</a>', $persona_data['description']);
-?>
-				<p class="description"><strong>Description:</strong> <?= $desc ?></p>
-<?php
-		}
-?>
-                <p id="buttons">
-                    <a href="#" class="button" id="try-button" persona="<?= $persona_json ?>"><span>try it now</span><span>&nbsp;</span></a>
-                </p>
-                
-<?php
-		if ($persona_data['popularity'])
-			print '<p class="numb-users">' . number_format($persona_data['popularity']) . ' active daily users</p>';
-	?>
-	<p><script type="text/javascript" src="http://w.sharethis.com/button/sharethis.js#publisher=df86b16e-195c-4917-ae28-61a1382ba281&amp;type=website&amp;send_services=&amp;post_services=facebook%2Cdigg%2Cdelicious%2Cybuzz%2Ctwitter%2Cstumbleupon%2Creddit%2Ctechnorati%2Cmixx%2Cblogger%2Ctypepad%2Cwordpress%2Cgoogle_bmarks%2Cwindows_live%2Cmyspace%2Cfark%2Cbus_exchange%2Cpropeller%2Cnewsvine%2Clinkedin"></script></p>
-	<?php
-	} else {
-?>            
-                <p class="description">We are unable to find this persona. Please return to the gallery and try again.</p>
-<?php
-	}
-?>
-            </div>
+<?php include 'templates/persona_detail.php' ?>
+			</div>
 <?php include 'templates/category_nav.php'; ?>
             
         </div>

@@ -1,4 +1,41 @@
 <?php 
+# ***** BEGIN LICENSE BLOCK *****
+# Version: MPL 1.1/GPL 2.0/LGPL 2.1
+#
+# The contents of this file are subject to the Mozilla Public License Version
+# 1.1 (the "License"); you may not use this file except in compliance with
+# the License. You may obtain a copy of the License at
+# http://www.mozilla.org/MPL/
+#
+# Software distributed under the License is distributed on an "AS IS" basis,
+# WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License
+# for the specific language governing rights and limitations under the
+# License.
+#
+# The Original Code is Personas Server
+#
+# The Initial Developer of the Original Code is
+# Mozilla Labs.
+# Portions created by the Initial Developer are Copyright (C) 2008
+# the Initial Developer. All Rights Reserved.
+#
+# Contributor(s):
+#	Toby Elliott (telliott@mozilla.com)
+#
+# Alternatively, the contents of this file may be used under the terms of
+# either the GNU General Public License Version 2 or later (the "GPL"), or
+# the GNU Lesser General Public License Version 2.1 or later (the "LGPL"),
+# in which case the provisions of the GPL or the LGPL are applicable instead
+# of those above. If you wish to allow use of your version of this file only
+# under the terms of either the GPL or the LGPL, and not to allow others to
+# use your version of this file under the terms of the MPL, indicate your
+# decision by deleting the provisions above and replace them with the notice
+# and other provisions required by the GPL or the LGPL. If you do not delete
+# the provisions above, a recipient may use your version of this file under
+# the terms of any one of the MPL, the GPL or the LGPL.
+#
+# ***** END LICENSE BLOCK *****
+
 	require_once 'lib/personas_constants.php';	
 	require_once 'lib/personas_functions.php';	
 	require_once 'lib/storage.php';
@@ -82,7 +119,6 @@
             <div id="maincontent">
                 <p id="breadcrumbs"><a href="http://www.getpersonas.com">Personas Home</a> : <a href="http://www.getpersonas.com/gallery/All/Popular">Gallery</a> : <?= $category ?><?php if ($tab != "All") { echo " : $tab"; } ?></p>
                 <div id="gallery">
-                    <ul>
 <?php
 			
 			if ($tab == 'Search')
@@ -105,27 +141,30 @@
 			
 			
 			include 'templates/pagination.php';
+?>
+					<ul>
+<?php
 			foreach ($list as $persona)
 			{
 				$preview_url = PERSONAS_LIVE_PREFIX . '/' . url_prefix($persona['id']) . '/' . "preview.jpg";
-				$persona_json = htmlentities(json_encode(extract_record_data($persona)));
-				$persona_date = date("n/j/Y", strtotime($persona['approve']));
-				$persona_description = $persona['description'];
-				if (strlen($persona_description) > $description_max)
+				$persona['json'] = htmlentities(json_encode(extract_record_data($persona)));
+				$persona['date'] = date("n/j/Y", strtotime($persona['approve']));
+				$persona['short_description'] = $persona['description'];
+				if (strlen($persona['short_description']) > $description_max)
 				{
-					$persona_description = substr($persona_description, 0, $description_max);
-					$persona_description = preg_replace('/ [^ ]+$/', '', $persona_description) . '...';
+					$persona['short_description'] = substr($persona['short_description'], 0, $description_max);
+					$persona['short_description'] = preg_replace('/ [^ ]+$/', '', $persona['short_description']) . '...';
 				}
 ?>
                         <li class="gallery-item">
                             <div>
                                 <h3><?= $persona['name'] ?></h3>
                                 <div class="preview">
-                                    <img src="<?= $preview_url ?>" alt="<?= $persona['name'] ?>" persona="<?= $persona_json ?>"/>
+                                    <img src="<?= $preview_url ?>" alt="<?= $persona['name'] ?>" persona="<?= $persona['json'] ?>"/>
                                 </div>
                                 <p class="designer"><strong>Designer:</strong> <a href="/gallery/Designer/<?= $persona['author'] ?>"><?= $persona['author'] ?></a></p>
-                                <p class="added"><strong>Added:</strong> <?= $persona_date ?></p>
-                                <p><?= $persona_description ?></p>
+                                <p class="added"><strong>Added:</strong> <?= $persona['date'] ?></p>
+                                <p><?= $persona['short_description'] ?></p>
                                 <p><?= number_format($persona['popularity']) ?> active daily users</p>
                                 <p><a href="<?= "/persona/" . ($persona['id'] < 10 ? "0" : "") . $persona['id'] ?>" class="view">view details »</a></p>
 <?php
