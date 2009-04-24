@@ -35,7 +35,7 @@
                         <li>
                             <img class="preview persona" src="<?= $persona['preview_image'] ?>/preview_featured.jpg" persona="<?= $persona['json'] ?>">
                             <h4><a href="/persona/<?= $persona['id'] ?>"><?= $persona['name'] ?></a></h4>
-                            <p class="try"><a href="<?= $persona['detail_url'] ?>">view details »</a></p>
+                            <p class="try"><a href="/persona/<?= $persona['id'] ?>">view details »</a></p>
                             <hr />
                             <p class="designer">By: <a href="/gallery/Designer/<?= $persona['author'] ?>"><?= $persona['author'] ?></a></p>
                             <p class="daily-users"><strong><?= number_format($persona['popularity']) ?></strong> active daily users</p>
