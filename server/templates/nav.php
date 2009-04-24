@@ -8,7 +8,7 @@
 	{
 		if (array_key_exists('signout_success', $_GET))
 			echo "You have been signed out | ";
-		echo '<a href="/signin?return=' . $_SERVER['SCRIPT_NAME'] . '">Sign In</a>';
+		echo '<a href="/signin?return=' . $_SERVER['SCRIPT_URL'] . '">Sign In</a>';
 	}
 ?>
 			</p>
