@@ -41,7 +41,8 @@ If you upload a “persona” design for the Firefox® web browser (each a “Pe
 9) Miscellaneous. These Terms are governed by the laws of the state of California, U.S.A., excluding its conflict of law provisions. If any portion of these Terms is held to be invalid or unenforceable, the remaining portions will remain in full force and effect. In the event of a conflict between a translated version of these Terms and the English language version, the English language version shall control.  Mozilla’s subsidiaries and affiliates shall be third party beneficiaries of these Terms, entitled to enforce and rely upon the provisions hereof.
 
 10) Termination. You may terminate your use of the Persona Services at any time.  Mozilla may modify or discontinue the Persona Services at its discretion.</textarea>
-                           <label class="agree" for="agree"><input type="checkbox" name="agree" value="1" id="agree" <?php if ($upload_submitted['agree'] == 1) echo "checked "; ?>/> I agree to the user agreement</label>
+                           <label class="agree" for="agree"><input type="checkbox" name="agree" value="1" id="agree" <?php if ($upload_submitted['agree'] == 1) echo "checked "; ?>/> I agree to the Terms of Service and am the
+                           rightful owner of this content</label>
 <?php if (array_key_exists('agree', $upload_errors)) echo '<span class="error-message tos-error">' . $upload_errors['agree'] . '</span>' ?>
               
                    
@@ -70,7 +71,9 @@ If you upload a “persona” design for the Firefox® web browser (each a “Pe
                      </div>
                    
                    <button type="submit" class="button"><span>continue</span><span class="arrow">&nbsp;</span></button>
-                   
+                   <p>I am the rightful
+                   owner of this content and understand that this design will be
+                   publicly available in the Gallery upon approval.</p>
                    
                    
                </form> 
