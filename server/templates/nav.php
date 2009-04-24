@@ -29,7 +29,7 @@
                         </div>
                     </div>
                 <?php } ?>
-                <?php if(isset($hidenav) && !$hideNav) { ?>
+                <?php if(!(isset($hidenav) && $hideNav)) { ?>
                     <ul>
                         <li class="gallery"><a href="/gallery/All/Popular">Gallery</a></li>
                         <li class="create"><a href="/upload">Create <br/>Your Own</a></li>
