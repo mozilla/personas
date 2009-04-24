@@ -461,7 +461,12 @@ a.get-personas span.arrow {
 .feature h4, .designer {
     display: block;
     float: left;
-    width: 190px;
+    width: 180px;
+}
+
+.feature .daily-users {
+    clear: both;
+    padding: 3px 0 0 0;
 }
 
 .feature hr {
