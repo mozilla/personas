@@ -5,7 +5,7 @@
 ?>
             <div class="feature">
                  <h3>Featured Designer</h3>
-				<img class="preview persona" src="<?= PERSONAS_LIVE_PREFIX . '/' . url_prefix($persona['id']) ?>/preview_featured.jpg" persona="<?= $persona_json ?>">
+				<a href="/gallery/Designer/<?= $persona['author'] ?>"><img class="preview persona" src="<?= PERSONAS_LIVE_PREFIX . '/' . url_prefix($persona['id']) ?>/preview_featured.jpg" persona="<?= $persona_json ?>"></a>
 				<h4><a href="/gallery/Designer/<?= $persona['author'] ?>"><?= $persona['author'] ?></a></h4>
 				<p class="try"><a href="/gallery/Designer/<?= $persona['author'] ?>">view designer »</a></p>
             </div>
