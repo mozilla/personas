@@ -53,7 +53,7 @@
 
 	$categories = $db->get_categories();
 	array_unshift($categories, 'All');
-	$tabs = array('Popular', 'Recent', 'All', 'Search', 'My');
+	$tabs = array('Popular', 'Recent', 'All', 'My'); # pulling 'Search'
 	
 	$path = array_key_exists('PATH_INFO', $_SERVER) ? $_SERVER['PATH_INFO'] : '/';
 	$path = substr($path, 1); #chop the lead slash
