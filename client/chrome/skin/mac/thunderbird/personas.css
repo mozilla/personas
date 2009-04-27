@@ -51,11 +51,15 @@
   background-position: top right;
 }
 
-/* Make the toolbox and tabs transparent so the image shines through them. */
-#messengerWindow[persona] .tabbrowser-tabs {
+/* Make the toolbox, tab and search input transparent so the image shines through them. */
+#messengerWindow[persona] .tabmail-tab,
+#messengerWindow[persona] .tabs-alltabs-box {
   -moz-appearance: none;
   background-color: transparent;
   background-image: none !important;
+}
+#messengerWindow[persona] #tabmail, .tabmail-tabs {
+  background-color:transparent !important;
 }
 #messengerWindow[persona] toolbar {
   -moz-appearance: none;
@@ -76,25 +80,25 @@
   border-bottom-color: inherit;
   border-top-color: inherit;
 }
-#messengerWindow[persona]:not([active="true"]) .tabbrowser-strip {
+#messengerWindow[persona]:not([active="true"]) .tabmail-strip {
   opacity: 0.8; 
 }
 
 /* Style the tabs. */
-#messengerWindow[persona] .tabbrowser-strip {
+#messengerWindow[persona] .tabmail-strip {
   -moz-appearance: none;
-  /*background-image: url(chrome://personas/skin/tabbrowser-tabs-bkgnd.png) !important;*/
+  /*background-image: url(chrome://personas/skin/tabmail-tabs-bkgnd.png) !important;*/
   background-color: transparent; 
   background-image: none !important;
 }
 
-#messengerWindow[persona] .tabbrowser-tab {
+#messengerWindow[persona] .tabmail-tab {
   /*opacity: 0.6;*/
   /*color: black !important;*/
 }
 
-#messengerWindow[persona] .tabbrowser-tab[selected="true"],
-#messengerWindow[persona] .tabbrowser-tab:hover {
+#messengerWindow[persona] .tabmail-tab[selected="true"],
+#messengerWindow[persona] .tabmail-tab:hover {
   /*background-color: none;*/
   /*opacity: 0.6;*/
 }
@@ -104,7 +108,7 @@
   /*font-weight: normal !important;*/
 }
 
-#messengerWindow[persona] .tabbrowser-tab {
+#messengerWindow[persona] .tabmail-tab {
   -moz-appearance: none;
   -moz-border-radius: 0 0 6px 6px;
   color: #222;
@@ -125,13 +129,13 @@
   background-image: none !important;
 }
 
-#messengerWindow[persona] .tabbrowser-tab:not([selected="true"]) {
-  background-image: url(chrome://personas/skin/tabbrowser-tabs-bkgnd.png) !important;
-  /*background-image: url(chrome://browser/skin/tabbrowser/tab-bkgnd.png);*/
+#messengerWindow[persona] .tabmail-tab:not([selected="true"]) {
+  background-image: url(chrome://personas/skin/tabmail-tabs-bkgnd.png) !important;
+  /*background-image: url(chrome://browser/skin/tabmail/tab-bkgnd.png);*/
   /*background-image: none !important;*/
 }
 
-#messengerWindow[persona] .tabbrowser-tab[selected="true"] {
+#messengerWindow[persona] .tabmail-tab[selected="true"] {
   -moz-user-focus: normal;
   padding: 0 6px 1px;
   border-width: 2px;
@@ -146,6 +150,7 @@
 /******************************************************************************/
 /* Make some elements a little transparent so the persona flavors their look. */
 
+#messengerWindow[persona] #searchInput,
 #messengerWindow[persona] #urlbar,
 #messengerWindow[persona] #searchbar {
   opacity: 0.8;

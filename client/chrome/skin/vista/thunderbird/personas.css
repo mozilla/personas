@@ -65,27 +65,20 @@
   background-position: top right;
 }
 
-/* Make the toolbox and tabbox transparent so the image shines through them. */
-#messengerWindow[persona] toolbox,
-#messengerWindow[persona] .tabbrowser-tabs {
+#messengerWindow[persona] toolbox {
   -moz-appearance: none;
   background-color: transparent;
 }
 
-
-/******************************************************************************/
-/* Make some elements a little transparent so the persona flavors their look. */
-
-#messengerWindow[persona] .tabbrowser-tab {
-  background-color: -moz-dialog;
-  opacity: 0.6;
-}
-#messengerWindow[persona] .tabbrowser-tab[selected="true"] {
+/* Make the toolbox, tab and search input transparent so the image shines through them. */
+#messengerWindow[persona] #searchInput,
+#messengerWindow[persona] .tabmail-tab,
+#messengerWindow[persona] .tabs-alltabs-box {
   opacity: 0.8;
 }
-#messengerWindow[persona] #urlbar,
-#messengerWindow[persona] #searchbar {
-  opacity: 0.8;
+
+#messengerWindow[persona] #tabmail, .tabmail-tabs {
+  background-color:transparent !important;
 }
 
 
