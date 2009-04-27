@@ -61,11 +61,16 @@
   -moz-appearance: none;
 }
 
-#messengerWindow[persona] #urlbar,
-#messengerWindow[persona] #searchbar,
-#messengerWindow[persona] .tabbrowser-tab {
+#messengerWindow[persona] #searchInput,
+#messengerWindow[persona] .tabmail-tab,
+#messengerWindow[persona] .tabs-alltabs-box {
   opacity: 0.8;
 }
+
+#messengerWindow[persona] #tabmail, .tabmail-tabs {
+  background-color:transparent !important;
+}
+
 
 /* Note: we don't have to eliminate top/bottom borders from toolbars on Linux,
  * as they go away by themselves when we set -moz-appearance: none on toolbars.
