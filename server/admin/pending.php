@@ -55,7 +55,7 @@
 		$message .= "Best Wishes,\n";
 		$message .= "The Personas Team\n";
 		
-		$header = "From: personas-devel@mozilla.com\r\n";
+		$header = "From: personas@mozilla.com\r\n";
 		return mail($address, 'A problem with your Persona submission', $message, $header);
 	}
 	
@@ -68,7 +68,7 @@
 		$message .= "Best Wishes,\n";
 		$message .= "The Personas Team\n";
 		
-		$header = "From: personas-devel@mozilla.com\r\n";
+		$header = "From: personas@mozilla.com\r\n";
 		return mail($address, 'Thanks for submitting your Firefox persona', $message, $header);
 	}
 	
@@ -79,7 +79,7 @@
 		$message .= "Best Wishes,\n";
 		$message .= "The Personas Team\n";
 		
-		$header = "From: personas-devel@mozilla.com\r\n";
+		$header = "From: personas@mozilla.com\r\n";
 		return mail($address, 'Your Persona has been successfully edited', $message, $header);
 	}
 	 
@@ -157,7 +157,7 @@
 				$db->log_action($user->get_username(), $persona['id'], "Pulled");
 				break;
 			case 'copyrightreject':
-				$reason = 'We are unable to confirm that you own the content contained in the persona design. If you are the rightful owner of the content (including the images, logos, etc.), please confirm it with us at personas@mozilla.com and we\'ll get your persona up as soon as possible';
+				$reason = 'We are unable to confirm that you have legal rights to the design contained in the persona. If you are the rightful owner of the content (i.e. the logo or art included in your image), please confirm it with us at personas@mozilla.com and we\'ll get your persona up as soon as possible';
 				$db->reject_persona($persona['id']);
 				send_problem_email($user->get_email($persona['author']), $reason, $persona['name']);
 				$db->log_action($user->get_username(), $persona['id'], "Rejected - Copyright concern");
