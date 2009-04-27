@@ -329,14 +329,29 @@ let PersonaController = {
             );
           }
           else {
-            styleSheet.insertRule(
-              "#navigator-toolbox menubar > menu, " +
-              "#navigator-toolbox toolbarbutton, " +
-              "#browser-bottombox, " +
-              "#browser-bottombox toolbarbutton " +
-              "{ color: " + textColor + "}",
-              0
-            );
+            switch (this._appInfo.ID) {
+              case this.THUNDERBIRD_ID:
+                styleSheet.insertRule(
+                  "#mail-toolbox menubar > menu, " +
+                  "#mail-toolbox toolbarbutton, " +
+                  "#status-bar " +
+                  "{ color: " + textColor + "}",
+                  0
+                );
+                break;
+              case this.FIREFOX_ID:
+                styleSheet.insertRule(
+                  "#navigator-toolbox menubar > menu, " +
+                  "#navigator-toolbox toolbarbutton, " +
+                  "#browser-bottombox, " +
+                  "#browser-bottombox toolbarbutton " +
+                  "{ color: " + textColor + "}",
+                  0
+                );
+                break;
+              default:
+                break;
+              }
           }
 
           // FIXME: figure out what to do about the disabled color.  Maybe we
