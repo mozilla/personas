@@ -170,10 +170,12 @@
 <?php
 				if ($tab == 'My' || $user->has_admin_privs())
 				{
-					echo '<p><a href="/upload?id=' . $persona['id'] . '" target="_blank">Edit</a>';
-					if ($user->has_admin_privs())
-						echo ' | <a href="/admin/pending.php?verdict=pull&id=' . $persona['id'] . '" target="_blank" onClick="return confirm(\'Confirm Deletion\');">Pull</a>';
-					echo "</p>";
+?>
+								<p><a href="/upload?id=<?= $persona['id'] ?>" target="_blank">Edit</a>
+								| 
+								<a href="/delete?id=<?= $persona['id'] ?>" target="_blank">Delete</a>
+								</p>";
+<?php
 				}
 ?>
                             </div>
