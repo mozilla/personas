@@ -104,6 +104,7 @@ class PersonaStorage
 			$this->_memcache->delete('crAll'); #All recent page			
 			$this->_memcache->delete('apcAll'); #All persona count			
 			$this->_memcache->delete('apc' . $persona['category']); #Category persona count			
+			$this->_memcache->delete('a' . $persona['author']); 
 		}
 
 		return 1;
@@ -140,6 +141,7 @@ class PersonaStorage
 			$this->_memcache->delete('crAll'); #All recent page			
 			$this->_memcache->delete('apcAll'); #All persona count			
 			$this->_memcache->delete('apc' . $persona['category']); #Category persona count			
+			$this->_memcache->delete('a' . $persona['author']); 		
 		}
 
 		return 1;
@@ -151,6 +153,7 @@ class PersonaStorage
 		if ($this->_memcache)
 		{
 			$this->_memcache->delete("p$id");
+			$this->_memcache->delete('a' . $persona['author']); 
 		}		
 	}
 		
