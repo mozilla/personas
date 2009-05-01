@@ -16,6 +16,7 @@ CREATE TABLE `personas` (
   `reason` varbinary(24) default NULL,
   `reason_other` varbinary(256) default NULL,
   `featured` tinyint(4) default NULL,
+  `locale` varchar(2) default NULL,
   PRIMARY KEY  (`id`),
   UNIQUE KEY `name` (`name`)
 ) ENGINE=MyISAM AUTO_INCREMENT=3142 DEFAULT CHARSET=latin1 | 
