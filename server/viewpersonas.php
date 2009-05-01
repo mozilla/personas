@@ -173,8 +173,7 @@
 ?>
 								<p><a href="/upload?id=<?= $persona['id'] ?>" target="_blank">Edit</a>
 								| 
-								<a href="/delete/<?= $persona['id'] ?>" target="_blank">Delete</a>
-								</p>";
+								<a href="/delete/<?= $persona['id'] ?>" target="_blank">Delete</a></p>
 <?php
 				}
 ?>

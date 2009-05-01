@@ -67,10 +67,16 @@
 		{
 			if ($user->user_exists($_GET['username']))
 			{
-				if ($user->promote_admin($_GET['username']))
-					echo "Success<p>";
-				else
-					echo "DB Problem<p>";
+				if ($_GET['level'] == 'Approver')
+				{
+					if ($user->promote_approver($_GET['username']))
+						echo "Success<p>";
+				}
+				else if ($_GET['level'] == 'Admin')
+				{
+					if ($user->promote_admin($_GET['username']))
+						echo "Success<p>";
+				}
 			}
 			else
 			{
@@ -89,5 +95,9 @@
 <form method=GET action="">
 Username: <input type=text name=username>
 <br>
+<select name="level">
+<option selected>Approver</option>
+<option>Admin</option>
+</select>
 <input type=submit>
 </form>
