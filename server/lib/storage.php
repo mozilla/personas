@@ -233,7 +233,7 @@ class PersonaStorage
 		
 	function get_persona_by_author($author, $category = null, $sort = null)
 	{
-		if (!$author) { return 0; }
+		if (!$author) { return array(); }
 		if (!$sort) { $sort = 'all'; }
 		$sortkeys = array('all' => 'popularity desc', 'recent' => 'submit desc', 'popular' => 'popularity desc');
 		
@@ -249,7 +249,7 @@ class PersonaStorage
 		
 		try
 		{
-			$statement = 'select * from personas where status = 1 and author = ? and locale = ?';
+			$statement = 'select * from personas where status = 1 and author = ?';
 			$params = array($author);
 			
 			if ($category)
