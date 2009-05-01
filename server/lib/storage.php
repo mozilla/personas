@@ -246,7 +246,7 @@ class PersonaStorage
 		
 		try
 		{
-			$statement = 'select * from personas where status = 1 and author = ?';
+			$statement = 'select * from personas where status = 1 and author = ? and locale = ?';
 			$params = array($author);
 			
 			if ($category)
@@ -667,7 +667,7 @@ class PersonaStorage
 
 		try
 		{
-			$statement = 'insert into personas (name, status, header, footer, category, submit, author, accentcolor, textcolor, description, license, reason, reason_other) values (:name, 0, :header, :footer, :category, NOW(), :author, :accentcolor, :textcolor, :description, :license, :reason, :reasonother)';
+			$statement = 'insert into personas (name, status, header, footer, category, submit, author, accentcolor, textcolor, description, license, reason, reason_other, locale) values (:name, 0, :header, :footer, :category, NOW(), :author, :accentcolor, :textcolor, :description, :license, :reason, :reasonother, :locale)';
 			$sth = $this->_dbh->prepare($statement);
 			$sth->bindParam(':name', $name);
 			$sth->bindParam(':header', $header);
@@ -680,6 +680,7 @@ class PersonaStorage
 			$sth->bindParam(':license', $license);
 			$sth->bindParam(':reason', $reason);
 			$sth->bindParam(':reasonother', $reasonother);
+			$sth->bindParam(':locale', PERSONAS_LOCALE);
 			$sth->execute();
 			return $this->_dbh->lastInsertId();
 		}

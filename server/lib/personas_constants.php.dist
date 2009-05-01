@@ -12,6 +12,13 @@ if (!defined('RECAPTCHA_PUBLIC_KEY')) { define('RECAPTCHA_PUBLIC_KEY', ''); }
 if (!defined('RECAPTCHA_PRIVATE_KEY')) { define('RECAPTCHA_PRIVATE_KEY', ''); }
 
 
+#location code for this install
+if (!defined('PERSONAS_LOCALE')) 
+{ 
+	define('PERSONAS_LOCALE', 'us'); 
+}
+
+
 #path to the generated html/json/images tree
 if (!defined('PERSONAS_STORAGE_PREFIX')) 
 { 

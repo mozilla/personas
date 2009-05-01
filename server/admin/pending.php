@@ -85,7 +85,8 @@
 	 
 
 	$title = "Admin | Uploads Pending Approval";
-
+	$json = array_key_exists('json', $_GET);
+	
 	try 
 	{
 		$user = new PersonaUser();
@@ -105,21 +106,6 @@
 		exit;
 	}
 
-	include '../templates/header.php';
-?>
-<body>
-    <div id="outer-wrapper">
-        <div id="inner-wrapper">
-<?php include '../templates/nav.php'; ?>
-            <div id="header">
-                <h2>View Personas</h2>
-                <h3>Your browser, your style! Dress it up with easy-to-change "skins" for your
-                Firefox.</h3>
-            </div>
-            <div id="maincontent">
-                <p id="breadcrumbs"><a href="http://www.getpersonas.com">Personas Home</a> : Admin </p>
-                <div id="gallery">
-<?php
 
 	$db = new PersonaStorage();
 	$categories = $db->get_categories();
@@ -178,8 +164,31 @@
 				print "Could not understand the verdict";	
 				exit;
 		}
+		
+		if (array_key_exists('json', $_GET))
+		{
+			echo "Rejected";
+			exit;
+		}
+		
 	}
 	
+	include '../templates/header.php';
+?>
+<body>
+    <div id="outer-wrapper">
+        <div id="inner-wrapper">
+<?php include '../templates/nav.php'; ?>
+            <div id="header">
+                <h2>View Personas</h2>
+                <h3>Your browser, your style! Dress it up with easy-to-change "skins" for your
+                Firefox.</h3>
+            </div>
+            <div id="maincontent">
+                <p id="breadcrumbs"><a href="http://www.getpersonas.com">Personas Home</a> : Admin </p>
+                <div id="gallery">
+<?php
+
 	if (array_key_exists('verdict', $_GET) && $_GET['verdict'] == 'pull')
 	{
 		#Do nothing here
@@ -276,6 +285,7 @@
                                 <p class="added"><strong>Submitted:</strong> <?= $persona['submit'] ?></p>
                                 <p><?= $persona['description'] ?></p>
                                 <p><a href="/admin/pending.php?id=<?= $persona['id'] ?>&category=<?= $page_category ?>" class="view">Administer »</a></p>
+                                <p align=right><a href="#" onclick="copyrightreject(<?= $persona['id'] ?>, this); return false;">Copyrightreject »</a></p>
                             </div>
                         </li>
  <?php
@@ -308,6 +318,11 @@
         $(document).ready(function() {
            $("#gallery .preview img").previewPersona();
         });
+		
+		function copyrightreject(id, pointer)
+		{
+			$(pointer).load("/admin/pending.php?json=1&verdict=copyrightreject&id=" + id);
+		}
     </script>
 </body>
 </html>

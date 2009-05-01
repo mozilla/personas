@@ -168,7 +168,7 @@
                                 <p><?= number_format($persona['popularity']) ?> active daily users</p>
                                 <p><a href="<?= "/persona/" . ($persona['id'] < 10 ? "0" : "") . $persona['id'] ?>" class="view">view details »</a></p>
 <?php
-				if ($tab == 'My' || $user->has_admin_privs())
+				if ($user->has_admin_privs() || ($tab == 'My' && $persona['locale'] == PERSONAS_LOCALE))
 				{
 ?>
 								<p><a href="/upload?id=<?= $persona['id'] ?>" target="_blank">Edit</a>
