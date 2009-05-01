@@ -83,7 +83,12 @@ class PersonaUser
 	
 	function has_admin_privs()
 	{
-		return $this->_privs == 2;
+		return $this->_privs >= 3;
+	}
+	
+	function has_approval_privs()
+	{
+		return $this->_privs >= 2;
 	}
 	
 	function create_user($username, $password, $email = "")
@@ -400,7 +405,7 @@ class PersonaUser
 
 		try
 		{
-			$stmt = 'update users set privs = 2 where username = :username';
+			$stmt = 'update users set privs = 3 where username = :username';
 			$sth = $this->_dbh->prepare($stmt);
 			$sth->bindParam(':username', $username);
 			$sth->execute();
@@ -409,6 +414,30 @@ class PersonaUser
 		catch( PDOException $exception )
 		{
 			error_log("promote_admin: " . $exception->getMessage());
+			throw new Exception("Database unavailable");
+		}
+		return 1;
+	}
+
+		
+	function promote_approver($username)
+	{
+		if (!$username)
+		{
+			return 0;
+		}
+
+		try
+		{
+			$stmt = 'update users set privs = 2 where username = :username';
+			$sth = $this->_dbh->prepare($stmt);
+			$sth->bindParam(':username', $username);
+			$sth->execute();
+
+		}
+		catch( PDOException $exception )
+		{
+			error_log("promote_approver: " . $exception->getMessage());
 			throw new Exception("Database unavailable");
 		}
 		return 1;
