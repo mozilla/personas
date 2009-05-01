@@ -667,7 +667,7 @@ class PersonaStorage
 
 		try
 		{
-			$statement = 'insert into personas (name, status, header, footer, category, submit, author, accentcolor, textcolor, description, license, reason, reason_other, locale) values (:name, 0, :header, :footer, :category, NOW(), :author, :accentcolor, :textcolor, :description, :license, :reason, :reasonother, :locale)';
+			$statement = 'insert into personas (name, status, header, footer, category, submit, author, accentcolor, textcolor, description, license, reason, reason_other, locale) values (:name, 0, :header, :footer, :category, NOW(), :author, :accentcolor, :textcolor, :description, :license, :reason, :reasonother, "' . PERSONAS_LOCALE . '")';
 			$sth = $this->_dbh->prepare($statement);
 			$sth->bindParam(':name', $name);
 			$sth->bindParam(':header', $header);
@@ -680,7 +680,6 @@ class PersonaStorage
 			$sth->bindParam(':license', $license);
 			$sth->bindParam(':reason', $reason);
 			$sth->bindParam(':reasonother', $reasonother);
-			$sth->bindParam(':locale', PERSONAS_LOCALE);
 			$sth->execute();
 			return $this->_dbh->lastInsertId();
 		}
