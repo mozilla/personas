@@ -55,8 +55,6 @@
 Cu.import("resource://personas/modules/service.js");
 
 let PersonaController = {
-  THUNDERBIRD_ID: "{3550f703-e582-4d05-9a08-453d09bdfdc6}",
-  FIREFOX_ID:     "{ec8030f7-c20a-464f-9b0e-13a3a9e97384}",
   _defaultHeaderBackgroundImage: null,
   _defaultFooterBackgroundImage: null,
   _defaultTitlebarColor: null,
@@ -106,25 +104,25 @@ let PersonaController = {
 
   get _header() {
     delete this._header;
-    switch (this._appInfo.ID) {
-      case this.THUNDERBIRD_ID:
+    switch (PersonaService.appInfo.ID) {
+      case PersonaService.THUNDERBIRD_ID:
         return this._header = document.getElementById("messengerWindow");
-      case this.FIREFOX_ID:
+      case PersonaService.FIREFOX_ID:
         return this._header = document.getElementById("main-window");
       default:
-        throw "unknown application ID " + this._appInfo.ID;
+        throw "unknown application ID " + PersonaService.appInfo.ID;
     }
   },
 
   get _footer() {
     delete this._footer;
-    switch (this._appInfo.ID) {
-      case this.THUNDERBIRD_ID:
+    switch (PersonaService.appInfo.ID) {
+      case PersonaService.THUNDERBIRD_ID:
         return this._footer = document.getElementById("status-bar");
-      case this.FIREFOX_ID:
+      case PersonaService.FIREFOX_ID:
         return this._footer = document.getElementById("browser-bottombox");
       default:
-        throw "unknown application ID " + this._appInfo.ID;
+        throw "unknown application ID " + PersonaService.appInfo.ID;
     }
   },
 
@@ -134,13 +132,6 @@ let PersonaController = {
 
   get _previewTimeout() {
     return this._prefs.get("previewTimeout");
-  },
-
-  get _appInfo() {
-    delete this._appInfo;
-    return this._appInfo = Cc["@mozilla.org/xre/app-info;1"].
-                           getService(Ci.nsIXULAppInfo).
-                           QueryInterface(Ci.nsIXULRuntime);
   },
 
   // XXX We used to use this to direct users to locale-specific directories
@@ -315,7 +306,7 @@ let PersonaController = {
           // reference it (.findbar-find-fast, .findbar-find-status) and make
           // the declaration !important to override an !important declaration
           // for the status text in findBar.css.
-          if (this._appInfo.OS == "Darwin") {
+          if (PersonaService.appInfo.OS == "Darwin") {
             styleSheet.insertRule(
               "#main-window[persona] .tabbrowser-tab, " +
               "#navigator-toolbox menubar > menu, " +
@@ -329,8 +320,8 @@ let PersonaController = {
             );
           }
           else {
-            switch (this._appInfo.ID) {
-              case this.THUNDERBIRD_ID:
+            switch (PersonaService.appInfo.ID) {
+              case PersonaService.THUNDERBIRD_ID:
                 styleSheet.insertRule(
                   "#mail-toolbox menubar > menu, " +
                   "#mail-toolbox toolbarbutton, " +
@@ -339,7 +330,7 @@ let PersonaController = {
                   0
                 );
                 break;
-              case this.FIREFOX_ID:
+              case PersonaService.FIREFOX_ID:
                 styleSheet.insertRule(
                   "#navigator-toolbox menubar > menu, " +
                   "#navigator-toolbox toolbarbutton, " +
@@ -414,7 +405,7 @@ let PersonaController = {
 
   _setTitlebarColors: function(general, active, inactive) {
     // Titlebar colors only have an effect on Mac.
-    if (this._appInfo.OS != "Darwin")
+    if (PersonaService.appInfo.OS != "Darwin")
       return;
 
     let changed = false;
@@ -591,24 +582,40 @@ let PersonaController = {
 
   onEditCustomPersona: function() {
     let editorUrl = "chrome://personas/content/customPersonaEditor.xul";
-    let found = false;
-    let tabbrowser = window.getBrowser();
 
-    // Check each tab of this browser for the editor XUL file
-    let numTabs = tabbrowser.browsers.length;
-    for (let index = 0; index < numTabs; index++) {
-      let currentBrowser = tabbrowser.getBrowserAtIndex(index);
-      if (editorUrl == currentBrowser.currentURI.spec) {
-        // The editor is already opened. Select this tab.
-        tabbrowser.selectedTab = tabbrowser.mTabs[index];
-        found = true;
+    switch (PersonaService.appInfo.ID) {
+      case PersonaService.THUNDERBIRD_ID:
+        Cc['@mozilla.org/appshell/window-mediator;1'].
+        getService(Ci.nsIWindowMediator).
+        getMostRecentWindow("mail:3pane").
+        document.getElementById("tabmail").
+        openTab("contentTab",
+                "chrome://personas/content/customPersonaEditor.xul",
+                this._strings.get("customPersona"));
+	break;
+      case PersonaService.FIREFOX_ID:
+        let found = false;
+        let tabbrowser = window.getBrowser();
+
+        // Check each tab of this browser for the editor XUL file
+        let numTabs = tabbrowser.browsers.length;
+        for (let index = 0; index < numTabs; index++) {
+          let currentBrowser = tabbrowser.getBrowserAtIndex(index);
+          if (editorUrl == currentBrowser.currentURI.spec) {
+            // The editor is already opened. Select this tab.
+            tabbrowser.selectedTab = tabbrowser.mTabs[index];
+            found = true;
+            break;
+          }
+        }
+
+        // If the editor's not open...
+        if (!found)
+          window.openUILinkIn(editorUrl, "tab");
         break;
-      }
+      default:
+        throw "unknown application ID " + PersonaService.appInfo.ID;
     }
-
-    // If the editor's not open...
-    if (!found)
-      window.openUILinkIn(editorUrl, "tab");
   },
 
   /**

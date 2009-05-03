@@ -54,6 +54,9 @@ Cu.import("resource://personas/modules/URI.js");
 const PERSONAS_EXTENSION_ID = "personas@christopher.beard";
 
 let PersonaService = {
+  THUNDERBIRD_ID: "{3550f703-e582-4d05-9a08-453d09bdfdc6}",
+  FIREFOX_ID:     "{ec8030f7-c20a-464f-9b0e-13a3a9e97384}",
+
   //**************************************************************************//
   // Shortcuts
 
@@ -62,6 +65,13 @@ let PersonaService = {
   get _prefs() {
     delete this._prefs;
     return this._prefs = new Preferences("extensions.personas.");
+  },
+
+  get appInfo() {
+    delete this.appInfo;
+    return this.appInfo = Cc["@mozilla.org/xre/app-info;1"].
+                           getService(Ci.nsIXULAppInfo).
+                           QueryInterface(Ci.nsIXULRuntime);
   },
 
 
