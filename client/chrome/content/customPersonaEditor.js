@@ -220,6 +220,19 @@ let CustomPersonaEditor = {
 
   onApply: function() {
     PersonaService.changeToPersona(this.customPersona);
-    window.close();
+    switch (PersonaService.appInfo.ID) {
+      case PersonaService.THUNDERBIRD_ID:
+	Cc['@mozilla.org/appshell/window-mediator;1'].
+        getService(Ci.nsIWindowMediator).
+        getMostRecentWindow("mail:3pane").
+        document.getElementById("tabmail").
+        removeCurrentTab();
+        break;
+      case PersonaService.FIREFOX_ID:
+ 	window.close();
+        break;
+      default:
+        throw "unknown application ID " + PersonaService.appInfo.ID;
+    }
   }
 };
