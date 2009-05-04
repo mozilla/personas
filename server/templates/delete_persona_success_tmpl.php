@@ -9,7 +9,7 @@
             </div>
             <div id="maincontent">
                 <p id="breadcrumbs"><a href="http://www.getpersonas.com">Personas Home</a> : Delete Your Persona</p>
-				Thank you for leting us host your persona. We'll look forward to seeing your future efforts!
+				Thank you for letting us host your persona. We'll look forward to seeing your future efforts!
             </div>
             <div id="secondary-content">
               <ol id="upload-steps">
