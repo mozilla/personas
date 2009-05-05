@@ -25,7 +25,7 @@
 					<?php if (array_key_exists('create_passconf', $_errors)) echo '<span class="error-message">' . $_errors['create_passconf'] . '</span>' ?>
                     </p>
                     
-                    <p class="news"><label for="news"><input type="checkbox" name="news" id="news" value="" /> I’d like to receive news and information about Personas</label></p>
+                    <p class="news"><label for="news"><input type="checkbox" name="news" id="news" value="yes" /> I’d like to receive news and information about Personas</label></p>
                     
             
                     <div id="captcha">

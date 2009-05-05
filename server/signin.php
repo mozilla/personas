@@ -55,7 +55,7 @@
 		$password = array_key_exists('create_password', $_POST) ? (ini_get('magic_quotes_gpc') ? stripslashes($_POST['create_password']) : $_POST['create_password']) : null;
 		$passwordconf = array_key_exists('create_passconf', $_POST) ? (ini_get('magic_quotes_gpc') ? stripslashes($_POST['create_passconf']) : $_POST['create_passconf']) : null;
 		$email = array_key_exists('create_email', $_POST) ? (ini_get('magic_quotes_gpc') ? stripslashes($_POST['create_email']) : $_POST['create_email']) : null;
-		
+		$news = (array_key_exists('news', $_POST) && $_POST['news'] == 'yes') ? 1 : 0
 		$username = trim($username);
 
 		$captcha_response = recaptcha_check_answer(
@@ -88,10 +88,11 @@
 		
 		if ($user->user_exists($username))
 			$_errors['create_username'] = "Username already in use";
-			
+		
+		
 		if (count($_errors) == 0)
 		{
-			if ($user->create_user($username, $password, $email))
+			if ($user->create_user($username, $password, $email, $news))
 			{
 				setcookie('PERSONA_USER', $user->get_cookie(), null, '/');
 				if ($return_url)

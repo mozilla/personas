@@ -91,7 +91,7 @@ class PersonaUser
 		return $this->_privs >= 2;
 	}
 	
-	function create_user($username, $password, $email = "")
+	function create_user($username, $password, $email = "", $news = 0)
 	{ 
 		if (!$username)
 		{
@@ -105,11 +105,12 @@ class PersonaUser
 		
 		try
 		{
-			$insert_stmt = 'insert into users (username, md5, email, privs) values (:username, :md5, :email, 1)';
+			$insert_stmt = 'insert into users (username, md5, email, news, privs) values (:username, :md5, :email, :news, 1)';
 			$sth = $this->_dbh->prepare($insert_stmt);
 			$sth->bindParam(':username', $username);
 			$sth->bindParam(':md5', md5($password));
 			$sth->bindParam(':email', $email);
+			$sth->bindParam(':news', $news);
 			$sth->execute();
 		}
 		catch( PDOException $exception )
