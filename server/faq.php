@@ -49,6 +49,16 @@
 
                <dd><p>Absolutely! All you need to do is create two graphics files in your favorite graphics editing program (<em>e.g.</em>, Photoshop). To get started read more about how to <a href="/demo_create">create a Persona</a>.</p></dd>
                
+			   <dt><a name="guidelines"></a>Are there any guidelines for content allowed in the Personas gallery?</dt>
+    			<dd><p>Yes. We are big fans of creativity, but want to ensure that the art displayed in the Personas gallery meets a basic set of guidelines. Specifically:</p>
+               
+                   <ol>
+                      <li>The logo, image, or art within your design is either your original work, or you are authorized to license and distribute it</li>
+                      <li>Your design does not contain provocative, lewd, or sexual content (ie, it is PG-rated)</li>
+                      <li>Your design does not include any identifiable non-celebrity person(s)</li>
+                      <li>Your design does not contain violence or violent acts, nor does it exhibit discriminatory behavior or signs</li>
+                      <li>Your design does not violate any applicable law, regulation or ordinance</li>
+                      </ol></dd>
                
                <dt>After creating a Persona, can I edit the design?</dt>
                <dd><p>Yes. If at any point you need to edit your Persona design 
@@ -131,16 +141,6 @@
                <dd><p>Yes. The source code for Personas is available under the MPL/GPL/LGPL tri-license. You can view the source <a href="http://hg.mozilla.org/labs/personas/personas">here</a>.</p>
 
          </dd>       
-			   <dt><a name="guidelines"></a>Are there any guidelines for content allowed in the Personas gallery?</dt>
-    			<dd><p>Yes. We are big fans of creativity, but want to ensure that the art displayed in the Personas gallery meets a basic set of guidelines. Specifically:</p>
-               
-                   <ol>
-                      <li>The logo, image, or art within your design is either your original work, or you are authorized to license and distribute it</li>
-                      <li>Your design does not contain provocative, lewd, or sexual content (ie, it is PG-rated)</li>
-                      <li>Your design does not include any identifiable non-celebrity person(s)</li>
-                      <li>Your design does not contain violence or violent acts, nor does it exhibit discriminatory behavior or signs</li>
-                      <li>Your design does not violate any applicable law, regulation or ordinance</li>
-                      </ol></dd>
       </dl>
                 
             </div>
