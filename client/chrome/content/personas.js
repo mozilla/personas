@@ -241,12 +241,12 @@ let PersonaController = {
       // Change to the initial persona (the one we show users when they first
       // install the extension) and show the first run page.
       PersonaService.changeToPersona(this.JSON.parse(this._prefs.get("initial")));
-      let firstRunURL = this._siteURL + "firstrun/?version=" + thisVersion;
+      let firstRunURL = this._siteURL + "firstrun?version=" + thisVersion;
       setTimeout(function() { window.openUILinkIn(firstRunURL, "tab") }, 500);
       this._prefs.set("lastversion", thisVersion);
     }
     else if (lastVersion != thisVersion) {
-      let updatedURL = this._siteURL + "updated/?version=" + thisVersion;
+      let updatedURL = this._siteURL + "updated?version=" + thisVersion;
       setTimeout(function() { window.openUILinkIn(updatedURL, "tab") }, 500);
       this._prefs.set("lastversion", thisVersion);
     }
