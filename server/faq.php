@@ -131,9 +131,16 @@
                <dd><p>Yes. The source code for Personas is available under the MPL/GPL/LGPL tri-license. You can view the source <a href="http://hg.mozilla.org/labs/personas/personas">here</a>.</p>
 
          </dd>       
-			   <dt>Are Partnership Opportunities Available?</dt>
- 			  <dd><p>Yes. If you want to learn more about how Personas can work with your organization and brand, send us an <a href="mailto:personas@mozilla.com">email</a>. Be sure to include your name, title, organization, and the purpose of your Persona.</p></dd> 
+			   <dt><a name="guidelines"></a>Are there any guidelines for content allowed in the Personas gallery?</dt>
+    			<dd><p>Yes. We are big fans of creativity, but want to ensure that the art displayed in the Personas gallery meets a basic set of guidelines. Specifically:</p>
                
+                   <ol>
+                      <li>The logo, image, or art within your design is either your original work, or you are authorized to license and distribute it</li>
+                      <li>Your design does not contain provocative, lewd, or sexual content (ie, it is PG-rated)</li>
+                      <li>Your design does not include any identifiable non-celebrity person(s)</li>
+                      <li>Your design does not contain violence or violent acts, nor does it exhibit discriminatory behavior or signs</li>
+                      <li>Your design does not violate any applicable law, regulation or ordinance</li>
+                      </ol></dd>
       </dl>
                 
             </div>

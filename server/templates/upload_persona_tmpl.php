@@ -103,6 +103,7 @@
                 
                 <p class="continue">
                     <button type="submit" class="button"><span>submit</span><span class="arrow">&nbsp;</span></button></p>
+                <p>I am the rightful owner of this content (see <a href="/faq#guidelines" target="_blank">guidelines</a>) and understand that this design will be publicly available in the Gallery upon approval.</p>
             	</form>
             </div>
             <div id="secondary-content">
