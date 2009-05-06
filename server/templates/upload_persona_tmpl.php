@@ -102,7 +102,7 @@
                 </div>
                 
                 <p class="continue">
-                    <button type="submit" class="button"><span>continue</span><span class="arrow">&nbsp;</span></button></p>
+                    <button type="submit" class="button"><span>submit</span><span class="arrow">&nbsp;</span></button></p>
             	</form>
             </div>
             <div id="secondary-content">

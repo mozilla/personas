@@ -44,7 +44,7 @@
                             <p class="try"><a href="/persona/<?= $persona['id'] ?>">view details »</a></p>
                             <hr />
                             <p class="designer">By: <a href="/gallery/Designer/<?= $persona['author'] ?>"><?= $persona['author'] ?></a></p>
-                            <p class="daily-users"><strong><?= number_format($persona['popularity']) ?></strong> active daily users</p>
+                            <p class="daily-users"><?= number_format($persona['popularity']) ?> active daily users</p>
                             <p><?= $persona['short_description'] ?></p>
                             <hr />
 
