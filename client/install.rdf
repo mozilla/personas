@@ -5,11 +5,12 @@
 
     <em:id>personas@christopher.beard</em:id>
     <em:name>Personas for Firefox</em:name>
-    <em:version>1.1pre</em:version>
+    <em:version>1.1rc3pre</em:version>
     <em:description>Themes, skins, fur coats and more.</em:description>
 
     <em:creator>Chris Beard</em:creator>
     <em:contributor>Myk Melez</em:contributor>
+    <em:contributor>Huang Yaoquan</em:contributor>
 
     <!-- Localizers (from Babelzilla and other places) in alphabetical order -->
     <em:translator>a007son</em:translator>        <!-- zh-TW, forum      -->
