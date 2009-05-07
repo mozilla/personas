@@ -160,7 +160,7 @@
 	foreach ($master_list as $id)
 	{
 		$path = get_persona_path(PERSONAS_STORAGE_PREFIX . "/gallery/persona", $id);
-		store_page(PERSONAS_BUILD_SERVER . "/persona/$id", $path . "/" . ($id < 10 ? '0' : '') .  $id);
+		store_page(PERSONAS_BUILD_SERVER . "/persona/$id?no_my=1", $path . "/" . ($id < 10 ? '0' : '') .  $id);
 	}
 		
 	#and the index
