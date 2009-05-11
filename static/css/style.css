@@ -555,6 +555,7 @@ img.preview  {
     position: absolute;
     top: 66px;
     z-index: 20;
+    cursor: pointer;
 }
 
 .slideshow-next {
