@@ -1,6 +1,6 @@
 <?php
     $personas = array();
-	foreach (explode(":", FEATURED_PERSONAS) as $id)
+	foreach (explode(":", FEATURED_DESIGNERS) as $id)
 	{
 		$persona = $db->get_persona_by_id($id); 
 		if (!$persona)
