@@ -45,7 +45,7 @@
 <?php include 'templates/footer.php'; ?>
     <script type="text/javascript" charset="utf-8">
         $(document).ready(function () {
-            $("#slideshow").slider();
+            $(".slideshow").slider();
             $("#more-info").popup();
             
             $("#header").ie6Warning({"message":'<div id="ie6">Upgrade your browser to get the most out of this website. <a href="%LINK%">Download Firefox for free</a>.</div>'});

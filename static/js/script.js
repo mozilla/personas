@@ -22,113 +22,120 @@ function dispatchPersonaEvent(aType, aNode)
 
 
 $.fn.slider = function (options) {
+
     var settings = jQuery.extend({
-        "slides"        : "#slides li",
-        "nav"           : "#slideshow-nav",
-        "previous"      : "#slideshow-previous",
-        "next"          : "#slideshow-next",
-        "nextImg"       : "/store/img/nav-next.png",
-        "nextOverImg"   : "/store/img/nav-next-over.png",
-        "prevOverImg"   : "/store/img/nav-prev-over.png",
-        "prevImg"       : "/store/img/nav-prev.png"
+        "slides"        : ".slides li",
+        "nav"           : ".slideshow-nav",
+        "viewport"      : ".slides",
+        "previous"      : ".slideshow-previous",
+        "next"          : ".slideshow-next",
+        "nextImg"       : "/static/img/nav-next.png",
+        "nextOverImg"   : "/static/img/nav-next-over.png",
+        "prevOverImg"   : "/static/img/nav-prev-over.png",
+        "prevImg"       : "/static/img/nav-prev.png"
     }, options);
     
-    var items = jQuery(settings['slides']);
-    var index = 0;
-    var viewportWidth = jQuery("#slides li:first").css("width");
-    viewportWidth = viewportWidth.substring(0,viewportWidth.length-2);
-    var numItems = jQuery("#slides li").length-1;
+    return this.each(function() {
+        var that = this;
+        var items = jQuery(this).find(settings['slides']);
+        var index = 0;
+        var viewportWidth = jQuery(this).find(settings['slides']+":first").css("width");
+        viewportWidth = viewportWidth.substring(0,viewportWidth.length-2);
+        var numItems = jQuery(this).find(settings['slides']).length-1;
+        
+        jQuery("<img>").attr("src", settings['nextOverImg']);
+        jQuery("<img>").attr("src", settings['prevOverImg']);
 
-    jQuery("<img>").attr("src", settings['nextOverImg']);
-    jQuery("<img>").attr("src", settings['prevOverImg']);
-    
-    if(index == 0) {
-        $(settings['previous']).addClass('disabled');
-    }
-    
-    jQuery(settings['next']).click(function() {
-        if(numItems != index) {
-            jQuery("#slides").animate({left:"-="+viewportWidth+"px"});
-            index++; 
-            setNav(index);
-        }
-        
-        if(index == numItems) {
-            $(settings['next']).addClass('disabled');
-        }
-        
-        if(index != 0) {
-            $(settings['previous']).removeClass('disabled');
+        if(index == 0) {
+            $(this).find(settings['previous']).addClass('disabled');
         }
 
-        return false;
-    });
-    
-    jQuery(settings['previous']).click(function() {
-        if(index != 0) {
-            jQuery("#slides").animate({left:"+="+viewportWidth});
-            index--;
-            setNav(index);
-        }
-        
-        if(index == 0) {
-            $(settings['previous']).addClass('disabled');
-        } else {
-            $(settings['next']).removeClass('disabled');
-        }
-        
-        return false;
-    });
-    
-    jQuery(settings['nav']+' li a').click(function(event) {
-        var value = Number(this.innerHTML)-1;
-        var diff = index - value;
-        if(diff != 0) {
-            jQuery("#slides").animate({left:"+="+diff*viewportWidth+"px"});
-            setNav(value);
-            index = value;
-        }
-        
-        if(index == 0) {
-            $(settings['previous']).addClass('disabled');
-        } else if (index < numItems) {
-            $(settings['next']).removeClass('disabled');
-            $(settings['previous']).removeClass('disabled');
-        } else {
-            $(settings['next']).addClass('disabled');
-            $(settings['previous']).removeClass('disabled');
-        }
-        
-        
-        return false;
-    });
-    
-    jQuery(settings['next']).hover(
-        function() {
-            if(index != numItems) {
-                jQuery(this).children('img').attr('src', settings['nextOverImg']);
+        jQuery(this).find(settings['next']).click(function() {
+            if(numItems != index) {
+                jQuery(that).find(settings['viewport']).animate({left:"-="+viewportWidth+"px"});
+                index++; 
+                setNav(index);
             }
-        },
-        function() {
-            jQuery(this).children('img').attr('src', settings['nextImg']);
-        }
-    );
-    
-    jQuery(settings['previous']).hover(
-        function() {
+
+            if(index == numItems) {
+                jQuery(that).find(settings['next']).addClass('disabled');
+                
+            }
+
             if(index != 0) {
-                jQuery(this).children('img').attr('src', settings['prevOverImg']);
+                jQuery(that).find(settings['previous']).removeClass('disabled');
             }
-        },
-        function() {
-            jQuery(this).children('img').attr('src', settings['prevImg']);
+
+            return false;
+        });
+
+        jQuery(this).find(settings['previous']).click(function() {
+            if(index != 0) {
+                jQuery(that).find(settings['viewport']).animate({left:"+="+viewportWidth});
+                index--;
+                setNav(index);
+            }
+
+            if(index == 0) {
+                jQuery(that).find(settings['previous']).addClass('disabled');
+            } else {
+                jQuery(that).find(settings['next']).removeClass('disabled');
+            }
+
+            return false;
+        });
+
+        jQuery(this).find(settings['nav']+' li a').click(function(event) {
+            var value = Number(this.innerHTML)-1;
+            var diff = index - value;
+            if(diff != 0) {
+                jQuery(that).find(settings['viewport']).animate({left:"+="+diff*viewportWidth+"px"});
+                setNav(value);
+                index = value;
+            }
+
+            if(index == 0) {
+                jQuery(that).find(settings['previous']).addClass('disabled');
+            } else if (index < numItems) {
+                jQuery(that).find(settings['next']).removeClass('disabled');
+                jQuery(that).find(settings['previous']).removeClass('disabled');
+            } else {
+                jQuery(that).find(settings['next']).addClass('disabled');
+                jQuery(that).find(settings['previous']).removeClass('disabled');
+            }
+
+
+            return false;
+        });
+
+        jQuery(this).find(settings['next']).hover(
+            function() {
+                if(index != numItems) {
+                    jQuery(this).children('img').attr('src', settings['nextOverImg']);
+                }
+            },
+            function() {
+                jQuery(this).children('img').attr('src', settings['nextImg']);
+            }
+        );
+
+        jQuery(this).find(settings['previous']).hover(
+            function() {
+                if(index != 0) {
+                    jQuery(this).children('img').attr('src', settings['prevOverImg']);
+                }
+            },
+            function() {
+                jQuery(this).children('img').attr('src', settings['prevImg']);
+            }
+        );
+
+        function setNav(newIndex) {
+            jQuery(that).find(settings['nav'] + ' li a.active').removeClass('active');
+            jQuery(that).find(settings['nav'] + ' li a:eq('+newIndex+')').addClass('active');
         }
-    );
+    });
     
-    function setNav(newIndex) {
-        jQuery(settings['nav'] + ' li a.active').removeClass('active');
-        jQuery(settings['nav'] + ' li a:eq('+newIndex+')').addClass('active');
-    }
 };
 
 /**

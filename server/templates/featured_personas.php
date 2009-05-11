@@ -22,7 +22,7 @@
 ?>
 			<div class="feature slideshow">
                 <h3>Featured Personas</h3>
-                <ul id="slideshow-nav">
+                <ul class="slideshow-nav">
 <?php
 				for ($i = 1; $i <= count($personas); $i++)
 				{
@@ -30,10 +30,10 @@
 				}
 ?>
 				</ul>
-                <a href="#" id="slideshow-previous"><img src="/static/img/nav-prev.png" alt="Previous"/></a>
-                <a href="#" id="slideshow-next"><img src="/static/img/nav-next.png" alt="Next"/></a>
-                <div id="slideshow">
-                    <ul id="slides">
+                <a href="#" class="slideshow-previous"><img src="/static/img/nav-prev.png" alt="Previous"/></a>
+                <a href="#" class="slideshow-next"><img src="/static/img/nav-next.png" alt="Next"/></a>
+                <div class="">
+                    <ul class="slides">
 <?php
 				foreach ($personas as $persona)
 				{

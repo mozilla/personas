@@ -423,6 +423,8 @@ a.get-personas span.arrow {
 
 .feature.slideshow {
     position: relative;
+    width: 297px;
+    overflow: hidden;
 }
 
 .feature.last {
@@ -502,26 +504,25 @@ img.preview  {
     background-position: -582px -613px;
 }
 
-#slideshow {
+.slideshow {
     height: 240px;
     width: 1500px;
     overflow: hidden;
-    z-index: -20;
 }
 
-#slideshow-nav {
+.slideshow-nav {
     position: absolute;
     top: 6px;
     left: 180px;
 }
 
-#slideshow-nav li {
+.slideshow-nav li {
     float: left;
     list-style-type: none;
     margin: 0;
 }
 
-#slideshow-nav li a {
+.slideshow-nav li a {
     text-indent: -999em;
     width: 9px;
     height: 9px;
@@ -531,18 +532,18 @@ img.preview  {
     float: left;
 }
 
-#slideshow-nav li a.active {
+.slideshow-nav li a.active {
     background: url('../img/main-sprites.png') -16px -225px no-repeat;
 }
 
-#slides {
+.slides {
     height: 240px;
     overflow: hidden;
     position: absolute;
     width: 1500px;
 }
 
-#slides li {
+.slides li {
     height: 240px;
     width: 297px;
     float: left;
@@ -550,26 +551,26 @@ img.preview  {
     list-style: none;
 }
 
-#slideshow-previous, #slideshow-next {
+.slideshow-previous, .slideshow-next {
     position: absolute;
     top: 66px;
     z-index: 20;
 }
 
-#slideshow-next {
+.slideshow-next {
     left: 273px;
 }
 
-#slideshow-previous.disabled, #slideshow-next.disabled {
+.slideshow-previous.disabled, .slideshow-next.disabled {
     cursor: default;
 }
 
-#slides .try {
+.slides .try {
     float: right;
     display: inline;
 }
 
-#slides p {
+.slides p {
     margin: 0;
 }
 
