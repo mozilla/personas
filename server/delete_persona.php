@@ -71,6 +71,7 @@
 	{
 		rename (make_persona_storage_path($persona['id']), make_persona_pending_path($persona['id']));
 		$db->reject_persona($persona['id']);
+		$db->log_action($user->get_username(), $persona['id'], "Pulled");
 		include 'templates/delete_persona_success_tmpl.php';
 	}
 	else
