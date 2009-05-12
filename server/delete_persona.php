@@ -57,13 +57,15 @@
 	
 	if(!$persona || $persona['status'] != 1)
 	{
-		echo "We were unable to locate this persona";
+		$persona = null;
+		include 'templates/delete_persona_tmpl.php';
 		exit;
 	}
 	
 	if (!($user->has_admin_privs() || $persona['author'] == $auth_user))
 	{
-		echo "You don't have permission to edit that";
+		$override_error = "You don't have permission to edit that";
+		include 'templates/delete_persona_tmpl.php';
 		exit;
 	}
 	

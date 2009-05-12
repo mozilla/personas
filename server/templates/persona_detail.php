@@ -1,5 +1,11 @@
  <?php
-	if ($persona['id'])
+	if ($override_error)
+	{
+?>            
+                <p class="description"><?= $override_error ?></p>
+<?php
+	}
+	else if ($persona['id'])
 	{
 ?>
 				<h2><?= $persona['name'] ?></h2>
