@@ -10,12 +10,14 @@
             <div id="maincontent">
                 <p id="breadcrumbs"><a href="http://www.getpersonas.com">Personas Home</a> : Delete Your Persona</p>
                 
+<?php include 'persona_detail.php' ?>
+<?php if(!$override_error && $persona) { ?>
                 <form method="POST" action="/delete/<?= $persona['id'] ?>" enctype='multipart/form-data'>
 					<input type="hidden" name="id" value="<?= htmlspecialchars($persona['id']) ?>">
 					<input type="hidden" name="confirm" value="1">
-<?php include 'persona_detail.php' ?>
-                	<p class="continue"><button type="submit" class="button"><span>confirm deletion</span><span class="arrow">&nbsp;</span></button></p>
+					<p class="continue"><button type="submit" class="button"><span>confirm deletion</span><span class="arrow">&nbsp;</span></button></p>
             	</form>
+<?php } ?>
             </div>
             <div id="secondary-content">
               <ol id="upload-steps">
