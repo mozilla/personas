@@ -33,7 +33,7 @@
                             <h4><a href="/gallery/Designer/<?= $persona['author'] ?>"><?= $persona['author'] ?></a></h4>
                             <p class="try"><a href="/gallery/Designer/<?= $persona['author'] ?>">view designer »</a></p>
                             <hr />
-                            <p><? //description goes here ?></p>
+                            <p><?= $persona['description'] ?></p>
                         </li>
 <?php
 					}
