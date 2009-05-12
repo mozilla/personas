@@ -11,6 +11,9 @@
                 <p id="breadcrumbs"><a href="http://www.getpersonas.com">Personas Home</a> : <?= $upload_submitted['id'] ? "Edit" : "Create" ?> Your Own</p>
                 
                 <h4><?= $upload_submitted['id'] ? "Edit" : "Create" ?> Your Persona</h4>
+<?php if ($override_error) { ?>
+                <p class="description"><?= $override_error ?></p>
+<?php } else { ?>
                 <form method="POST" action="/upload" enctype='multipart/form-data'>
 				<input type="hidden" name="agree" value="<?= htmlspecialchars($upload_submitted['agree']) ?>">
 				<input type="hidden" name="license" value="<?= htmlspecialchars($upload_submitted['license']) ?>">
@@ -105,8 +108,9 @@
                     <button type="submit" class="button"><span>submit</span><span class="arrow">&nbsp;</span></button></p>
                 <p>By clicking submit I affirm that I am the rightful owner of this content (see <a href="/faq#guidelines" target="_blank">guidelines</a>) and understand that this design will be publicly available in the Gallery upon approval.</p>
             	</form>
-            </div>
-            <div id="secondary-content">
+ <?php } ?>
+           </div>
+			<div id="secondary-content">
               <ol id="upload-steps">
                    <li class="completed">                         
                           	<h3>Step 1:</h3>

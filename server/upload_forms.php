@@ -32,7 +32,9 @@
 		if (!$user->has_admin_privs() && $upload_submitted['author'] != $auth_user)
 		{
 			#include something bad here
-			echo "You don't have permission to edit that";
+			$upload_submitted = null;
+			$override_error = "You don't have permission to edit that";
+			include 'templates/upload_persona_tmpl.php';
 			exit;
 		}
 		$upload_submitted['agree'] = 1;
