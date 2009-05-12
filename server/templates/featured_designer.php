@@ -1,4 +1,6 @@
 <?php
+	$featured_description_max = 140;
+
     $personas = array();
 	foreach (explode(":", FEATURED_DESIGNERS) as $id)
 	{
@@ -6,6 +8,12 @@
 		if (!$persona)
 			continue;
 		$persona['json'] = htmlentities(json_encode(extract_record_data($persona)));
+		$persona['short_description'] = $persona['description'];
+		if (strlen($persona['short_description']) > $description_max)
+		{
+			$persona['short_description'] = substr($persona['short_description'], 0, $featured_description_max);
+			$persona['short_description'] = preg_replace('/ [^ ]+$/', '', $persona['short_description']) . '...';
+		}
 
 		$personas[] = $persona; 
 	}
@@ -33,7 +41,7 @@
                             <h4><a href="/gallery/Designer/<?= $persona['author'] ?>"><?= $persona['author'] ?></a></h4>
                             <p class="try"><a href="/gallery/Designer/<?= $persona['author'] ?>">view designer »</a></p>
                             <hr />
-                            <p><?= $persona['description'] ?></p>
+                            <p><?= $persona['short_description'] ?></p>
                         </li>
 <?php
 					}
