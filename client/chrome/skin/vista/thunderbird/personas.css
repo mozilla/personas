@@ -119,10 +119,10 @@
  * jump up or down when the user switches from the default theme to a persona.
  * So when changing these rules, be very careful that you don't inadvertently
  * change the overall height of the toolbar. */
-#status-bar[persona], #status-bar[persona] hbox, #status-bar[persona] statusbarpanel {
+
+#status-bar[persona], #status-bar[persona] > hbox, #status-bar[persona] statusbarpanel {
   -moz-appearance: none; /* undo -moz-appearance: statusbarpanel */
 
   background-repeat: no-repeat;
   border: 0px solid transparent;
 }
-
