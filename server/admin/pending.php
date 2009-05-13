@@ -211,7 +211,7 @@
 		<br>
 		Name: <?= $result['name'] ?>
 		<br>
-		User: <?= $result['author'] ?>
+		User: <a href="/gallery/designer/<?= $result['author'] ?>" target="_blank"><?= $result['author'] ?></a>
 		<br>
 		Category: <select name="changecategory">
 		<?php
