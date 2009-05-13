@@ -694,6 +694,39 @@ class PersonaStorage
 		return 0;
 	}
 	
+	function direct_persona_input($id, $name, $category, $header, $footer, $author, $accent, $text, $desc, $license, $reason, $reasonother) #used for imports
+	{
+		if (!$this->_dbh)
+			$this->db_connect();		
+
+		try
+		{
+			$statement = 'replace into personas (id, name, status, header, footer, category, submit, approve, author, accentcolor, textcolor, description, license, reason, reason_other, locale) values (:id, :name, 1, :header, :footer, :category, NOW(), NOW(), :author, :accentcolor, :textcolor, :description, :license, :reason, :reasonother, "' . PERSONAS_LOCALE . '")';
+			$sth = $this->_dbh->prepare($statement);
+			$sth->bindParam(':id', $id);
+			$sth->bindParam(':name', $name);
+			$sth->bindParam(':header', $header);
+			$sth->bindParam(':footer', $footer);
+			$sth->bindParam(':category', $category);
+			$sth->bindParam(':author', $author);
+			$sth->bindParam(':accentcolor', $accent);
+			$sth->bindParam(':textcolor', $text);
+			$sth->bindParam(':description', $desc);
+			$sth->bindParam(':license', $license);
+			$sth->bindParam(':reason', $reason);
+			$sth->bindParam(':reasonother', $reasonother);
+			$sth->execute();
+			return 1;
+		}
+		catch( PDOException $exception )
+		{
+			error_log($exception->getMessage());
+			throw new Exception("Database unavailable", 503);
+		}
+		return 0;
+	}
+	
+	
 	function submit_persona_edit($id, $author, $name, $category, $accent, $text, $desc, $header = null, $footer = null, $reason = null, $reason_other = null)
 	{
 		if (!$this->_dbh)

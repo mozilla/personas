@@ -60,5 +60,37 @@
 	
 	$db = new PersonaStorage();
 	$results = $db->get_log_by_date($date);
-	
-	echo json_encode($results);
+	$output = array();
+	foreach ($results as $entry)
+	{
+		list($action) = explode(' ', $entry['action']);
+		switch ($action)
+		{
+			case 'Flagged': #not relevant entries
+			case 'EditRejected':
+			case 'Rejected':
+			case 'Added':
+			case 'Import': #don't want to chain import logging
+				break;
+			case 'Pulled':
+				$output[] = $entry;
+				break;
+			case 'EditApproved':
+			case 'Edit': #some older ones had this format
+			case 'Approved';
+				$persona = $db->get_persona_by_id($entry['id']);
+				$entry['data'] = array('name' => $persona['name'],
+									   'header' => $persona['header'],
+									   'footer' => $persona['footer'],
+									   'category' => $persona['category'],
+									   'author' => $persona['author'],
+									   'accentcolor' => $persona['accentcolor'],
+									   'textcolor' => $persona['textcolor'],
+									   'description' => $persona['description'],
+									   'license' => $persona['license']
+								);
+				$output[] = $entry;
+				break;
+		}
+	}
+	echo json_encode($output);
