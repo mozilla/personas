@@ -44,7 +44,7 @@
 
 	$username = "personasuser";
 	$password = "ppass";
-	$url_host = "http://sm-weave-proxy01.services.mozilla.com";
+	$url_host = "http://personas.services.mozilla.com";
 
 	$date = $argc > 1 ? $argv[1] : date("Y-m-d",time() - 86400);
 	$url = "$url_host/admin/readlog.php?date=$date";
