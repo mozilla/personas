@@ -68,4 +68,7 @@ if (!defined('PERSONAS_ADDON_URL')) { define('PERSONAS_ADDON_URL', 'https://addo
 if (!defined('MEMCACHE_PORT')) { define('MEMCACHE_PORT', null); }
 if (!defined('MEMCACHE_DECAY')) { define('MEMCACHE_DECAY', null); }
 
+#password to access the readlog portion of the site
+if (!defined('READLOG_PASS')) { define('READLOG_PASS', 'ppass'); }
+
 ?>

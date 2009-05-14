@@ -49,7 +49,7 @@
 	$auth_pw = array_key_exists('PHP_AUTH_PW', $_SERVER) ? $_SERVER['PHP_AUTH_PW'] : null;
 
 	header("Content-type: application/json");
-	if ($auth_user != 'personasuser' and $authpass != 'ppass')
+	if ($auth_user != 'personasuser' and $authpass != READLOG_PASS)
 	{
 		header('HTTP/1.1 401 Unauthorized',true,401);
 		header('WWW-Authenticate: Basic realm="Personas"');
