@@ -72,7 +72,7 @@
 		$user = new PersonaUser();
 		$user->authenticate();
 		$user->force_signin(1);
-		if (!$user->has_admin_privs())
+		if (!$user->has_approval_privs())
 		{
 			$_errors['error'] = 'This account does not have privileges for this operation. Please <a href="/signin?action=logout">log in</a> with an account that does.';
 			include '../templates/user_error.php';
