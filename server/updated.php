@@ -28,7 +28,7 @@
 <?php include 'templates/footer.php'; ?>
     <script type="text/javascript" charset="utf-8">
         $(document).ready(function () {
-            $("#slideshow").slider();
+            $(".slideshow").slider();
         });
         $("img.persona").previewPersona();
     </script>
