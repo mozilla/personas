@@ -1008,7 +1008,13 @@ img.preview  {
     width: auto;
     height: 30px;
     text-decoration: none;
+    vertical-align: middle;
 }
+
+.button.search {
+    vertical-align: inherit;
+}
+
 
 .button span {
     background: #fff url(../img/main-sprites.png) no-repeat scroll -383px 1px;
@@ -1336,11 +1342,6 @@ img.preview  {
 	letter-spacing: -0.5px;
 	text-align: center;
 }
-
-.button {
-	vertical-align: middle;
-}
-
 
 
 .colorpicker {

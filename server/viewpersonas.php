@@ -53,7 +53,7 @@
 
 	$categories = $db->get_categories();
 	array_unshift($categories, 'All');
-	$tabs = array('Popular', 'Recent', 'All', 'My'); # pulling 'Search'
+	$tabs = array('Popular', 'Recent', 'All', 'My', 'Search'); # pulling 'Search'
 	
 	$path = array_key_exists('PATH_INFO', $_SERVER) ? $_SERVER['PATH_INFO'] : '/';
 	$path = substr($path, 1); #chop the lead slash
@@ -132,9 +132,13 @@
 			
 			if ($tab == 'Search')
 			{
-?>
-				<form action="" method=GET>
-				<input type=text name=p value='<?= array_key_exists('p', $_GET) ? $_GET['p'] : '' ?>'><input type=submit value="Search"><p>
+?>  
+				<form action="" method="GET">
+				    <input type=text name=p value='<?= array_key_exists('p', $_GET) ? $_GET['p'] : '' ?>'>
+				    <button class="button search" type="submit">
+                    <span>search</span>
+                    <span class="arrow"/>
+                    </button>
 				</form>
 <?php
 				if (count($list) == 0 && array_key_exists('p', $_GET))
