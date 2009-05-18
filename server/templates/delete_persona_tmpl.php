@@ -1,4 +1,9 @@
-<?php $title = "Delete your Persona"; include 'header.php'; ?>
+<?php 
+	error_log($persona['author']);
+	error_log($auth_user);
+	$delete_require = $persona['author'] != $auth_user ? "onsubmit=\"if ($('#formreason').val() == '') {alert('Please provide a reason for deletion'); return false;}\"" : "";
+	$title = "Delete your Persona"; include 'header.php'; 
+?>
 <body>
     <div id="outer-wrapper">
         <div id="inner-wrapper">
@@ -12,10 +17,15 @@
                 
 <?php include 'persona_detail.php' ?>
 <?php if(!$override_error && $persona) { ?>
-                <form method="POST" action="/delete/<?= $persona['id'] ?>" enctype='multipart/form-data'>
+                <form method="POST" action="/delete/<?= $persona['id'] ?>" enctype='multipart/form-data' <?= $delete_require ?>>
 					<input type="hidden" name="id" value="<?= htmlspecialchars($persona['id']) ?>">
 					<input type="hidden" name="confirm" value="1">
-					<p class="continue"><button type="submit" class="button"><span>confirm deletion</span><span class="arrow">&nbsp;</span></button></p>
+					<p class="continue">
+<?php 	if($persona['author'] != $auth_user) { ?>
+						Delete Reason: <input type="text" name="dreason" id=formreason> 
+<?php 	} ?>
+						<button type="submit" class="button"><span>confirm deletion</span><span class="arrow">&nbsp;</span></button>
+					</p>
             	</form>
 <?php } ?>
             </div>

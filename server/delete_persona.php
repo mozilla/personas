@@ -43,6 +43,18 @@
 	require_once 'lib/user.php';
 
 	
+	function send_delete_email($address, $reason, $name)
+	{
+		$message = "We have had to remove your persona '$name' from the gallery for the following reason: $reason.\n\n"; 
+		$message .= "If you have any questions about this decision, please contact us at personas@mozilla.com. We look forward to seeing your contributions to the community in the future\n\n";
+		$message .= "Best Wishes,\n";
+		$message .= "The Personas Team\n";
+		
+		$header = "From: personas@mozilla.com\r\n";
+		return mail($address, 'Removing a persona', $message, $header);
+	}
+
+
 	$path = array_key_exists('PATH_INFO', $_SERVER) ? $_SERVER['PATH_INFO'] : '/';
 	$path = substr($path, 1); #chop the lead slash
 	list($id) = explode('/', $path);
@@ -73,7 +85,9 @@
 	{
 		rename (make_persona_storage_path($persona['id']), make_persona_pending_path($persona['id']));
 		$db->reject_persona($persona['id']);
-		$db->log_action($user->get_username(), $persona['id'], "Pulled");
+		if ($persona['author'] != $auth_user)
+			send_delete_email($user->get_email($persona['author']), $_POST['dreason'], $persona['name']);
+		$db->log_action($user->get_username(), $persona['id'], "Pulled" . (array_key_exists('dreason', $_POST) ? " - " . $_POST['dreason'] : ""));
 		include 'templates/delete_persona_success_tmpl.php';
 	}
 	else
