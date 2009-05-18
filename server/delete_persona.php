@@ -46,7 +46,7 @@
 	function send_delete_email($address, $reason, $name)
 	{
 		$message = "We have had to remove your persona '$name' from the gallery for the following reason: $reason.\n\n"; 
-		$message .= "If you have any questions about this decision, please contact us at personas@mozilla.com. We look forward to seeing your contributions to the community in the future\n\n";
+		$message .= "If you have any questions about this decision, please contact us at personas@mozilla.com. We look forward to seeing your contributions to the community in the future.\n\n";
 		$message .= "Best Wishes,\n";
 		$message .= "The Personas Team\n";
 		
