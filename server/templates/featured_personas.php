@@ -43,7 +43,7 @@
                             <h4><a href="/persona/<?= $persona['id'] ?>"><?= $persona['name'] ?></a></h4>
                             <p class="try"><a href="/persona/<?= $persona['id'] ?>">view details »</a></p>
                             <hr />
-                            <p class="designer">By: <a href="/gallery/Designer/<?= $persona['author'] ?>"><?= $persona['author'] ?></a></p>
+                            <p class="designer">By: <a href="/gallery/Designer/<?= $persona['author'] ?>"><?= $persona['display_username'] ?></a></p>
                             <p class="daily-users"><?= number_format($persona['popularity']) ?> active daily users</p>
                             <p><?= $persona['short_description'] ?></p>
                             <hr />

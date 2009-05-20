@@ -1,20 +1,25 @@
 <?php
 	$featured_description_max = 140;
 
+	if (!isset($user))
+		$user = new PersonaUser();
+
     $personas = array();
 	foreach (explode(":", FEATURED_DESIGNERS) as $id)
 	{
 		$persona = $db->get_persona_by_id($id); 
 		if (!$persona)
 			continue;
+		
+		
 		$persona['json'] = htmlentities(json_encode(extract_record_data($persona)));
-		$persona['short_description'] = $persona['description'];
-		if (strlen($persona['short_description']) > $description_max)
+		$persona['designer_description'] = $user->get_description($persona['author']);
+		if (strlen($persona['designer_description']) > $description_max)
 		{
-			$persona['short_description'] = substr($persona['short_description'], 0, $featured_description_max);
-			$persona['short_description'] = preg_replace('/ [^ ]+$/', '', $persona['short_description']) . '...';
+			$persona['designer_description'] = substr($persona['designer_description'], 0, $featured_description_max);
+			$persona['designer_description'] = preg_replace('/ [^ ]+$/', '', $persona['designer_description']) . '...';
 		}
-
+				
 		$personas[] = $persona; 
 	}
 ?>
@@ -38,10 +43,10 @@
 ?>
                         <li>
                             <img class="preview persona" src="<?= PERSONAS_LIVE_PREFIX . '/' . url_prefix($persona['id']) ?>/preview_featured.jpg" persona="<?= $persona['json'] ?>">
-                            <h4><a href="/gallery/Designer/<?= $persona['author'] ?>"><?= $persona['author'] ?></a></h4>
+                            <h4><a href="/gallery/Designer/<?= $persona['author'] ?>"><?= $persona['display_username'] ?></a></h4>
                             <p class="try"><a href="/gallery/Designer/<?= $persona['author'] ?>">view designer »</a></p>
                             <hr />
-                            <p><?= $persona['short_description'] ?></p>
+                            <p><?= $persona['designer_description'] ?></p>
                         </li>
 <?php
 					}

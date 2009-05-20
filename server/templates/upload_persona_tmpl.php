@@ -39,7 +39,7 @@
                     
                     <p>
                         <label for="description">Description</label>
-                        <textarea name="description" id="description" <?php if (array_key_exists('desription', $upload_errors)) echo 'class="error"' ?> ><?= $upload_submitted['description'] ?></textarea>
+                        <textarea name="description" id="description" <?php if (array_key_exists('description', $upload_errors)) echo 'class="error"' ?> ><?= $upload_submitted['description'] ?></textarea>
                         <?php if (array_key_exists('description', $upload_errors)) echo '<span class="error-message">' . $upload_errors['description'] . '</span>' ?>
                      </p>
                 </div>

@@ -208,7 +208,7 @@
 	}
 	else
 	{
-		$upload_submitted['id'] = $db->submit_persona($upload_submitted['name'], $upload_submitted['category'], $upload_submitted['header'], $upload_submitted['footer'], $auth_user, $upload_submitted['accentcolor'], $upload_submitted['textcolor'], $upload_submitted['description'], $upload_submitted['license'], $upload_submitted['reason'], $upload_submitted['other-reason']);
+		$upload_submitted['id'] = $db->submit_persona($upload_submitted['name'], $upload_submitted['category'], $upload_submitted['header'], $upload_submitted['footer'], $auth_user, $user->get_display_username(), $upload_submitted['accentcolor'], $upload_submitted['textcolor'], $upload_submitted['description'], $upload_submitted['license'], $upload_submitted['reason'], $upload_submitted['other-reason']);
 		$db->log_action($auth_user, $upload_submitted['id'], "Added");
 		$action_verb = "added";
 	}

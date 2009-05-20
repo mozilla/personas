@@ -175,7 +175,7 @@
                                 <div class="preview">
                                     <a href="/persona/<?= ($persona['id'] < 10 ? "0" : "") . $persona['id'] ?>"><img src="<?= $preview_url ?>" alt="<?= $persona['name'] ?>" persona="<?= $persona['json'] ?>"/></a>
                                 </div>
-                                <p class="designer"><strong>Designer:</strong> <a href="/gallery/Designer/<?= $persona['author'] ?>"><?= $persona['author'] ?></a></p>
+                                <p class="designer"><strong>Designer:</strong> <a href="/gallery/Designer/<?= $persona['author'] ?>"><?= $persona['display_username'] ?></a></p>
                                 <p class="added"><strong>Added:</strong> <?= $persona['date'] ?></p>
                                 <p><?= $persona['short_description'] ?></p>
                                 <p><?= number_format($persona['popularity']) ?> active daily users</p>

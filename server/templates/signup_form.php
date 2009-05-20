@@ -6,13 +6,18 @@
 						echo "<input type=hidden name=return value=\"$return_url\">";
 ?>
                     <p><label for="email">Email</label>
-                    <input type="text" name="create_email" value="" id="" <?php if (array_key_exists('create_email', $_errors)) echo 'class="error"' ?>/>
+                    <input type="text" name="create_email" value="<?= $create['email'] ?>" id="" <?php if (array_key_exists('create_email', $_errors)) echo 'class="error"' ?>/>
 					<?php if (array_key_exists('create_email', $_errors)) echo '<span class="error-message">' . $_errors['create_email'] . '</span>' ?>
                     </p>
                     
-                    <p><label for="username">Username (displayed in the Personas gallery)</label>
-                    <input type="text" name="create_username" value="" id="" <?php if (array_key_exists('create_username', $_errors)) echo 'class="error"' ?>/>
+                    <p><label for="username">Login Name</label>
+                    <input type="text" name="create_username" value="<?= $create['username'] ?>" id="" <?php if (array_key_exists('create_username', $_errors)) echo 'class="error"' ?>/>
 					<?php if (array_key_exists('create_username', $_errors)) echo '<span class="error-message">' . $_errors['create_username'] . '</span>' ?>
+                    </p>
+                    
+                    <p><label for="username">Display Username (optional - displayed in the Personas gallery)</label>
+                    <input type="text" name="create_display_username" value="<?= $create['display_username'] ?>" id="" <?php if (array_key_exists('create_display_username', $_errors)) echo 'class="error"' ?>/>
+					<?php if (array_key_exists('create_display_username', $_errors)) echo '<span class="error-message">' . $_errors['create_display_username'] . '</span>' ?>
                     </p>
                     
                     <p><label for="password">Password</label>
@@ -25,7 +30,13 @@
 					<?php if (array_key_exists('create_passconf', $_errors)) echo '<span class="error-message">' . $_errors['create_passconf'] . '</span>' ?>
                     </p>
                     
-                    <p class="news"><label for="news"><input type="checkbox" name="news" id="news" value="" /> I’d like to receive news and information about Personas</label></p>
+                     <p>
+                        <label for="description">Designer Description (optional)</label>
+                        <textarea name="create_description" id="create_description" <?php if (array_key_exists('create_description', $_errors)) echo 'class="error"' ?> ><?= $create['description'] ?></textarea>
+                        <?php if (array_key_exists('create_description', $_errors)) echo '<span class="error-message">' . $_errors['create_description'] . '</span>' ?>
+                     </p>
+
+                   <p class="news"><label for="news"><input type="checkbox" name="news" id="news" value="" <?= $create['news'] ? "checked" : "" ?>/> I’d like to receive news and information about Personas</label></p>
                     
             
                     <div id="captcha">

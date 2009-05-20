@@ -83,6 +83,7 @@
 									   'header' => $persona['header'],
 									   'footer' => $persona['footer'],
 									   'category' => $persona['category'],
+									   'display_username' => $persona['display_username'],
 									   'author' => $persona['author'],
 									   'accentcolor' => $persona['accentcolor'],
 									   'textcolor' => $persona['textcolor'],

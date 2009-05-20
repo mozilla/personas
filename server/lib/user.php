@@ -8,6 +8,7 @@ class PersonaUser
 	var $_dbh;
 
 	var $_username = null;
+	var $_display_username = null;
 	var $_unauthed_username = null;
 	var $_cookie_value = null;
 	var $_email = null;
@@ -41,6 +42,31 @@ class PersonaUser
 		return $this->_username;
 	}
 	
+	function get_display_username()
+	{
+		return $this->_display_username;
+	}
+
+	function get_description($username = null)
+	{
+		if (!$username)
+			$username = $this->_username;
+			
+		try
+		{
+			$select_stmt = 'select description from users where username = :username';
+			$sth = $this->_dbh->prepare($select_stmt);
+			$sth->bindParam(':username', $username);
+			$sth->execute();
+		}
+		catch( PDOException $exception )
+		{
+			error_log("get_description: " . $exception->getMessage());
+			throw new Exception("Database unavailable", 503);
+		}
+		return $sth->fetchColumn();		
+	}
+	
 	function get_unauthed_username()
 	{
 		return $this->_unauthed_username;
@@ -53,27 +79,22 @@ class PersonaUser
 	
 	function get_email($username = null)
 	{
-		if ($username)
-		{
-			try
-			{
-				$select_stmt = 'select email from users where username = :username';
-				$sth = $this->_dbh->prepare($select_stmt);
-				$sth->bindParam(':username', $username);
-				$sth->execute();
-			}
-			catch( PDOException $exception )
-			{
-				error_log("get_email: " . $exception->getMessage());
-				throw new Exception("Database unavailable", 503);
-			}
-			return $sth->fetchColumn();
-		}
-		else
-		{
+		if (!$username)
 			return $this->_email;
+			
+		try
+		{
+			$select_stmt = 'select email from users where username = :username';
+			$sth = $this->_dbh->prepare($select_stmt);
+			$sth->bindParam(':username', $username);
+			$sth->execute();
 		}
-		
+		catch( PDOException $exception )
+		{
+			error_log("get_email: " . $exception->getMessage());
+			throw new Exception("Database unavailable", 503);
+		}
+		return $sth->fetchColumn();		
 	}
 	
 	function get_errors()
@@ -91,25 +112,26 @@ class PersonaUser
 		return $this->_privs >= 2;
 	}
 	
-	function create_user($username, $password, $email = "", $news = 0)
+	function create_user($username, $password, $display_username = null, $email = "", $description = "", $news = 0)
 	{ 
 		if (!$username)
-		{
 			throw new Exception("No username", 404);
-		}
-		if (!$password)
-		{
-			throw new Exception("No password", 404);
-		}
 
+		if (!$password)
+			throw new Exception("No password", 404);
+
+		if (!$display_username)
+			$display_username = $username;		
 		
 		try
 		{
-			$insert_stmt = 'insert into users (username, md5, email, news, privs) values (:username, :md5, :email, :news, 1)';
+			$insert_stmt = 'insert into users (username, display_username, md5, email, description, news, privs) values (:username, :display_username, :md5, :email, :description, :news, 1)';
 			$sth = $this->_dbh->prepare($insert_stmt);
 			$sth->bindParam(':username', $username);
+			$sth->bindParam(':display_username', $display_username);
 			$sth->bindParam(':md5', md5($password));
 			$sth->bindParam(':email', $email);
+			$sth->bindParam(':description', $description);
 			$sth->bindParam(':news', $news);
 			$sth->execute();
 		}
@@ -162,6 +184,7 @@ class PersonaUser
 		return 1;	
 	}
 
+
 	function update_email($username, $email = "")
 	{
 		if (!$username)
@@ -183,6 +206,64 @@ class PersonaUser
 		catch( PDOException $exception )
 		{
 			error_log("update_email: " . $exception->getMessage());
+			throw new Exception("Database unavailable", 503);
+		}
+		return 1;
+	
+	}
+
+	function update_display_username($username, $display_username)
+	{
+		if (!$username)
+		{
+			throw new Exception("No username", 404);
+		}
+
+		if (!$display_username)
+		{
+			$display_username = $username;
+		}
+		try
+		{
+			$insert_stmt = 'update users set display_username = :display_username where username = :username';
+			$sth = $this->_dbh->prepare($insert_stmt);
+			$sth->bindParam(':username', $username);
+			$sth->bindParam(':display_username', $display_username);
+			if ($sth->execute() == 0)
+			{
+				throw new Exception("User not found", 404);
+			}
+		}
+		catch( PDOException $exception )
+		{
+			error_log("update_display_username: " . $exception->getMessage());
+			throw new Exception("Database unavailable", 503);
+		}
+		return 1;
+	
+	}
+
+	function update_description($username, $description = '')
+	{
+		if (!$username)
+		{
+			throw new Exception("No username", 404);
+		}
+
+		try
+		{
+			$insert_stmt = 'update users set description = :description where username = :username';
+			$sth = $this->_dbh->prepare($insert_stmt);
+			$sth->bindParam(':username', $username);
+			$sth->bindParam(':description', $description);
+			if ($sth->execute() == 0)
+			{
+				throw new Exception("User not found", 404);
+			}
+		}
+		catch( PDOException $exception )
+		{
+			error_log("update_description: " . $exception->getMessage());
 			throw new Exception("Database unavailable", 503);
 		}
 		return 1;
@@ -249,6 +330,7 @@ class PersonaUser
 		if ($result && $result['privs'] > 0) #0 is disabled
 		{
 			$this->_username = $result['username'];
+			$this->_display_username = $result['display_username'];
 			$this->_privs = $result['privs'];
 			$this->_cookie_value = $result['username'] . " " . md5($result['username'] . $result['md5'] . PERSONAS_LOGIN_SALT . $_SERVER['REMOTE_ADDR']);
 			$this->_email = $result['email'];	
@@ -284,6 +366,7 @@ class PersonaUser
 		if ($result['privs'] > 0 && md5($username . $result['md5'] . PERSONAS_LOGIN_SALT . $_SERVER['REMOTE_ADDR']) == $token)
 		{
 			$this->_username = $result['username'];
+			$this->_display_username = $result['display_username'];
 			$this->_privs = $result['privs'];
 			$this->_cookie_value = $auth_cookie;
 			$this->_email = $result['email'];	

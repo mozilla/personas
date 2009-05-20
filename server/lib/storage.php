@@ -186,6 +186,9 @@ class PersonaStorage
 
 		$result = $sth->fetch(PDO::FETCH_ASSOC);
 		
+		if (!$result['display_username'])
+			$result['display_username'] = $result['author'];
+			
 		if ($this->_memcache)
 			$this->_memcache->set("p$id", $result, MEMCACHE_DECAY);
 			
@@ -273,6 +276,8 @@ class PersonaStorage
 		
 		while ($result = $sth->fetch(PDO::FETCH_ASSOC))
 		{
+			if (!$result['display_username'])
+				$result['display_username'] = $result['author'];
 			$personas[] = $result;
 		}		
 
@@ -308,6 +313,8 @@ class PersonaStorage
 		
 		while ($result = $sth->fetchColumn())
 		{
+			if (!$result['display_username'])
+				$result['display_username'] = $result['author'];
 			$personas[] = $result;
 		}		
 		return $personas;
@@ -353,6 +360,8 @@ class PersonaStorage
 		
 		while ($result = $sth->fetch(PDO::FETCH_ASSOC))
 		{
+			if (!$result['display_username'])
+				$result['display_username'] = $result['author'];
 			$personas[] = $result;
 		}	
 		
@@ -397,6 +406,8 @@ class PersonaStorage
 		
 		while ($result = $sth->fetch(PDO::FETCH_ASSOC))
 		{
+			if (!$result['display_username'])
+				$result['display_username'] = $result['author'];
 			$personas[] = $result;
 		}		
 
@@ -437,6 +448,8 @@ class PersonaStorage
 		
 		while ($result = $sth->fetch(PDO::FETCH_ASSOC))
 		{
+			if (!$result['display_username'])
+				$result['display_username'] = $result['author'];
 			$personas[] = $result;
 		}		
 		return $personas;
@@ -662,21 +675,43 @@ class PersonaStorage
 		return $id;
 	}
 	
-	
-	function submit_persona($name, $category, $header, $footer, $author, $accent, $text, $desc, $license, $reason, $reasonother)
+	function update_display_username($author, $display_username)
 	{
 		if (!$this->_dbh)
 			$this->db_connect();		
 
 		try
 		{
-			$statement = 'insert into personas (name, status, header, footer, category, submit, author, accentcolor, textcolor, description, license, reason, reason_other, locale) values (:name, 0, :header, :footer, :category, NOW(), :author, :accentcolor, :textcolor, :description, :license, :reason, :reasonother, "' . PERSONAS_LOCALE . '")';
+			$statement = 'update personas set display_username = :display where author = :author';
+			$sth = $this->_dbh->prepare($statement);
+			$sth->bindParam(':display', $display_username);
+			$sth->bindParam(':author', $author);
+			$sth->execute();
+		}
+		catch( PDOException $exception )
+		{
+			error_log("update_display_username: " . $exception->getMessage());
+			throw new Exception("Database unavailable", 503);
+		}
+		return 0;
+	}
+	
+	
+	function submit_persona($name, $category, $header, $footer, $author, $display_username, $accent, $text, $desc, $license, $reason, $reasonother)
+	{
+		if (!$this->_dbh)
+			$this->db_connect();		
+
+		try
+		{
+			$statement = 'insert into personas (name, status, header, footer, category, submit, author, display_username, accentcolor, textcolor, description, license, reason, reason_other, locale) values (:name, 0, :header, :footer, :category, NOW(), :author, :display_username, :accentcolor, :textcolor, :description, :license, :reason, :reasonother, "' . PERSONAS_LOCALE . '")';
 			$sth = $this->_dbh->prepare($statement);
 			$sth->bindParam(':name', $name);
 			$sth->bindParam(':header', $header);
 			$sth->bindParam(':footer', $footer);
 			$sth->bindParam(':category', $category);
 			$sth->bindParam(':author', $author);
+			$sth->bindParam(':display_username', $display_username);
 			$sth->bindParam(':accentcolor', $accent);
 			$sth->bindParam(':textcolor', $text);
 			$sth->bindParam(':description', $desc);
@@ -694,14 +729,14 @@ class PersonaStorage
 		return 0;
 	}
 	
-	function direct_persona_input($id, $name, $category, $header, $footer, $author, $accent, $text, $desc, $license, $reason, $reasonother) #used for imports
+	function direct_persona_input($id, $name, $category, $header, $footer, $author, $display_username, $accent, $text, $desc, $license, $reason, $reasonother) #used for imports
 	{
 		if (!$this->_dbh)
 			$this->db_connect();		
 
 		try
 		{
-			$statement = 'replace into personas (id, name, status, header, footer, category, submit, approve, author, accentcolor, textcolor, description, license, reason, reason_other, locale) values (:id, :name, 1, :header, :footer, :category, NOW(), NOW(), :author, :accentcolor, :textcolor, :description, :license, :reason, :reasonother, "' . PERSONAS_LOCALE . '")';
+			$statement = 'replace into personas (id, name, status, header, footer, category, submit, approve, author, display_username, accentcolor, textcolor, description, license, reason, reason_other, locale) values (:id, :name, 1, :header, :footer, :category, NOW(), NOW(), :author, :accentcolor, :textcolor, :description, :license, :reason, :reasonother, "' . PERSONAS_LOCALE . '")';
 			$sth = $this->_dbh->prepare($statement);
 			$sth->bindParam(':id', $id);
 			$sth->bindParam(':name', $name);
@@ -709,6 +744,7 @@ class PersonaStorage
 			$sth->bindParam(':footer', $footer);
 			$sth->bindParam(':category', $category);
 			$sth->bindParam(':author', $author);
+			$sth->bindParam(':display_username', $display_username);
 			$sth->bindParam(':accentcolor', $accent);
 			$sth->bindParam(':textcolor', $text);
 			$sth->bindParam(':description', $desc);

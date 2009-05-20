@@ -82,6 +82,7 @@
 										  $persona['data']['header'],
 										  $persona['data']['footer'],
 										  $persona['data']['author'],
+										  $persona['data']['display_username'],
 										  $persona['data']['accentcolor'],
 										  $persona['data']['textcolor'],
 										  $persona['data']['description'],

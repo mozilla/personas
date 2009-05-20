@@ -9,7 +9,7 @@
 	{
 ?>
 				<h2><?= $persona['name'] ?></h2>
-                <h3>created by <?= $persona['author'] ?></h3>
+                <h3>created by <?= $persona['display_username'] ?></h3>
                 <img class="detailed-view"  alt="<?= $persona['name'] ?>" persona="<?= $persona['json'] ?>" src="<?= PERSONAS_LIVE_PREFIX . '/' . url_prefix($persona['id']) ?>/preview_large.jpg" >
                 
 <?php
