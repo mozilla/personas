@@ -15,7 +15,7 @@
 					<?php if (array_key_exists('create_username', $_errors)) echo '<span class="error-message">' . $_errors['create_username'] . '</span>' ?>
                     </p>
                     
-                    <p><label for="username">Display Username (optional - displayed in the Personas gallery)</label>
+                    <p><label for="username">Display Username (displayed in the Personas gallery)*</label>
                     <input type="text" name="create_display_username" value="<?= $create['display_username'] ?>" id="" <?php if (array_key_exists('create_display_username', $_errors)) echo 'class="error"' ?>/>
 					<?php if (array_key_exists('create_display_username', $_errors)) echo '<span class="error-message">' . $_errors['create_display_username'] . '</span>' ?>
                     </p>
@@ -31,7 +31,7 @@
                     </p>
                     
                      <p>
-                        <label for="description">Designer Description (optional)</label>
+                        <label for="description">Designer Description*</label>
                         <textarea name="create_description" id="create_description" <?php if (array_key_exists('create_description', $_errors)) echo 'class="error"' ?> ><?= $create['description'] ?></textarea>
                         <?php if (array_key_exists('create_description', $_errors)) echo '<span class="error-message">' . $_errors['create_description'] . '</span>' ?>
                      </p>
@@ -56,7 +56,7 @@
 						</noscript>        
 						<?php if (array_key_exists('captcha', $_errors)) echo '<span class="error-message">' . $_errors['captcha'] . '</span>' ?>
                     </div>
-                    
+                    <p>* <i>denotes an optional field</i></p>
                     <button type="submit" class="button"><span>sign me up</span><span class="arrow"></span></button>
                     </form>
                 </div>
