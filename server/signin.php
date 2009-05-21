@@ -78,11 +78,11 @@
 			$_errors['create_email'] = "Invalid email address";
 
 		if (!preg_match('/^[A-Z0-9\._-]+$/i', $create['username'])) 
-			$_errors['create_username'] = "Illegal characters in the username (alphanumerics, period, underscore and dash only)";
+			$_errors['create_username'] = "Illegal characters in the login name (alphanumerics, period, underscore and dash only)";
 		elseif (strlen($create['username']) > 32)
-			$_errors['create_username'] = "Please limit your username to 32 characters or less";
+			$_errors['create_username'] = "Please limit your login name to 32 characters or less";
 		elseif (strlen($create['username']) < 6)
-			$_errors['create_username'] = "Please use at least 6 characters in your username";
+			$_errors['create_username'] = "Please use at least 6 characters in your login name";
 			
 		if (strlen($password) < 6)
 			$_errors['create_password'] = "Password must be at least 6 characters long";
@@ -93,13 +93,13 @@
 			$_errors['create_passconf'] = "Password does not match confirmation";
 		
 		if (strlen($create['display_username']) > 32)
-			$_errors['create_display_username'] = "Please limit your username to 32 characters or less";
+			$_errors['create_display_username'] = "Please limit your display name to 32 characters or less";
 
 		if (strlen($create['description']) > 256)
 			$_errors['create_description'] = "Please limit your description to 256 characters or less";
 
 		if ($user->user_exists($create['username']))
-			$_errors['create_username'] = "Username already in use";
+			$_errors['create_username'] = "Login name already in use";
 		
 		
 		if (count($_errors) == 0)
