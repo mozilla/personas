@@ -119,10 +119,14 @@
 	}
 	else
 	{
+		if (!($category == 'Designer' && $header_text = $user->get_description($tab)))
+		{
+			$header_text = 'Your browser, your style! Dress it up with easy-to-change "skins" for your Firefox.';
+		}
 ?>
 			<div id="header">
                 <h2><?= $page_header ?></h2>
-                <h3>Your browser, your style! Dress it up with easy-to-change "skins" for your Firefox.</h3>
+                <h3><?= $header_text ?></h3>
             </div>
 <?php } ?>
 			<div id="maincontent">
