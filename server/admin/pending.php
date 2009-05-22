@@ -143,10 +143,17 @@
 				$db->log_action($user->get_username(), $persona['id'], "Pulled");
 				break;
 			case 'copyrightreject':
-				$reason = "We are unable to confirm that you have legal rights to the design contained in the persona. \n\nTo be the rightful owner of a persona design, you must own the actual logo or art inside the design. For example, if you use a sports team's logo to create a persona design, you must have permission from that particular team. To confirm that you have these rights, please send a note to personas@mozilla.com with subject line \"I have the rights to publish [insert persona design name]\" and we will review your submission as soon as possible.";
+				$reason = "We are unable to confirm that you have legal rights to the design contained in the persona. \n\nTo be the rightful owner of a persona design, you must own the actual logo or art inside the design. For example, if you use a sports team's logo to create a persona design, you must have permission from that particular team. To confirm that you have these rights, please send a note to personas@mozilla.com with subject line \"I have the rights to publish [insert persona design name]\" and we will review your submission as soon as possible";
 				$db->reject_persona($persona['id']);
 				send_problem_email($user->get_email($persona['author']), $reason, $persona['name']);
 				$db->log_action($user->get_username(), $persona['id'], "Rejected - Copyright concern");
+				$id = null;
+				break;				
+			case 'duplicatereject':
+				$reason = "The design appears to be identical to a previous version you submitted";
+				$db->reject_persona($persona['id']);
+				send_problem_email($user->get_email($persona['author']), $reason, $persona['name']);
+				$db->log_action($user->get_username(), $persona['id'], "Rejected - Duplicate");
 				$id = null;
 				break;				
 			case 'flagforlegal':
@@ -167,7 +174,7 @@
 		
 		if (array_key_exists('json', $_GET))
 		{
-			echo "Rejected";
+			echo "<option selected>Rejected</option>";
 			exit;
 		}
 		
@@ -285,7 +292,13 @@
                                 <p class="added"><strong>Submitted:</strong> <?= $persona['submit'] ?></p>
                                 <p><?= $persona['description'] ?></p>
                                 <p><a href="/admin/pending.php?id=<?= $persona['id'] ?>&category=<?= $page_category ?>" class="view">Administer »</a></p>
-                                <p align=right><a href="#" onclick="copyrightreject(<?= $persona['id'] ?>, this); return false;">Copyrightreject »</a></p>
+                                <p align=right>
+									<select onChange="rejectselect(<?= $persona['id'] ?>, this)">
+										<option value="" selected>quickverdict >></option>
+										<option value="copyrightreject">Copyright</option>
+										<option value="duplicatereject">Duplicate</option>
+									</select>
+                                </p>
                             </div>
                         </li>
  <?php
@@ -319,9 +332,10 @@
            $("#gallery .preview img").previewPersona();
         });
 		
-		function copyrightreject(id, pointer)
+		function rejectselect(id, pointer)
 		{
-			$(pointer).load("/admin/pending.php?json=1&verdict=copyrightreject&id=" + id);
+			$(pointer).load("/admin/pending.php?json=1&verdict=" + $(pointer).val() + "&id=" + id);
+			return false;
 		}
     </script>
 </body>
