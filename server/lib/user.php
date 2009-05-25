@@ -12,6 +12,8 @@ class PersonaUser
 	var $_unauthed_username = null;
 	var $_cookie_value = null;
 	var $_email = null;
+	var $_news = 0;
+	var $_description = null;
 	var $_privs = 0;
 	var $_errors = array();
 	var $_no_signup = 0;
@@ -151,6 +153,38 @@ class PersonaUser
 		return 1;
 	}
 
+	
+	function update_user($username, $display_username = null, $email = "", $description = "", $news = 0)
+	{ 
+		if (!$username)
+			throw new Exception("No username", 404);
+
+		if (!$display_username)
+			$display_username = $username;		
+		
+		try
+		{
+			$insert_stmt = 'update users set display_username = :display_username, email = :email, description = :description, news = :news where username = :username';
+			$sth = $this->_dbh->prepare($insert_stmt);
+			$sth->bindParam(':username', $username);
+			$sth->bindParam(':display_username', $display_username);
+			$sth->bindParam(':email', $email);
+			$sth->bindParam(':description', $description);
+			$sth->bindParam(':news', $news);
+			$sth->execute();
+		}
+		catch( PDOException $exception )
+		{
+			error_log("update_user: " . $exception->getMessage());
+			#need to add a subcatch here for user already existing
+			$this->_errors['create_username'] = "A database problem occured. Please try again later.";
+			return 0;
+		}
+
+		$this->_email = $email;
+
+		return 1;
+	}
 	function update_password($username, $password)
 	{
 		if (!$username)
@@ -334,6 +368,8 @@ class PersonaUser
 			$this->_privs = $result['privs'];
 			$this->_cookie_value = $result['username'] . " " . md5($result['username'] . $result['md5'] . PERSONAS_LOGIN_SALT . $_SERVER['REMOTE_ADDR']);
 			$this->_email = $result['email'];	
+			$this->_description = $result['description'];	
+			$this->_news = $result['news'];	
 			return 1;
 		}
 		return 0;
@@ -370,6 +406,8 @@ class PersonaUser
 			$this->_privs = $result['privs'];
 			$this->_cookie_value = $auth_cookie;
 			$this->_email = $result['email'];	
+			$this->_description = $result['description'];	
+			$this->_news = $result['news'];	
 			return 1;
 		}
 		return 0;
