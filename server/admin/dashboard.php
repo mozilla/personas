@@ -87,10 +87,6 @@ New Pending Personas: <a href="pending.php" target="_blank"><?= $pending ?></a>
 Personas Awaiting Edit Approval: <a href="editing.php" target="_blank"><?= $edits ?></a>
 <p><hr><p>
 <a href="/store/dynamic/gallery/All/" target="_blank">Edit/Pull Personas</a>
-<p>
-<a href="http://groups.google.com/group/mozilla-labs-personas/topics" target="_blank">Personas Discussion Board</a>
-
-
 <?php include '../templates/footer.php'; ?>
 </body>
 </html>
