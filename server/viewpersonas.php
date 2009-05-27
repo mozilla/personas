@@ -71,7 +71,7 @@
 	$list = array(); #grab the appropriate personas for display
 	if ($category == 'Designer')
 	{
-		$page_header = "Personas by $tab";
+		$page_header = "Personas by " . $user->get_display_username($tab);
 		if ($tab) #tab is actually the author here
 			$list = $db->get_persona_by_author($tab); 
 	}
