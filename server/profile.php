@@ -47,7 +47,7 @@
 		$create['news'] = $user->_news;
 	}
 	
-	$title = "Login"; 
+	$title = "Change User Details"; 
 	include 'templates/header.php'; 
 ?>
 <body class="forgot-password">
