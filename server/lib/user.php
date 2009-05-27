@@ -44,15 +44,10 @@ class PersonaUser
 		return $this->_username;
 	}
 	
-	function get_display_username()
-	{
-		return $this->_display_username;
-	}
-
 	function get_description($username = null)
 	{
 		if (!$username)
-			$username = $this->_username;
+			$username = $this->_description;
 			
 		try
 		{
@@ -64,6 +59,27 @@ class PersonaUser
 		catch( PDOException $exception )
 		{
 			error_log("get_description: " . $exception->getMessage());
+			throw new Exception("Database unavailable", 503);
+		}
+		return $sth->fetchColumn();		
+	}
+	
+	
+	function get_display_username($username = null)
+	{
+		if (!$username)
+			$username = $this->_display_username;
+			
+		try
+		{
+			$select_stmt = 'select display_username from users where username = :username';
+			$sth = $this->_dbh->prepare($select_stmt);
+			$sth->bindParam(':username', $username);
+			$sth->execute();
+		}
+		catch( PDOException $exception )
+		{
+			error_log("get_display_username: " . $exception->getMessage());
 			throw new Exception("Database unavailable", 503);
 		}
 		return $sth->fetchColumn();		
