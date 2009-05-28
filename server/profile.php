@@ -1,6 +1,9 @@
 <?php
 	require_once 'lib/personas_constants.php';
-	require_once 'lib/user.php';	
+	require_once 'lib/storage.php';
+	require_once 'lib/user.php';
+	
+	$db = new PersonaStorage();
 
 	$user = new PersonaUser();
 	$user->authenticate();
@@ -36,6 +39,7 @@
 
 		if (count($_errors) == 0 && $user->update_user($user->get_username(), $create['display_username'], $create['email'], $create['description'], $create['news']))
 		{
+			$db->update_display_username($user->get_username(), $create['display_username']);
 			$updated = 1;
 		}
 	}
