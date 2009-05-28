@@ -341,7 +341,7 @@ div.get-personas p.platforms-note {
     font-size: 85%;
 }
 
-a.get-personas {
+a.get-personas, a.cta {
     text-decoration: none;
     color: #008000;
     font-size: 131%;
@@ -349,27 +349,42 @@ a.get-personas {
     display: block;
 }
 
-a.get-personas:hover span {
+a.get-personas:hover span, a.cta:hover span {
     text-decoration: underline;
 }
 
-a.get-personas span:hover {
+a.get-personas span:hover, a.cta span:hover {
     text-decoration: underline;
 }
 
-a.get-personas span {
+a.get-personas span, a.cta span {
     background: url('../img/main-sprites.png') 0 -52px no-repeat;
     padding: 23px 0 23px 16px;
     display: block;
     float: left;
 }
 
-a.get-personas span.arrow {
+a.cta span {
+    padding-right: 8px;
+}
+
+a.get-personas span.arrow, a.cta span.arrow {
     padding: 35px 30px;
     background: url('../img/main-sprites.png') -623px -52px no-repeat;
     line-height: 0;
     font-size: 0;
     margin: 0;
+}
+
+a.cta span.arrow {
+    padding: 35px 3px;
+    background-position: -675px -52px;
+}
+
+#header .cta {
+    position: absolute;
+    right: 0;
+    top: 40px;
 }
 
 #more-info {

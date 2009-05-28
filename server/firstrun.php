@@ -38,6 +38,13 @@
             <div id="header">
                 <h2>Thanks for Installing Personas for Firefox!</h2>
                 <h2>The Easiest Way to Dress Up Your Browser.</h2>
+                <p>
+                    <a href="/gallery" class="cta">
+                        <span>Browse the Gallery!</span>
+                        <span class="arrow"></span>
+                    </a>
+                </p>
+                
             </div>
             
 <?php include 'templates/featured_designer.php'; ?>
