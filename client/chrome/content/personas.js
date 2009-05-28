@@ -423,9 +423,11 @@ let PersonaController = {
       changed = true;
     }
 
-    if (changed) {
-      // FIXME: Incredibly gross hack in order to force a window redraw
-      // event that ensures that the titlebar color change is applied.
+    if (changed && PersonaService.appInfo.platformVersion.indexOf("1.9.0") == 0) {
+      // FIXME: Incredibly gross hack in order to force a window redraw event
+      // that ensures that the titlebar color change is applied. We only have to
+      // do this for Firefox 3.0 (Gecko 1.9.0) because bug 485451 on the problem
+      // has been fixed for Firefox 3.5 (Gecko 1.9.1).
       //
       // This will unmaximize a maximized window on Windows and Linux,
       // but we only do this on Mac (which is the only place
