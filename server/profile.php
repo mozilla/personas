@@ -57,7 +57,7 @@
             <div id="header">
                 <h2>Change User Details</h2>
             </div>
-            <div id="maincontent" class="login-signup">
+            <div id="maincontent">
                 <div id="breadcrumbs">
                     Personas Home : User Details  
                 </div>

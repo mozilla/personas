@@ -47,7 +47,7 @@
                             <p class="daily-users"><?= number_format($persona['popularity']) ?> active daily users</p>
                             <p><?= $persona['short_description'] ?></p>
                             <hr />
-
+                            <p><?php //description goes here ?></p>
                         </li>
 <?php
 				}
