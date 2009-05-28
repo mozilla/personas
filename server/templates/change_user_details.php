@@ -11,7 +11,7 @@
 					<?php if (array_key_exists('create_email', $_errors)) echo '<span class="error-message">' . $_errors['create_email'] . '</span>' ?>
                     </p>
                     
-                    <p><label for="username">Display Username (displayed in the Personas gallery)*</label>
+                    <p><label for="username">Display Username*</label>
                     <input type="text" name="create_display_username" value="<?= $create['display_username'] ?>" id="" <?php if (array_key_exists('create_display_username', $_errors)) echo 'class="error"' ?>/>
 					<?php if (array_key_exists('create_display_username', $_errors)) echo '<span class="error-message">' . $_errors['create_display_username'] . '</span>' ?>
                     </p>
@@ -23,6 +23,7 @@
                      </p>
 
                    <p class="news"><label for="news"><input type="checkbox" name="news" id="news" value="" <?= $create['news'] ? "checked" : "" ?>/> I’d like to receive news and information about Personas</label></p>
+                    <p>* <i>denotes an optional field. These entries will be displayed in the personas gallery.</i></p>
                     <button type="submit" class="button"><span>change</span><span class="arrow"></span></button>
                     </form>
                 </div>
