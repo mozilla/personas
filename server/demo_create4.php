@@ -59,7 +59,7 @@
                 		<p>Follow the link below to start the process and add your creations to the constantly growing
                 		catalog of Firefox Personas!</div>
 
-                		<div class="link">Go create your first Persona:  <a href="/static/img/Personas_Header_Template.psd"><img
+                		<div class="link">Go create your first Persona:  <a href="/static/img/Persona_Header_Template.psd"><img
                 		class="button" src="/static/img/tut_btn_getStarted.gif" border="0"></a></div>
 
                 		<table class="tut_nav">
