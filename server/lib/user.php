@@ -47,7 +47,7 @@ class PersonaUser
 	function get_description($username = null)
 	{
 		if (!$username)
-			$username = $this->_description;
+			return $this->_description;
 			
 		try
 		{
@@ -68,7 +68,7 @@ class PersonaUser
 	function get_display_username($username = null)
 	{
 		if (!$username)
-			$username = $this->_display_username;
+			return $this->_display_username;
 			
 		try
 		{
