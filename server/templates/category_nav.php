@@ -14,7 +14,7 @@
 						{
 							if ($list_tab == 'My' && (!$user->get_unauthed_username() || $no_my == 1))
 								continue;
-							if ($list_tab == 'Search' && $no_my == 1)
+							if ($list_tab == 'Search')
 								continue;
 							$tab_url = "$url_prefix/$list_category/$list_tab";
 							echo "		<li";
