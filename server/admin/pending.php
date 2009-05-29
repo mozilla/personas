@@ -218,7 +218,7 @@
 		<br>
 		Name: <?= $result['name'] ?>
 		<br>
-		User: <a href="/gallery/designer/<?= $result['author'] ?>" target="_blank"><?= $result['author'] ?></a>
+		User: <?= $result['display_username'] ?> (<a href="/gallery/designer/<?= $result['author'] ?>" target="_blank"><?= $result['author'] ?></a>)
 		<br>
 		Category: <select name="changecategory">
 		<?php
@@ -287,7 +287,7 @@
                                 <div class="preview">
                                     <img src="<?= $preview_url ?>" alt="<?= $persona['name'] ?>" persona="<?= $persona_json ?>"/>
                                 </div>
-                                <p class="designer"><strong>Designer:</strong> <?= $persona['author'] ?></p>
+                                <p class="designer"><strong>Designer:</strong> <?= $persona['display_username'] ?> (<a href="/gallery/designer/<?= $persona['author'] ?>" target="_blank"><?= $persona['author'] ?></a>)</p>
                                 <p class="designer"><strong>Category:</strong> <?= $persona['category'] ?></p>
                                 <p class="added"><strong>Submitted:</strong> <?= $persona['submit'] ?></p>
                                 <p><?= $persona['description'] ?></p>
