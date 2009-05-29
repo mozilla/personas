@@ -21,7 +21,7 @@
               <ol id="upload-steps">
                   <li class="completed"> <!-- class="completed" needed to show green checkbox -->
                       <h3>Step 1:</h3>
-                      <h4>Persona Agreement</h4>
+                      <h4>Terms of Service</h4>
                   </li>
                 <li class="completed"> 
                     <h3>Step 2:</h3>

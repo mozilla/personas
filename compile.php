@@ -199,6 +199,9 @@
 
 	#demo_create
 	store_page(PERSONAS_BUILD_SERVER . "/demo_create?no_my=1", PERSONAS_STORAGE_PREFIX . "/demo_create.html");
+	store_page(PERSONAS_BUILD_SERVER . "/demo_create2?no_my=1", PERSONAS_STORAGE_PREFIX . "/demo_create2.html");
+	store_page(PERSONAS_BUILD_SERVER . "/demo_create3?no_my=1", PERSONAS_STORAGE_PREFIX . "/demo_create3.html");
+	store_page(PERSONAS_BUILD_SERVER . "/demo_create3?no_my=1", PERSONAS_STORAGE_PREFIX . "/demo_create4.html");
 
 	#privacy
 	store_page(PERSONAS_BUILD_SERVER . "/privacy?no_my=1", PERSONAS_STORAGE_PREFIX . "/privacy.html");
