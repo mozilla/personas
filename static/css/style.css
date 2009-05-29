@@ -1310,21 +1310,21 @@ img.preview  {
 	margin:0 auto;
 }
 
-ol {
+#tutorial ol {
 	
 	padding: 0px;
 	margin: 0px;
 	margin-left: 90px;
 }
 
-ul {
+#tutorial ul {
 	
 	padding: 0px;
 	margin: 0px;
 	margin-left: 90px;
 }
 
-li {
+#tutorial li {
 	
 	padding: 0px;
 	margin: 0px;
@@ -1380,6 +1380,10 @@ li {
 	padding: 0px;
 	margin: 0px;
 	margin-left: 80px;
+}
+
+#tutorial .tut_info ul,#tutorial  .tut_didyouknow ul,#tutorial  .tut_warning ul,#tutorial  .tut_alert ul {
+    margin: 0 0 0 30px;
 }
 
 .tut_info, .tut_didyouknow, .tut_warning, .tut_alert, .tut_box {

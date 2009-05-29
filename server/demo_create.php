@@ -12,7 +12,7 @@
         <div id="inner-wrapper">
 <?php include 'templates/nav.php'; ?>
             <div id="header">
-                <h2>Demo</h2>
+                <h2>How To</h2>
                 <h3>Personas are lightweight, easy to install and easy to change “skins” for your Firefox web browser.</h3>
             </div>
             <div id="maincontent" class="demo">

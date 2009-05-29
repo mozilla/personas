@@ -32,7 +32,17 @@
                     <p>If you want to see how it works, you can watch a quick video demonstration <a href="/demo_install">here</a>.</p>
 
                     <p>Once Personas are installed, you’ll be able to choose and change your selected Persona any time simply by clicking on the little fox mask in the lower left-hand corner of your browser window.</p></dd>
-                
+                        <dt>How do I create or edit my designer profile?</dt>
+                           <dd>
+                               <p>If you are a new Personas designer, you will be asked to create a profile when
+                                  you first sign up <a href="https://personas.services.mozilla.com/signin?return=/upload">here</a>. You will have the option to include a "display
+                                  name" and "designer description", both of which will be displayed in the public
+                                  gallery.</p>
+
+                                  <p>If you are an existing Personas designer, you can edit and add to your profile
+                                  <a href="http://sm-weave-proxy01.services.mozilla.com/profile">here</a>.</p>
+
+                           </dd>
                 
                 <dt>How can I add or change my current Persona?</dt>
                 <dd><p>There are two easy ways to change your Persona:</p>
@@ -141,17 +151,7 @@
                <dd><p>Yes. The source code for Personas is available under the MPL/GPL/LGPL tri-license. You can view the source <a href="http://hg.mozilla.org/labs/personas/personas">here</a>.</p>
                    
                    
-                   <dt>How Do I Create or Edit My Designer Profile?</dt>
-                   <dd>
-                       <p>If you are a new Personas designer, you will be asked to create a profile when
-                          you first sign up <a href="https://personas.services.mozilla.com/signin?return=/upload">here</a>. You will have the option to include a "display
-                          name" and "designer description", both of which will be displayed in the public
-                          gallery.</p>
-
-                          <p>If you are an existing Personas designer, you can edit and add to your profile
-                          <a href="http://sm-weave-proxy01.services.mozilla.com/profile">here</a>.</p>
-                    
-                   </dd>
+               
                    
                  
          </dd>       
