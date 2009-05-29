@@ -172,7 +172,7 @@
 	$i = 1;
 	while ($i <= $pages)
 	{
-		store_page(PERSONAS_BUILD_SERVER . "/gallery/All/All/$i?no_my", PERSONAS_STORAGE_PREFIX . "/gallery/All/All/$i");
+		store_page(PERSONAS_BUILD_SERVER . "/gallery/All/All/$i?no_my=1", PERSONAS_STORAGE_PREFIX . "/gallery/All/All/$i");
 		$i++;
 	}		
 
