@@ -68,7 +68,7 @@
 	$url_prefix = '/gallery';
 	$tabs = null;
 	
-	$title = "Persona Detail"; 
+	$title = $persona['name']; 
 	include 'templates/header.php'; 
 ?>
 <body>
