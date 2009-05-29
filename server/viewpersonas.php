@@ -50,7 +50,8 @@
 	$url_prefix = '/gallery'; #telling the templates the gallery root
 	$title = "Gallery"; #page title for the header template
 	$no_my = array_key_exists('no_my', $_GET) ? 1 : 0; #whether to display all the dynamic stuff
-
+	$display_username = '';
+	
 	$categories = $db->get_categories();
 	array_unshift($categories, 'All');
 	$tabs = array('Popular', 'Recent', 'All', 'My', 'Search'); # pulling 'Search'
@@ -71,7 +72,8 @@
 	$list = array(); #grab the appropriate personas for display
 	if ($category == 'Designer')
 	{
-		$page_header = "Personas by " . $user->get_display_username($tab);
+		$display_username = $user->get_display_username($tab);
+		$page_header = "Personas by " . $display_username;
 		if ($tab) #tab is actually the author here
 			$list = $db->get_persona_by_author($tab); 
 	}
@@ -130,7 +132,7 @@
             </div>
 <?php } ?>
 			<div id="maincontent">
-                <p id="breadcrumbs"><a href="http://www.getpersonas.com">Personas Home</a> : <a href="http://www.getpersonas.com/gallery/All/Popular">Gallery</a> : <?= $category ?><?php if ($tab != "All") { echo " : $tab"; } ?></p>
+                <p id="breadcrumbs"><a href="http://www.getpersonas.com">Personas Home</a> : <a href="http://www.getpersonas.com/gallery/All/Popular">Gallery</a> : <?= $category ?><?php if ($category == 'Designer') { echo " : $display_username"; } else if ($tab != "All") { echo " : $tab"; } ?></p>
                 <div id="gallery">
 <?php
 			
