@@ -177,10 +177,10 @@
 	}		
 
 	#the popular page
-	store_page(PERSONAS_BUILD_SERVER . "/gallery/All/Popular?no_my", PERSONAS_STORAGE_PREFIX . "/gallery/All/Popular");
+	store_page(PERSONAS_BUILD_SERVER . "/gallery/All/Popular?no_my=1", PERSONAS_STORAGE_PREFIX . "/gallery/All/Popular");
 
 	#the recent page
-	store_page(PERSONAS_BUILD_SERVER . "/gallery/All/Recent?no_my", PERSONAS_STORAGE_PREFIX . "/gallery/All/Recent");
+	store_page(PERSONAS_BUILD_SERVER . "/gallery/All/Recent?no_my=1", PERSONAS_STORAGE_PREFIX . "/gallery/All/Recent");
 
 	#update page
 	store_page(PERSONAS_BUILD_SERVER . "/updated?no_my=1", PERSONAS_STORAGE_PREFIX . "/updated.html");
