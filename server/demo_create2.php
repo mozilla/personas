@@ -23,7 +23,6 @@
 
                 
                 
-                
                 	<div id="tutorial">
 
                 		<div class="tut_Header">How to Create Personas</div>
@@ -37,34 +36,33 @@
 
                 		<table class="tut_nav">
                 			<tr>
-                				<td class="tut_leftOFF">Step 1: Creating a Persona Header Image</td>
+                				<td class="tut_left"><a href="/demo_create">Step 1: Creating a Persona Header Image</a> &raquo;</td>
                 				<td class="tut_left"><a href="/demo_create_3">Step 3: Testing your Persona Images</a> &raquo;</td>
                 			</tr>
                 			<tr>
-                				<td class="tut_left"><a href="/demo_create_2">Step 2: Creating a Persona Footer Image</a> &raquo;</td>
+                				<td class="tut_leftOFF">Step 2: Creating a Persona Footer Image</td>
                 				<td class="tut_left"><a href="/demo_create_4">Step 4: Submit your Persona!</a> &raquo;</td>
                 			</tr>
                 		</table>
 
-
-                	<!-- STEP 1 -->
+                <!-- STEP 2 -->
 
                 		<div class="tut_Box">
 
-                			<div class="tut_step"><span class="tut_Title">Step 1: Creating a Persona Header Image</span></div>
+                			<div class="tut_step"><span class="tut_Title">Step 2: Creating a Persona Footer Image</span></div>
 
                 			<div class="tut_Copy">
 
-                			<p>The header image is displayed as the background of the top of the browser window, nestling in behind the toolbars, address bar, search bar and the tab strip.  
-                			It will be <b>anchored to the top-right corner</b> of the browser window.
+                			<p>The footer image is displayed as the background of the bottom of the browser window, behind the
+                		status and find bars. It will be <b>anchored to the bottom-left corner</b> of the browser window.
 
-                			<img class="tut_Image centerImg" src="/static/img/tut_XPheader.jpg">
+                			<img class="tut_Image centerImg" src="/static/img/tut_XPfooter.jpg">
 
                 			<ul>
 
-                			<li>View a sample Persona Header <b><a href="/static/img/Persona_Header_LABS.jpg">here</a></b>.</li>
+                			<li>View a sample Persona Footer <b><a href="/static/img/Persona_Footer_LABS.jpg">here</a></b>.</li>
 
-                			<li>View the sample Persona Header as seen in <b><a href="/static/img/tut_XPheader.jpg">XP</a></b>, <b><a href="/static/img/tut_VISTAheader.jpg">Vista</a></b>, and <b><a href="/static/img/tut_OSXheader.jpg">OSX</a></b>.</li>
+                			<li>View the sample Persona Footer as seen in <b><a href="/static/img/tut_XPfooter.jpg">XP</a></b>, <b><a href="/static/img/tut_VISTAfooter.jpg">Vista</a></b>, and <b><a href="/static/img/tut_OSXfooter.jpg">OSX</a></b>.</li>
 
                 			</ul>
 
@@ -76,7 +74,7 @@
 
                 				<ul>
 
-                				<li>Dimensions should be <b>3000px wide x 200px high</b></li>
+                				<li>Dimensions should be <b>3000px wide x 100px high</b></li>
 
                 				<li>PNG or JPG file format</li>
 
@@ -90,13 +88,12 @@
 
                 				<ul>
 
-                				<li>highly detailed images will compete with the browser UI</li>
+                				<li>highly detailed images will compete with the browser status bar UI</li>
 
-                				<li>Firefox may reveal more of the lower portion of the image if it or an extension adds another toolbar or other UI
-                			element to the top of the window</li>
+                				<li>Firefox may reveal more of the upper portion of the image if the find bar is open or if an extension adds more height to the bottom of the window</li>
 
-                				<li>the right-hand side of the image should have the most important information - as a user
-                				increases the width of the browser window, the browser reveals more of the left-hand side of the
+                				<li>the left-hand side of the image should have the most important information - as a user
+                				increases the width of the browser window, the browser reveals more of the right-hand side of the
                 				image</li>
 
                 				</ul>
@@ -109,7 +106,7 @@
 
                 				<li>images must be no larger than 300kb in filesize</li>
 
-                				<li>images over 3000px x 200px will not be approved</li>
+                				<li>images over 3000px x 100px will not be approved</li>
 
                 				<li>never use artwork/logos/photography that you do not have the legal rights to use - you will have to prove you have the rights if the content is questioned</li>
 
@@ -117,22 +114,26 @@
 
                 			</div>
 
-                			<table class="tut_nav">
+                		<table class="tut_nav">
                 				<tr>
-                					<td></td>
                 					<td>
-                						<div class="tut_right"><b><a href="/demo_create_2">Continue to Step 2</a> &raquo;</b></div>
+                						<div class="tut_left"><b>&laquo; <a href="/demo_create">Back to Step 1</a></b></div>
+                					</td>
+                					<td>
+                						<div class="tut_right"><b><a href="/demo_create_3">Continue to Step 3</a> &raquo;</b></div>
                 					</td>
                 				</tr>
-                			</table>
+                		</table>
 
                 		</div>
+
 
                 		<br><br>
 
                 <!-- RESOURCES -->
 
                 		<div class="tut_didyouknow"><img src="/static/img/question-64.png" class="tut_icon"><p>Did you know you can test a Persona before you submit it?  <b><a href="/demo_create_3#test">Find out how!</a>&raquo;</b></div>
+
 
                 		<div class="tut_info"><img src="/static/img/information-64.png" class="tut_icon">
 
@@ -146,11 +147,9 @@
 
                 		</ul>
 
-                		</div>		</div>
-
+                		</div>
                 
-                
-         
+         </div>
          
             </div>
 <?php include 'templates/get_personas.php'; ?>

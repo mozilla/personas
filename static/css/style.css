@@ -1283,6 +1283,13 @@ img.preview  {
     color: #fff;
 }
 
+/**************
+*
+* tutorial.css
+*
+/**************/
+
+/* ------- HTML ELEMENTS ------- */
 
 .tutBold {
 	font-weight: bold;
@@ -1298,6 +1305,141 @@ img.preview  {
 
 }
 
+#tutorial {
+	width:680px;
+	margin:0 auto;
+}
+
+ol {
+	
+	padding: 0px;
+	margin: 0px;
+	margin-left: 90px;
+}
+
+ul {
+	
+	padding: 0px;
+	margin: 0px;
+	margin-left: 90px;
+}
+
+li {
+	
+	padding: 0px;
+	margin: 0px;
+	margin-bottom: 6px;
+}
+
+
+.tut_box{
+	color:#414141;
+	margin: 20px auto;
+	max-width: 640px;
+	text-align: left;
+	width: 640px;
+	margin-top: 50px;
+	-moz-border-radius: 0.5em;
+	-webkit-border-radius: 0.5em;
+	background-color: #f2f2f2;
+}
+
+.tut_icon {
+	left:10px;
+    position:absolute;
+    top:-21px;
+}
+
+.tut_step{
+	color:#fff;
+	font-size: 14px;
+	margin: 10px 0 10px 0;
+	text-align: left;
+    padding: 10px 20px;
+	-moz-border-radius: 0.5em;
+	-webkit-border-radius: 0.5em;
+	background-color: #007aad;
+}
+
+.tut_info{
+	color:#2a6780;
+	font-size: 12px;
+	margin: 20px auto;
+	text-align: left;
+	-moz-border-radius: 0.5em;
+	-webkit-border-radius: 0.5em;
+	border-top: 1px solid #8fbed2;
+	border-left: 1px solid #8fbed2;
+	border-right: 1px solid #8fbed2;
+	border-bottom: 3px solid #8fbed2;
+	background-color: #aad4e6;
+}
+
+.tut_info p, .tut_didyouknow p, .tut_warning p, .tut_alert p{
+	
+	padding: 0px;
+	margin: 0px;
+	margin-left: 80px;
+}
+
+.tut_info, .tut_didyouknow, .tut_warning, .tut_alert, .tut_box {
+    position: relative;
+    padding: 15px 60px;
+}
+
+.tut_info a{
+	color:#2a6780;
+}
+
+.tut_didyouknow{
+	color:#3d4eae;
+	font-size: 16px;
+	margin: 20px auto;
+	text-align: left;
+	padding: 15px 20px;
+	-moz-border-radius: 0.5em;
+	-webkit-border-radius: 0.5em;
+	border-top: 1px solid #9eb2e1;
+	border-left: 1px solid #9eb2e1;
+	border-right: 1px solid #9eb2e1;
+	border-bottom: 3px solid #9eb2e1;
+	background-color: #ccd8f6;
+}
+
+.tut_didyouknow a{
+	
+	color:#3d4eae;
+}
+
+.tut_warning{
+	color:#987025;
+	font-size: 12px;
+	margin: 20px auto;
+	text-align: left;
+	-moz-border-radius: 0.5em;
+	-webkit-border-radius: 0.5em;
+	border-top: 1px solid #e6d976;
+	border-left: 1px solid #e6d976;
+	border-right: 1px solid #e6d976;
+	border-bottom: 3px solid #e6d976;
+	background-color: #f9f2c3;
+}
+
+.tut_alert{
+	color:#733030;
+	font-size: 12px;
+	margin: 20px auto;
+	text-align: left;
+	-moz-border-radius: 0.5em;
+	-webkit-border-radius: 0.5em;
+	border-top: 1px solid #c49292;
+	border-left: 1px solid #c49292;
+	border-right: 1px solid #c49292;
+	border-bottom: 3px solid #c49292;
+	background-color: #deb7b7;
+}
+
+
 .tut_Header{
 	font-family: arial, lucida, helvetica, sans-serif;
 	color:#007aad;
@@ -1309,11 +1451,19 @@ img.preview  {
 
 .tut_Title{
 	font-family: arial, lucida, helvetica, sans-serif;
-	color:#c33c28;
+	color:#fff;
+	font-size:20px;
+	font-weight: bold;
+	margin-bottom: 12px;
+	letter-spacing: -0.5px;
+}
+
+.tut_TitleInfo{
+	font-family: arial, lucida, helvetica, sans-serif;
+	color:#2a6780;
 	font-size:20px;
 	font-weight: bold;
 	margin-bottom: 8px;
-	margin-top: 36px;
 	letter-spacing: -0.5px;
 }
 
@@ -1322,15 +1472,8 @@ img.preview  {
 	color:#007aad;
 	font-size:16px;
 	font-weight: bold;
-	margin-bottom: 8px;
+	margin-bottom: 14px;
 	letter-spacing: -0.5px;
-}
-
-.tut_Copy{
-	font-family: arial, lucida, helvetica, sans-serif;
-	color:#808080;
-	font-size:12px;
-	margin-bottom: 8px;
 }
 
 .tut_Image{
@@ -1358,6 +1501,47 @@ img.preview  {
 	text-align: center;
 }
 
+.button {
+	vertical-align: middle;
+}
+
+.tut_nav {
+	width: 100%;
+	
+}
+
+.tut_left {
+	text-align: left;
+	font-family: arial, lucida, helvetica, sans-serif;
+	color:#007aad;
+	font-size:16px;
+	font-weight: bold;
+	margin-bottom: 14px;
+	letter-spacing: -0.5px;
+}
+
+.tut_leftOFF {
+	text-align: left;
+	font-family: arial, lucida, helvetica, sans-serif;
+	font-size:16px;
+	font-weight: bold;
+	margin-bottom: 14px;
+	letter-spacing: -0.5px;
+}
+
+.tut_right {
+	text-align: right;
+	font-family: arial, lucida, helvetica, sans-serif;
+	color:#007aad;
+	font-size:16px;
+	font-weight: bold;
+	margin-bottom: 14px;
+	letter-spacing: -0.5px;
+}
+
+.tut_right a, .tut_left a{
+	color:#007aad;
+}
 
 .colorpicker {
 	width: 356px;
