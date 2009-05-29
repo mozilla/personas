@@ -78,7 +78,7 @@
                 					<li>If you have Personas installed, click on the little fox on the bottom left
                 	of your computer screen and click on "Preferences"</li>
 
-                					<li>ensure the box "Show Custom Persona in Menu" is
+                					<li>Ensure the box "Show Custom Persona in Menu" is
                 	checked and close the box.</li>
 
                 					<li>Click on the little fox again. Mouse over "Custom" in the menu and to the
@@ -163,7 +163,7 @@
 
                 <!-- RESOURCES -->
 
-                		<div class="tut_didyouknow"><img src="/static/img/question-64.png" class="tut_icon"><p>Did you know you can test a Persona before you submit it?  <b><a href="/demo_create_3#test">Find out how!</a>&raquo;</b></div>
+                		<div class="tut_didyouknow"><img src="/static/img/question-64.png" class="tut_icon"><p>Did you know you can test a Persona before you submit it?  <b><a href="/demo_create_3#test">Find out how!</a> &raquo;</b></div>
 
 
                 		<div class="tut_info"><img src="/static/img/information-64.png" class="tut_icon">
