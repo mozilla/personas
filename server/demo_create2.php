@@ -92,8 +92,8 @@
 
                 				<li>Firefox may reveal more of the upper portion of the image if the find bar is open or if an extension adds more height to the bottom of the window</li>
 
-                				<li>the left-hand side of the image should have the most important information - as a user
-                				increases the width of the browser window, the browser reveals more of the right-hand side of the
+                				<li>the right-hand side of the header image should have the most important information - as a user
+                				increases the width of the browser window, the browser reveals more of the left-hand side of the
                 				image</li>
 
                 				</ul>
