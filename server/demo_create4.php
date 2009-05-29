@@ -78,7 +78,7 @@
 
                 <!-- RESOURCES -->
 
-                		<div class="tut_didyouknow"><img src="/static/img/question-64.png" class="tut_icon"><p>Did you know you can test a Persona before you submit it?  <b><a href="demo_create3#test">Find out how!</a> &raquo;</b></div>
+                		<div class="tut_didyouknow"><img src="/static/img/question-64.png" class="tut_icon"><p>Did you know you can test a Persona before you submit it?  <b><a href="demo_create_3#test">Find out how!</a> &raquo;</b></div>
 
 
                 		<div class="tut_info"><img src="/static/img/information-64.png" class="tut_icon">
