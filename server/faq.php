@@ -40,7 +40,7 @@
                                   gallery.</p>
 
                                   <p>If you are an existing Personas designer, you can edit and add to your profile
-                                  <a href="/profile">here</a>.</p>
+                                  <a href="https://personas.services.mozilla.com/profile">here</a>.</p>
 
                            </dd>
                 
