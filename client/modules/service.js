@@ -88,6 +88,8 @@ let PersonaService = {
     let timerManager = Cc["@mozilla.org/updates/timer-manager;1"].
                        getService(Ci.nsIUpdateTimerManager);
 
+    this._setFirstRunPersona();
+
     // Refresh data, then set a timer to refresh it periodically.
     // This isn't quite right, since we always load data on startup, even if
     // we've recently refreshed it.  And the timer that refreshes data ignores
@@ -497,6 +499,46 @@ let PersonaService = {
   resetPersona: function() {
     this.previewingPersona = null;
     Observers.notify("personas:persona:changed");
+  },
+
+  /**
+   * Sets the persona specified by the initial_persona cookie during first run.
+   */
+  _setFirstRunPersona : function() {
+    let application =
+      Cc["@mozilla.org/fuel/application;1"].getService(Ci.fuelIApplication);
+    let extension = application.extensions.get(PERSONAS_EXTENSION_ID);
+
+    if (extension.firstRun) {
+
+      let authorizedHosts = this._prefs.get("authorizedHosts").split(/[, ]+/);
+      let cookieManager =
+        Cc["@mozilla.org/cookiemanager;1"].getService(Ci.nsICookieManager);
+      let cookieEnu = cookieManager.enumerator;
+      let selectedCookie = null;
+
+      while (cookieEnu.hasMoreElements()) {
+        let cookie = cookieEnu.getNext().QueryInterface(Ci.nsICookie);
+
+        if (cookie.name == "initial_persona" &&
+            authorizedHosts.some(function(v) v == cookie.host)) {
+
+          // There could be more than one "initial_persona" cookie. The cookie
+          // with latest expiration time is selected.
+          if (null == selectedCookie ||
+              cookie.expires > selectedCookie.expires) {
+            selectedCookie = cookie;
+          }
+
+          cookieManager.remove(cookie.host, cookie.name, cookie.path, false);
+        }
+      }
+
+      if (null != selectedCookie) {
+        let personaJSON = decodeURIComponent(selectedCookie.value);
+        this.changeToPersona(JSON.parse(personaJSON));
+      }
+    }
   },
 
   onQuitApplication: function() {
