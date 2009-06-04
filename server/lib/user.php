@@ -115,6 +115,43 @@ class PersonaUser
 		return $sth->fetchColumn();		
 	}
 	
+	function find_user($partial_username, $partial_email = null)
+	{
+		if ($partial_username)
+		{
+			if (!preg_match('/^[A-Z0-9\._-]+$/i', $partial_username)) 
+				return array();
+			$statement = 'select * from users where username like "%' . $partial_username . '%"';	
+		}
+		else if ($partial_email)
+		{
+			if (!preg_match('/^[A-Z0-9@\._%+-]+$/i', $partial_email)) 
+				return array();
+			$statement = 'select * from users where email like "%' . $partial_email . '%"';
+		}
+		else
+			return array();
+
+		try
+		{
+			$sth = $this->_dbh->prepare($statement);
+			$sth->execute();
+		}
+		catch( PDOException $exception )
+		{
+			error_log($exception->getMessage());
+			throw new Exception("Database unavailable", 503);
+		}
+
+		$users = array();
+		
+		while ($result = $sth->fetch(PDO::FETCH_ASSOC))
+		{
+			$users[] = $result;
+		}		
+		return $users;
+	}
+	
 	function get_errors()
 	{
 		return $this->_errors;

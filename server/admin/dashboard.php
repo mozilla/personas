@@ -87,6 +87,76 @@ New Pending Personas: <a href="pending.php" target="_blank"><?= $pending ?></a>
 Personas Awaiting Edit Approval: <a href="editing.php" target="_blank"><?= $edits ?></a>
 <p><hr><p>
 <a href="/store/dynamic/gallery/All/" target="_blank">Edit/Pull Personas</a>
+<?php
+	if ($user->has_admin_privs())
+	{
+?>
+<form action="dashboard.php" method=GET>
+Lookup by partial username: <input type=text name=partial_username>
+<br>
+Lookup by partial email: <input type=text name=partial_email>
+<br>
+<input type="submit">
+</form>
+<p>
+
+<?php
+		if (array_key_exists('log_id', $_GET))
+		{
+			$results = $db->get_log_by_persona_id($_GET['log_id']);
+			echo "Log for persona " . $_GET['log_id'];
+			echo "<table border=1 cellpadding=10>";
+			echo "<tr><th>Date</th><th>Username</th><th>Action</th></tr>";
+			foreach ($results as $log)
+			{					
+				echo "<tr><td>" . $log['date'] . "</td>";
+				echo "<td>" . $log['username'] . "</td><td>" . $log['action'] . "</td></tr>";
+			}
+			echo "</table><p>";
+			
+		}
+		
+		if (array_key_exists('username', $_GET))
+		{
+			$status_map = array('Pending', 'Active', 'Rejected', 'Legal');
+			$results = $db->get_all_submissions($_GET['username']);
+			echo "Results for " . $_GET['username'];
+			echo "<table border=1 cellpadding=10>";
+			echo "<tr><th>Persona Name</th><th>Persona Author</th><th>Persona Status</th><th>Submitted</th><th>Approved</th></tr>";
+			foreach ($results as $persona)
+			{
+				if ($persona['status'] == 1)
+					$url = "/delete/" . $persona['id'];
+				else
+					$url = "/admin/pending.php?id=" . $persona['id'];
+					
+				echo "<tr><td><a href=\"$url\" target=\"_blank\">" . $persona['name'] . "</a></td>";
+				echo "<td>" . $persona['author'] . "</td><td><a href=\"dashboard.php?username=" . $_GET['username'] . "&log_id=" . $persona['id']. "\">" . $status_map[$persona['status']] . "</a></td>";
+				echo "<td>" . $persona['submit'] . "</td><td>" . $persona['approve'] . "</td></tr>";
+			}
+			echo "</table>";
+		}
+		
+		if (array_key_exists('partial_email', $_GET) || array_key_exists('partial_username', $_GET))
+		{
+			$status_map = array('Disabled', 'Active', 'Approver', 'Admin');
+			$results = $user->find_user($_GET['partial_username'], $_GET['partial_email']);
+			echo "<table border=1 cellpadding=10>";
+			echo "<tr><th>Username</th><th>Email</th><th>User Status</th></tr>";
+			foreach ($results as $user)
+			{
+				$url = "dashboard.php?username=" . $user['username'];
+				echo "<tr><td><a href=\"$url\">" . $user['username'] . "</a></td>";
+				echo "<td>" . $user['email'] . "</td><td>" . $status_map[$user['status']] . "</td></tr>";
+			}
+			echo "</table>";
+		}
+		
+		
+
+	}
+?>
+
 <?php include '../templates/footer.php'; ?>
 </body>
 </html>

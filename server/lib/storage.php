@@ -455,6 +455,36 @@ class PersonaStorage
 		return $personas;
 	}
 	
+	#this gets all personas for admin use, including the rejected ones
+	function get_all_submissions($author)
+	{
+		if (!$author) { return array(); }
+		if (!$this->_dbh)
+			$this->db_connect();		
+		
+		try
+		{
+			$statement = 'select * from personas where author = ? order by id desc';
+			
+			$sth = $this->_dbh->prepare($statement);
+			$sth->execute(array($author));
+		}
+		catch( PDOException $exception )
+		{
+			error_log($exception->getMessage());
+			throw new Exception("Database unavailable", 503);
+		}
+
+		$personas = array();
+		
+		while ($result = $sth->fetch(PDO::FETCH_ASSOC))
+		{
+			$personas[] = $result;
+		}		
+		return $personas;
+		
+	}
+	
 	function get_active_designers()
 	{
 		if (!$this->_dbh)
@@ -919,7 +949,36 @@ class PersonaStorage
 		return $logs;
 	
 	}
-	
+
+	function get_log_by_persona_id($id)
+	{
+		if (!$this->_dbh)
+			$this->db_connect();		
+
+		try
+		{
+			$statement = 'select * from log where id = :id order by date';
+			$sth = $this->_dbh->prepare($statement);
+			$sth->bindParam(':id', $id);
+			$sth->execute();
+		}
+		catch( PDOException $exception )
+		{
+			error_log($exception->getMessage());
+			throw new Exception("Database unavailable", 503);
+		}
+		
+		$logs = array();
+		
+		while ($result = $sth->fetch(PDO::FETCH_ASSOC))
+		{
+			$logs[] = $result;
+		}		
+
+		return $logs;
+		
+	}
+
 	function get_categories()
 	{
 		if ($this->_memcache)
