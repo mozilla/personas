@@ -1,0 +1,17 @@
+<!ENTITY personas_app_title "Personas for Firefox">
+<!ENTITY useDefaultPersona.label "Oletus">
+<!ENTITY preferences.label "Asetukset…">
+<!ENTITY viewDirectory.label "Siirry hakemistoon…">
+<!ENTITY customPersona.label "Mukautettu teema">
+<!ENTITY customName.label "Nimi:">
+<!ENTITY header.label "Yläosa:">
+<!ENTITY selectBackground.label "Selaa…">
+<!ENTITY footer.label "Alaosa:">
+<!ENTITY textColorPicker.label "Tekstin väri:">
+<!ENTITY accentColorPicker.label "Aksentin väri:">
+<!ENTITY useDefaultColor.label "Käytä oletusta">
+<!ENTITY okButton.label "OK">
+<!ENTITY contextHomePage.label "Aloitussivu">
+<!ENTITY contextPreferences.label "Asetukset">
+<!ENTITY contextEdit.label "Muokkaa">
+<!ENTITY contextApply.label "Käytä">

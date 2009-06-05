@@ -14,6 +14,7 @@
 
     <!-- Localizers (from Babelzilla and other places) in alphabetical order -->
     <em:translator>a007son</em:translator>        <!-- zh-TW, forum      -->
+    <em:translator>AtteL</em:translator>          <!-- fi-FI, Babelzilla -->
     <em:translator>dogi</em:translator>           <!-- de-DE, Babelzilla -->
     <em:translator>drry</em:translator>           <!-- ja-JP, Babelzilla -->
     <em:translator>Ersen Yoldac</em:translator>   <!-- tr-TR, Babelzilla -->
