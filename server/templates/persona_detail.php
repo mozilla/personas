@@ -33,11 +33,11 @@
 		{
 			if ($favorite_persona)
 			{
-				echo '<a href="" id="favoritebutton" onClick="return change_favorite();">Remove from favorites</a>"';
+				echo '<a href="" id="favoritebutton" onClick="return change_favorite();">Remove from favorites</a>';
 			}
 			else
 			{
-				echo '<a href="" id="favoritebutton" onClick="return change_favorite();">Add to favorites</a>"';			
+				echo '<a href="" id="favoritebutton" onClick="return change_favorite();">Add to favorites</a>';			
 			}
 		}
 ?>
