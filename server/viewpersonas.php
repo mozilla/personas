@@ -73,9 +73,11 @@
 	if ($category == 'Designer')
 	{
 		$display_username = $user->get_display_username($tab);
-		$page_header = "Personas by " . $display_username;
 		if ($tab) #tab is actually the author here
+		{
 			$list = $db->get_persona_by_author($tab); 
+			$title = $page_header = "Personas by " . $display_username;
+		}
 	}
 	elseif ($tab == 'Recent')
 	{
@@ -88,21 +90,22 @@
 	elseif ($tab == 'My')
 	{
 		$user->force_signin();
-		$page_header = "My Personas";
+		$title = $page_header = "My Personas";
 		if ($user->get_username())
 			$list = $db->get_persona_by_author($user->get_username(), $category == 'All' ? null : $category);			
 	}
 	elseif ($tab == 'Favorites')
 	{
 		$user->force_signin();
-		$page_header = "My Favorite Personas";
+		$title = $page_header = "My Favorite Personas";
 		if ($user->get_username())
-			$list = $db->get_user_favorites($user->get_username(), $category);			
+			$list = $db->get_user_favorites($user->get_username(), $category);		
 	}
 	elseif ($tab == 'Search')
 	{
 		if (array_key_exists('p', $_GET) && $_GET['p'])
 		{
+			$title = $page_header = "Personas Search Results for " . htmlspecialchars($_GET['p']);
 			$list = $db->search_personas($_GET['p'], $category, $page_size);
 		}
 	}

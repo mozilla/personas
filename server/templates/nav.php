@@ -2,7 +2,7 @@
 <?php 
 	if(!array_key_exists('no_my', $_GET) && $user->get_unauthed_username())
 	{
-		echo 'Welcome, ' . $user->get_unauthed_username() . ' | <a href="/signin?action=signout&return=' . $_SERVER['SCRIPT_URL'] . '">Sign Out</a>';
+		echo 'Welcome, ' . $user->get_unauthed_username() . ' | <a href="/profile' . $_SERVER['SCRIPT_URL'] . '">Edit Your Profile</a> | <a href="/signin?action=signout&return=' . $_SERVER['SCRIPT_URL'] . '">Sign Out</a>';
 	}
 	elseif(!array_key_exists('no_my', $_GET))
 	{
