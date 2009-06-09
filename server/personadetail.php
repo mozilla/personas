@@ -43,7 +43,7 @@
 
 	$db = new PersonaStorage();
 	$user = new PersonaUser();
-	
+	$username = $user->authenticate();
 
 	$categories = $db->get_categories();
 	array_unshift($categories, 'All');
@@ -65,6 +65,7 @@
 		$persona['json'] = htmlentities(json_encode(extract_record_data($persona)));
 	}
 
+	$favorite_persona = $username ? $db->is_favorite_persona($username, $persona_id) : null;
 	$url_prefix = '/gallery';
 	$tabs = null;
 	
@@ -91,6 +92,22 @@
     
 <?php include 'templates/footer.php'; ?>
     <script type="text/javascript" charset="utf-8">
+		var favorite_action = <?= $favorite_persona ? 0 : 1 ?>;
+		function change_favorite()
+		{
+			//change to loading here
+			$("#favoritebutton").html("loading...");
+			$.get('/favorite/<?= $persona_id ?>', {"action": favorite_action}, 
+				function(data) 
+					{ 
+						favorite_action = favorite_action ? 0 : 1; 
+						$("#favoritebutton").html(favorite_action ? "Add to favorites" : "Remove from favorites"); 
+					}
+				);
+			
+			return false;
+		}
+
         $(document).ready(function () {
             $("#header").ie6Warning({"message":'<div id="ie6">Upgrade your browser to get the most out of this website. <a href="%LINK%">Download Firefox for free</a>.</div>'});
             $("#try-button").personasButton({

@@ -1093,5 +1093,144 @@ class PersonaStorage
 		return 1;
 	}
 	
+	function get_user_favorites($username, $category = 'All')
+	{
+		if (!$username)
+			return array();
+			
+		if ($this->_memcache)
+		{
+			$result = $this->_memcache->get("fav." . $category . "." . $username);
+			if ($result)
+				return $result;
+		}
+
+		if (!$this->_dbh)
+			$this->db_connect();		
+
+		try
+		{
+			$statement = 'select personas.*, favorites.added from personas, favorites where personas.id = favorites.id and favorites.username = ?';
+			$params = array($username);
+			if ($category != 'All')
+			{
+				$statement .= " and personas.category = ?";
+				$params[] = $category;
+			}
+			$statement .= ' order by favorites.added desc';
+			$sth = $this->_dbh->prepare($statement);
+			$sth->execute($params);
+		}
+		catch( PDOException $exception )
+		{
+			error_log($exception->getMessage());
+			throw new Exception("Database unavailable", 503);
+		}
+		
+		$results = array();
+		
+		while ($result = $sth->fetch(PDO::FETCH_ASSOC))
+		{
+			$results[] = $result;
+		}		
+
+		if ($this->_memcache)
+			$this->_memcache->set("fav." . $category . "." . $username, $results, MEMCACHE_DECAY);
+
+		return $results;
+		
+	}
+	
+	function is_favorite_persona($username, $persona_id)
+	{
+		if (!$username || !$persona_id)
+			return 0;
+
+		if (!$this->_dbh)
+			$this->db_connect();		
+
+		try
+		{
+			$select_stmt = 'select count(*) from favorites where username = :username and id = :id';
+			$sth = $this->_dbh->prepare($select_stmt);
+			$sth->bindParam(':username', $username);
+			$sth->bindParam(':id', $persona_id);
+			$sth->execute();
+		}
+		catch( PDOException $exception )
+		{
+			error_log("is_favorite: " . $exception->getMessage());
+			throw new Exception("Database unavailable", 503);
+		}
+
+		$result = $sth->fetchColumn();
+		return $result ? 1 : 0;
+	
+	}
+	
+	function add_user_favorite($username, $persona_id)
+	{
+		if (!$username || !$persona_id)
+			return 0;
+			
+		if (!$this->_dbh)
+			$this->db_connect();		
+
+		try
+		{
+			$stmt = 'replace into favorites (username, id, added) values (:username, :id, NOW())';
+			$sth = $this->_dbh->prepare($stmt);
+			$sth->bindParam(':username', $username);
+			$sth->bindParam(':id', $persona_id);
+			$sth->execute();
+
+		}
+		catch( PDOException $exception )
+		{
+			error_log("add_user_favorite: " . $exception->getMessage());
+			throw new Exception("Database unavailable");
+		}
+
+		if ($this->_memcache)
+		{
+			$this->_memcache->delete("fav." . $category . "." . $username);
+			$this->_memcache->delete("fav.All." . $username);
+		}
+
+		return 1;		
+		
+	}
+	
+	function delete_user_favorite($username, $persona_id)
+	{
+		if (!$username || !$persona_id)
+			return 0;
+
+		if (!$this->_dbh)
+			$this->db_connect();		
+
+		try
+		{
+			$stmt = 'delete from favorites where username = :username and id = :id';
+			$sth = $this->_dbh->prepare($stmt);
+			$sth->bindParam(':username', $username);
+			$sth->bindParam(':id', $persona_id);
+			$sth->execute();
+
+		}
+		catch( PDOException $exception )
+		{
+			error_log("delete favorite: " . $exception->getMessage());
+			throw new Exception("Database unavailable");
+		}
+
+		if ($this->_memcache)
+		{
+			$this->_memcache->delete("fav." . $category . "." . $username);
+			$this->_memcache->delete("fav.All." . $username);
+		}
+		return 1;
+		
+	}
 }
 ?>
