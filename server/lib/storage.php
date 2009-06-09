@@ -949,7 +949,34 @@ class PersonaStorage
 		return $logs;
 	
 	}
+    
+    function get_logs($limit = null) {
+        if (!$this->_dbh)
+			$this->db_connect();		
 
+        $limit = (int)$limit;
+		try
+		{
+			$statement = 'select * from log order by date DESC'.($limit ? " limit $limit" : "");
+			$sth = $this->_dbh->prepare($statement);
+			$sth->execute();
+		}
+		catch( PDOException $exception )
+		{
+			error_log($exception->getMessage());
+			throw new Exception("Database unavailable", 503);
+		}
+		
+		$logs = array();
+		
+		while ($result = $sth->fetch(PDO::FETCH_ASSOC))
+		{
+			$logs[] = $result;
+		}		
+
+		return $logs;
+    }
+    
 	function get_log_by_persona_id($id)
 	{
 		if (!$this->_dbh)

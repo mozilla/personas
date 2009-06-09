@@ -63,6 +63,13 @@
 		$pending = count($db->get_pending_personas());
 		$edits = count($db->get_pending_edits());
 		$total = $db->get_active_persona_count();
+		
+		$logs = $db->get_logs(5);
+        $length = count($logs);
+        
+        for($i=0; $i<$length;$i++) {
+            $logs[$i]['persona'] = $db->get_persona_by_id($logs[$i]['id']);
+        }
 	}
 	catch(Exception $e)
 	{
@@ -73,18 +80,33 @@
 
 	include '../templates/header.php';
 ?>
-<body>
+<body class="admin">
     <div id="outer-wrapper">
         <div id="inner-wrapper">
 <?php include '../templates/nav.php'; ?>
 
-Personas Status:
+<div id="status">
+    <h2>Personas Status</h2>
+    <div class="sparkline" id="status-pie"><?= $pending ?>,<?= $edits ?>,<?= $total ?></div>
+
+    <div id="stats">
+        <p><strong>Total Active Personas:</strong> <?= $total ?></p>
+        <p><strong>New Pending Personas:</strong> <a href="pending.php" target="_blank"><?= $pending ?></a></p>
+        <p><strong>Personas Awaiting Edit Approval:</strong> <a href="editing.php" target="_blank"><?= $edits ?></a></p>
+    </div>
+    
+    <div id="log">
+        <h3>Recent admin activity</h3>
+        <ul>
+            <?php foreach($logs as $log): ?>
+                <li><a href="dashboard.php?username=<?=$log['username']; ?>"><?= $log['username'] ?></a> <?=$log['action'];?> <a href="/persona/<?=$log['persona']['id'];?>"><?=$log['persona']['name']?></a></li>
+            <?php endforeach; ?>
+        </ul>
+    </div>
+</div>
+
 <p>
-Total Active Personas: <?= $total ?>
-<p>
-New Pending Personas: <a href="pending.php" target="_blank"><?= $pending ?></a>
-<p>
-Personas Awaiting Edit Approval: <a href="editing.php" target="_blank"><?= $edits ?></a>
+
 <p><hr><p>
 <a href="/store/dynamic/gallery/All/" target="_blank">Edit/Pull Personas</a>
 <?php
@@ -107,10 +129,15 @@ Lookup by partial email: <input type=text name=partial_email>
 			echo "Log for persona " . $_GET['log_id'];
 			echo "<table border=1 cellpadding=10>";
 			echo "<tr><th>Date</th><th>Username</th><th>Action</th></tr>";
+			
+            $i = 0;
 			foreach ($results as $log)
-			{					
-				echo "<tr><td>" . $log['date'] . "</td>";
+			{	
+			    $class = ($i % 2 == 0) ? 'even' : 'odd';
+			    				
+				echo "<tr class=\"$class\"><td>" . $log['date'] . "</td>";
 				echo "<td>" . $log['username'] . "</td><td>" . $log['action'] . "</td></tr>";
+				$i++;
 			}
 			echo "</table><p>";
 			
@@ -123,16 +150,21 @@ Lookup by partial email: <input type=text name=partial_email>
 			echo "Results for " . $_GET['username'];
 			echo "<table border=1 cellpadding=10>";
 			echo "<tr><th>Persona Name</th><th>Persona Author</th><th>Persona Status</th><th>Submitted</th><th>Approved</th></tr>";
+			
+			$i = 0;
 			foreach ($results as $persona)
 			{
+			    $class = ($i % 2 == 0) ? 'even' : 'odd';
+			    
 				if ($persona['status'] == 1)
 					$url = "/delete/" . $persona['id'];
 				else
 					$url = "/admin/pending.php?id=" . $persona['id'];
 					
-				echo "<tr><td><a href=\"$url\" target=\"_blank\">" . $persona['name'] . "</a></td>";
+				echo "<tr class=\"$class\"><td><a href=\"$url\" target=\"_blank\">" . $persona['name'] . "</a></td>";
 				echo "<td>" . $persona['author'] . "</td><td><a href=\"dashboard.php?username=" . $_GET['username'] . "&log_id=" . $persona['id']. "\">" . $status_map[$persona['status']] . "</a></td>";
 				echo "<td>" . $persona['submit'] . "</td><td>" . $persona['approve'] . "</td></tr>";
+				$i++;
 			}
 			echo "</table>";
 		}
@@ -143,11 +175,16 @@ Lookup by partial email: <input type=text name=partial_email>
 			$results = $user->find_user($_GET['partial_username'], $_GET['partial_email']);
 			echo "<table border=1 cellpadding=10>";
 			echo "<tr><th>Username</th><th>Email</th><th>User Status</th></tr>";
+			
+			$i =0;
 			foreach ($results as $user)
 			{
+			    $class = ($i % 2 == 0) ? 'even' : 'odd';
+			    
 				$url = "dashboard.php?username=" . $user['username'];
-				echo "<tr><td><a href=\"$url\">" . $user['username'] . "</a></td>";
+				echo "<tr class=\"$class\"><td><a href=\"$url\">" . $user['username'] . "</a></td>";
 				echo "<td>" . $user['email'] . "</td><td>" . $status_map[$user['status']] . "</td></tr>";
+				$i++;
 			}
 			echo "</table>";
 		}
@@ -156,7 +193,14 @@ Lookup by partial email: <input type=text name=partial_email>
 
 	}
 ?>
-
+</div></div>
+<script src="../static/js/jquery.sparklines.js"></script>
+<script type="text/javascript" charset="utf-8">
+$(window).ready(function() {
+    $(".sparkline").sparkline('html',{type:"pie", height:"200px",sliceColors: ['#8D003B','#A65600','#00782D' ], offset:"-90"});
+});
+    
+</script>
 <?php include '../templates/footer.php'; ?>
 </body>
 </html>

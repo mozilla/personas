@@ -102,6 +102,24 @@ ol li ol li {
     list-style-type: lower-alpha;
 }
 
+table {
+    margin: 10px 0 0 0;
+}
+
+th {
+    color: #fff;
+    background: #0C97CF;
+    padding: 2px 4px;
+}
+
+td {
+    padding: 2px 4px;
+}
+
+tr.odd {
+    background: #ccc;
+}
+
 #inner-wrapper:after, #nav ul:after{
     content: '.';
     display: block;
@@ -118,6 +136,10 @@ ol li ol li {
 
 .home #outer-wrapper {
     background: #fff url('../img/home-bg.gif') top left repeat-x;
+}
+
+.admin #outer-wrapper {
+    background: #fff url('../img/admin-bg.gif') top left repeat-x;
 }
 
 #inner-wrapper {
@@ -1255,6 +1277,49 @@ img.preview  {
     font-size: 93%;
 }
 
+.admin p {
+    padding: 0.1em 0;
+}
+
+#status:after {
+    content: ".";
+    clear: both;
+    height: 0;
+    width: 0;
+    line-height: 0;
+    display: block;
+    visibility: hidden;
+}
+
+#status h2 {
+    font-size: 150%;
+    font-weight: bold;
+    text-align: center;
+}
+
+#status h3 {
+    font-size: 120%;
+    font-weight: bold;
+    
+}
+
+#stats {
+    margin: 10px 0 0 0;
+    font-size:125%;
+    float: left;
+    width: 300px;
+}
+
+#status-pie {
+    float: left;
+    width: 220px;
+}
+
+#log {
+    float: left;
+    width: 300px;
+    margin: 10px 0 0 0;
+}
 
 #footer {
     width: 770px;
