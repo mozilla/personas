@@ -63,7 +63,7 @@
             </div>
             <div id="maincontent">
                 <div id="breadcrumbs">
-                    Personas Home : User Details  
+                    <a href="http://www.getpersonas.com">Personas Home</a> : User Details  
                 </div>
 <?php 
 		if ($updated)

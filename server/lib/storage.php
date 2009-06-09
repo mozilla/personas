@@ -950,14 +950,14 @@ class PersonaStorage
 	
 	}
     
-    function get_logs($limit = null) {
+    function get_detailed_admin_logs($limit = 100) {
         if (!$this->_dbh)
 			$this->db_connect();		
 
         $limit = (int)$limit;
 		try
 		{
-			$statement = 'select * from log order by date DESC'.($limit ? " limit $limit" : "");
+			$statement = "select * from log, personas where log.id = personas.id and action != 'Added' order by date DESC limit $limit";
 			$sth = $this->_dbh->prepare($statement);
 			$sth->execute();
 		}

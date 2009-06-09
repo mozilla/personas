@@ -65,7 +65,7 @@
 		$persona['json'] = htmlentities(json_encode(extract_record_data($persona)));
 	}
 
-	$favorite_persona = $username ? $db->is_favorite_persona($username, $persona_id) : null;
+	$favorite_persona = null; #$username ? $db->is_favorite_persona($username, $persona_id) : null;
 	$url_prefix = '/gallery';
 	$tabs = null;
 	

@@ -64,12 +64,7 @@
 		$edits = count($db->get_pending_edits());
 		$total = $db->get_active_persona_count();
 		
-		$logs = $db->get_logs(5);
-        $length = count($logs);
-        
-        for($i=0; $i<$length;$i++) {
-            $logs[$i]['persona'] = $db->get_persona_by_id($logs[$i]['id']);
-        }
+		$logs = $db->get_detailed_admin_logs(5);
 	}
 	catch(Exception $e)
 	{
@@ -98,8 +93,10 @@
     <div id="log">
         <h3>Recent admin activity</h3>
         <ul>
-            <?php foreach($logs as $log): ?>
-                <li><a href="dashboard.php?username=<?=$log['username']; ?>"><?= $log['username'] ?></a> <?=$log['action'];?> <a href="/persona/<?=$log['persona']['id'];?>"><?=$log['persona']['name']?></a></li>
+            <?php foreach($logs as $log): 
+            	$log_url = substr($log['action'], 0, 8) == 'Rejected' ? ('/admin/pending.php?id=' .  $log['id']) :  ('/persona/' . $log['id']);
+            ?>
+                <li>(<a href="dashboard.php?username=<?=$log['username']; ?>"><?= $log['username'] ?></a>) <a href="<?= $log_url ?>"><?= $log['name'] ?></a>: <?=$log['action'];?> </li>
             <?php endforeach; ?>
         </ul>
     </div>
