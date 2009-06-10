@@ -156,6 +156,13 @@
 				$db->log_action($user->get_username(), $persona['id'], "Rejected - Duplicate");
 				$id = null;
 				break;				
+			case 'photoreject':
+				$reason = "We cannot allow photos of identifiable non-celebrity individuals at this time";
+				$db->reject_persona($persona['id']);
+				send_problem_email($user->get_email($persona['author']), $reason, $persona['name']);
+				$db->log_action($user->get_username(), $persona['id'], "Rejected - Identifiable Photo");
+				$id = null;
+				break;				
 			case 'flagforlegal':
 				$db->flag_persona_for_legal($persona['id']);
 				$db->log_action($user->get_username(), $persona['id'], "Flagged for Legal");
@@ -297,6 +304,7 @@
 										<option value="" selected>quickverdict >></option>
 										<option value="copyrightreject">Copyright</option>
 										<option value="duplicatereject">Duplicate</option>
+										<option value="photoreject">PersonPhoto</option>
 									</select>
                                 </p>
                             </div>
