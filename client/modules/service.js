@@ -77,7 +77,7 @@ let PersonaService = {
   get extension() {
     delete this.extension;
 
-    if (this.appInfo == this.FIREFOX_ID) {
+    if (this.appInfo.ID == this.FIREFOX_ID) {
       return this.extension = Cc["@mozilla.org/fuel/application;1"].
                               getService(Ci.fuelIApplication).
                               extensions.get(PERSONAS_EXTENSION_ID);
