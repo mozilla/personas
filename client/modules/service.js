@@ -548,6 +548,9 @@ let PersonaService = {
       let personaJSON = decodeURIComponent(selectedCookie.value);
       this.changeToPersona(JSON.parse(personaJSON));
     }
+    else {
+      this.changeToPersona(JSON.parse(this._prefs.get("initial")));
+    }
   },
 
   onQuitApplication: function() {
