@@ -1,6 +1,6 @@
-<!ENTITY preferences.title "Personas voarkeuren">
+<!ENTITY preferences.title "Personas voorkeuren">
 <!ENTITY generalSettings.label "Algemeen">
-<!ENTITY previewEnabled.label "Toon voarbeeld bij het selecteren uit het menu">
+<!ENTITY previewEnabled.label "Toon voorbeeld bij het selecteren uit het menu">
 <!ENTITY reportSelection.label "Doe mee met het populariteitsonderzoek">
 <!ENTITY reportSelection.title "Details">
 <!ENTITY displaySettings.label "Toon">
