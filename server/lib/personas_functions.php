@@ -92,7 +92,6 @@
 
 		$base = preg_replace('/\/$/', '', $base);
 		$persona_path = $base . '/' . $first_folder;
-error_log($persona_path . "!!!");
 		if (!is_dir($persona_path)) { mkdir($persona_path); }
 		$persona_path .= "/" . $second_folder;
 		if (!is_dir($persona_path)) { mkdir($persona_path); }
