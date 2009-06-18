@@ -210,6 +210,7 @@ $.fn.personasButton = function(options) {
             );
             jQuery(this).click(function(event) {
                 dispatchPersonaEvent('SelectPersona', event.currentTarget);
+                return false;
             });
         } else {
             jQuery(this).html(options['hasFirefox']);
