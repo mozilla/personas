@@ -44,7 +44,8 @@
 	$db = new PersonaStorage();
 	$user = new PersonaUser();
 	$user->authenticate();
-		
+	$showWearThis = false;
+	
 	$page_size = 42; #defalt number of personas per page
 	$description_max = 50; #truncated description size
 	$url_prefix = '/gallery'; #telling the templates the gallery root
@@ -77,6 +78,7 @@
 		{
 			$list = $db->get_persona_by_author($tab); 
 			$title = $page_header = "Personas by " . $display_username;
+			$showWearThis = true;
 		}
 	}
 	elseif ($tab == 'Recent')

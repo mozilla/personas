@@ -68,6 +68,13 @@
                                 <p><?= $persona['short_description'] ?></p>
                                 <p><?= number_format($persona['popularity']) ?> active daily users</p>
                                 <p><a href="<?= "/persona/" . ($persona['id'] < 10 ? "0" : "") . $persona['id'] ?>" class="view">view details »</a></p>
+                                
+                                <?php if($showWearThis) { ?>
+                                    <p id="buttons">
+                                        <a href="#" class="button" id="try-button" persona="<?= $persona['json'] ?>"><span>try it now</span><span>&nbsp;</span></a>
+                                    </p>
+                                <?php } ?>
+                                
 <?php
 				if ($user->has_admin_privs() || ($tab == 'My' && $persona['locale'] == PERSONAS_LOCALE))
 				{
@@ -96,6 +103,14 @@
         $(document).ready(function() {
            $("#gallery .preview img").previewPersona();
         });
+        
+        <?php if($showWearThis) { ?>
+            $(".try-button").personasButton({
+                'hasPersonas':'<span>wear this</span><span>&nbsp;</span>',
+                'hasFirefox':'<span>get personas now!</span><span>&nbsp;</span>',
+                'noFirefox':'<span>get personas with firefox</span><span>&nbsp;</span>'
+            });
+        <?php } ?>
     </script>
 </body>
 </html>

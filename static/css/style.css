@@ -842,7 +842,7 @@ img.preview  {
     display: -moz-inline-stack;
     display: inline-block;
     vertical-align: top;
-    margin: 5px 22px 5px 5px;
+    margin: 5px 22px 10px 5px;
     zoom: 1;
     *display: inline;
     _height: 160px;
@@ -892,6 +892,14 @@ img.preview  {
     font-family: Arial, sans-serif;
     font-weight: bold;
     color: #00a1e2;
+}
+
+.gallery-item #buttons {
+    margin: 0;
+}
+
+.gallery-item .button {
+    font-size: 101%;
 }
 
 #pagination p, #pagination ul, #pagination li {
