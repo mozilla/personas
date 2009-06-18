@@ -71,7 +71,7 @@
                                 
                                 <?php if($showWearThis) { ?>
                                     <p id="buttons">
-                                        <a href="#" class="button" id="try-button" persona="<?= $persona['json'] ?>"><span>try it now</span><span>&nbsp;</span></a>
+                                        <a href="#" class="button try-button" persona="<?= $persona['json'] ?>"><span>try it now</span><span>&nbsp;</span></a>
                                     </p>
                                 <?php } ?>
                                 
