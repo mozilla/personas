@@ -65,7 +65,9 @@
                                 </div>
                                 <p class="designer"><strong>Designer:</strong> <a href="/gallery/Designer/<?= $persona['author'] ?>"><?= $persona['display_username'] ?></a></p>
                                 <p class="added"><strong>Added:</strong> <?= $persona['date'] ?></p>
-                                <p><?= $persona['short_description'] ?></p>
+                                <?php if($showDescription) { ?>
+                                    <p><?= $persona['short_description'] ?></p>
+                                <?php } ?>
                                 <p><?= number_format($persona['popularity']) ?> active daily users</p>
                                 <p><a href="<?= "/persona/" . ($persona['id'] < 10 ? "0" : "") . $persona['id'] ?>" class="view">view details »</a></p>
                                 

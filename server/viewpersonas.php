@@ -45,6 +45,7 @@
 	$user = new PersonaUser();
 	$user->authenticate();
 	$showWearThis = false;
+	$showDescription = true;
 	
 	$page_size = 42; #defalt number of personas per page
 	$description_max = 50; #truncated description size
@@ -79,6 +80,7 @@
 			$list = $db->get_persona_by_author($tab); 
 			$title = $page_header = "Personas by " . $display_username;
 			$showWearThis = true;
+			$showDescription = false;
 		}
 	}
 	elseif ($tab == 'Recent')
