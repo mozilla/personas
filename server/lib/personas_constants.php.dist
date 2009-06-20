@@ -60,6 +60,12 @@ if (!defined('FEATURED_DESIGNERS')) { define('FEATURED_DESIGNERS', "1:2:3:4"); }
 #old version of featured designer
 if (!defined('FEATURE_DESIGNER_PERSONA_ID')) { define('FEATURE_DESIGNER_PERSONA_ID', 1); }
 
+#page size for most gallery pages
+if (!defined('PERSONA_GALLERY_PAGE_SIZE')) { define('PERSONA_GALLERY_PAGE_SIZE', 42); }
+
+#page size for 'all' gallery pages
+if (!defined('PERSONA_GALLERY_ALL_PAGE_SIZE')) { define('PERSONA_GALLERY_ALL_PAGE_SIZE', 501); }
+
 
 #Download URL for add-on
 if (!defined('PERSONAS_ADDON_URL')) { define('PERSONAS_ADDON_URL', 'https://addons.mozilla.org/en-US/firefox/downloads/latest/10900'); }

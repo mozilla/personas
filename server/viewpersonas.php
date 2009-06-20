@@ -47,7 +47,6 @@
 	$showWearThis = false;
 	$showDescription = true;
 	
-	$page_size = 42; #defalt number of personas per page
 	$description_max = 50; #truncated description size
 	$url_prefix = '/gallery'; #telling the templates the gallery root
 	$title = "Gallery"; #page title for the header template
@@ -85,11 +84,11 @@
 	}
 	elseif ($tab == 'Recent')
 	{
-		$list = $db->get_recent_personas($category == 'All' ? null : $category, $page_size);
+		$list = $db->get_recent_personas($category == 'All' ? null : $category);
 	}
 	elseif ($tab == 'Popular')
 	{
-		$list = $db->get_popular_personas($category == 'All' ? null : $category, $page_size);			
+		$list = $db->get_popular_personas($category == 'All' ? null : $category);			
 	}
 	elseif ($tab == 'My')
 	{
@@ -110,15 +109,13 @@
 		if (array_key_exists('p', $_GET) && $_GET['p'])
 		{
 			$title = $page_header = "Personas Search Results for " . htmlspecialchars($_GET['p']);
-			$list = $db->search_personas($_GET['p'], $category, $page_size);
+			$list = $db->search_personas($_GET['p'], $category, PERSONA_GALLERY_PAGE_SIZE);
 		}
 	}
 	else #tab = all
 	{
-		$page_size = 501;
-		$page = is_numeric($page) ? $page : 1;
-		$start = ($page - 1) * $page_size;
-		$list = $db->get_recent_personas($category == 'All' ? null : $category, $page_size, $start);
+		$page = is_numeric($page) && $page > 0 ? $page : 1;
+		$list = $db->get_all_personas($category == 'All' ? null : $category, $page - 1);
 	}
 
 	if (array_key_exists('rss', $_GET))
