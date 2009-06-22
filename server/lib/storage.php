@@ -211,7 +211,7 @@ class PersonaStorage
 			$result['display_username'] = $result['author'];
 			
 		if ($this->_memcache)
-			$this->_memcache->set("p:$id", $result, MEMCACHE_DECAY);
+			$this->_memcache->set("p:$id", $result, false, MEMCACHE_DECAY);
 			
 		return $result;
 	}
@@ -252,7 +252,7 @@ class PersonaStorage
 		}
 		
 		if ($this->_memcache)
-			$this->_memcache->set("pc:" . ($category ? $category : 'All'), $result, MEMCACHE_DECAY);
+			$this->_memcache->set("pc:" . ($category ? $category : 'All'), $result, false, MEMCACHE_DECAY);
 
 		return $sth->fetchColumn();
 	}
@@ -309,7 +309,7 @@ class PersonaStorage
 		}		
 
 		if ($this->_memcache && $sort != 'recent')
-			$this->_memcache->set("au:$author:$category", $personas, MEMCACHE_DECAY);
+			$this->_memcache->set("au:$author:$category", $personas, false, MEMCACHE_DECAY);
 
 		return $personas;
 	}
@@ -360,7 +360,7 @@ class PersonaStorage
 		}	
 		
 		if ($this->_memcache)
-			$this->_memcache->set('cr:' . ($category ? $category : 'All'), $personas, MEMCACHE_DECAY);
+			$this->_memcache->set('cr:' . ($category ? $category : 'All'), $personas, false, MEMCACHE_DECAY);
 		
 		return $personas;
 	}
@@ -414,7 +414,7 @@ class PersonaStorage
 		}	
 		
 		if ($this->_memcache)
-			$this->_memcache->set('ca:' . $page . ':' . ($category ? $category : 'All'), $personas, MEMCACHE_DECAY);
+			$this->_memcache->set('ca:' . $page . ':' . ($category ? $category : 'All'), $personas, false, MEMCACHE_DECAY);
 		
 		return $personas;
 	}
@@ -463,7 +463,7 @@ class PersonaStorage
 		}		
 
 		if ($this->_memcache)
-			$this->_memcache->set("cp:" . ($category ? $category : 'All'), $personas, MEMCACHE_DECAY);
+			$this->_memcache->set("cp:" . ($category ? $category : 'All'), $personas, false, MEMCACHE_DECAY);
 
 		return $personas;
 	}
@@ -717,7 +717,7 @@ class PersonaStorage
 		}		
 
 		if ($this->_memcache)
-			$this->_memcache->set("categories", $categories, MEMCACHE_DECAY);
+			$this->_memcache->set("categories", $categories, false, MEMCACHE_DECAY);
 
 		return $categories;
 	}
@@ -771,7 +771,7 @@ class PersonaStorage
 		}		
 
 		if ($this->_memcache)
-			$this->_memcache->set('fav:' . $username . ':' . ($category ? $category : 'All'), $results, MEMCACHE_DECAY);
+			$this->_memcache->set('fav:' . $username . ':' . ($category ? $category : 'All'), $results, false, MEMCACHE_DECAY);
 
 		return $results;
 		

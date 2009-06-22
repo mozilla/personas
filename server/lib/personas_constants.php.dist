@@ -24,26 +24,24 @@ if (!defined('PERSONAS_STORAGE_PREFIX'))
 { 
 	define('PERSONAS_STORAGE_PREFIX', '/Users/telliott/mozilla/personas/server/store'); 
 }
-if (!defined('PERSONAS_PENDING_PREFIX')) 
-{ 
-	define('PERSONAS_PENDING_PREFIX', '/Users/telliott/mozilla/personas/server/pending'); 
-}
 
-
-#html path to the root of the html/json/images tree for approvals
-if (!defined('PERSONAS_URL_PREFIX')) 
-{ 
-	define('PERSONAS_URL_PREFIX', 'http://localhost/personas/pending'); 
-}
-#html path to the root of the html/json/images tree for display
+#html prefix path to the root of the html/json/images tree for display
 if (!defined('PERSONAS_LIVE_PREFIX')) 
 { 
 	define('PERSONAS_LIVE_PREFIX', '/personas/store'); 
 }
 
-if (!defined('PERSONAS_BUILD_SERVER')) 
+
+#path to the pending generated html/json/images tree
+if (!defined('PERSONAS_PENDING_PREFIX')) 
 { 
-	define('PERSONAS_BUILD_SERVER', 'http://localhost'); 
+	define('PERSONAS_PENDING_PREFIX', '/Users/telliott/mozilla/personas/server/pending'); 
+}
+
+#html prefix path to the root of the html/json/images tree for approvals
+if (!defined('PERSONAS_URL_PREFIX')) 
+{ 
+	define('PERSONAS_URL_PREFIX', '/personas/pending'); 
 }
 
 
@@ -56,9 +54,6 @@ if (!defined('FEATURED_PERSONAS')) { define('FEATURED_PERSONAS', "1:2:3:4"); }
 
 #ids of the persona being featured for the featured designers
 if (!defined('FEATURED_DESIGNERS')) { define('FEATURED_DESIGNERS', "1:2:3:4"); }
-
-#old version of featured designer
-if (!defined('FEATURE_DESIGNER_PERSONA_ID')) { define('FEATURE_DESIGNER_PERSONA_ID', 1); }
 
 #page size for most gallery pages
 if (!defined('PERSONA_GALLERY_PAGE_SIZE')) { define('PERSONA_GALLERY_PAGE_SIZE', 42); }
@@ -76,5 +71,15 @@ if (!defined('MEMCACHE_DECAY')) { define('MEMCACHE_DECAY', null); }
 
 #password to access the readlog portion of the site
 if (!defined('READLOG_PASS')) { define('READLOG_PASS', 'ppass'); }
+
+
+
+
+## This one is only needed for uplift. Can be removed afterwards
+if (!defined('PERSONAS_BUILD_SERVER')) 
+{ 
+	define('PERSONAS_BUILD_SERVER', 'http://localhost'); 
+}
+
 
 ?>
