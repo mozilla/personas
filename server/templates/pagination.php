@@ -4,9 +4,9 @@
 				if (!isset($category_total))
 					$category_total = $db->get_active_persona_count($category);
 				
-				if ($category_total > $page_size)
+				if ($category_total > PERSONA_GALLERY_ALL_PAGE_SIZE)
 				{
-					$pages = floor($category_total/$page_size) + 1;
+					$pages = floor($category_total/PERSONA_GALLERY_ALL_PAGE_SIZE) + 1;
 					
 					$floor = $page - 4;
 					if ($floor < 1)
