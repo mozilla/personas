@@ -111,9 +111,11 @@
 	{
 ?>
 <form action="dashboard.php" method=GET>
-Lookup by partial username: <input type=text name=partial_username>
+Lookup by partial persona name: <input type=text name=partial_persona value="<?= htmlspecialchars($_GET['partial_persona']) ?>">
 <br>
-Lookup by partial email: <input type=text name=partial_email>
+Lookup by partial username: <input type=text name=partial_username value="<?= htmlspecialchars($_GET['partial_username']) ?>">
+<br>
+Lookup by partial email: <input type=text name=partial_email value="<?= htmlspecialchars($_GET['partial_email']) ?>">
 <br>
 <input type="submit">
 </form>
@@ -140,11 +142,37 @@ Lookup by partial email: <input type=text name=partial_email>
 			
 		}
 		
+		if (array_key_exists('partial_persona', $_GET))
+		{
+			$status_map = array('Pending', 'Active', 'Rejected', 'Legal');
+			$results = $db->find_persona_by_name($_GET['partial_persona']);
+			echo "<p>Persona results that matched " . $_GET['partial_persona'];
+			echo "<table border=1 cellpadding=10>";
+			echo "<tr><th>Persona Name</th><th>Persona Author</th><th>Persona Status</th><th>Submitted</th><th>Approved</th></tr>";
+			
+			$i = 0;
+			foreach ($results as $persona)
+			{
+			    $class = ($i % 2 == 0) ? 'even' : 'odd';
+			    
+				if ($persona['status'] == 1)
+					$url = "/delete/" . $persona['id'];
+				else
+					$url = "/admin/pending.php?id=" . $persona['id'];
+					
+				echo "<tr class=\"$class\"><td><a href=\"$url\" target=\"_blank\">" . $persona['name'] . "</a></td>";
+				echo "<td>" . $persona['author'] . "</td><td><a href=\"dashboard.php?partial_persona=" . htmlspecialchars($_GET['partial_persona']) . "&log_id=" . $persona['id']. "\">" . $status_map[$persona['status']] . "</a></td>";
+				echo "<td>" . $persona['submit'] . "</td><td>" . $persona['approve'] . "</td></tr>";
+				$i++;
+			}
+			echo "</table>";
+		}
+		
 		if (array_key_exists('username', $_GET))
 		{
 			$status_map = array('Pending', 'Active', 'Rejected', 'Legal');
 			$results = $db->get_all_submissions($_GET['username']);
-			echo "Results for " . $_GET['username'];
+			echo "<p>Results for " . $_GET['username'];
 			echo "<table border=1 cellpadding=10>";
 			echo "<tr><th>Persona Name</th><th>Persona Author</th><th>Persona Status</th><th>Submitted</th><th>Approved</th></tr>";
 			

@@ -812,7 +812,8 @@ class PersonaStorage
 	}
 
 #####
-# Add a persona to a user's favorites.
+# Add a persona to a user's favorites. Will simply overwrite with a new timestamp if it's 
+# already there (which makes sense from the user perspective, as it moves it to the top)
 
 
 	function add_user_favorite($username, $persona_id)
@@ -1006,39 +1007,6 @@ class PersonaStorage
 		
 		return 1;
 	}
-
-#####
-# This gets all personas done by an author, including the rejected ones. For admin use
-
-
-	function get_all_submissions($author)
-	{
-		if (!$author) { return array(); }
-		if (!$this->_dbh)
-			$this->db_connect();		
-		
-		try
-		{
-			$statement = 'select * from personas where author = ? order by id desc';
-			
-			$sth = $this->_dbh->prepare($statement);
-			$sth->execute(array($author));
-		}
-		catch( PDOException $exception )
-		{
-			error_log($exception->getMessage());
-			throw new Exception("Database unavailable", 503);
-		}
-
-		$personas = array();
-		
-		while ($result = $sth->fetch(PDO::FETCH_ASSOC))
-		{
-			$personas[] = $result;
-		}		
-		return $personas;
-		
-	}
 	
 
 #####
@@ -1072,6 +1040,74 @@ class PersonaStorage
 		return $personas;
 	}
 	
+
+#####
+# Given a partial string, return all personas that have that in their name
+
+	function find_persona_by_name($partial_name)
+	{
+		if (!$partial_name) { return array(); }
+		if (!$this->_dbh)
+			$this->db_connect();		
+		
+		try
+		{
+			$statement = 'select * from personas where name like ? order by id desc';
+			
+			$sth = $this->_dbh->prepare($statement);
+			$sth->execute(array('%' . $partial_name . '%'));
+		}
+		catch( PDOException $exception )
+		{
+			error_log($exception->getMessage());
+			throw new Exception("Database unavailable", 503);
+		}
+
+		$personas = array();
+		
+		while ($result = $sth->fetch(PDO::FETCH_ASSOC))
+		{
+			$personas[] = $result;
+		}		
+		return $personas;
+		
+	}
+
+
+
+#####
+# This gets all personas done by an author, including the rejected ones. For admin use
+
+
+	function get_all_submissions($author)
+	{
+		if (!$author) { return array(); }
+		if (!$this->_dbh)
+			$this->db_connect();		
+		
+		try
+		{
+			$statement = 'select * from personas where author = ? order by id desc';
+			
+			$sth = $this->_dbh->prepare($statement);
+			$sth->execute(array($author));
+		}
+		catch( PDOException $exception )
+		{
+			error_log($exception->getMessage());
+			throw new Exception("Database unavailable", 503);
+		}
+
+		$personas = array();
+		
+		while ($result = $sth->fetch(PDO::FETCH_ASSOC))
+		{
+			$personas[] = $result;
+		}		
+		return $personas;
+		
+	}
+
 #####
 # Changes a persona category. This is separate from editing because a) it doesn't require approval
 # if an admin is doing it and b) it's a lot more common. Should only be available to admins

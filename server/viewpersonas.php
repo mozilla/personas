@@ -55,22 +55,20 @@
 	
 	$categories = $db->get_categories();
 	array_unshift($categories, 'All');
-	$tabs = array('Popular', 'Recent', 'All', 'My', 'Favorites', 'Search'); # pulling 'Search'
+	$tabs = array('Popular', 'Recent', 'All', 'My', 'Favorites', 'Search');
 	
 	$path = array_key_exists('PATH_INFO', $_SERVER) ? $_SERVER['PATH_INFO'] : '/';
 	$path = substr($path, 1); #chop the lead slash
 	list($category, $tab, $page) = explode('/', $path.'//');
 
 	$category = ucfirst($category);
-	if ($category != 'Designer')
-	{
-		$tab = in_array(ucfirst($tab), $tabs) ? ucfirst($tab) : 'Popular';
-		if (!in_array($category, $categories))
-			$category = 'All';
-	}
 		
 	$page_header = "View Personas";
+
 	$list = array(); #grab the appropriate personas for display
+	
+	#Designer reverses the semantics of the tab path. Everything else has the base directive 
+	#down at the lowest level, but Designer is a level up to have the designer name make sense
 	if ($category == 'Designer')
 	{
 		$display_username = $user->get_display_username($tab);
@@ -82,40 +80,45 @@
 			$showDescription = false;
 		}
 	}
-	elseif ($tab == 'Recent')
+	else
 	{
-		$list = $db->get_recent_personas($category == 'All' ? null : $category);
-	}
-	elseif ($tab == 'Popular')
-	{
-		$list = $db->get_popular_personas($category == 'All' ? null : $category);			
-	}
-	elseif ($tab == 'My')
-	{
-		$user->force_signin();
-		$title = $page_header = "My Personas";
-		if ($user->get_username())
-			$list = $db->get_persona_by_author($user->get_username(), $category == 'All' ? null : $category);			
-	}
-	elseif ($tab == 'Favorites')
-	{
-		$user->force_signin();
-		$title = $page_header = "My Favorite Personas";
-		if ($user->get_username())
-			$list = $db->get_user_favorites($user->get_username(), $category);		
-	}
-	elseif ($tab == 'Search')
-	{
-		if (array_key_exists('p', $_GET) && $_GET['p'])
+		if (!in_array($category, $categories))
+			$category = 'All';
+
+		switch(strtolower($tab))
 		{
-			$title = $page_header = "Personas Search Results for " . htmlspecialchars($_GET['p']);
-			$list = $db->search_personas($_GET['p'], $category, PERSONA_GALLERY_PAGE_SIZE);
+			case 'all':
+				$page = is_numeric($page) && $page > 0 ? $page : 1;
+				$list = $db->get_all_personas($category == 'All' ? null : $category, $page - 1);
+				break;
+			case 'recent':
+				$list = $db->get_recent_personas($category == 'All' ? null : $category);
+				break;
+			case 'my':
+				$user->force_signin();
+				$title = $page_header = "My Personas";
+				if ($user->get_username())
+					$list = $db->get_persona_by_author($user->get_username(), $category == 'All' ? null : $category);	
+				break;
+			case 'favorites':
+				$user->force_signin();
+				$title = $page_header = "My Favorite Personas";
+				if ($user->get_username())
+					$list = $db->get_user_favorites($user->get_username(), $category);
+				break;
+			case 'search':
+				$title = $page_header = 'Search Personas';
+				if (array_key_exists('p', $_GET) && $_GET['p'])
+				{
+					$title = $page_header = "Personas Search Results for " . htmlspecialchars($_GET['p']);
+					$list = $db->search_personas($_GET['p'], $category, PERSONA_GALLERY_PAGE_SIZE);
+				}
+				break;
+			default: #should default to popular
+				$tab = 'Popular';
+				$list = $db->get_popular_personas($category == 'All' ? null : $category);
+				break;
 		}
-	}
-	else #tab = all
-	{
-		$page = is_numeric($page) && $page > 0 ? $page : 1;
-		$list = $db->get_all_personas($category == 'All' ? null : $category, $page - 1);
 	}
 
 	if (array_key_exists('rss', $_GET))
