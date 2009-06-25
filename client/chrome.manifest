@@ -13,6 +13,7 @@ content  personas             chrome/content/
 # SunOS, FreeBSD) and OS version (XP, Vista) so we can make Personas look right
 # on them.  Make sure you're editing the right skin(s) when making changes!
 skin  personas  classic/1.0  chrome/skin/winxp/             application={ec8030f7-c20a-464f-9b0e-13a3a9e97384}                      os=WINNT   osversion<6
+skin  personas  classic/1.0  chrome/skin/winxp/             application={ec8030f7-c20a-464f-9b0e-13a3a9e97384}                      os=WINCE
 skin  personas  classic/1.0  chrome/skin/vista/             application={ec8030f7-c20a-464f-9b0e-13a3a9e97384}                      os=WINNT   osversion>=6
 skin  personas  classic/1.0  chrome/skin/mac3.0/            application={ec8030f7-c20a-464f-9b0e-13a3a9e97384}  appversion<3.1b2    os=Darwin
 skin  personas  classic/1.0  chrome/skin/mac3.1/            application={ec8030f7-c20a-464f-9b0e-13a3a9e97384}  appversion>=3.1b2   os=Darwin
