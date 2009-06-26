@@ -29,7 +29,7 @@
 		if ($persona['popularity'])
 			print '<p class="numb-users">' . number_format($persona['popularity']) . ' active daily users</p>';
 
-		if (0) #($user->get_unauthed_username())
+		if ($user->get_unauthed_username())
 		{
 			if ($favorite_persona)
 			{
