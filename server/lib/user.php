@@ -502,6 +502,7 @@ class PersonaUser
 		return 0;
 	}
 
+    
 #####
 # Generates a random 16-character string, sticks hyphens in to make it easier to read, and stores it
 # as the change password key for the user.

@@ -92,21 +92,7 @@
     
 <?php include 'templates/footer.php'; ?>
     <script type="text/javascript" charset="utf-8">
-		var favorite_action = <?= $favorite_persona ? 0 : 1 ?>;
-		function change_favorite()
-		{
-			//change to loading here
-			$("#favoritebutton").html("loading...");
-			$.get('/favorite/<?= $persona_id ?>', {"action": favorite_action}, 
-				function(data) 
-					{ 
-						favorite_action = favorite_action ? 0 : 1; 
-						$("#favoritebutton").html(favorite_action ? "Add to favorites" : "Remove from favorites"); 
-					}
-				);
-			
-			return false;
-		}
+		
 
         $(document).ready(function () {
             $("#header").ie6Warning({"message":'<div id="ie6">Upgrade your browser to get the most out of this website. <a href="%LINK%">Download Firefox for free</a>.</div>'});
@@ -115,6 +101,27 @@
                                         'hasFirefox':'<span>get personas now!</span><span>&nbsp;</span>',
                                         'noFirefox':'<span>get personas with firefox</span><span>&nbsp;</span>'
                                         });
+            
+            var favorite_action = <?= $favorite_persona ? 0 : 1 ?>;
+            $(".favorite a").click(function() {                 
+                //change to loading here
+              	$(this).html("loading...");
+    			$.get('/favorite/<?= $persona_id ?>', {"action": favorite_action, "ajax":true}, 
+    				function(data) 
+    					{ 
+    						favorite_action = favorite_action ? 0 : 1;
+    						$(".favorite a").html(favorite_action ? "Add to favorites" : "Remove from favorites");
+                            if(favorite_action) {
+                                $(".favorite a").removeClass("favorited");
+                            } else {
+                                $(".favorite a").addClass("favorited");
+                            }
+    					}
+    				);
+
+    			return false;
+            });                   
+            
         });
     </script>
 </body>

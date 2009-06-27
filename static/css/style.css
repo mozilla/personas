@@ -1217,6 +1217,7 @@ img.preview  {
 
 .detailed-view {
     margin: 15px 0;
+    clear: both;
 }
 
 .description strong {
@@ -1354,6 +1355,20 @@ img.preview  {
     margin: 0;
     font-weight: bold;
     color: #fff;
+}
+
+.favorite {
+    float: right;
+    margin: -40px 0 0 0;
+}
+
+.favorite a {
+    padding: 2px 0 2px 24px;
+    background: transparent url(../img/star.png) no-repeat scroll left -44px;
+}
+
+.favorite .favorited {
+    background-position: top left;
 }
 
 /**************
