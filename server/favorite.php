@@ -45,7 +45,7 @@
 	
 	$path = array_key_exists('PATH_INFO', $_SERVER) ? $_SERVER['PATH_INFO'] : '/';
 	$path = substr($path, 1); #chop the lead slash
-	list($id) = explode('/', $path);
+	list($id,$nonce) = explode('/', $path);
 	
 	$user = new PersonaUser();
 
@@ -58,6 +58,13 @@
 	}
 	
 	if (!array_key_exists('action', $_GET))
+	{
+		echo 0;
+		exit;
+	}
+
+	$testnonce = md5($id . $auth_user . PERSONAS_LOGIN_SALT);
+	if ($testnonce != $nonce)
 	{
 		echo 0;
 		exit;

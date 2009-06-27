@@ -16,7 +16,7 @@
                         $text = ($favorite_persona) ? 'Remove from favorites' : 'Add to favorites';
             		    $action = ($favorite_persona) ? 0 : 1;
             		    $class = ($favorite_persona) ? 'favorited':"";
-            		    echo '<p class="favorite"><a href="/favorite/'.$persona_id.'?action='.$action.'" class="'.$class.'">'.$text.'</a></p>';
+            		    echo '<p class="favorite"><a href="/favorite/'.$persona_id.'/' . $nonce . '?action='.$action.'" class="'.$class.'">'.$text.'</a></p>';
             		}
                 ?>
                 <img class="detailed-view"  alt="<?= $persona['name'] ?>" persona="<?= $persona['json'] ?>" src="<?= PERSONAS_LIVE_PREFIX . '/' . url_prefix($persona['id']) ?>/preview_large.jpg" >

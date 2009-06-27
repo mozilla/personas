@@ -66,6 +66,7 @@
 	}
 
 	$favorite_persona = $username ? $db->is_favorite_persona($username, $persona_id) : null;
+	$nonce =  md5($persona_id . $username . PERSONAS_LOGIN_SALT);
 	$url_prefix = '/gallery';
 	$tabs = null;
 	
