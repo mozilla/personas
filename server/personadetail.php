@@ -60,7 +60,8 @@
 	{
 		$persona_id = intval($persona_id);
 		$persona = $db->get_persona_by_id($persona_id);
-		$page_header = $persona['name'] . ' by ' . $persona['author'];
+		if ($persona['status'] == 1)
+			$page_header = $persona['name'] . ' by ' . $persona['author'];
 		$category = $persona['category'];
 		$persona['json'] = htmlentities(json_encode(extract_record_data($persona)));
 	}
@@ -84,7 +85,11 @@
             </div>
             <div id="maincontent">
                 <p id="breadcrumbs"><a href="http://www.getpersonas.com">Personas Home</a> : View Personas</p>
-<?php include 'templates/persona_detail.php' ?>
+<?php if ($persona['status'] == 1)
+		include 'templates/persona_detail.php';
+	  else
+	  	echo "We are unable to locate the persona you requested."
+?>
 			</div>
 <?php include 'templates/category_nav.php'; ?>
             
