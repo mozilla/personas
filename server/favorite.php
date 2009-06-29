@@ -45,6 +45,7 @@
 	
 	$path = array_key_exists('PATH_INFO', $_SERVER) ? $_SERVER['PATH_INFO'] : '/';
 	$path = substr($path, 1); #chop the lead slash
+error_log($path);
 	list($id,$nonce) = explode('/', $path);
 	
 	$user = new PersonaUser();
@@ -70,6 +71,7 @@
 		exit;
 	}
 	
+error_log("here!!!");
 	$db = new PersonaStorage();
 	
 	

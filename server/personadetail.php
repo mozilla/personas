@@ -112,7 +112,7 @@
             $(".favorite a").click(function() {                 
                 //change to loading here
               	$(this).html("loading...");
-    			$.get('/favorite/<?= $persona_id ?>', {"action": favorite_action, "ajax":true}, 
+    			$.get('/favorite/<?= $persona_id ?>/<?= $nonce ?>', {"action": favorite_action, "ajax":true}, 
     				function(data) 
     					{ 
     						favorite_action = favorite_action ? 0 : 1;

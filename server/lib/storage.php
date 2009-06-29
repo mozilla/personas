@@ -794,7 +794,7 @@ class PersonaStorage
 
 		try
 		{
-			$select_stmt = 'select count(*) from favorites where username = :username and id = :id';
+			$select_stmt = 'select * from favorites where username = :username and id = :id limit 1';
 			$sth = $this->_dbh->prepare($select_stmt);
 			$sth->bindParam(':username', $username);
 			$sth->bindParam(':id', $persona_id);
