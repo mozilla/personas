@@ -194,7 +194,7 @@ tr.odd {
 
 #nav ul {
     font-family: Helvetica, sans-serif;
-    width: 533px;
+    width: 730px;
     height: 70px;
     margin: 1px 0 0 230px;
     background: url('../img/nav-sprite.jpg') top right no-repeat;
@@ -226,6 +226,31 @@ tr.odd {
 
 #nav ul a:active, #nav ul a.active {
     background: url('../img/nav-sprite.jpg') 0 -140px repeat-x;
+}
+
+#nav ul li.search {
+    padding: 20px 0 22px 7px;
+}
+
+.search form {
+    background: transparent url('../img/main-sprites.png') -333px -795px no-repeat;
+    width: 157px;
+    padding: 5px 0 0 25px;
+    height: 23px;
+}
+
+.search input {
+    width: 130px;
+    border: 0;
+    background: transparent;
+    color: #fff;
+}
+
+.search #submit {
+    width: 20px;
+    height: 20px;
+    margin: 0 -2px 0 2px;
+    vertical-align: bottom;
 }
 
 #header {
@@ -1370,6 +1395,7 @@ img.preview  {
 .favorite .favorited {
     background-position: top left;
 }
+
 
 /**************
 *

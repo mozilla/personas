@@ -1,4 +1,5 @@
 			<div id="secondary-content">
+			    	
                 <ul id="subnav">
 <?php
 			foreach ($categories as $list_category)

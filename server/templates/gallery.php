@@ -30,13 +30,7 @@
 			if ($tab == 'Search')
 			{
 ?>  
-				<form action="" method="GET">
-				    <input type=text name=p value='<?= array_key_exists('p', $_GET) ? $_GET['p'] : '' ?>'>
-				    <button class="button search" type="submit">
-                    <span>search</span>
-                    <span class="arrow"/>
-                    </button>
-				</form>
+			
 <?php
 				if (count($list) == 0 && array_key_exists('p', $_GET))
 				{

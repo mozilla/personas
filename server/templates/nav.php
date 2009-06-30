@@ -35,6 +35,12 @@
                         <li class="create"><a href="/upload">Create <br/>Your Own</a></li>
                         <li class="demo"><a href="/demo_create">How To</a></li>
                         <li class="faq"><a href="/faq">Frequent <br/>Questions</a></li>
+                        <li class="search">
+                            <form action="/gallery/All/search" method="GET">
+                                <input id="q" name="q" type="text" />
+                                <input type="image" name="search" value="" id="submit" src="/static/img/search-button.png" />
+                            </form>
+                        </li>
                     </ul>
                 <?php } ?>
             </div>
