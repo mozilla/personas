@@ -253,6 +253,11 @@ tr.odd {
     vertical-align: bottom;
 }
 
+.search p {
+    position: absolute;
+    top: -1000px;
+}
+
 #header {
     margin: -10px 0 0 -10px;
     padding: 16px 0 0 285px;

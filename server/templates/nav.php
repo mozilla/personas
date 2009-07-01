@@ -37,7 +37,8 @@
                         <li class="faq"><a href="/faq">Frequent <br/>Questions</a></li>
                         <li class="search">
                             <form action="/gallery/All/search" method="GET">
-                                <input id="q" name="q" type="text" />
+                                <p>Search personas:</p>
+                                <input id="q" name="p" type="text" />
                                 <input type="image" name="search" value="" id="submit" src="/static/img/search-button.png" />
                             </form>
                         </li>
