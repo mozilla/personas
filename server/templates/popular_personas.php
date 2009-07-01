@@ -2,7 +2,8 @@
                 <h3>Most Popular Personas</h3>
                 <ol class="popular">
 <?php
-	$list = $db->get_popular_personas(null,3);
+	$list = array_slice($db->get_popular_personas(null), 0, 3);
+	
 	foreach ($list as $persona)
 	{
 		$persona_json = htmlentities(json_encode(extract_record_data($persona)));
