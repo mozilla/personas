@@ -194,9 +194,9 @@ tr.odd {
 
 #nav ul {
     font-family: Helvetica, sans-serif;
-    width: 730px;
+    width: 674px;
     height: 70px;
-    margin: 1px 0 0 230px;
+    margin: 1px 0 0 274px;
     background: url('../img/nav-sprite.jpg') top right no-repeat;
 }
 
@@ -213,7 +213,7 @@ tr.odd {
     display: block;
     color: #fff;
     text-decoration: none;
-    width: 110px;
+    width: 108px;
 }
 
 #nav ul li.gallery a, #nav ul li.demo a {
@@ -229,13 +229,13 @@ tr.odd {
 }
 
 #nav ul li.search {
-    padding: 20px 0 22px 7px;
+    padding: 20px 0 22px 5px;
 }
 
 .search form {
     background: transparent url('../img/main-sprites.png') -333px -795px no-repeat;
     width: 157px;
-    padding: 5px 0 0 25px;
+    padding: 5px 0 0 26px;
     height: 23px;
 }
 
@@ -249,7 +249,6 @@ tr.odd {
 .search #submit {
     width: 20px;
     height: 20px;
-    margin: 0 -2px 0 2px;
     vertical-align: bottom;
 }
 
