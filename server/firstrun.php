@@ -54,7 +54,7 @@
                 <ol class="get-started">
                     <li class="one">Click on the fox mask in the lower left corner of your Firefox browser, or go to the Personas page directly from <a href="http://www.getpersonas.com">here</a>.</li>
                     <li class="two">Next, select a Persona from the list, or check out the <a a href="/gallery/All/Popular">Personas gallery</a>.</li>
-                    <li class="three">You can change your persona as much as you like! Choose a new one from the list or <a href="https://personas.services.mozilla.com/upload">create your own</a>.</li>
+                    <li class="three">You can change your persona as much as you like! Choose a new one from the list or <a href="https://www.getpersonas.com/upload">create your own</a>.</li>
                 </ol>
                 
                 <p>Have a Personas question or comment? Check out our <a href="/faq">FAQ</a> section or <a href="https://labs.mozilla.com/forum/?CategoryID=18">discussion

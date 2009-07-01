@@ -45,7 +45,7 @@
 	function send_problem_email($address, $reason, $name)
 	{
 		$message = "Thanks for submitting your Persona '$name'. Unfortunately, we cannot add your Persona because of the following reason: $reason.\n\n"; 
-		$message .= "We appreciate your involvement in the Personas community and encourage you to create another design that fits our Terms of Service (http://personas.services.mozilla.com/upload).\n\n";
+		$message .= "We appreciate your involvement in the Personas community and encourage you to create another design that fits our Terms of Service (http://www.getpersonas.com/upload).\n\n";
 		$message .= "Also, you are able to use apply any design you like on your own computer. Here is how:\n\n";
 		$message .= "1. If you have Personas installed, click on the little fox on the bottom left of your computer screen.\n\n";
 		$message .= "2. Click on \"Preferences\" and ensure the box \"Show Custom Persona in Menu\" is checked and close the box.\n\n";

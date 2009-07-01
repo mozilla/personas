@@ -35,12 +35,12 @@
                         <dt>How do I create or edit my designer profile?</dt>
                            <dd>
                                <p>If you are a new Personas designer, you will be asked to create a profile when
-                                  you first sign up <a href="https://personas.services.mozilla.com/signin?return=/upload">here</a>. You will have the option to include a "display
+                                  you first sign up <a href="https://www.getpersonas.com/signin?return=/upload">here</a>. You will have the option to include a "display
                                   name" and "designer description", both of which will be displayed in the public
                                   gallery.</p>
 
                                   <p>If you are an existing Personas designer, you can edit and add to your profile
-                                  <a href="https://personas.services.mozilla.com/profile">here</a>.</p>
+                                  <a href="https://www.getpersonas.com/profile">here</a>.</p>
 
                            </dd>
                 
@@ -72,7 +72,7 @@
                
                <dt>After creating a Persona, can I edit the design?</dt>
                <dd><p>Yes. If at any point you need to edit your Persona design 
-                after it has been submitted to the gallery, simply visit <a href="http://personas.services.mozilla.com/gallery/All/My">this link</a>, log in to
+                after it has been submitted to the gallery, simply visit <a href="http://www.getpersonas.com/gallery/All/My">this link</a>, log in to
                your account, and go to the "Personas Home : Gallery : All : My" section. 
                From there, you can make changes to the settings you entered upon creation.</p></dd>
                

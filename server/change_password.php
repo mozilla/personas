@@ -15,7 +15,7 @@
 			$username = array_key_exists('userreq', $_POST) ? (ini_get('magic_quotes_gpc') ? stripslashes($_POST['userreq']) : $_POST['userreq']) : null;
 			if (!$user->user_exists($username))
 			{
-				$error = "Oops!  We are unable to locate the username you entered.  Please try again, or <a href='https://personas.services.mozilla.com/upload'>create a new one</a>.";
+				$error = "Oops!  We are unable to locate the username you entered.  Please try again, or <a href='https://www.getpersonas.com/upload'>create a new one</a>.";
 				include "templates/forgot_password_tmpl.php";
 				exit;
 			}
@@ -30,7 +30,7 @@
 			
 			$code = $user->generate_password_change_code($username);
 			$mail_message = "So many passwords to remember! You asked to reset your personas password. To do so, please visit:\n\n";
-			$mail_message .= "https://personas.services.mozilla.com/forgot_password?username=$username&code=$code\n\n";
+			$mail_message .= "https://www.getpersonas.com/forgot_password?username=$username&code=$code\n\n";
 			$mail_message .= "This link will let you change your password to something new. If you didn't ask for this, don't worry, we'll keep your password safe.\n\n";
 			$mail_message .= "Best Wishes,\n";
 			$mail_message .= "The Personas Team\n";
