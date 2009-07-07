@@ -55,7 +55,7 @@ CREATE TABLE `personas` (
   `reason_other` varbinary(256) default NULL,
   `featured` tinyint(4) default NULL,
   `locale` varchar(2) default NULL,
-  `movers` int(11) default NULL,
+  `movers` float default NULL,
   PRIMARY KEY  (`id`),
   UNIQUE KEY `name` (`name`),
   FULLTEXT KEY `name_2` (`name`,`description`)

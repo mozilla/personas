@@ -119,6 +119,7 @@
 #  ca:<page>:<category> - gallery 'All' pages entries for a category
 #  cr:<category> - gallery 'Recent' page entries for a category
 #  cp:<category> - gallery 'Popular' page entries for a category
+#  cm:<category> - movers and shakers for a category
 #  pc:<category> - current persona count for a category
 #  au:<author>:<category> - personas from an author
 #  fav:<author>:<category> - favorite personas
@@ -468,6 +469,55 @@ class PersonaStorage
 		return $personas;
 	}
 
+#####
+# Returns the most active movers and shakers from the db - personas that are seeing big changes in numbers
+
+	function get_movers($category = null)
+	{
+		if ($category == 'All')
+			$category = null;
+		
+		if ($this->_memcache)
+		{
+			$result = $this->_memcache->get("cm:" . ($category ? $category : 'All'));
+			if ($result)
+				return $result;
+		}
+
+		if (!$this->_dbh)
+			$this->db_connect();		
+		
+		try
+		{
+			$statement = 'select * from personas where status = 1' . ($category ? " and category = :category" : "") . ' order by movers desc limit ' . PERSONA_GALLERY_PAGE_SIZE;
+			$sth = $this->_dbh->prepare($statement);
+			if ($category)
+			{
+				$sth->bindParam(':category', $category);
+			}
+			$sth->execute();
+		}
+		catch( PDOException $exception )
+		{
+			error_log($exception->getMessage());
+			throw new Exception("Database unavailable", 503);
+		}
+		
+		$personas = array();
+		
+		while ($result = $sth->fetch(PDO::FETCH_ASSOC))
+		{
+			if (!$result['display_username'])
+				$result['display_username'] = $result['author'];
+			$personas[] = $result;
+		}		
+
+		if ($this->_memcache)
+			$this->_memcache->set("cm:" . ($category ? $category : 'All'), $personas, false, MEMCACHE_DECAY);
+
+		return $personas;
+		
+	}
 
 #####
 # Searches through the name and description for the requested keywords. Will give you a 

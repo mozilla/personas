@@ -38,7 +38,7 @@
             </div>
 <?php include 'templates/featured_personas.php'; ?>
 <?php include 'templates/featured_designer.php'; ?>
-<?php include 'templates/popular_personas.php'; ?>
+<?php include 'templates/movers.php'; ?>
 
         </div>
     </div>
