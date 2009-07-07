@@ -110,8 +110,8 @@
 		$upload_errors['name'] = "Please use alphanumeric characters in your persona name";
 	elseif (strlen($upload_submitted['name']) < 6)
 		$upload_errors['name'] = "Please use at least 6 characters in your persona name";
-	elseif (strlen($upload_submitted['name']) > 32)
-		$upload_errors['name'] = "Please limit your persona name to 32 characters";
+	elseif (strlen($upload_submitted['name']) > 40)
+		$upload_errors['name'] = "Please limit your persona name to 40 characters";
 	else
 	{
 		$collision_id = $db->check_persona_name($upload_submitted['name']);
