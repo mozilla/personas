@@ -1607,8 +1607,6 @@ class PersonaStorage
 		
 		while ($result = $sth->fetchColumn())
 		{
-			if (!$result['display_username'])
-				$result['display_username'] = $result['author'];
 			$personas[] = $result;
 		}		
 		return $personas;

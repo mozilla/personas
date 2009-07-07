@@ -2,10 +2,18 @@
                 <h3>Movers and Shakers</h3>
                 <ol class="popular">
 <?php
-	$list = array_slice($db->get_movers(null), 0, 3);
+	$list = $db->get_movers(null);
+	$count = 1;
+	
+	$featured_designer_list = explode(":", FEATURED_DESIGNERS);
+	$featured_persona_list = explode(":", FEATURED_PERSONAS);
 	
 	foreach ($list as $persona)
 	{
+		if (array_key_exists($persona['id'], $featured_designer_list) 
+			|| array_key_exists($persona['id'], $featured_persona_list))
+			continue;
+		
 		$persona_json = htmlentities(json_encode(extract_record_data($persona)));
 ?>
 					<li>
@@ -16,6 +24,8 @@
                             <p class="downloads"><?= number_format($persona['popularity']) ?> active daily users</p>
                     </li>
 <?php
+		if (++$count > 3)
+			break;
 	}
 ?>
                 </ol>
