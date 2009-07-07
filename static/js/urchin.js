@@ -10,7 +10,7 @@ var _ufsc=1;			// set client info flag (1=on|0=off)
 var _udn="getpersonas.com";		// (auto|none|domain) set the domain name for cookies
 var _uhash="on";		// (on|off) unique domain hash for cookies
 var _utimeout="1800";   	// set the inactive session timeout in seconds
-var _ugifpath="/img/__utm.gif";	// set the web path to the __utm.gif file
+var _ugifpath="/static/img/__utm.gif";	// set the web path to the __utm.gif file
 var _utsp="|";			// transaction field separator
 var _uflash=1;			// set flash version detect option (1=on|0=off)
 var _utitle=1;			// set the document title detect option (1=on|0=off)
