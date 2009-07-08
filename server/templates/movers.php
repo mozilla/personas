@@ -10,8 +10,8 @@
 	
 	foreach ($list as $persona)
 	{
-		if (array_key_exists($persona['id'], $featured_designer_list) 
-			|| array_key_exists($persona['id'], $featured_persona_list))
+		if (in_array($persona['id'], $featured_designer_list) 
+			|| in_array($persona['id'], $featured_persona_list))
 			continue;
 		
 		$persona_json = htmlentities(json_encode(extract_record_data($persona)));
