@@ -61,7 +61,7 @@
 		$persona_id = intval($persona_id);
 		$persona = $db->get_persona_by_id($persona_id);
 		if ($persona['status'] == 1)
-			$page_header = $persona['name'] . ' by ' . $persona['author'];
+			$page_header = $persona['name'] . ' by ' . $persona['display_username'];
 		$category = $persona['category'];
 		$persona['json'] = htmlentities(json_encode(extract_record_data($persona)));
 	}
