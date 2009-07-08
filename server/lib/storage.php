@@ -1478,6 +1478,21 @@ class PersonaStorage
 		}
 		return 1;
 	}
+
+
+#####
+# Flushes the memcache entry for a particular value
+
+	function flush_memcache($value)
+	{
+		if (!$this->_memcache)
+			return 1;
+		
+		if (!$value)
+			return 0;
+		
+		$this->_memcache->delete($value);
+	}
 	
 #######################################################
 # FUNCTIONS TO TRY TO MAKE CHINA WORK 

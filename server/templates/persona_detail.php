@@ -24,7 +24,7 @@
 <?php           
 		if ($persona['description'])
 		{
-			$desc = preg_replace('/(https?:\/\/[^ ]+[A-Za-z0-9])/', '<a href="$1">$1</a>', $persona['description']);
+			$desc = preg_replace('/(https?:\/\/[^ ]+[A-Za-z0-9\/])/', '<a href="$1">$1</a>', $persona['description']);
 ?>
 				<p class="description"><strong>Description:</strong> <?= $desc ?></p>
 <?php

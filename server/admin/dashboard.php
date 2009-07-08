@@ -119,9 +119,29 @@ Lookup by partial email: <input type=text name=partial_email value="<?= htmlspec
 <br>
 <input type="submit">
 </form>
+<p><hr><p>
+<form action="dashboard.php" method=GET>
+Flush memcache value: <input type=text name=flush_memcache value="">
+<br>
+<?php
+		if (array_key_exists('flush_memcache', $_GET))
+		{
+			$db->flush_memcache($_GET['flush_memcache']);
+			echo htmlspecialchars($_GET['flush_memcache']) . " flushed";
+		}
+?>
+<br><input type="submit">
+</form>
+
 <p>
 
 <?php
+		if (array_key_exists('flush_memcache', $_GET))
+		{
+			$db->flush_memcache($_GET['log_id']);
+		}
+		
+
 		if (array_key_exists('log_id', $_GET))
 		{
 			$results = $db->get_log_by_persona_id($_GET['log_id']);
