@@ -7,7 +7,7 @@ CREATE TABLE `categories` (
 CREATE TABLE `edits` (
   `id` int(11) NOT NULL,
   `author` varchar(32) default NULL,
-  `name` varchar(32) default NULL,
+  `name` varchar(40) default NULL,
   `header` varchar(64) default NULL,
   `footer` varchar(64) default NULL,
   `category` varchar(32) default NULL,
@@ -37,7 +37,7 @@ CREATE TABLE `log` (
 
 CREATE TABLE `personas` (
   `id` int(11) NOT NULL auto_increment,
-  `name` varchar(32) default NULL,
+  `name` varchar(40) default NULL,
   `header` varchar(64) default NULL,
   `footer` varchar(64) default NULL,
   `category` varchar(32) default NULL,
