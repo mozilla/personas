@@ -47,7 +47,7 @@
 	$page_size = 501;
 	
 	#Top level popular page
-	$popular_list = array_slice($db->get_popular_personas(null), 21);
+	$popular_list = array_slice($db->get_popular_personas(null), 0, 21);
 	foreach ($popular_list as $item)
 	{
 		$data = extract_record_data($item);
@@ -57,7 +57,7 @@
 	$master['popular'] = $popular_json;
 
 	#Top level recent page
-	$recent_list = array_slice($db->get_recent_personas(null), 21);
+	$recent_list = array_slice($db->get_recent_personas(null), 0, 21);
 	foreach ($recent_list as $item)
 	{
 		$data = extract_record_data($item);
@@ -73,7 +73,7 @@
 		$category_total = $db->get_active_persona_count($category);
 		$pages = floor($category_total/$page_size) + 1;
 		
-		$popular_list = array_slice($db->get_popular_personas($category), 10);
+		$popular_list = array_slice($db->get_popular_personas($category), 0, 10);
 	
 		$short_cat_list = array();
 		foreach ($popular_list as $item)
