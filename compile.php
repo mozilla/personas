@@ -44,7 +44,7 @@
 	
 	$db = new PersonaStorage();
 	$categories = $db->get_categories();
-
+	$page_size = 501;
 	
 	#Top level popular page
 	$popular_list = array_slice($db->get_popular_personas(null), 21);
