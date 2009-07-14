@@ -73,3 +73,8 @@ CREATE TABLE `users` (
   PRIMARY KEY  (`username`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
+CREATE TABLE `meta` (
+  `meta` varchar(31) NOT NULL,
+  `value` text,
+  PRIMARY KEY  (`meta`)
+)

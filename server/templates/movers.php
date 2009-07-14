@@ -5,8 +5,8 @@
 	$list = $db->get_movers(null);
 	$count = 1;
 	
-	$featured_designer_list = explode(":", FEATURED_DESIGNERS);
-	$featured_persona_list = explode(":", FEATURED_PERSONAS);
+	$featured_designer_list = $db->get_featured_designers();
+	$featured_persona_list = $db->get_featured_personas();
 	
 	foreach ($list as $persona)
 	{

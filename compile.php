@@ -44,7 +44,6 @@
 	
 	$db = new PersonaStorage();
 	$categories = $db->get_categories();
-	$page_size = 501;
 	
 	#Top level popular page
 	$popular_list = array_slice($db->get_popular_personas(null), 0, 21);
@@ -71,7 +70,7 @@
 	{
 		#get category counts for pagination
 		$category_total = $db->get_active_persona_count($category);
-		$pages = floor($category_total/$page_size) + 1;
+		$pages = floor($category_total/PERSONA_GALLERY_ALL_PAGE_SIZE) + 1;
 		
 		$popular_list = array_slice($db->get_popular_personas($category), 0, 10);
 	

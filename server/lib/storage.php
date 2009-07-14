@@ -124,6 +124,8 @@
 #  au:<author>:<category> - personas from an author
 #  fav:<author>:<category> - favorite personas
 #  categories - a list of categories
+#  feat_des - the featured designers
+#  feat_p - the featured personas
 
 require_once 'personas_constants.php';
 
@@ -771,6 +773,80 @@ class PersonaStorage
 
 		return $categories;
 	}
+
+	#####
+	# Gets the current list of featured designers and returns it as an array
+	
+	function get_featured_designers()
+	{
+		if ($this->_memcache)
+		{
+			$result = $this->_memcache->get("feat_des");
+			if ($result)
+				return $result;
+		}
+
+		if (!$this->_dbh)
+			$this->db_connect();		
+
+		try
+		{
+			$statement = 'select value from meta where meta = "featureddesigner"';
+			$sth = $this->_dbh->prepare($statement);
+			$sth->execute();
+		}
+		catch( PDOException $exception )
+		{
+			error_log($exception->getMessage());
+			throw new Exception("Database unavailable", 503);
+		}
+		
+		$result = explode(':', $sth->fetchColumn());
+
+		if ($this->_memcache)
+			$this->_memcache->set("feat_des", $result, false, MEMCACHE_DECAY);
+
+		return $result;
+		
+	}
+	
+	
+	#####
+	# Gets the current list of featured designers and returns it as an array
+	
+	function get_featured_personas()
+	{
+		if ($this->_memcache)
+		{
+			$result = $this->_memcache->get("feat_p");
+			if ($result)
+				return $result;
+		}
+
+		if (!$this->_dbh)
+			$this->db_connect();		
+
+		try
+		{
+			$statement = 'select value from meta where meta = "featuredpersona"';
+			$sth = $this->_dbh->prepare($statement);
+			$sth->execute();
+		}
+		catch( PDOException $exception )
+		{
+			error_log($exception->getMessage());
+			throw new Exception("Database unavailable", 503);
+		}
+		
+		$result = explode(':', $sth->fetchColumn());
+
+		if ($this->_memcache)
+			$this->_memcache->set("feat_p", $result, false, MEMCACHE_DECAY);
+
+		return $result;
+		
+	}
+	
 	
 	
 #####
@@ -1158,6 +1234,8 @@ class PersonaStorage
 		
 	}
 
+
+
 #####
 # Changes a persona category. This is separate from editing because a) it doesn't require approval
 # if an admin is doing it and b) it's a lot more common. Should only be available to admins
@@ -1356,6 +1434,65 @@ class PersonaStorage
 		{
 			error_log($exception->getMessage());
 			throw new Exception("Database unavailable", 503);
+		}
+		return 1;
+		
+	}
+
+
+#####
+# Takes an array of featured personas and sets them in the metadata db
+	
+	function set_featured_personas($personas)
+	{
+		if (!$this->_dbh)
+			$this->db_connect();		
+
+		try
+		{
+			$statement = 'update meta set value = :featured where meta = "featuredpersona"';
+			$sth = $this->_dbh->prepare($statement);
+			$sth->bindParam(':featured', implode(':', $personas));
+			$sth->execute();
+		}
+		catch( PDOException $exception )
+		{
+			error_log($exception->getMessage());
+			throw new Exception("Database unavailable", 503);
+		}
+
+		if ($this->_memcache)
+		{
+			$this->_memcache->delete("feat_p");
+		}
+		return 1;
+		
+	}
+
+#####
+# Takes an array of featured designers and sets them in the metadata db
+	
+	function set_featured_designers($personas)
+	{
+		if (!$this->_dbh)
+			$this->db_connect();		
+
+		try
+		{
+			$statement = 'update meta set value = :featured where meta = "featureddesigner"';
+			$sth = $this->_dbh->prepare($statement);
+			$sth->bindParam(':featured', implode(':', $personas));
+			$sth->execute();
+		}
+		catch( PDOException $exception )
+		{
+			error_log($exception->getMessage());
+			throw new Exception("Database unavailable", 503);
+		}
+
+		if ($this->_memcache)
+		{
+			$this->_memcache->delete("feat_des");
 		}
 		return 1;
 		

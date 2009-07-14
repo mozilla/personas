@@ -4,8 +4,11 @@
 	if (!isset($user))
 		$user = new PersonaUser();
 
+	if (!isset($db))
+		$db = new PersonaStorage();
+
     $personas = array();
-	foreach (explode(":", FEATURED_DESIGNERS) as $id)
+	foreach ($db->get_featured_designers() as $id)
 	{
 		$persona = $db->get_persona_by_id($id); 
 		if (!$persona)

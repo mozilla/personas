@@ -1,7 +1,10 @@
 <?php
 	$featured_description_max = 140;
 	
-	foreach (explode(":", FEATURED_PERSONAS) as $id)
+	if (!isset($db))
+		$db = new PersonaStorage();
+
+	foreach ($db->get_featured_personas() as $id)
 	{
 		$persona = $db->get_persona_by_id($id); 
 		if (!$persona)
