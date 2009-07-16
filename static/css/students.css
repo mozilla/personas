@@ -1,0 +1,43 @@
+html {
+	padding-bottom: 0px; 
+	padding-top: 40px;
+	padding-left: 10px;
+	padding-right: 10px;
+}
+
+body { 
+	font-family: 'Lucida Grande', 'Lucida Sans Unicode', Lucida, Arial, Helvetica, sans-serif;
+	background: #856447 url('/static/img/back.jpg') no-repeat top center;
+	padding: 0px; 
+	color:#fff;
+	font-size:12px;
+	line-height: 18px;
+	margin: 0 auto;
+	
+}
+
+a:link, a:hover, a:active, a:focus, a:visited {color: #fff; text-decoration: none; font-weight: bold;}
+	a:hover {color: #fff; text-decoration: underline;}
+
+.message {
+	margin: 20px auto;
+	text-align: center;
+	background: url('/static/img/ssc.png') top left no-repeat;
+	text-indent: -10000px;
+	width: 561px;
+	height: 403px;
+}
+
+.link {
+	margin: 20px auto;
+	max-width: 200px;
+	text-align: center;
+	padding: 6px 6px;
+	width: 200px;
+	-moz-border-radius: 0.5em;
+	-webkit-border-radius: 0.5em;
+	border: 2px solid rgba(245, 193, 132, 0.8);
+	-moz-box-shadow: inset rgba(0, 0, 0, 0.2) 0 -2px 4px, inset rgba(0, 0, 0, 0.4) 0 1px 2px;
+	background-color: rgba(64, 36, 15, 0.7);;
+}
+
