@@ -290,6 +290,35 @@ class PersonaUser
 		return 1;
 	}
 
+#####
+# Creates a placeholder username to prevent other people from creating it. Mostly used so China 
+# can register accounts and avoid collisions.
+
+	function create_placeholder_user($username)
+	{ 
+		if (!$username)
+			throw new Exception("No username", 404);
+
+		
+		if (!$this->_dbh)
+			$this->db_connect();
+
+		try
+		{
+			$insert_stmt = 'insert into users (username, display_username, md5, email, description, news, privs) values (:username, :display_username, "", "", "", 0, 1)';
+			$sth = $this->_dbh->prepare($insert_stmt);
+			$sth->bindParam(':username', $username);
+			$sth->bindParam(':display_username', $username);
+			$sth->execute();
+		}
+		catch( PDOException $exception )
+		{
+			error_log("create_placeholder_user: " . $exception->getMessage());
+			throw new Exception("A database problem occured. Please try again later.");
+		}
+
+		return $username;
+	}
 	
 #####
 # Updates a user record

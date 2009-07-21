@@ -121,6 +121,8 @@
 #  cp:<category> - gallery 'Popular' page entries for a category
 #  cm:<category> - movers and shakers for a category
 #  pc:<category> - current persona count for a category
+#  lc:<category> - pending persona count for a category
+#  ec:<category> - pending edits count for a category
 #  au:<author>:<category> - personas from an author
 #  fav:<author>:<category> - favorite personas
 #  categories - a list of categories
@@ -254,10 +256,96 @@ class PersonaStorage
 			throw new Exception("Database unavailable", 503);
 		}
 		
+		$result = $sth->fetchColumn();
+		
 		if ($this->_memcache)
 			$this->_memcache->set("pc:" . ($category ? $category : 'All'), $result, false, MEMCACHE_DECAY);
 
-		return $sth->fetchColumn();
+		return $result;
+	}
+	
+#####
+# Gets the count of personas in a category that are pending. 
+# Used for the dashboard
+
+
+	function get_pending_persona_count($category = null)
+	{
+		if ($category == 'All')
+			$category = null;
+			
+		if ($this->_memcache)
+		{
+			$result = $this->_memcache->get("lc:" . ($category ? $category : 'All'));
+			if ($result)
+				return $result;
+		}
+
+		if (!$this->_dbh)
+			$this->db_connect();
+
+		try
+		{
+			$statement = 'select count(*) from personas where status = 2' . ($category ? " and category = :category" : "");
+			$sth = $this->_dbh->prepare($statement);
+			if ($category)
+				$sth->bindParam(':category', $category);
+			$sth->execute();
+		}
+		catch( PDOException $exception )
+		{
+			error_log($exception->getMessage());
+			throw new Exception("Database unavailable", 503);
+		}
+		
+		$result = $sth->fetchColumn();
+
+		if ($this->_memcache)
+			$this->_memcache->set("lc:" . ($category ? $category : 'All'), $result, false, MEMCACHE_DECAY);
+
+		return $result;
+	}
+	
+#####
+# Gets a list of edits pending approval
+
+	function get_pending_edits_count($category = null)
+	{
+		if ($category == 'All')
+			$category = null;
+			
+		if ($this->_memcache)
+		{
+			$result = $this->_memcache->get("ec:" . ($category ? $category : 'All'));
+			if ($result)
+				return $result;
+		}
+
+		if (!$this->_dbh)
+			$this->db_connect();		
+
+		try
+		{
+			$statement = 'select count(*) from edits' . ($category ? " where category = :category" : "");
+			$sth = $this->_dbh->prepare($statement);
+			if ($category)
+			{
+				$sth->bindParam(':category', $category);
+			}
+			$sth->execute();
+		}
+		catch( PDOException $exception )
+		{
+			error_log($exception->getMessage());
+			throw new Exception("Database unavailable", 503);
+		}
+		
+		$result = $sth->fetchColumn();
+
+		if ($this->_memcache)
+			$this->_memcache->set("ec:" . ($category ? $category : 'All'), $result, false, MEMCACHE_DECAY);
+
+		return $result;
 	}
 	
 #####
@@ -669,6 +757,12 @@ class PersonaStorage
 			throw new Exception("Database unavailable", 503);
 		}
 		return 0;
+		
+		if ($this->_memcache)
+		{
+			$this->_memcache->delete('lc:All'); #All pending count			
+			$this->_memcache->delete('lc:' . $category); #Category pending count		
+		}
 	}
 	
 #####
@@ -700,6 +794,12 @@ class PersonaStorage
 		{
 			error_log($exception->getMessage());
 			throw new Exception("Database unavailable", 503);
+		}
+
+		if ($this->_memcache)
+		{
+			$this->_memcache->delete('ec:All'); #All pending count			
+			$this->_memcache->delete('ec:' . $category); #Category pending count		
 		}
 		return 1;
 
@@ -1052,7 +1152,9 @@ class PersonaStorage
 			$this->_memcache->delete('cr:' . $persona['category']); #category recent page
 			$this->_memcache->delete('cr:All'); #All recent page			
 			$this->_memcache->delete('pc:All'); #All persona count			
+			$this->_memcache->delete('lc:All'); #All pending count			
 			$this->_memcache->delete('pc:' . $persona['category']); #Category persona count			
+			$this->_memcache->delete('lc:' . $persona['category']); #Category pending count			
 			$this->_memcache->delete('au:' . $persona['author'] . ':'); #author all 
 			$this->_memcache->delete('au:' . $persona['author'] . ':' . $persona['category']); #author by category
 		}
@@ -1100,7 +1202,9 @@ class PersonaStorage
 				$this->_memcache->delete('cr:' . $persona['category']); #category recent page
 				$this->_memcache->delete('cr:All'); #All recent page			
 				$this->_memcache->delete('pc:All'); #All persona count			
+				$this->_memcache->delete('lc:All'); #All pending count			
 				$this->_memcache->delete('pc:' . $persona['category']); #Category persona count			
+				$this->_memcache->delete('lc:' . $persona['category']); #Category pending count			
 				$this->_memcache->delete('au:' . $persona['author'] . ':'); #author all 
 				$this->_memcache->delete('au:' . $persona['author'] . ':' . $persona['category']); #author by category
 			}
@@ -1409,6 +1513,12 @@ class PersonaStorage
 			error_log($exception->getMessage());
 			throw new Exception("Database unavailable", 503);
 		}
+
+		if ($this->_memcache)
+		{
+			$this->_memcache->delete('ec:All'); #All pending count			
+			$this->_memcache->delete('ec:' . $category); #Category pending count		
+		}
 		return 1;
 		
 	}
@@ -1434,6 +1544,11 @@ class PersonaStorage
 		{
 			error_log($exception->getMessage());
 			throw new Exception("Database unavailable", 503);
+		}
+
+		if ($this->_memcache)
+		{
+			$this->_memcache->delete('ec:All'); #All pending count			
 		}
 		return 1;
 		
@@ -1723,69 +1838,6 @@ class PersonaStorage
 			throw new Exception("Database unavailable", 503);
 		}
 		return 0;
-	}
-
-#######################################################
-# PRE-UPLIFT HELPER FUNCTIONS
-
-#####
-# This function is just used by the compile script to know which pages to build. Once we're 
-# uplifted, this function can be deleted
-
-
-	function get_active_persona_ids($category = null)
-	{
-		#no memcache here, this is just used for site compilation
-		if (!$this->_dbh)
-			$this->db_connect();		
-		
-		try
-		{
-			$statement = 'select id from personas where status = 1' . ($category ? " and category = :category" : "");
-			$sth = $this->_dbh->prepare($statement);
-			if ($category)
-			{
-				$sth->bindParam(':category', $category);
-			}
-			$sth->execute();
-		}
-		catch( PDOException $exception )
-		{
-			error_log($exception->getMessage());
-			throw new Exception("Database unavailable", 503);
-		}
-		
-		$personas = array();
-		
-		while ($result = $sth->fetchColumn())
-		{
-			$personas[] = $result;
-		}		
-		return $personas;
-	}
-
-#####
-# This function is just for the compilation script and can be removed after uplift
-	function get_active_designers()
-	{
-		if (!$this->_dbh)
-			$this->db_connect();		
-
-		try
-		{
-			$statement = 'select distinct(author) from personas where status = 1';
-			$sth = $this->_dbh->prepare($statement);
-			$sth->execute();
-		}
-		catch( PDOException $exception )
-		{
-			error_log($exception->getMessage());
-			throw new Exception("Database unavailable", 503);
-		}
-		
-		$result = $sth->fetchAll(PDO::FETCH_COLUMN);
-		return $result;
-	
 	}
 
 

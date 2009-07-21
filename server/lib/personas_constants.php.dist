@@ -70,7 +70,7 @@ if (!defined('MEMCACHE_PORT')) { define('MEMCACHE_PORT', null); }
 if (!defined('MEMCACHE_DECAY')) { define('MEMCACHE_DECAY', null); }
 
 #password to access the readlog portion of the site
-if (!defined('READLOG_PASS')) { define('READLOG_PASS', 'ppass'); }
+if (!defined('ADMIN_SECRET')) { define('ADMIN_SECRET', 'ppass'); }
 
 
 

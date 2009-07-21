@@ -60,8 +60,8 @@
 
 		$db = new PersonaStorage();
 
-		$pending = count($db->get_pending_personas());
-		$edits = count($db->get_pending_edits());
+		$pending = $db->get_pending_persona_count();
+		$edits = $db->get_pending_edits_count();
 		$total = $db->get_active_persona_count();
 		
 		$logs = $db->get_detailed_admin_logs(5);
