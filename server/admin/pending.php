@@ -299,6 +299,11 @@
 		else
 		{
             print count($results) . " pending personas";
+            if (count($results) > 100)
+            {
+            	print " (showing first 100)";
+            	$results = array_slice($results, 0, 100);
+            }
             print "<ul>\n";
 			foreach ($results as $persona)
 			{
