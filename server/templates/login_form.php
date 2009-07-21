@@ -1,5 +1,5 @@
                 <div id="login">
-                    <h4>Already a Personas Designer?</h4>
+                    <h4>Already a Personas User?</h4>
                     <form action="signin" method="post">
 <?php
 					if ($return_url)
