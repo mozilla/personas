@@ -17,7 +17,7 @@
                     </p>
                     
                      <p>
-                        <label for="description">Designer Description*</label>
+                        <label for="description">User Description*</label>
                         <textarea name="create_description" id="create_description" <?php if (array_key_exists('create_description', $_errors)) echo 'class="error"' ?> ><?= $create['description'] ?></textarea>
                         <?php if (array_key_exists('create_description', $_errors)) echo '<span class="error-message">' . $_errors['create_description'] . '</span>' ?>
                      </p>
