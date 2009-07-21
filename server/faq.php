@@ -142,7 +142,7 @@
 
                <dt>How do I provide feedback? </dt>
 
-               <dd><p>Personas is currently in beta, so we’re always looking for ways to improve the product. We’d love to hear what you think. Visit the <a href="https://labs.mozilla.com/forum/?CategoryID=18">Personas</a> forums to send us your feedback.</p>
+               <dd><p>Personas is currently in beta, so we’re always looking for ways to improve the product. We’d love to hear what you think. Visit the <a href="http://groups.google.com/group/mozilla-labs-personas/topics">Personas</a> forums to send us your feedback.</p>
 
 
 

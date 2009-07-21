@@ -57,7 +57,7 @@
                     <li class="three">You can change your persona as much as you like! Choose a new one from the list or <a href="https://www.getpersonas.com/upload">create your own</a>.</li>
                 </ol>
                 
-                <p>Have a Personas question or comment? Check out our <a href="/faq">FAQ</a> section or <a href="https://labs.mozilla.com/forum/?CategoryID=18">discussion
+                <p>Have a Personas question or comment? Check out our <a href="/faq">FAQ</a> section or <a href="http://groups.google.com/group/mozilla-labs-personas/topics">discussion
                 forum</a>.
                 </p>
             </div>
@@ -65,7 +65,7 @@
             <div class="feature last more">
                 <h3>Find out more about Firefox</h3>
                 <p>Wondering what to do now? Our <a href="http://en-us.www.mozilla.com/en-US/firefox/central/">Getting Started</a> page has plenty of helpful information.</p>
-                <p>Questions? Our <a href="https://labs.mozilla.com/forum/?CategoryID=18">Support page</a> has answers.</p>
+                <p>Questions? Our <a href="http://groups.google.com/group/mozilla-labs-personas/topics">Support page</a> has answers.</p>
                 <p>Ready to customize? Now that you’ve got Firefox and Personas, find out more about all the ways you can <a href="https://addons.mozilla.org/en-US/firefox">personalize Firefox</a>!</p>
              
             </div>
