@@ -26,11 +26,11 @@
                 </div>
                
                 <p>
-                    <strong>Total Public Personas:</strong> <?php echo $total ?>
+                    <strong>Total Public Personas:</strong> <?php echo number_format($total) ?>
                 </p>
                 
                 <p>
-                    <strong>Total Personas In Queue:</strong> <?php echo $pending ?>
+                    <strong>Total Personas In Queue:</strong> <?php echo number_format($pending) ?>
                 </p>
                 
                 <p>If you are interested in supporting the
