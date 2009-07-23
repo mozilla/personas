@@ -82,7 +82,6 @@
 
 <div id="status">
     <h2>Personas Status</h2>
-    <div class="sparkline" id="status-pie"><?= $pending ?>,<?= $edits ?>,<?= $total ?></div>
 
     <div id="stats">
         <p><strong>Total Active Personas:</strong> <?= $total ?></p>
@@ -239,13 +238,6 @@ Flush memcache value: <input type=text name=flush_memcache value="">
 	}
 ?>
 </div></div>
-<script src="../static/js/jquery.sparklines.js"></script>
-<script type="text/javascript" charset="utf-8">
-$(window).ready(function() {
-    $(".sparkline").sparkline('html',{type:"pie", height:"200px",sliceColors: ['#8D003B','#A65600','#00782D' ], offset:"-90"});
-});
-    
-</script>
 <?php include '../templates/footer.php'; ?>
 </body>
 </html>
