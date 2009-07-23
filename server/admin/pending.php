@@ -46,7 +46,7 @@
 	{
 		$message = "Thanks for submitting your Persona '$name'. We just wanted to let you know that your persona has been flagged for more detailed review, and this may delay the decision. Thanks for your patience.\n\n"; 
 		$message .= "We appreciate your involvement in the Personas community and encourage you to create another design that fits our Terms of Service (http://www.getpersonas.com/upload).\n\n";
-		$message .= "Also, you are able to use apply any design you like on your own computer. Here is how:\n\n";
+		$message .= "Also, you are able to use any design you like on your own computer. Here is how:\n\n";
 		$message .= "1. If you have Personas installed, click on the little fox on the bottom left of your computer screen.\n\n";
 		$message .= "2. Click on \"Preferences\" and ensure the box \"Show Custom Persona in Menu\" is checked and close the box.\n\n";
 		$message .= "3. Click on the little fox again. Mouse over \"Custom\" in the menu and to the right find and click \"Edit\".\n\n";
@@ -63,7 +63,7 @@
 	{
 		$message = "Thanks for submitting your Persona '$name'. Unfortunately, we cannot add your Persona because of the following reason: $reason.\n\n"; 
 		$message .= "We appreciate your involvement in the Personas community and encourage you to create another design that fits our Terms of Service (http://www.getpersonas.com/upload).\n\n";
-		$message .= "Also, you are able to use apply any design you like on your own computer. Here is how:\n\n";
+		$message .= "Also, you are able to use any design you like on your own computer. Here is how:\n\n";
 		$message .= "1. If you have Personas installed, click on the little fox on the bottom left of your computer screen.\n\n";
 		$message .= "2. Click on \"Preferences\" and ensure the box \"Show Custom Persona in Menu\" is checked and close the box.\n\n";
 		$message .= "3. Click on the little fox again. Mouse over \"Custom\" in the menu and to the right find and click \"Edit\".\n\n";
