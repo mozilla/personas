@@ -1,7 +1,7 @@
 var PERSONAS_URLS = {
-   'win_bundle'     : 'http://releases.mozilla.com/personas/win32/en-US/Firefox%20Setup%203.0.11.exe',
-   'mac_bundle'     : 'http://releases.mozilla.com/personas/mac/en-US/Firefox%203.0.11.dmg',
-   'linux_bundle'   : 'http://releases.mozilla.com/personas/linux-i686/en-US/firefox-3.0.11.tar.bz2',
+   'win_bundle'     : 'http://releases.mozilla.com/personas/win32/en-US/Firefox%20Setup%203.5.1.exe',
+   'mac_bundle'     : 'http://releases.mozilla.com/personas/mac/en-US/Firefox%203.5.1.dmg',
+   'linux_bundle'   : 'http://releases.mozilla.com/personas/linux-i686/en-US/firefox-3.5.1.tar.bz2',
    'addon'          : 'https://addons.mozilla.org/services/install.php?addon_id=personas'
 }
 
