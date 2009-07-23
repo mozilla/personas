@@ -157,9 +157,6 @@ $.fn.popup = function() {
     Mouseleave - bubbles up ResetPersona
 **/
 $.fn.previewPersona = function() {
-    jQuery(this).click(function(event) {
-        dispatchPersonaEvent('SelectPersona', event.originalTarget);
-    });
     
     jQuery(this).hover(
         function(event) {

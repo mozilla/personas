@@ -127,7 +127,7 @@
 
     			return false;
             });                   
-            
+            $(".detailed-view").previewPersona();
         });
     </script>
 </body>
