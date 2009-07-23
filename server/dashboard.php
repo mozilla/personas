@@ -32,6 +32,9 @@
                 <p>
                     <strong>Total Personas In Queue:</strong> <?php echo $pending ?>
                 </p>
+                
+                <p>If you are interested in supporting the
+                approval process by becoming an approver, please email <a href="mailto:personas@mozilla.com">personas@mozilla.com</a>.</p>
             </div>
 <?php include 'templates/get_personas.php'; ?>
         </div>
