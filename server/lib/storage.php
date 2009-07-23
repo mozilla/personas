@@ -286,7 +286,7 @@ class PersonaStorage
 
 		try
 		{
-			$statement = 'select count(*) from personas where status = 2' . ($category ? " and category = :category" : "");
+			$statement = 'select count(*) from personas where status = 0' . ($category ? " and category = :category" : "");
 			$sth = $this->_dbh->prepare($statement);
 			if ($category)
 				$sth->bindParam(':category', $category);
