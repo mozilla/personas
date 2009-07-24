@@ -76,7 +76,7 @@
     <script type="text/javascript" charset="utf-8">
         $(document).ready(function () {
             $(".slideshow").slider();
-            $("img.persona").previewPersona();
+            $("img.persona").previewPersona(true);
         });
     </script>
     <p id="get-more-personas">

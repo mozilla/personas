@@ -30,7 +30,7 @@
         $(document).ready(function () {
             $(".slideshow").slider();
         });
-        $("img.persona").previewPersona();
+        $("img.persona").previewPersona(true);
     </script>
 </body>
 </html>

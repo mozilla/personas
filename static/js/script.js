@@ -152,11 +152,17 @@ $.fn.popup = function() {
 
 /**
     Binds click and hover events to the element.
-    Click - bubbles up SelectPersona event
+    Click - bubbles up ResetPersona event
     Mouseenter - bubbles up PreviewPersona
     Mouseleave - bubbles up ResetPersona
 **/
-$.fn.previewPersona = function() {
+$.fn.previewPersona = function(resetOnClick) {
+    
+    if(resetOnClick) {
+        jQuery(this).click(function(event) {
+            dispatchPersonaEvent('ResetPersona', event.originalTarget);
+        });
+    }
     
     jQuery(this).hover(
         function(event) {

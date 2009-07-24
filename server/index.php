@@ -49,7 +49,7 @@
             $("#more-info").popup();
             
             $("#header").ie6Warning({"message":'<div id="ie6">Upgrade your browser to get the most out of this website. <a href="%LINK%">Download Firefox for free</a>.</div>'});
-            $("img.persona").previewPersona();
+            $("img.persona").previewPersona(true);
         });
     </script>
 </body>

@@ -360,7 +360,7 @@
 <?php include '../templates/footer.php'; ?>
     <script type="text/javascript" charset="utf-8">
         $(document).ready(function() {
-           $("#gallery .preview img").previewPersona();
+           $("#gallery .preview img").previewPersona(true);
         });
 		
 		function rejectselect(id, pointer)
