@@ -305,7 +305,7 @@ class PersonaUser
 
 		try
 		{
-			$insert_stmt = 'insert into users (username, display_username, md5, email, description, news, privs) values (:username, :display_username, "", "", "", 0, 1)';
+			$insert_stmt = 'insert into users (username, display_username, md5, email, description, news, privs) values (:username, :display_username, "", "", "", 0, 0)';
 			$sth = $this->_dbh->prepare($insert_stmt);
 			$sth->bindParam(':username', $username);
 			$sth->bindParam(':display_username', $username);

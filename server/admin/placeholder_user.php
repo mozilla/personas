@@ -49,6 +49,13 @@
 	
 	if (!$username)
 		exit("No username provided");
+
+	if (!preg_match('/^[A-Z0-9\._-]+$/i', $username)) 
+		exit("Illegal characters in the login name (alphanumerics, period, underscore and dash only)");
+	elseif (strlen($username) > 32)
+		exit("Please limit your login name to 32 characters or less");
+	elseif (strlen($username) < 6)
+		exit("Please use at least 6 characters in your login name");
 		
 	try 
 	{
