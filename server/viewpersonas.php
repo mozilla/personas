@@ -61,7 +61,7 @@
 	$path = substr($path, 1); #chop the lead slash
 	list($category, $tab, $page) = explode('/', $path.'//');
 
-	$category = ucfirst($category);
+	$category = urldecode(ucfirst($category));
 		
 	$page_header = "View Personas";
 

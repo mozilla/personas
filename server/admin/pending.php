@@ -351,7 +351,7 @@
 				$page_category = 'All';
 			foreach ($categories as $list_category)
 			{
-				print "		<li" . ($page_category == $list_category ? ' class="active"' : "") . "><a href=\"/admin/pending.php?category=$list_category\">$list_category</a></li>\n";
+				print "		<li" . ($page_category == $list_category ? ' class="active"' : "") . "><a href=\"/admin/pending.php?category=" . urlencode($list_category) . "\">$list_category</a></li>\n";
 			}
 ?>
             </div>

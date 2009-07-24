@@ -4,7 +4,7 @@
 <?php
 			foreach ($categories as $list_category)
 			{
-				$category_url = "$url_prefix/$list_category";
+				$category_url = "$url_prefix/" . urlencode($list_category);
 				if ($list_category == $category)
 				{
 					if ($tabs)
@@ -13,7 +13,7 @@
 						echo "            <ul>\n";
 						foreach ($tabs as $list_tab)
 						{
-							$tab_url = "$url_prefix/$list_category/$list_tab";
+							$tab_url = "$url_prefix/" . urlencode($list_category) . "/$list_tab";
 							echo "		<li";
 							if ($list_tab == $tab)
 								echo ' class="active"';
