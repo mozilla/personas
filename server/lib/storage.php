@@ -1192,7 +1192,9 @@ class PersonaStorage
 		if ($this->_memcache)
 		{
 			$this->_memcache->delete("p:$id");
-			
+			$this->_memcache->delete('lc:All'); #All pending count			
+			$this->_memcache->delete('lc:' . $persona['category']); #Category pending count			
+
 			if ($persona['status'] != 0)
 			{			
 				#if the persona was previously live, we need to purge the caches. If it wasn't, 
@@ -1202,9 +1204,7 @@ class PersonaStorage
 				$this->_memcache->delete('cr:' . $persona['category']); #category recent page
 				$this->_memcache->delete('cr:All'); #All recent page			
 				$this->_memcache->delete('pc:All'); #All persona count			
-				$this->_memcache->delete('lc:All'); #All pending count			
 				$this->_memcache->delete('pc:' . $persona['category']); #Category persona count			
-				$this->_memcache->delete('lc:' . $persona['category']); #Category pending count			
 				$this->_memcache->delete('au:' . $persona['author'] . ':'); #author all 
 				$this->_memcache->delete('au:' . $persona['author'] . ':' . $persona['category']); #author by category
 			}
