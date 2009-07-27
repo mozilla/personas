@@ -87,13 +87,7 @@
 <div id="status">
     <h2>Personas Status</h2>
 
-    <div id="stats">
-        <p><strong>Total Active Personas:</strong> <?= $total ?></p>
-        <p><strong>New Pending Personas:</strong> <a href="pending.php" target="_blank"><?= $pending ?></a></p>
-        <p><strong>Personas Awaiting Edit Approval:</strong> <a href="editing.php" target="_blank"><?= $edits ?></a></p>
-    </div>
-    
-    <div id="log">
+    <div id="log" style="float:right">
         <h3>Recent admin activity</h3>
         <ul>
             <?php foreach($logs as $log): 
@@ -103,7 +97,11 @@
             <?php endforeach; ?>
         </ul>
     </div>
-</div>
+    <div>
+        <p><strong>Total Active Personas:</strong> <?= $total ?></p>
+        <p><strong>New Pending Personas:</strong> <a href="pending.php" target="_blank"><?= $pending ?></a></p>
+        <p><strong>Personas Awaiting Edit Approval:</strong> <a href="editing.php" target="_blank"><?= $edits ?></a></p>
+    
 
 <p>
 
@@ -241,7 +239,7 @@ Flush memcache value: <input type=text name=flush_memcache value="">
 
 	}
 ?>
-</div></div>
+</div></div></div></div>
 <?php include '../templates/footer.php'; ?>
 </body>
 </html>
