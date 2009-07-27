@@ -1786,7 +1786,7 @@ class PersonaStorage
         $limit = (int)$limit;
 		try
 		{
-			$statement = "select * from log, personas where log.id = personas.id and action != 'Added'";
+			$statement = "select * from log, personas where log.id = personas.id and action != 'Added' and action != 'Edited' and action != 'Pulled'";
 			if ($log_user)
 			{
 				$statement .= " and log.username = :username";
