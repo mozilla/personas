@@ -360,7 +360,7 @@ class PersonaStorage
 		
 		if ($this->_memcache && $sort != 'recent')
 		{
-			$result = $this->_memcache->get("au:$author:$category");
+			$result = $this->_memcache->get("au:$author:" . ($category ? $category : 'All'));
 			if ($result)
 				return $result;
 		}
@@ -400,7 +400,7 @@ class PersonaStorage
 		}		
 
 		if ($this->_memcache && $sort != 'recent')
-			$this->_memcache->set("au:$author:$category", $personas, false, MEMCACHE_DECAY);
+			$this->_memcache->set("au:$author:" . ($category ? $category : 'All'), $personas, false, MEMCACHE_DECAY);
 
 		return $personas;
 	}
