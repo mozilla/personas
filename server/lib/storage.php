@@ -1779,15 +1779,25 @@ class PersonaStorage
 	
 	}
     
-    function get_detailed_admin_logs($limit = 100) {
+    function get_detailed_admin_logs($limit = 100, $log_user = null) {
         if (!$this->_dbh)
 			$this->db_connect();		
 
         $limit = (int)$limit;
 		try
 		{
-			$statement = "select * from log, personas where log.id = personas.id and action != 'Added' order by date DESC limit $limit";
+			$statement = "select * from log, personas where log.id = personas.id and action != 'Added'";
+			if ($log_user)
+			{
+				$statement .= " and log.username = :username";
+			}
+			
+			$statement .= " order by date DESC limit $limit";
 			$sth = $this->_dbh->prepare($statement);
+			if ($log_user)
+			{
+				$sth->bindParam(':username', $log_user);
+			}
 			$sth->execute();
 		}
 		catch( PDOException $exception )

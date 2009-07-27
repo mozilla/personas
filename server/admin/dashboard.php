@@ -63,8 +63,12 @@
 		$pending = $db->get_pending_persona_count();
 		$edits = $db->get_pending_edits_count();
 		$total = $db->get_active_persona_count();
-		
-		$logs = $db->get_detailed_admin_logs(5);
+		$log_user = null;
+		if (array_key_exists('log_user', $_GET) && $user->has_admin_privs())
+		{
+			$log_user = $_GET['log_user'];
+		}
+		$logs = $db->get_detailed_admin_logs(25, $log_user);
 	}
 	catch(Exception $e)
 	{
@@ -95,7 +99,7 @@
             <?php foreach($logs as $log): 
             	$log_url = substr($log['action'], 0, 8) == 'Rejected' ? ('/admin/pending.php?id=' .  $log['id']) :  ('/persona/' . $log['id']);
             ?>
-                <li>(<a href="dashboard.php?username=<?=$log['username']; ?>"><?= $log['username'] ?></a>) <a href="<?= $log_url ?>"><?= $log['name'] ?></a>: <?=$log['action'];?> </li>
+                <li>(<a href="dashboard.php?log_user=<?=$log['username']; ?>"><?= $log['username'] ?></a>) <a href="<?= $log_url ?>"><?= $log['name'] ?></a>: <?=$log['action'];?> </li>
             <?php endforeach; ?>
         </ul>
     </div>
