@@ -133,6 +133,11 @@
 		}
 		include 'templates/gallery_rss.php';
 	}
+	elseif (array_key_exists('json', $_GET))
+	{
+		header("Content-Type: application/json"); 
+		echo json_encode(array_map("extract_record_data", $list));
+	}
 	else
 	{
 		foreach ($list as &$persona)
