@@ -530,8 +530,15 @@ let PersonaService = {
     while (cookieEnu.hasMoreElements()) {
       let cookie = cookieEnu.getNext().QueryInterface(Ci.nsICookie);
 
+      // XXX: Remove the initial dot from the host name, if any, before it is
+      // compared against the authorized hosts. This fixes the bug reported in
+      // bug 492392 that getpersonas.com and www.getpersonas.com cookies
+      // imported from IE have the cookie host .getpersonas.com, so they didn't
+      // match any of the authorized hosts.
+      let cookieHost = cookie.host.replace(/^\./, "");
+
       if (cookie.name == "initial_persona" &&
-          authorizedHosts.some(function(v) v == cookie.host)) {
+          authorizedHosts.some(function(v) v == cookieHost)) {
 
         // There could be more than one "initial_persona" cookie. The cookie
         // with latest expiration time is selected.
