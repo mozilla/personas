@@ -31,7 +31,7 @@
                 </li>
 <?php } else { ?>
                 <li> 
-					<?printf("<a href=\"%s\">" . _("Frequent Questions") . "</a>", $locale_conf->url('faq'));?>
+					<?printf("<a href=\"%s\">" . _("Frequent Questions") . "</a>", $locale_conf->url('/faq'));?>
 				</li>
 <?php } ?>
               </ol>

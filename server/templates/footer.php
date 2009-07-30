@@ -2,10 +2,14 @@
         <form class="languages go" method="get" action="">
         <div>
             <label for="language"><?= _("Other languages:");?></label>
-            <select id="language" name="lang" dir="ltr">
-                <option value="en-US" selected="selected">English (US)</option>
+            <select id="language" name="lang" dir="ltr" target="_parent._top">
+                <?
+                    // TODO: We need to add the localized version of each language (e.g. "Chinese" in literal Chinese characters)
+                    foreach ($locale_conf->_supported_languages as $lang => $lang_code) {
+                        echo "<option value=\"$lang\" " . ($lang == $locale_conf->current_language ? "selected=\"selected\" " : "") . ">$lang</option>";
+                    }
+                ?>
             </select>
-            <button>Go</button>
         </div>
         </form>
 
@@ -15,5 +19,14 @@
     
 	<script src="/static/js/urchin.js"></script>
     <script type="text/javascript">
-          urchinTracker();
+        urchinTracker();
+        $(function () {
+            $('#language').change(function() {
+                var lang = $("#language option:selected").attr('value');
+                window.location.replace(location.href.replace("<?= $locale_conf->current_language;?>", lang));
+            });
+            $('#language').click(function() {
+                this.focus();
+            });
+        });
     </script>

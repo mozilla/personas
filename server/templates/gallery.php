@@ -23,7 +23,20 @@
             </div>
 <?php } ?>
 			<div id="maincontent">
-                <p id="breadcrumbs"><?printf("<a href=\"%s\">" . _("Personas Home") . "</a> : <a href=\"%s\">" . _("Gallery") . "</a> : %s<? if ($category == 'Designer') { echo " : $display_username"; } else if ($tab != \"All\") { echo \" : $tab\"; } ?>", $locale_conf->url('/'), $locale_conf->url('/gallery/All/Popular'), $category);?></p>
+                <p id="breadcrumbs">
+                    <?
+                        $append_extra = "";
+                        if ($category == 'Designer')
+                            $append_extra = " : $display_username";
+                        else if ($tab != "All")
+                            $append_extra = " : $tab";
+                        printf("<a href=\"%s\">" . _("Personas Home") . "</a> : <a href=\"%s\">" . _("Gallery") . "</a> : %s%s", 
+                            $locale_conf->url('/'), 
+                            $locale_conf->url('/gallery/All/Popular'), 
+                            $category, 
+                            $append_extra);
+                    ?>
+                </p>
                 <div id="gallery">
 <?php
 			
