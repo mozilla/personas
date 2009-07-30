@@ -15,12 +15,12 @@
 					if ($ceiling > $pages)
 						$ceiling = $pages;
 						
-					echo '<div id="pagination"><p>Page:</p>';
+					echo '<div id="pagination"><p>' . _("Page:") . '</p>';
 					echo "<ul>\n";
 					if ($page > 1)
 					{
 						$url = "$url_prefix/$category/$tab/" . ($page - 1);
-						echo "<li><a href=\"$url\">Previous</a></li>\n";
+						echo "<li><a href=\"$url\">" . _("Previous") . "</a></li>\n";
 					}
 					$i = $floor;
 					if ($floor > 1)
@@ -54,7 +54,7 @@
 					if ($page < $pages)
 					{
 						$url = "$url_prefix/$category/$tab/" . ($page + 1);
-						echo "<li><a href=\"$url\">Next</a></li>\n";
+						echo "<li><a href=\"$url\">" . _("Next") . "</a></li>\n";
 					}
 					echo "</ul>\n";
 					echo "</div>\n";

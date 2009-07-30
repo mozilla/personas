@@ -1,5 +1,5 @@
             <div class="feature last">
-                <h3>Movers and Shakers</h3>
+                <h3><?= _("Movers and Shakers");?></h3>
                 <ol class="popular">
 <?php
 	$list = $db->get_movers(null);
@@ -19,9 +19,9 @@
 					<li>
                             <h4><?= $persona['name'] ?></h4>
                             <hr />
-                             <a href="/persona/<?= $persona['id'] ?>"><img class="persona" alt="<?= $persona['name'] ?>" persona="<?= $persona_json ?>" src="<?= PERSONAS_LIVE_PREFIX . '/' . url_prefix($persona['id']) ?>/preview_popular.jpg"></a>
-                            <p class="author">By: <a href="/gallery/Designer/<?= $persona['author'] ?>"><?= $persona['display_username'] ?></a></p>
-                            <p class="downloads"><?= number_format($persona['popularity']) ?> active daily users</p>
+                             <?printf("<a href=\"%s\">", $locale_conf->url('/persona/' . $persona['id']));?><img class="persona" alt="<?= $persona['name'] ?>" persona="<?= $persona_json ?>" src="<?= PERSONAS_LIVE_PREFIX . '/' . url_prefix($persona['id']) ?>/preview_popular.jpg"></a>
+                            <p class="author"><?printf("By: <a href=\"%s\">%s</a>", $locale_conf->url('/gallery/Designer/' . $persona['author']), $persona['display_username']);?></p>
+                            <p class="downloads"><?printf(_("%d active daily users"), number_format($persona['popularity']));?></p>
                     </li>
 <?php
 		if (++$count > 3)

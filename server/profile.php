@@ -29,13 +29,13 @@
 		$create['description'] = htmlspecialchars($create['description']);
 
 		if (!preg_match('/^[A-Z0-9\._%+-]+@[A-Z0-9\.-]+\.[A-Z]{2,4}$/i', $create['email'])) 
-			$_errors['create_email'] = "Invalid email address";
+			$_errors['create_email'] = _("Invalid email address");
 		
 		if (strlen($create['display_username']) > 32)
-			$_errors['create_display_username'] = "Please limit your display name to 32 characters or less";
+			$_errors['create_display_username'] = _("Please limit your display name to 32 characters or less");
 
 		if (strlen($create['description']) > 256)
-			$_errors['create_description'] = "Please limit your description to 256 characters or less";
+			$_errors['create_description'] = _("Please limit your description to 256 characters or less");
 
 		if (count($_errors) == 0 && $user->update_user($user->get_username(), $create['display_username'], $create['email'], $create['description'], $create['news']))
 		{
@@ -51,7 +51,7 @@
 		$create['news'] = $user->_news;
 	}
 	
-	$title = "Change User Details"; 
+	$title = _("Change User Details"); 
 	include 'templates/header.php'; 
 ?>
 <body class="forgot-password">
@@ -59,19 +59,19 @@
         <div id="inner-wrapper">
 <?php include 'templates/nav.php'; ?>
             <div id="header">
-                <h2>Change User Details</h2>
+                <h2><?= _("Change User Details");?></h2>
             </div>
             <div id="maincontent">
                 <div id="breadcrumbs">
-                    <a href="http://www.getpersonas.com">Personas Home</a> : User Details  
+                    <?printf("<a href=\"%s\">" . _("Personas Home") . "</a> : " _("User Details"), $locale_conf->url('/'));?>
                 </div>
 <?php 
 		if ($updated)
 		{
 ?>
                 <div id="signup">
-                    <h4>Change User Details</h3>
-                	You have successfully updated your user profile. Thanks for keeping us up to date!
+                    <h4><?= _("Change User Details");?></h3>
+                	<?= _("You have successfully updated your user profile. Thanks for keeping us up to date!");?>
                 </div>
 <?php
 		}

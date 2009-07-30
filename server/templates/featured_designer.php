@@ -27,7 +27,7 @@
 	}
 ?>
 			<div class="feature slideshow">
-                <h3>Featured Designers</h3>
+                <h3><?= _("Featured Designers");?></h3>
                 <ul class="slideshow-nav">
 <?php
 				for ($i = 1; $i <= count($personas); $i++)
@@ -36,8 +36,8 @@
 				}
 ?>
 				</ul>
-                <a href="#" class="slideshow-previous"><img src="/static/img/nav-prev.png" alt="Previous"/></a>
-                <a href="#" class="slideshow-next"><img src="/static/img/nav-next.png" alt="Next"/></a>
+                <a href="#" class="slideshow-previous"><img src="/static/img/nav-prev.png" alt="<?= _("Previous");?>"/></a>
+                <a href="#" class="slideshow-next"><img src="/static/img/nav-next.png" alt="<?= _("Next");?>"/></a>
                 <div class="">
                     <ul class="slides">
 <?php
@@ -47,7 +47,7 @@
                         <li>
                             <a href="/gallery/Designer/<?= $persona['author'] ?>"><img class="preview persona" src="<?= PERSONAS_LIVE_PREFIX . '/' . url_prefix($persona['id']) ?>/preview_featured.jpg" persona="<?= $persona['json'] ?>"></a>
                             <h4><a href="/gallery/Designer/<?= $persona['author'] ?>"><?= $persona['display_username'] ?></a></h4>
-                            <p class="try"><a href="/gallery/Designer/<?= $persona['author'] ?>">view designer »</a></p>
+                            <p class="try"><a href="/gallery/Designer/<?= $persona['author'] ?>"><?= _("view designer »");?></a></p>
                             <hr />
                             <p><?= $persona['designer_description'] ?></p>
                         </li>

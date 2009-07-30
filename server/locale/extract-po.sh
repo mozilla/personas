@@ -1,5 +1,5 @@
 #!/bin/bash
-SOURCE_DIRS="config models views controllers"
+SOURCE_DIRS=".."
 
 cd `dirname $0`/../
 

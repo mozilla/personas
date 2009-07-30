@@ -1,0 +1,366 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: addons\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-01-16 11:45-0800\n"
+"PO-Revision-Date: 2009-02-26 15:08-0800\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: ../server/index.php:20
+msgid "What will your browser wear today?"
+msgstr ""
+
+#: ../server/templates/forgot_password_reset_tmpl.php:7
+#: ../server/templates/forgot_password_reset_tmpl.php:10
+#: ../server/templates/forgot_password_tmpl.php:7
+#: ../server/templates/forgot_password_tmpl.php:10
+#: ../server/templates/forgot_password_thanks_tmpl.php:7
+#: ../server/templates/forgot_password_thanks_tmpl.php:11
+msgid "Forgot Your Password?"
+msgstr ""
+
+#: ../server/templates/forgot_password_reset_tmpl.php:10
+#: ../server/templates/forgot_password_tmpl.php:10
+#: ../server/templates/forgot_password_thanks_tmpl.php:11
+msgid "Personas Home"
+msgstr ""
+
+#: ../server/templates/forgot_password_reset_tmpl.php:10
+#: ../server/templates/nav.php:11
+#: ../server/templates/forgot_password_tmpl.php:10
+#: ../server/templates/forgot_password_thanks_tmpl.php:11
+msgid "Sign In"
+msgstr ""
+
+#: ../server/templates/forgot_password_reset_tmpl.php:16
+msgid "Enter your new password:"
+msgstr ""
+
+#: ../server/templates/forgot_password_reset_tmpl.php:22
+msgid "New password"
+msgstr ""
+
+#: ../server/templates/forgot_password_reset_tmpl.php:27
+msgid "Re-type your new password"
+msgstr ""
+
+#: ../server/templates/forgot_password_reset_tmpl.php:31
+msgid "reset password"
+msgstr ""
+
+#: ../server/templates/nav.php:5
+msgid "Welcome, "
+msgstr ""
+
+#: ../server/templates/nav.php:5
+msgid "Edit Account"
+msgstr ""
+
+#: ../server/templates/nav.php:5
+msgid "Sign Out"
+msgstr ""
+
+#: ../server/templates/nav.php:10
+msgid "You have been signed out | "
+msgstr ""
+
+#: ../server/templates/nav.php:24
+msgid "Check it out! Your browser's all dressed up."
+msgstr ""
+
+#: ../server/templates/nav.php:34
+msgid "Gallery"
+msgstr ""
+
+#: ../server/templates/nav.php:35
+msgid "Create <br/>Your Own"
+msgstr ""
+
+#: ../server/templates/forgot_password_tmpl.php:15
+msgid "Please enter your Personas username below"
+msgstr ""
+
+#: ../server/templates/forgot_password_tmpl.php:18
+msgid "Username:"
+msgstr ""
+
+#: ../server/templates/forgot_password_tmpl.php:22
+msgid "continue"
+msgstr ""
+
+#: ../server/templates/forgot_password_thanks_tmpl.php:8
+msgid "Follow the easy steps below to start dressing up your browser!"
+msgstr ""
+
+#: ../server/templates/forgot_password_thanks_tmpl.php:13
+msgid "Your password reset information has been e-mailed to you."
+msgstr ""
+
+#: ../server/demo_create.php:10 ../server/demo_create.php:32
+msgid "How to Create Personas"
+msgstr ""
+
+#: ../server/demo_create.php:18
+msgid "How To"
+msgstr ""
+
+#: ../server/demo_create.php:19
+msgid ""
+"Personas are lightweight, easy to install and easy to change \"skins\" for "
+"your Firefox web browser."
+msgstr ""
+
+#: ../server/demo_create.php:23
+#, php-format
+msgid "<a href=\"%s\">Personas Home</a> : How to Create Personas"
+msgstr ""
+
+#: ../server/demo_create.php:36
+msgid ""
+"Personas are made up of two graphic image files - a \"header\" image and a "
+"\"footer\" image - which skin the default Firefox UI background."
+msgstr ""
+
+#. TODO shouln't there be a </p> tag here?
+#: ../server/demo_create.php:42 ../server/demo_create.php:56
+msgid "Step 1: Creating a Persona Header Image"
+msgstr ""
+
+#: ../server/demo_create.php:43
+#, php-format
+msgid "<a href=\"%s\">Step 3: Testing your Persona Images</a> &raquo;"
+msgstr ""
+
+#: ../server/demo_create.php:46
+#, php-format
+msgid "<a href=\"%s\">Step 2: Creating a Persona Footer Image</a> &raquo;"
+msgstr ""
+
+#: ../server/demo_create.php:47
+#, php-format
+msgid "<a href=\"%s\">Step 4: Submit your Persona!</a> &raquo;"
+msgstr ""
+
+#: ../server/demo_create.php:60
+msgid ""
+"The header image is displayed as the background of the top of the browser "
+"window, nestling in behind the toolbars, address bar, search bar and the tab "
+"strip.  \n"
+"                \t\t\tIt will be <b>anchored to the top-right corner</b> of "
+"the browser window."
+msgstr ""
+
+#: ../server/demo_create.php:67
+msgid ""
+"View a sample Persona Header <b><a href=\"/static/img/Persona_Header_LABS.jpg"
+"\">here</a></b>."
+msgstr ""
+
+#: ../server/demo_create.php:69
+msgid ""
+"View the sample Persona Header as seen in <b><a href=\"/static/img/"
+"tut_XPheader.jpg\">XP</a></b>, <b><a href=\"/static/img/tut_VISTAheader.jpg"
+"\">Vista</a></b>, and <b><a href=\"/static/img/tut_OSXheader.jpg\">OSX</a></"
+"b>."
+msgstr ""
+
+#: ../server/demo_create.php:81
+msgid "Dimensions should be <b>3000px wide x 200px high</b>"
+msgstr ""
+
+#: ../server/demo_create.php:83
+msgid "PNG or JPG file format"
+msgstr ""
+
+#: ../server/demo_create.php:85
+msgid "subtle, soft contrast images and gradients work best"
+msgstr ""
+
+#: ../server/demo_create.php:95
+msgid "highly detailed images will compete with the browser UI"
+msgstr ""
+
+#: ../server/demo_create.php:97
+msgid ""
+"Firefox may reveal more of the lower portion of the image if it or an "
+"extension adds another toolbar or other UI\n"
+"                \t\t\telement to the top of the window"
+msgstr ""
+
+#: ../server/demo_create.php:100
+msgid ""
+"the right-hand side of the image should have the most important information "
+"- as a user\n"
+"                \t\t\t\tincreases the width of the browser window, the "
+"browser reveals more of the left-hand side of the\n"
+"                \t\t\t\timage"
+msgstr ""
+
+#: ../server/demo_create.php:112
+msgid "images must be no larger than 300kb in filesize"
+msgstr ""
+
+#: ../server/demo_create.php:114
+msgid "images over 3000px x 200px will not be approved"
+msgstr ""
+
+#: ../server/demo_create.php:116
+msgid ""
+"never use artwork/logos/photography that you do not have the legal rights to "
+"use - you will have to prove you have the rights if the content is questioned"
+msgstr ""
+
+#: ../server/demo_create.php:126
+#, php-format
+msgid "<b><a href=\"%s\">Continue to Step 2</a> &raquo;</b>"
+msgstr ""
+
+#: ../server/demo_create.php:137
+#, php-format
+msgid ""
+"Did you know you can test a Persona before you submit it?  <b><a href=\"%s"
+"\">Find out how!</a>&raquo;</b>"
+msgstr ""
+
+#: ../server/demo_create.php:141
+msgid "Online Image Editor Resources"
+msgstr ""
+
+#: ../server/demo_create.php:145
+msgid ""
+"SUMO Paint offers professional and easy to use tools for creating and "
+"editing images within a browser. SUMO Paint is a free image editing software "
+"that gives you the opportunity to create, edit and comment images online "
+"with powerful tools and layer support."
+msgstr ""
+
+#: ../server/demo_create.php:146
+msgid ""
+"Tweak, rotate and touch up photoswith Photoshop&reg; Express, your free "
+"online photo editor."
+msgstr ""
+
+#: ../server/demo_create.php:147
+msgid ""
+"All the Photoshop features you actually need, at a fraction of the price. "
+"Did we mention built-in collaboration? Create and edit with the world!"
+msgstr ""
+
+#: ../server/delete_persona.php:54
+msgid "Removing a persona"
+msgstr ""
+
+#: ../server/delete_persona.php:79
+msgid "You don't have permission to edit that"
+msgstr ""
+
+#. should default to popular
+#: ../server/viewpersonas.php:58 ../server/viewpersonas.php:118
+msgid "Popular"
+msgstr ""
+
+#: ../server/viewpersonas.php:58
+msgid "Recent"
+msgstr ""
+
+#: ../server/viewpersonas.php:58 ../server/viewpersonas.php:86
+#: ../server/viewpersonas.php:92 ../server/viewpersonas.php:95
+#: ../server/viewpersonas.php:101 ../server/viewpersonas.php:119
+msgid "All"
+msgstr ""
+
+#: ../server/viewpersonas.php:58
+msgid "My"
+msgstr ""
+
+#: ../server/viewpersonas.php:58
+msgid "Favorites"
+msgstr ""
+
+#: ../server/viewpersonas.php:66
+msgid "View Personas"
+msgstr ""
+
+#: ../server/viewpersonas.php:90
+msgid "all"
+msgstr ""
+
+#: ../server/viewpersonas.php:94
+msgid "recent"
+msgstr ""
+
+#: ../server/viewpersonas.php:97
+msgid "my"
+msgstr ""
+
+#: ../server/viewpersonas.php:99
+msgid "My Personas"
+msgstr ""
+
+#: ../server/viewpersonas.php:103
+msgid "favorites"
+msgstr ""
+
+#: ../server/viewpersonas.php:105
+msgid "My Favorite Personas"
+msgstr ""
+
+#: ../server/viewpersonas.php:109
+msgid "search"
+msgstr ""
+
+#: ../server/viewpersonas.php:110
+msgid "Search Personas"
+msgstr ""
+
+#: ../server/change_password.php:18
+msgid ""
+"Oops!  We are unable to locate the username you entered.  Please try again, "
+"or <a href='https://www.getpersonas.com/upload'>create a new one</a>."
+msgstr ""
+
+#: ../server/change_password.php:26
+msgid ""
+"We have no email address on file for you. Please contact personas-"
+"devel@mozilla.com"
+msgstr ""
+
+#: ../server/change_password.php:38
+msgid "Resetting your personas password"
+msgstr ""
+
+#: ../server/change_password.php:40
+msgid ""
+"There was a problem with our mail server. Please try again in a few minutes. "
+"If it continues to not work, please contact personas-devel@mozilla.com"
+msgstr ""
+
+#: ../server/change_password.php:50 ../server/change_password.php:77
+#: ../server/change_password.php:133
+msgid "There was an internal error. Please contact personas-devel@mozilla.com"
+msgstr ""
+
+#: ../server/change_password.php:67 ../server/change_password.php:100
+msgid ""
+"The code you submitted is not valid for that username. Please request "
+"another one"
+msgstr ""
+
+#: ../server/change_password.php:107
+msgid "Password must be at least 6 characters long"
+msgstr ""
+
+#: ../server/change_password.php:114
+msgid ""
+"The password should contain at least one alphabetic character and at least "
+"one non-alphabetic character"
+msgstr ""
+
+#: ../server/change_password.php:121
+msgid "The password and confirmation do not match. Please try again"
+msgstr ""

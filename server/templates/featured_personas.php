@@ -24,7 +24,7 @@
 	}	
 ?>
 			<div class="feature slideshow">
-                <h3>Featured Personas</h3>
+                <h3><?= _("Featured Personas");?></h3>
                 <ul class="slideshow-nav">
 <?php
 				for ($i = 1; $i <= count($personas); $i++)
@@ -33,8 +33,8 @@
 				}
 ?>
 				</ul>
-                <a href="#" class="slideshow-previous"><img src="/static/img/nav-prev.png" alt="Previous"/></a>
-                <a href="#" class="slideshow-next"><img src="/static/img/nav-next.png" alt="Next"/></a>
+                <a href="#" class="slideshow-previous"><img src="/static/img/nav-prev.png" alt="<?= _("Previous");?>"/></a>
+                <a href="#" class="slideshow-next"><img src="/static/img/nav-next.png" alt="<?= _("Next");?>"/></a>
                 <div class="">
                     <ul class="slides">
 <?php
@@ -44,10 +44,10 @@
                         <li>
                             <a href="/persona/<?= $persona['id'] ?>"><img class="preview persona" src="<?= $persona['preview_image'] ?>/preview_featured.jpg" persona="<?= $persona['json'] ?>"></a>
                             <h4><a href="/persona/<?= $persona['id'] ?>"><?= $persona['name'] ?></a></h4>
-                            <p class="try"><a href="/persona/<?= $persona['id'] ?>">view details »</a></p>
+                            <p class="try"><a href="/persona/<?= $persona['id'] ?>"><?= _("view details »");?></a></p>
                             <hr />
-                            <p class="designer">By: <a href="/gallery/Designer/<?= $persona['author'] ?>"><?= $persona['display_username'] ?></a></p>
-                            <p class="daily-users"><?= number_format($persona['popularity']) ?> active daily users</p>
+                            <p class="designer"><?printf("By: <a href=\"/gallery/Designer/%s\">%s</a>", $persona['author'], $persona['display_username']);?></p>
+                            <p class="daily-users"><?printf(_("%d active daily users"), number_format($persona['popularity']));?></p>
                             <p><?= $persona['short_description'] ?></p>
                             <hr />
                             <p><?php //description goes here ?></p>

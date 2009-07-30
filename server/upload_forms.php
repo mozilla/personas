@@ -4,6 +4,7 @@
 	require_once 'lib/personas_functions.php';
 	require_once 'lib/storage.php';
 	require_once 'lib/user.php';	
+	require_once "lib/language.php";
 		
 	#step 1: Authenticate
 	$user = new PersonaUser();
@@ -33,7 +34,7 @@
 		{
 			#include something bad here
 			$upload_submitted = null;
-			$override_error = "You don't have permission to edit that";
+			$override_error = _("You don't have permission to edit that");
 			include 'templates/upload_persona_tmpl.php';
 			exit;
 		}
@@ -58,10 +59,10 @@
 		$upload_submitted['license'] = ini_get('magic_quotes_gpc') ? stripslashes($_POST['license']) : $_POST['license'];
 
 		if ($upload_submitted['agree'] != 1)
-			$upload_errors['agree'] = "Please make sure to agree to the licensing agreement";
+			$upload_errors['agree'] = _("Please make sure to agree to the licensing agreement");
 		
 		if ($upload_submitted['license'] != 'cc' && $upload_submitted['license'] != 'restricted')
-			$upload_errors['license'] = "Please make sure to choose the appropriate license";
+			$upload_errors['license'] = _("Please make sure to choose the appropriate license");
 
 		if (count($upload_errors) > 0)
 		{
@@ -90,10 +91,10 @@
 	$upload_submitted['other-reason'] = ini_get('magic_quotes_gpc') ? stripslashes($_POST['other-reason']) : $_POST['other-reason'];
 
 	if (!in_array($upload_submitted['category'], $categories))
-		$upload_errors['category'] = "Unknown category";
+		$upload_errors['category'] = _("Unknown category");
 	
 	if (strlen($upload_submitted['description']) > 500)
-		$upload_errors['description'] = "Please limit your description to 500 characters";
+		$upload_errors['description'] = _("Please limit your description to 500 characters");
 	
 	#sanitize it
 	$upload_submitted['description'] = htmlspecialchars($upload_submitted['description']); 
@@ -101,61 +102,61 @@
 	
 	
 	if(preg_match('/[^A-Za-z0-9_\-\. \&]/', $upload_submitted['name']))
-		$upload_errors['name'] = "Please use only alphanumerics, underscore, hyphen, space, period and ampersand in your persona name";	
+		$upload_errors['name'] = _("Please use only alphanumerics, underscore, hyphen, space, period and ampersand in your persona name");	
 	elseif(!preg_match('/^[A-Za-z]/', $upload_submitted['name']))
-		$upload_errors['name'] = "Please begin your persona name with a letter";	
+		$upload_errors['name'] = _("Please begin your persona name with a letter");	
 	elseif ($upload_submitted['name'][0] == '.')
-		$upload_errors['name'] = "name cannot start with a period";
+		$upload_errors['name'] = _("name cannot start with a period");
 	elseif ($upload_submitted['name'] == '')
-		$upload_errors['name'] = "Please use alphanumeric characters in your persona name";
+		$upload_errors['name'] = _("Please use alphanumeric characters in your persona name");
 	elseif (strlen($upload_submitted['name']) < 6)
-		$upload_errors['name'] = "Please use at least 6 characters in your persona name";
+		$upload_errors['name'] = _("Please use at least 6 characters in your persona name");
 	elseif (strlen($upload_submitted['name']) > 40)
-		$upload_errors['name'] = "Please limit your persona name to 40 characters";
+		$upload_errors['name'] = _("Please limit your persona name to 40 characters");
 	else
 	{
 		$collision_id = $db->check_persona_name($upload_submitted['name']);
 		if ($collision_id && $collision_id != $id)
-			$upload_errors['name'] = "That name is already in use. Please select another one";
+			$upload_errors['name'] = _("That name is already in use. Please select another one");
 	}
 	
 	$upload_submitted['accentcolor'] = preg_replace('/[^a-f0-9]/i', '', strtolower($upload_submitted['accentcolor']));
 	if ($upload_submitted['accentcolor'] && strlen($upload_submitted['accentcolor']) != 3 && strlen($upload_submitted['accentcolor']) != 6)
-		$upload_errors['accentcolor'] = "Unrecognized accent color";
+		$upload_errors['accentcolor'] = _("Unrecognized accent color");
 	
 	$upload_submitted['textcolor'] = preg_replace('/[^a-f0-9]/i', '', strtolower($upload_submitted['textcolor']));
 	if ($upload_submitted['textcolor'] && strlen($upload_submitted['textcolor']) != 3 && strlen($upload_submitted['textcolor']) != 6)
-		$upload_errors['textcolor'] = "Unrecognized text color";
+		$upload_errors['textcolor'] = _("Unrecognized text color");
 	
 	if ($upload_submitted['license'] == 'restricted' && !$upload_submitted['reason'])
-		$upload_errors['reason'] = "Please provide a reason for creating this persona";
+		$upload_errors['reason'] = _("Please provide a reason for creating this persona");
 	
 	#basic non-committal image upload checks
 
 	if (!(array_key_exists('id', $upload_submitted) && $_FILES['header-image']['size'] == 0)) #images are optional on edit
 	{
 		if ($_FILES['header-image']['size'] == 0)
-			$upload_errors['header-image'] = "Please include a header image";
+			$upload_errors['header-image'] = _("Please include a header image");
 		elseif ($_FILES['header-image']['size'] > 307200)
-			$upload_errors['header-image'] = "Please limit your header file size to 300K";
+			$upload_errors['header-image'] = _("Please limit your header file size to 300K");
 		elseif (strlen(preg_replace('/[^A-Za-z0-9_\-\.]/', '', $_FILES['header-image']['name'])) < 4)
-			$upload_errors['header-image'] = "Please use alphanumeric characters in your header image name";
+			$upload_errors['header-image'] = _("Please use alphanumeric characters in your header image name");
 		$upload_submitted['header'] = preg_replace('/[^A-Za-z0-9_\-\.]/', '', $_FILES['header-image']['name']);
 	}
 	
 	if (!(array_key_exists('id', $upload_submitted) && $_FILES['footer-image']['size'] == 0)) #images are optional on edit
 	{
 		if ($_FILES['footer-image']['size'] == 0)
-			$upload_errors['footer-image'] = "Please include a footer image";
+			$upload_errors['footer-image'] = _("Please include a footer image");
 		elseif ($_FILES['footer-image']['size'] > 307200)
-			$upload_errors['footer-image'] = "Please limit your footer file size to 300K";
+			$upload_errors['footer-image'] = _("Please limit your footer file size to 300K");
 		elseif (strlen(preg_replace('/[^A-Za-z0-9_\-\.]/', '', $_FILES['footer-image']['name'])) < 4)
-			$upload_errors['footer-image'] = "Please use alphanumeric characters in your footer image name";
+			$upload_errors['footer-image'] = _("Please use alphanumeric characters in your footer image name");
 		$upload_submitted['footer'] = preg_replace('/[^A-Za-z0-9_\-\.]/', '', $_FILES['footer-image']['name']);
 	}
 	
 	if ($upload_submitted['header'] && $upload_submitted['header'] == $upload_submitted['footer'])
-		$upload_errors['footer-image'] = "Please use different names for the header and the footer";
+		$upload_errors['footer-image'] = _("Please use different names for the header and the footer");
 	
 	if (count($upload_errors) > 0)
 	{
@@ -173,11 +174,11 @@
 		$header_specs = exec($imgcommand . $_FILES['header-image']['tmp_name']);	
 		list($hheight, $hwidth, $htype) = explode(" ", $header_specs);		
 		if (!($htype == 'JPEG' || $htype == 'PNG'))
-			$upload_errors['header-image'] = "We do not recognize the format of your header image. Please let us know at persona-devel@mozilla.com if you think this is in error.";
+			$upload_errors['header-image'] = _("We do not recognize the format of your header image. Please let us know at persona-devel@mozilla.com if you think this is in error.");
 		elseif ($hheight < 200 || $hwidth < 2500)
-			$upload_errors['header-image'] = "Please make sure your header image is at least 2500x200 pixels (it appears to be $hwidth" . "x$hheight)";
+			$upload_errors['header-image'] = sprintf(_("Please make sure your header image is at least 2500x200 pixels (it appears to be %dx%d)"), $hwidth, $hheight);
 		elseif ($hheight > 500)
-			$upload_errors['header-image'] = "Please make sure your header image is less than 500 pixels tall so that it can appear in the browser (it appears to be $hwidth" . "x$hheight)";
+			$upload_errors['header-image'] = sprintf(_("Please make sure your header image is less than 500 pixels tall so that it can appear in the browser (it appears to be %dx%d)"), $hwidth, $hheight);
 	}
 	
 	if (!(array_key_exists('id', $upload_submitted) && $_FILES['footer-image']['size'] == 0)) #images are optional on edit
@@ -185,11 +186,11 @@
 		$footer_specs = exec($imgcommand . $_FILES['footer-image']['tmp_name']);
 		list($fheight, $fwidth, $ftype) = explode(" ", $footer_specs);
 		if (!($ftype == 'JPEG' || $ftype == 'PNG'))
-			$upload_errors['footer-image'] = "We do not recognize the format of your footer image. Please let us know at persona-devel@mozilla.com if you think this is in error.";
+			$upload_errors['footer-image'] = _("We do not recognize the format of your footer image. Please let us know at persona-devel@mozilla.com if you think this is in error.");
 		elseif ($fheight < 100 || $fwidth < 2500)
-			$upload_errors['footer-image'] = "Please make sure your footer image is at least 2500x100 pixels (it appears to be $fwidth" . "x$fheight)";
+			$upload_errors['footer-image'] = sprintf(_("Please make sure your footer image is at least 2500x100 pixels (it appears to be %dx%d)"), $fwidth, $fheight);
 		elseif ($fheight > 250)
-			$upload_errors['header-image'] = "Please make sure your footer image is less than 250 pixels tall so that it can appear in the browser (it appears to be $fwidth" . "x$fheight)";
+			$upload_errors['header-image'] = sprintf(_("Please make sure your footer image is less than 250 pixels tall so that it can appear in the browser (it appears to be %dx%d)"), $fwidth, $fheight);
 	}	
 			
 	if (count($upload_errors) > 0)
@@ -204,19 +205,19 @@
 	{
 		$db->submit_persona_edit($upload_submitted['id'], $auth_user, $upload_submitted['name'], $upload_submitted['category'], $upload_submitted['accentcolor'], $upload_submitted['textcolor'], $upload_submitted['description'], $upload_submitted['header'], $upload_submitted['footer'], $upload_submitted['reason'], $upload_submitted['reason-other']);
 		$db->log_action($auth_user, $id, "Edited");
-		$action_verb = "edited";
+		$action_sentence = _("You have successfully edited your Persona. Once it's approved, you'll be able to view it in the Gallery.");
 	}
 	else
 	{
 		$upload_submitted['id'] = $db->submit_persona($upload_submitted['name'], $upload_submitted['category'], $upload_submitted['header'], $upload_submitted['footer'], $auth_user, $user->get_display_username(), $upload_submitted['accentcolor'], $upload_submitted['textcolor'], $upload_submitted['description'], $upload_submitted['license'], $upload_submitted['reason'], $upload_submitted['other-reason']);
 		$db->log_action($auth_user, $upload_submitted['id'], "Added");
-		$action_verb = "added";
+		$action_sentence = _("You have successfully added your Persona. Once it's approved, you'll be able to view it in the Gallery.");
 	}
 	$persona_path = make_persona_pending_path($upload_submitted['id']);
 	
 	if ($_FILES['footer-image']['size'] > 0 && !move_uploaded_file($_FILES['footer-image']['tmp_name'], $persona_path . "/" . $upload_submitted['footer']))
 	{
-		$upload_errors['footer-image'] = "A problem occured uploading your persona. Please contact persona-devel@mozilla.com to let us know about this issue. Thank you.";
+		$upload_errors['footer-image'] = _("A problem occured uploading your persona. Please contact persona-devel@mozilla.com to let us know about this issue. Thank you.");
 		if (!array_key_exists('id', $_POST))
 		{
 			$db->reject_persona($upload_submitted['id']);
@@ -230,7 +231,7 @@
 	{
 		if (!move_uploaded_file($_FILES['header-image']['tmp_name'], $persona_path . "/" . $upload_submitted['header']))
 		{
-			$upload_errors['header-image'] = "A problem occured uploading your persona. Please contact persona-devel@mozilla.com to let us know about this issue. Thank you.";
+			$upload_errors['header-image'] = _("A problem occured uploading your persona. Please contact persona-devel@mozilla.com to let us know about this issue. Thank you.");
 			if (!array_key_exists('id', $_POST))
 			{
 				$db->reject_persona($upload_submitted['id']);

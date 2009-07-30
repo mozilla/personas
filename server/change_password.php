@@ -15,7 +15,7 @@
 			$username = array_key_exists('userreq', $_POST) ? (ini_get('magic_quotes_gpc') ? stripslashes($_POST['userreq']) : $_POST['userreq']) : null;
 			if (!$user->user_exists($username))
 			{
-				$error = "Oops!  We are unable to locate the username you entered.  Please try again, or <a href='https://www.getpersonas.com/upload'>create a new one</a>.";
+				$error = sprintf(_("Oops!  We are unable to locate the username you entered.  Please try again, or <a href=\"%s\">create a new one</a>."), $locale_conf->url('/update'));
 				include "templates/forgot_password_tmpl.php";
 				exit;
 			}
@@ -23,21 +23,21 @@
 			$email = $user->get_email($username);
 			if (!$email)
 			{
-				$error = "We have no email address on file for you. Please contact personas-devel@mozilla.com";
+				$error = _("We have no email address on file for you. Please contact personas-devel@mozilla.com");
 				include "templates/forgot_password_tmpl.php";
 				exit;
 			}
 			
 			$code = $user->generate_password_change_code($username);
-			$mail_message = "So many passwords to remember! You asked to reset your personas password. To do so, please visit:\n\n";
-			$mail_message .= "https://www.getpersonas.com/forgot_password?username=$username&code=$code\n\n";
-			$mail_message .= "This link will let you change your password to something new. If you didn't ask for this, don't worry, we'll keep your password safe.\n\n";
-			$mail_message .= "Best Wishes,\n";
-			$mail_message .= "The Personas Team\n";
+			$mail_message = sprintf(_("So many passwords to remember! You asked to reset your personas password. To do so, please visit:\n\n
+						%s\n\n
+						This link will let you change your password to something new. If you didn't ask for this, don't worry, we'll keep your password safe.\n\n
+						Best Wishes,\n
+						The Personas Team\n"), $locale_conf->url("/forgot_password?username=$username&code=$code"));
 			
-			if (!mail($email, 'Resetting your personas password', $mail_message, "From: personas-devel@mozilla.com\r\n"))
+			if (!mail($email, _('Resetting your personas password'), $mail_message, "From: personas-devel@mozilla.com\r\n"))	// TODO
 			{
-				$error = "There was a problem with our mail server. Please try again in a few minutes. If it continues to not work, please contact personas-devel@mozilla.com";
+				$error = _("There was a problem with our mail server. Please try again in a few minutes. If it continues to not work, please contact personas-devel@mozilla.com");
 				include "templates/forgot_password_tmpl.php";
 				exit;
 			}
@@ -47,7 +47,7 @@
 		}
 		catch (Exception $e)
 		{
-			$error = "There was an internal error. Please contact personas-devel@mozilla.com";
+			$error = _("There was an internal error. Please contact personas-devel@mozilla.com");
 			error_log($e->getMessage());
 			include "templates/forgot_password_tmpl.php";
 			exit;
@@ -64,7 +64,7 @@
 	
 			if (!$user->check_password_change_code($username, $code))
 			{
-				$error = "The code you submitted is not valid for that username. Please request another one";
+				$error = _("The code you submitted is not valid for that username. Please request another one");
 				include "templates/forgot_password_tmpl.php";
 				exit;
 			}
@@ -74,7 +74,7 @@
 		}
 		catch (Exception $e)
 		{
-			$error = "There was an internal error. Please contact personas-devel@mozilla.com";
+			$error = _("There was an internal error. Please contact personas-devel@mozilla.com");
 			error_log($e->getMessage());
 			include "templates/forgot_password_reset_tmpl.php";
 			exit;
@@ -97,28 +97,28 @@
 			}
 			if (!$user->check_password_change_code($username, $code))
 			{
-				$error = "The code you submitted is not valid for that username. Please request another one";
+				$error = _("The code you submitted is not valid for that username. Please request another one");
 				include "templates/forgot_password_tmpl.php";
 				exit;
 			}
 	
 			if (strlen($password) < 6)
 			{
-				$error = "Password must be at least 6 characters long";
+				$error = _("Password must be at least 6 characters long");
 				include "templates/forgot_password_reset_tmpl.php";
 				exit;
 			}
 
 			if (!preg_match('/[A-Z]/i', $password) || !preg_match('/[^A-Z]/i', $password))
 			{
-				$error = "The password should contain at least one alphabetic character and at least one non-alphabetic character";
+				$error = _("The password should contain at least one alphabetic character and at least one non-alphabetic character");
 				include "templates/forgot_password_reset_tmpl.php";
 				exit;
 			}
 			
 			if ($password != $conf)
 			{
-				$error = "The password and confirmation do not match. Please try again";
+				$error = _("The password and confirmation do not match. Please try again");
 				include "templates/forgot_password_reset_tmpl.php";
 				exit;
 			}			
@@ -130,7 +130,7 @@
 		}
 		catch (Exception $e)
 		{
-			$error = "There was an internal error. Please contact personas-devel@mozilla.com";
+			$error = _("There was an internal error. Please contact personas-devel@mozilla.com");
 			error_log($e->getMessage());
 			include "templates/forgot_password_reset_tmpl.php";
 			exit;			

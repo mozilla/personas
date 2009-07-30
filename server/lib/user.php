@@ -50,6 +50,7 @@
 
 require_once 'personas_constants.php';
 require_once 'recaptcha.php';
+require_once 'lib/language.php';
 
 class PersonaUser
 {
@@ -432,7 +433,8 @@ class PersonaUser
 	{
 		if (!$this->_username)
 		{
-			header('Location: /signin?return=' . $_SERVER['SCRIPT_URL'] . ($admin ? "&admin=1" : ""));
+            global $locale_conf;
+			header('Location: ' . $locale_conf->url('/signin?return=' . $_SERVER['SCRIPT_URL'] . ($admin ? "&admin=1" : "")));
 			exit;
 		}
 	}		
@@ -442,8 +444,9 @@ class PersonaUser
 
 	function log_out()
 	{
+        global $locale_conf;
 		setcookie('PERSONA_USER', '', time() - 3600, '/');		
-		$this->_errors['success_message'] = "You have been logged out. <a href=\"http://www.getpersonas.com/\">Return to the Personas Homepage</a>";
+		$this->_errors['success_message'] = sprintf(_("You have been logged out.") . "<a href=\"%s\">" . _("Return to the Personas Homepage") . "</a>", $locale_conf->url('/'));
 	}
 
 
