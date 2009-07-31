@@ -15,7 +15,7 @@
 			$username = array_key_exists('userreq', $_POST) ? (ini_get('magic_quotes_gpc') ? stripslashes($_POST['userreq']) : $_POST['userreq']) : null;
 			if (!$user->user_exists($username))
 			{
-				$error = sprintf(_("Oops!  We are unable to locate the username you entered.  Please try again, or <a href=\"%s\">create a new one</a>."), $locale_conf->url('/update'));
+				$error = sprintf(_("Oops!  We are unable to locate the username you entered.  Please try again, or <a href=\"%s\">create a new one</a>."), $locale_conf->url('/update', true));
 				include "templates/forgot_password_tmpl.php";
 				exit;
 			}
@@ -33,7 +33,7 @@
 						%s\n\n
 						This link will let you change your password to something new. If you didn't ask for this, don't worry, we'll keep your password safe.\n\n
 						Best Wishes,\n
-						The Personas Team\n"), $locale_conf->url("/forgot_password?username=$username&code=$code"));
+						The Personas Team\n"), $locale_conf->url("/forgot_password?username=$username&code=$code", true));
 			
 			if (!mail($email, _('Resetting your personas password'), $mail_message, "From: personas-devel@mozilla.com\r\n"))	// TODO
 			{

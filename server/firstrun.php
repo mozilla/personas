@@ -54,7 +54,7 @@
                 <ol class="get-started">
                     <li class="one"><?printf(_("Click on the fox mask in the lower left corner of your Firefox browser, or go to the Personas page directly from <a href=\"%s\">here</a>."), $locale_conf->url('/'));?></li>
                     <li class="two"><?printf(_("Next, select a Persona from the list, or check out the <a href=\"%s\">Personas gallery</a>."), $locale_conf->url('/gallery/All/Popular'));?></li>
-                    <li class="three"><?printf(_("You can change your persona as much as you like! Choose a new one from the list or <a href=\"%s\">create your own</a>."), $locale_conf->url('/upload'));?></li>
+                    <li class="three"><?printf(_("You can change your persona as much as you like! Choose a new one from the list or <a href=\"%s\">create your own</a>."), $locale_conf->url('/upload', true));?></li>
                 </ol>
                 
                 <p><?printf(_("Have a Personas question or comment? Check out our <a href=\"%s\">FAQ</a> section or <a href=\"https://labs.mozilla.com/forum/?CategoryID=18\">discussion forum</a>."), $locale_conf->url('/faq'));?>
@@ -65,7 +65,7 @@
                 <h3><?= _("Find out more about Firefox");?></h3>
                 <p><?= _("Wondering what to do now? Our <a href=\"http://www.mozilla.com/firefox/central/\">Getting Started</a> page has plenty of helpful information.");?></p>
                 <p><?= _("Questions? Our <a href=\"https://labs.mozilla.com/forum/?CategoryID=18\">Support page</a> has answers.");?></p>
-                <p><?= _("Ready to customize? Now that you’ve got Firefox and Personas, find out more about all the ways you can <a href=\"https://addons.mozilla.org/firefox\">personalize Firefox</a>!";?></p>
+                <p><?= _("Ready to customize? Now that you've got Firefox and Personas, find out more about all the ways you can <a href=\"https://addons.mozilla.org/firefox\">personalize Firefox</a>!";?></p>
              
             </div>
             

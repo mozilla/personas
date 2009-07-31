@@ -47,7 +47,7 @@
                         <li>
                             <a href="/gallery/Designer/<?= $persona['author'] ?>"><img class="preview persona" src="<?= PERSONAS_LIVE_PREFIX . '/' . url_prefix($persona['id']) ?>/preview_featured.jpg" persona="<?= $persona['json'] ?>"></a>
                             <h4><a href="/gallery/Designer/<?= $persona['author'] ?>"><?= $persona['display_username'] ?></a></h4>
-                            <p class="try"><a href="/gallery/Designer/<?= $persona['author'] ?>"><?= _("view designer »");?></a></p>
+                            <p class="try"><a href="/gallery/Designer/<?= $persona['author'] ?>"><?= _("view designer >>");?></a></p>
                             <hr />
                             <p><?= $persona['designer_description'] ?></p>
                         </li>

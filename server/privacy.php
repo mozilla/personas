@@ -22,7 +22,7 @@
                
                 <h3><?= _("Mozilla Personas Privacy Policy");?></h3>
                 <p><?= _("Dated: March 20, 2009");?></p>
-                <p><?= _("We're working hard to protect your privacy while delivering products and services that bring you the performance and protection you desire in your personal computing.  This privacy policy explains how Mozilla Corporation (\"Mozilla\"), a wholly-owned subsidiary of the non-profit Mozilla Foundation, collects and uses information about users of the official Mozilla Personas add-on (\"Personas\") for Mozilla Firefox® web browser (\"Firefox\").  It does not apply to other Mozilla websites, products or services.");?>  </p>
+                <p><?= _("We're working hard to protect your privacy while delivering products and services that bring you the performance and protection you desire in your personal computing.  This privacy policy explains how Mozilla Corporation (\"Mozilla\"), a wholly-owned subsidiary of the non-profit Mozilla Foundation, collects and uses information about users of the official Mozilla Personas add-on (\"Personas\") for Mozilla Firefox&#174; web browser (\"Firefox\").  It does not apply to other Mozilla websites, products or services.");?>  </p>
                 <h4><?= _("Types of Information");?></h4>
                 <p><?= _("Personas collects certain information that falls into the following categories:");?></p>
                 <p><?= _("<em>\"Personal Information\"</em> is information that you provide to us that personally identifies you, such as your name and email address.  Except as described below, Mozilla does not collect or require users of Personas to furnish Personal Information.  To protect your privacy any Personal Information will be available only to Mozilla employees, contractors, and selected contributors who signed confidentiality agreements that prohibit them from using or disclosing such information other than for internal Mozilla purposes.");?></p>
@@ -46,7 +46,7 @@
                 <li><?= _("your operating system (i.e.,  Linux, Windows or Mac); and");?></li>
                 <li><?= _("your computer's architecture.");?></li>
                 </ul>
-                <p><?= _("Personas relies on Firefox’s automatic update feature for updates.  See the <a href=\"http://www.mozilla.com/legal/privacy/firefox-en.html\">Firefox Privacy Policy</a> for privacy details of the Firefox automatic update feature. ");?></p>
+                <p><?= _("Personas relies on Firefox's automatic update feature for updates.  See the <a href=\"http://www.mozilla.com/legal/privacy/firefox-en.html\">Firefox Privacy Policy</a> for privacy details of the Firefox automatic update feature. ");?></p>
                 <p><?= _("We use this information to improve our products and services and to support decision making regarding feature and capacity planning.  Mozilla is an open organization that believes in sharing as much information as possible about its products, its operations, and its associations. Accordingly, we may release public reports containing Aggregate Data so that our global community and Personas partners may make better product and design decisions and so that users of Personas will know which are the most popular Persona Designs and Personas designers will know how many times their Persona Design was downloaded.  ");?></p>
                 <h4><?= _("Privacy Policy Changes");?></h4>
                 

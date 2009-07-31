@@ -19,7 +19,7 @@
                     <?printf("<a href=\"%s\">" . _("Personas Home") . "</a> : " . _("Review Guidelines"), $locale_conf->url('/'))?>
                 </div>
 
-                <p><?= _("Though it would be great if we could accept every image or design (\"Design\") submitted to the Personas gallery, the reality is that we're unable to do so – either for legal reasons or because we do not want certain acts or images associated with Mozilla. Therefore, we have created the following guidelines to review the Designs submitted for the gallery. ");?></p>
+                <p><?= _("Though it would be great if we could accept every image or design (\"Design\") submitted to the Personas gallery, the reality is that we're unable to do so - either for legal reasons or because we do not want certain acts or images associated with Mozilla. Therefore, we have created the following guidelines to review the Designs submitted for the gallery. ");?></p>
 
                 <h3 id="images"><?= _("I.   Images Not Allowed.  ");?></h3>
 
@@ -35,7 +35,7 @@
                                 <li><?= _("Genitalia");?></li>
                                 <li><?= _("Buttocks nudity");?></li>
                             </ul>
-                            <li><?= _("Obscene gestures (this is cultural and we'll have to rely on our community members to monitor this category (e.g., flipping someone off in the U.S. (middle finger) vs. in the UK (2 finger salute with index and middle finger – a reverse peace sign)).");?></li>
+                            <li><?= _("Obscene gestures (this is cultural and we'll have to rely on our community members to monitor this category (e.g., flipping someone off in the U.S. (middle finger) vs. in the UK (2 finger salute with index and middle finger - a reverse peace sign)).");?></li>
                 </ul>
 
 

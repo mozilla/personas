@@ -1,7 +1,7 @@
 #!/bin/bash
 SOURCE_DIRS=".."
 
-cd `dirname $0`/../
+cd `dirname $0`/
 
 rm messages.po
 touch messages.po

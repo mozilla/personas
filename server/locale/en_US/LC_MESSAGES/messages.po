@@ -1,152 +1,1311 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: addons\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-01-16 11:45-0800\n"
-"PO-Revision-Date: 2009-02-26 15:08-0800\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
+"Project-Id-Version: PACKAGE VERSION\n"
+"PO-Revision-Date: 2009-07-30 16:41-0700\n"
+"Last-Translator: Mark Hahnenberg <mhahnenberg@mozilla.com>\n"
+"Language-Team: English\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ../server/index.php:20
-msgid "What will your browser wear today?"
-msgstr ""
-
-#: ../server/templates/forgot_password_reset_tmpl.php:7
-#: ../server/templates/forgot_password_reset_tmpl.php:10
-#: ../server/templates/forgot_password_tmpl.php:7
-#: ../server/templates/forgot_password_tmpl.php:10
-#: ../server/templates/forgot_password_thanks_tmpl.php:7
-#: ../server/templates/forgot_password_thanks_tmpl.php:11
-msgid "Forgot Your Password?"
-msgstr ""
-
-#: ../server/templates/forgot_password_reset_tmpl.php:10
-#: ../server/templates/forgot_password_tmpl.php:10
-#: ../server/templates/forgot_password_thanks_tmpl.php:11
-msgid "Personas Home"
-msgstr ""
-
-#: ../server/templates/forgot_password_reset_tmpl.php:10
-#: ../server/templates/nav.php:11
-#: ../server/templates/forgot_password_tmpl.php:10
-#: ../server/templates/forgot_password_thanks_tmpl.php:11
-msgid "Sign In"
-msgstr ""
-
-#: ../server/templates/forgot_password_reset_tmpl.php:16
-msgid "Enter your new password:"
-msgstr ""
-
-#: ../server/templates/forgot_password_reset_tmpl.php:22
-msgid "New password"
-msgstr ""
-
-#: ../server/templates/forgot_password_reset_tmpl.php:27
-msgid "Re-type your new password"
-msgstr ""
-
-#: ../server/templates/forgot_password_reset_tmpl.php:31
-msgid "reset password"
-msgstr ""
-
-#: ../server/templates/nav.php:5
-msgid "Welcome, "
-msgstr ""
-
-#: ../server/templates/nav.php:5
-msgid "Edit Account"
-msgstr ""
-
-#: ../server/templates/nav.php:5
-msgid "Sign Out"
-msgstr ""
-
-#: ../server/templates/nav.php:10
-msgid "You have been signed out | "
-msgstr ""
-
-#: ../server/templates/nav.php:24
-msgid "Check it out! Your browser's all dressed up."
-msgstr ""
-
-#: ../server/templates/nav.php:34
-msgid "Gallery"
-msgstr ""
-
-#: ../server/templates/nav.php:35
-msgid "Create <br/>Your Own"
-msgstr ""
-
-#: ../server/templates/forgot_password_tmpl.php:15
-msgid "Please enter your Personas username below"
-msgstr ""
-
-#: ../server/templates/forgot_password_tmpl.php:18
-msgid "Username:"
-msgstr ""
-
-#: ../server/templates/forgot_password_tmpl.php:22
-msgid "continue"
-msgstr ""
-
-#: ../server/templates/forgot_password_thanks_tmpl.php:8
-msgid "Follow the easy steps below to start dressing up your browser!"
-msgstr ""
-
-#: ../server/templates/forgot_password_thanks_tmpl.php:13
-msgid "Your password reset information has been e-mailed to you."
-msgstr ""
-
-#: ../server/demo_create.php:10 ../server/demo_create.php:32
+#: ../demo_create2.php:7 ../demo_create2.php:20 ../demo_create2.php:28
+#: ../templates/get_personas.php:6 ../templates/get_personas.php:11
+#: ../demo_create.php:7 ../demo_create.php:29 ../demo_create3.php:8
+#: ../demo_create3.php:21 ../demo_create3.php:26 ../demo_create4.php:8
+#: ../demo_create4.php:21 ../demo_create4.php:26
+#, php-format
 msgid "How to Create Personas"
-msgstr ""
+msgstr "How to Create Personas"
 
-#: ../server/demo_create.php:18
+#: ../demo_create2.php:15 ../templates/nav.php:36 ../demo_create.php:15
+#: ../demo_create3.php:16 ../demo_create4.php:16
+#, php-format
 msgid "How To"
-msgstr ""
+msgstr "How To"
 
-#: ../server/demo_create.php:19
+#: ../demo_create2.php:16 ../demo_install.php:16 ../demo_create.php:16
+#: ../faq.php:17 ../demo_create3.php:17 ../demo_create4.php:17
 msgid ""
 "Personas are lightweight, easy to install and easy to change \"skins\" for "
 "your Firefox web browser."
 msgstr ""
+"Personas are lightweight, easy to install and easy to change \"skins\" for "
+"your Firefox web browser."
 
-#: ../server/demo_create.php:23
+#: ../demo_create2.php:20 ../profile.php:66 ../reviewguidelines.php:19
+#: ../templates/upload_persona_tmpl.php:11
+#: ../templates/forgot_password_reset_tmpl.php:10
+#: ../templates/delete_persona_success_tmpl.php:11
+#: ../templates/delete_persona_tmpl.php:18
+#: ../templates/upload_success_tmpl.php:12
+#: ../templates/forgot_password_tmpl.php:10
+#: ../templates/forgot_password_thanks_tmpl.php:11 ../templates/gallery.php:33
+#: ../demo_install.php:20 ../demo_create.php:20 ../privacy.php:19
+#: ../faq.php:21 ../personadetail.php:86 ../demo_create3.php:21
+#: ../demo_create4.php:21
 #, php-format
-msgid "<a href=\"%s\">Personas Home</a> : How to Create Personas"
-msgstr ""
+msgid "Personas Home"
+msgstr "Personas Home"
 
-#: ../server/demo_create.php:36
+#: ../demo_create2.php:32 ../demo_create.php:33
 msgid ""
 "Personas are made up of two graphic image files - a \"header\" image and a "
 "\"footer\" image - which skin the default Firefox UI background."
 msgstr ""
+"Personas are made up of two graphic image files - a \"header\" image and a "
+"\"footer\" image - which skin the default Firefox UI background."
 
 #. TODO shouln't there be a </p> tag here?
-#: ../server/demo_create.php:42 ../server/demo_create.php:56
+#: ../demo_create2.php:38 ../demo_create.php:39 ../demo_create.php:53
+#: ../demo_create3.php:37 ../demo_create4.php:37
+#, php-format
 msgid "Step 1: Creating a Persona Header Image"
-msgstr ""
+msgstr "Step 1: Creating a Persona Header Image"
 
-#: ../server/demo_create.php:43
+#: ../demo_create2.php:39 ../demo_create.php:40 ../demo_create3.php:38
+#: ../demo_create3.php:52 ../demo_create4.php:38
 #, php-format
-msgid "<a href=\"%s\">Step 3: Testing your Persona Images</a> &raquo;"
-msgstr ""
+msgid "Step 3: Testing your Persona Images"
+msgstr "Step 3: Testing your Persona Images"
 
-#: ../server/demo_create.php:46
+#: ../demo_create2.php:42 ../demo_create2.php:51 ../demo_create.php:43
+#: ../demo_create3.php:41 ../demo_create4.php:41
 #, php-format
-msgid "<a href=\"%s\">Step 2: Creating a Persona Footer Image</a> &raquo;"
-msgstr ""
+msgid "Step 2: Creating a Persona Footer Image"
+msgstr "Step 2: Creating a Persona Footer Image"
 
-#: ../server/demo_create.php:47
+#: ../demo_create2.php:43 ../demo_create.php:44 ../demo_create3.php:42
+#: ../demo_create4.php:42
 #, php-format
-msgid "<a href=\"%s\">Step 4: Submit your Persona!</a> &raquo;"
-msgstr ""
+msgid "Step 4: Submit your Persona!"
+msgstr "Step 4: Submit your Persona!"
 
-#: ../server/demo_create.php:60
+#: ../demo_create2.php:55
+msgid ""
+"The footer image is displayed as the background of the bottom of the browser "
+"window, behind the status and find bars. It will be <b>anchored to the "
+"bottom-left corner</b> of the browser window."
+msgstr ""
+"The footer image is displayed as the background of the bottom of the browser "
+"window, behind the status and find bars. It will be <b>anchored to the "
+"bottom-left corner</b> of the browser window."
+
+#: ../demo_create2.php:61
+msgid ""
+"View a sample Persona Footer <b><a href=\"/static/img/Persona_Footer_LABS.jpg"
+"\">here</a></b>."
+msgstr ""
+"View a sample Persona Footer <b><a href=\"/static/img/Persona_Footer_LABS.jpg"
+"\">here</a></b>."
+
+#: ../demo_create2.php:63
+msgid ""
+"View the sample Persona Footer as seen in <b><a href=\"/static/img/"
+"tut_XPfooter.jpg\">XP</a></b>, <b><a href=\"/static/img/tut_VISTAfooter.jpg"
+"\">Vista</a></b>, and <b><a href=\"/static/img/tut_OSXfooter.jpg\">OSX</a></"
+"b>."
+msgstr ""
+"View the sample Persona Footer as seen in <b><a href=\"/static/img/"
+"tut_XPfooter.jpg\">XP</a></b>, <b><a href=\"/static/img/tut_VISTAfooter.jpg"
+"\">Vista</a></b>, and <b><a href=\"/static/img/tut_OSXfooter.jpg\">OSX</a></"
+"b>."
+
+#: ../demo_create2.php:75
+msgid "Dimensions should be <b>3000px wide x 100px high</b>"
+msgstr "Dimensions should be <b>3000px wide x 100px high</b>"
+
+#: ../demo_create2.php:77 ../demo_create.php:80
+msgid "PNG or JPG file format"
+msgstr "PNG or JPG file format"
+
+#: ../demo_create2.php:79 ../demo_create.php:82
+msgid "subtle, soft contrast images and gradients work best"
+msgstr "subtle, soft contrast images and gradients work best"
+
+#: ../demo_create2.php:89
+msgid "highly detailed images will compete with the browser status bar UI"
+msgstr "highly detailed images will compete with the browser status bar UI"
+
+#: ../demo_create2.php:91
+msgid ""
+"Firefox may reveal more of the upper portion of the image if the find bar is "
+"open or if an extension adds more height to the bottom of the window"
+msgstr ""
+"Firefox may reveal more of the upper portion of the image if the find bar is "
+"open or if an extension adds more height to the bottom of the window"
+
+#: ../demo_create2.php:93
+msgid ""
+"the right-hand side of the header image should have the most important "
+"information - as a user\n"
+"                \t\t\t\tincreases the width of the browser window, the "
+"browser reveals more of the left-hand side of the\n"
+"                \t\t\t\timage"
+msgstr ""
+"the right-hand side of the header image should have the most important "
+"information - as a user\n"
+"                \t\t\t\tincreases the width of the browser window, the "
+"browser reveals more of the left-hand side of the\n"
+"                \t\t\t\timage"
+
+#: ../demo_create2.php:105 ../demo_create.php:109
+msgid "images must be no larger than 300kb in filesize"
+msgstr "images must be no larger than 300kb in filesize"
+
+#: ../demo_create2.php:107
+msgid "images over 3000px x 100px will not be approved"
+msgstr "images over 3000px x 100px will not be approved"
+
+#: ../demo_create2.php:109 ../demo_create.php:113
+msgid ""
+"never use artwork/logos/photography that you do not have the legal rights to "
+"use - you will have to prove you have the rights if the content is questioned"
+msgstr ""
+"never use artwork/logos/photography that you do not have the legal rights to "
+"use - you will have to prove you have the rights if the content is questioned"
+
+#: ../demo_create2.php:118
+#, php-format
+msgid "Back to Step 1"
+msgstr "Back to Step 1"
+
+#: ../demo_create2.php:121
+#, php-format
+msgid "Continue to Step 3"
+msgstr "Continue to Step 3"
+
+#: ../demo_create2.php:133 ../demo_create3.php:161
+#, php-format
+msgid "Did you know you can test a Persona before you submit it?"
+msgstr "Did you know you can test a Persona before you submit it?"
+
+#: ../demo_create2.php:133 ../demo_create3.php:161
+#, php-format
+msgid "Find out how!"
+msgstr "Find out how!"
+
+#: ../demo_create2.php:138 ../demo_create.php:138 ../demo_create3.php:166
+#: ../demo_create4.php:83
+msgid "Online Image Editor Resources"
+msgstr "Online Image Editor Resources"
+
+#: ../demo_create2.php:142 ../demo_create.php:142 ../demo_create3.php:170
+#: ../demo_create4.php:87
+msgid ""
+"SUMO Paint offers professional and easy to use tools for creating and "
+"editing images within a browser. SUMO Paint is a free image editing software "
+"that gives you the opportunity to create, edit and comment images online "
+"with powerful tools and layer support."
+msgstr ""
+"SUMO Paint offers professional and easy to use tools for creating and "
+"editing images within a browser. SUMO Paint is a free image editing software "
+"that gives you the opportunity to create, edit and comment images online "
+"with powerful tools and layer support."
+
+#: ../demo_create2.php:143 ../demo_create.php:143 ../demo_create3.php:171
+#: ../demo_create4.php:88
+msgid ""
+"Tweak, rotate and touch up photoswith Photoshop&reg; Express, your free "
+"online photo editor."
+msgstr ""
+"Tweak, rotate and touch up photoswith Photoshop&reg; Express, your free "
+"online photo editor."
+
+#: ../demo_create2.php:144 ../demo_create.php:144 ../demo_create3.php:172
+#: ../demo_create4.php:89
+msgid ""
+"All the Photoshop features you actually need, at a fraction of the price. "
+"Did we mention built-in collaboration? Create and edit with the world!"
+msgstr ""
+"All the Photoshop features you actually need, at a fraction of the price. "
+"Did we mention built-in collaboration? Create and edit with the world!"
+
+#: ../lib/user.php:449
+#, php-format
+msgid "You have been logged out."
+msgstr "You have been logged out."
+
+#: ../lib/user.php:449
+#, php-format
+msgid "Return to the Personas Homepage"
+msgstr "Return to the Personas Homepage"
+
+#: ../index.php:11
+msgid "Dress up your web browser"
+msgstr "Dress up your web browser"
+
+#: ../index.php:19
+msgid "What will your browser wear today?"
+msgstr "What will your browser wear today?"
+
+#: ../index.php:20
+msgid ""
+"Personas are lightweight, easy-to-install and easy-to-change \"skins\" for "
+"your Firefox web browser."
+msgstr ""
+"Personas are lightweight, easy-to-install and easy-to-change \"skins\" for "
+"your Firefox web browser."
+
+#: ../index.php:24
+msgid ""
+"<a href=\"https://addons.mozilla.org/firefox/downloads/latest/10900\" class="
+"\"get-personas\" id=\"download\"><span>Get Personas for Firefox - Free</span>"
+msgstr ""
+"<a href=\"https://addons.mozilla.org/firefox/downloads/latest/10900\" class="
+"\"get-personas\" id=\"download\"><span>Get Personas for Firefox - Free</span>"
+
+#: ../index.php:26
+msgid "Get Firefox and Personas - Free"
+msgstr "Get Firefox and Personas - Free"
+
+#: ../index.php:29
+msgid "Firefox Add-on for Windows, Mac or Linux"
+msgstr "Firefox Add-on for Windows, Mac or Linux"
+
+#: ../index.php:35
+msgid "Theme your browser according to your mood, hobby or season."
+msgstr "Theme your browser according to your mood, hobby or season."
+
+#: ../index.php:36
+msgid "Click the green download button to get started!"
+msgstr "Click the green download button to get started!"
+
+#: ../index.php:52 ../templates/delete_persona_tmpl.php:53
+msgid ""
+"Upgrade your browser to get the most out of this website. <a href=\"%LINK%"
+"\">Download Firefox for free</a>."
+msgstr ""
+"Upgrade your browser to get the most out of this website. <a href=\"%LINK%"
+"\">Download Firefox for free</a>."
+
+#: ../profile.php:32 ../signin.php:79
+msgid "Invalid email address"
+msgstr "Invalid email address"
+
+#: ../profile.php:35 ../signin.php:97
+msgid "Please limit your display name to 32 characters or less"
+msgstr "Please limit your display name to 32 characters or less"
+
+#: ../profile.php:38 ../signin.php:100
+msgid "Please limit your description to 256 characters or less"
+msgstr "Please limit your description to 256 characters or less"
+
+#: ../profile.php:54 ../profile.php:62 ../profile.php:73
+#: ../templates/change_user_details.php:2
+msgid "Change User Details"
+msgstr "Change User Details"
+
+#: ../profile.php:66
+#, php-format
+msgid "User Details"
+msgstr "User Details"
+
+#: ../profile.php:74
+msgid ""
+"You have successfully updated your user profile. Thanks for keeping us up to "
+"date!"
+msgstr ""
+"You have successfully updated your user profile. Thanks for keeping us up to "
+"date!"
+
+#: ../signin.php:48
+msgid "Invalid username or password. Please try again"
+msgstr "Invalid username or password. Please try again"
+
+#: ../signin.php:76
+msgid "Invalid captcha response. Please try again."
+msgstr "Invalid captcha response. Please try again."
+
+#: ../signin.php:82
+msgid ""
+"Illegal characters in the login name (alphanumerics, period, underscore and "
+"dash only)"
+msgstr ""
+"Illegal characters in the login name (alphanumerics, period, underscore and "
+"dash only)"
+
+#: ../signin.php:84
+msgid "Please limit your login name to 32 characters or less"
+msgstr "Please limit your login name to 32 characters or less"
+
+#: ../signin.php:86
+msgid "Please use at least 6 characters in your login name"
+msgstr "Please use at least 6 characters in your login name"
+
+#: ../signin.php:89 ../change_password.php:107
+msgid "Password must be at least 6 characters long"
+msgstr "Password must be at least 6 characters long"
+
+#: ../signin.php:91
+msgid ""
+"Password should contain at least one alphabetic character and at least one "
+"non-alphabetic character"
+msgstr ""
+"Password should contain at least one alphabetic character and at least one "
+"non-alphabetic character"
+
+#: ../signin.php:94
+msgid "Password does not match confirmation"
+msgstr "Password does not match confirmation"
+
+#: ../signin.php:103
+msgid "Login name already in use"
+msgstr "Login name already in use"
+
+#: ../signin.php:120
+msgid "Login"
+msgstr "Login"
+
+#: ../signin.php:132
+msgid "Personas Home : Login"
+msgstr "Personas Home : Login"
+
+#: ../reviewguidelines.php:7 ../reviewguidelines.php:15
+#: ../reviewguidelines.php:19
+#, php-format
+msgid "Review Guidelines"
+msgstr "Review Guidelines"
+
+#: ../reviewguidelines.php:22
+msgid ""
+"Though it would be great if we could accept every image or design (\"Design"
+"\") submitted to the Personas gallery, the reality is that we're unable to "
+"do so - either for legal reasons or because we do not want certain acts or "
+"images associated with Mozilla. Therefore, we have created the following "
+"guidelines to review the Designs submitted for the gallery. "
+msgstr ""
+"Though it would be great if we could accept every image or design (\"Design"
+"\") submitted to the Personas gallery, the reality is that we're unable to "
+"do so - either for legal reasons or because we do not want certain acts or "
+"images associated with Mozilla. Therefore, we have created the following "
+"guidelines to review the Designs submitted for the gallery. "
+
+#: ../reviewguidelines.php:24
+msgid "I.   Images Not Allowed.  "
+msgstr "I.   Images Not Allowed.  "
+
+#: ../reviewguidelines.php:26
+msgid ""
+"Describing inappropriate content is difficult since it is culturally driven; "
+"however, there are standards that cross cultural boundaries.  Mozilla in its "
+"sole discretion may refuse any Design.  Some of the reasons we will not "
+"include a Design in the Personas gallery may include, but are not limited "
+"to, the following:"
+msgstr ""
+"Describing inappropriate content is difficult since it is culturally driven; "
+"however, there are standards that cross cultural boundaries.  Mozilla in its "
+"sole discretion may refuse any Design.  Some of the reasons we will not "
+"include a Design in the Personas gallery may include, but are not limited "
+"to, the following:"
+
+#: ../reviewguidelines.php:28
+msgid "Obscene:"
+msgstr "Obscene:"
+
+#: ../reviewguidelines.php:30
+msgid "Sexually explicit"
+msgstr "Sexually explicit"
+
+#: ../reviewguidelines.php:31
+msgid "Contains sexually derived words (e.g., f*ck)"
+msgstr "Contains sexually derived words (e.g., f*ck)"
+
+#: ../reviewguidelines.php:32
+msgid "Explicit nudity"
+msgstr "Explicit nudity"
+
+#: ../reviewguidelines.php:34
+msgid "Full frontal nudity"
+msgstr "Full frontal nudity"
+
+#: ../reviewguidelines.php:35
+msgid "Genitalia"
+msgstr "Genitalia"
+
+#: ../reviewguidelines.php:36
+msgid "Buttocks nudity"
+msgstr "Buttocks nudity"
+
+#: ../reviewguidelines.php:38
+msgid ""
+"Obscene gestures (this is cultural and we'll have to rely on our community "
+"members to monitor this category (e.g., flipping someone off in the U.S. "
+"(middle finger) vs. in the UK (2 finger salute with index and middle finger "
+"- a reverse peace sign))."
+msgstr ""
+"Obscene gestures (this is cultural and we'll have to rely on our community "
+"members to monitor this category (e.g., flipping someone off in the U.S. "
+"(middle finger) vs. in the UK (2 finger salute with index and middle finger "
+"- a reverse peace sign))."
+
+#: ../reviewguidelines.php:42
+msgid "Violent:"
+msgstr "Violent:"
+
+#: ../reviewguidelines.php:44
+msgid "Graphic violence"
+msgstr "Graphic violence"
+
+#: ../reviewguidelines.php:45
+msgid "Gore"
+msgstr "Gore"
+
+#: ../reviewguidelines.php:46
+msgid "Person or animal being harmed or threatened"
+msgstr "Person or animal being harmed or threatened"
+
+#: ../reviewguidelines.php:47
+msgid "Bloodshed"
+msgstr "Bloodshed"
+
+#: ../reviewguidelines.php:48
+msgid "Advocating the overthrow of a government"
+msgstr "Advocating the overthrow of a government"
+
+#: ../reviewguidelines.php:51
+msgid "Hate: "
+msgstr "Hate: "
+
+#: ../reviewguidelines.php:53
+msgid ""
+"Targets anyone because of his or her membership in a certain social group, "
+"including race, gender, color, religion, belief, sexual orientation, "
+"disability, ethnicity, nationality, age, gender identity, or political "
+"affiliation."
+msgstr ""
+"Targets anyone because of his or her membership in a certain social group, "
+"including race, gender, color, religion, belief, sexual orientation, "
+"disability, ethnicity, nationality, age, gender identity, or political "
+"affiliation."
+
+#: ../reviewguidelines.php:54
+msgid ""
+"Symbolic representation of any group that targets anyone because of his or "
+"her membership in a certain social group."
+msgstr ""
+"Symbolic representation of any group that targets anyone because of his or "
+"her membership in a certain social group."
+
+#: ../reviewguidelines.php:57
+msgid "Drugs:"
+msgstr "Drugs:"
+
+#: ../reviewguidelines.php:59
+msgid "Illegal drugs or controlled substances"
+msgstr "Illegal drugs or controlled substances"
+
+#: ../reviewguidelines.php:60
+msgid "Use of illegal drugs or controlled substances"
+msgstr "Use of illegal drugs or controlled substances"
+
+#: ../reviewguidelines.php:61
+msgid "Drug paraphernalia"
+msgstr "Drug paraphernalia"
+
+#: ../reviewguidelines.php:64
+msgid "Privacy:"
+msgstr "Privacy:"
+
+#: ../reviewguidelines.php:66
+msgid "Violate privacy rights of any third party"
+msgstr "Violate privacy rights of any third party"
+
+#: ../reviewguidelines.php:70
+msgid "II.  Trademark or Copyright Violations"
+msgstr "II.  Trademark or Copyright Violations"
+
+#: ../reviewguidelines.php:72
+msgid ""
+"<strong class=\"legal\">Mozilla Trademarks.</strong> Except for Foxkeh, any "
+"modification or manipulation of a Mozilla trademark or logo is not permitted."
+msgstr ""
+"<strong class=\"legal\">Mozilla Trademarks.</strong> Except for Foxkeh, any "
+"modification or manipulation of a Mozilla trademark or logo is not permitted."
+
+#: ../reviewguidelines.php:74
+msgid ""
+"<strong class=\"legal\">Third Party Intellectual Property.</strong>  Our "
+"users are representing that they have the rights images they are "
+"contributing."
+msgstr ""
+"<strong class=\"legal\">Third Party Intellectual Property.</strong>  Our "
+"users are representing that they have the rights images they are "
+"contributing."
+
+#: ../reviewguidelines.php:75
+msgid ""
+"[Version A] We are relying on this statement and will not review the "
+"submitted designs and images for third party intellectual property rights.  "
+"We will comply with proper take-down notices sent the copyright or trademark "
+"owner or licensee."
+msgstr ""
+"[Version A] We are relying on this statement and will not review the "
+"submitted designs and images for third party intellectual property rights.  "
+"We will comply with proper take-down notices sent the copyright or trademark "
+"owner or licensee."
+
+#: ../reviewguidelines.php:77
+msgid ""
+"[Version B] However, if there is an obvious infringement (e.g., a Coca-Cola "
+"logo, Manchester United logo) we will not include that image or design."
+msgstr ""
+"[Version B] However, if there is an obvious infringement (e.g., a Coca-Cola "
+"logo, Manchester United logo) we will not include that image or design."
+
+#: ../reviewguidelines.php:79
+msgid ""
+"[Version C] However, if there is an obvious infringement (e.g., a Coca-Cola "
+"logo, Manchester United logo) we will not include that image or design.  We "
+"will contact the person who submitted the design asking them if they have "
+"the rights to that image and if (i) they are licensing this image under the "
+"Creative Commons license; or (ii) they want the enter into a separate "
+"licensing agreement with us."
+msgstr ""
+"[Version C] However, if there is an obvious infringement (e.g., a Coca-Cola "
+"logo, Manchester United logo) we will not include that image or design.  We "
+"will contact the person who submitted the design asking them if they have "
+"the rights to that image and if (i) they are licensing this image under the "
+"Creative Commons license; or (ii) they want the enter into a separate "
+"licensing agreement with us."
+
+#: ../reviewguidelines.php:81
+msgid "III.  Reply to Designer About Submitted Design"
+msgstr "III.  Reply to Designer About Submitted Design"
+
+#: ../reviewguidelines.php:83
+msgid ""
+"<strong class=\"legal\">Design Acceptance:</strong> If a design is accepted, "
+"we will send the following message:"
+msgstr ""
+"<strong class=\"legal\">Design Acceptance:</strong> If a design is accepted, "
+"we will send the following message:"
+
+#: ../reviewguidelines.php:85
+msgid ""
+"\"Congratulations, your Design has been accepted and now is part of the "
+"Personas gallery.  Thank you for contributing your Design and licensing it "
+"to Mozilla [and to the public under the Creative Commons license].\"  [CC "
+"language included if the designer checked the Creative Commons box] "
+msgstr ""
+"\"Congratulations, your Design has been accepted and now is part of the "
+"Personas gallery.  Thank you for contributing your Design and licensing it "
+"to Mozilla [and to the public under the Creative Commons license].\"  [CC "
+"language included if the designer checked the Creative Commons box] "
+
+#: ../reviewguidelines.php:87
+msgid ""
+"<strong class=\"legal\">Design Rejection:</strong> If a design is rejected, "
+"we will send the following message:"
+msgstr ""
+"<strong class=\"legal\">Design Rejection:</strong> If a design is rejected, "
+"we will send the following message:"
+
+#: ../reviewguidelines.php:89
+msgid ""
+"\"Thank you for submitting your Design to the Personas gallery.  However, "
+"this design does not meet our <a href=\"#images\">guidelines</a> and we are "
+"unable to include it in our gallery.  You may create your own custom persona "
+"[hyperlink to instructions on using the custom setting].\""
+msgstr ""
+"\"Thank you for submitting your Design to the Personas gallery.  However, "
+"this design does not meet our <a href=\"#images\">guidelines</a> and we are "
+"unable to include it in our gallery.  You may create your own custom persona "
+"[hyperlink to instructions on using the custom setting].\""
+
+#: ../reviewguidelines.php:91
+msgid "IV.  DMCA and Trademark Violation Take Down Notices"
+msgstr "IV.  DMCA and Trademark Violation Take Down Notices"
+
+#: ../reviewguidelines.php:93
+msgid ""
+"When we receive a take-down notice, either through DMCA notice or trademark "
+"notice, we will take the following steps:"
+msgstr ""
+"When we receive a take-down notice, either through DMCA notice or trademark "
+"notice, we will take the following steps:"
+
+#: ../reviewguidelines.php:95
+msgid "Promptly take down the image in question;"
+msgstr "Promptly take down the image in question;"
+
+#: ../reviewguidelines.php:96
+msgid "Notify the designer of the take down notice;"
+msgstr "Notify the designer of the take down notice;"
+
+#: ../reviewguidelines.php:97
+msgid "Respond to the entity submitting the take down notice;"
+msgstr "Respond to the entity submitting the take down notice;"
+
+#: ../reviewguidelines.php:98
+msgid "Track the following information and retain it for three years:"
+msgstr "Track the following information and retain it for three years:"
+
+#: ../reviewguidelines.php:100
+msgid "Name, email address [and IP address] of the designer"
+msgstr "Name, email address [and IP address] of the designer"
+
+#: ../reviewguidelines.php:101
+msgid "Date the notice was received, "
+msgstr "Date the notice was received, "
+
+#: ../reviewguidelines.php:102
+msgid "Name of the copyright or trademark holder; and"
+msgstr "Name of the copyright or trademark holder; and"
+
+#: ../reviewguidelines.php:103
+msgid "Date the Design was taken down."
+msgstr "Date the Design was taken down."
+
+#: ../reviewguidelines.php:108
+msgid ""
+"<strong class=\"legal\">Frequent Offenders.</strong>  If a designer is a "
+"frequent offender, we will no longer accept Designs from him or her.  What "
+"is deemed frequent is somewhat case specific (e.g., 2 Designs rejected out "
+"of a total of 20 designs submitted may not be frequent; however 3 rejected "
+"out of 3 or 5 Designs submitted is). Once a designer has a third Design "
+"rejected, legal will review whether this person shall be banned from "
+"submitting Designs to the Personas gallery."
+msgstr ""
+"<strong class=\"legal\">Frequent Offenders.</strong>  If a designer is a "
+"frequent offender, we will no longer accept Designs from him or her.  What "
+"is deemed frequent is somewhat case specific (e.g., 2 Designs rejected out "
+"of a total of 20 designs submitted may not be frequent; however 3 rejected "
+"out of 3 or 5 Designs submitted is). Once a designer has a third Design "
+"rejected, legal will review whether this person shall be banned from "
+"submitting Designs to the Personas gallery."
+
+#: ../templates/get_personas.php:17 ../templates/get_personas.php:22
+#: ../demo_install.php:7 ../demo_install.php:22
+#, php-format
+msgid "How to Get Started"
+msgstr "How to Get Started"
+
+#: ../templates/get_personas.php:29 ../templates/get_personas.php:34
+#: ../faq.php:8 ../faq.php:16 ../faq.php:21
+#, php-format
+msgid "Frequent Questions"
+msgstr "Frequent Questions"
+
+#: ../templates/get_personas.php:39
+msgid "Get Personas Free"
+msgstr "Get Personas Free"
+
+#: ../templates/get_personas.php:41
+msgid ""
+"Easy to install and easy to change \"skins\" for your Firefox web browser."
+msgstr ""
+"Easy to install and easy to change \"skins\" for your Firefox web browser."
+
+#: ../templates/get_personas.php:46
+msgid "Get Firefox and Personas"
+msgstr "Get Firefox and Personas"
+
+#: ../templates/footer.php:4
+msgid "Other languages:"
+msgstr "Other languages:"
+
+#: ../templates/footer.php:16
+#, php-format
+#, %s year
+msgid "Copyright &copy; %s Mozilla."
+msgstr "Copyright &copy; %s Mozilla."
+
+#: ../templates/footer.php:16
+#, php-format
+msgid ""
+" <a href=\"http://labs.mozilla.com/projects/firefox-personas/\">Personas</a> "
+"is a <a href=\"http://labs.mozilla.com\">Mozilla Labs</a> experiment. | <a "
+"href=\"http://labs.mozilla.com/about-labs/\">"
+msgstr ""
+" <a href=\"http://labs.mozilla.com/projects/firefox-personas/\">Personas</a> "
+"is a <a href=\"http://labs.mozilla.com\">Mozilla Labs</a> experiment. | <a "
+"href=\"http://labs.mozilla.com/about-labs/\">"
+
+#: ../templates/footer.php:16
+#, php-format
+msgid "About Mozilla Labs"
+msgstr "About Mozilla Labs"
+
+#: ../templates/footer.php:16
+#, php-format
+msgid "Privacy"
+msgstr "Privacy"
+
+#. TODO lang="en"?
+#: ../templates/header.php:13
+#, php-format
+#, %s title
+msgid "Personas for Firefox | %s"
+msgstr "Personas for Firefox | %s"
+
+#: ../templates/featured_designer.php:30
+msgid "Featured Designers"
+msgstr "Featured Designers"
+
+#: ../templates/featured_designer.php:39 ../templates/featured_personas.php:36
+#: ../templates/pagination.php:23
+msgid "Previous"
+msgstr "Previous"
+
+#: ../templates/featured_designer.php:40 ../templates/featured_personas.php:37
+#: ../templates/pagination.php:57
+msgid "Next"
+msgstr "Next"
+
+#: ../templates/featured_designer.php:50
+msgid "view designer >>"
+msgstr "view designer >>"
+
+#: ../templates/movers.php:2
+msgid "Movers and Shakers"
+msgstr "Movers and Shakers"
+
+#: ../templates/movers.php:24 ../templates/featured_personas.php:50
+#: ../templates/persona_detail.php:39 ../templates/gallery.php:78
+#: ../templates/popular_personas.php:16
+#, php-format
+#, %d number of active daily users 
+msgid "%d active daily users"
+msgstr "%d active daily users"
+
+#: ../templates/user_error.php:7
+msgid "A Problem Occurred"
+msgstr "A Problem Occurred"
+
+#: ../templates/upload_persona_tmpl.php:1
+#: ../templates/upload_persona_tmpl.php:13
+msgid "Edit Your Persona"
+msgstr "Edit Your Persona"
+
+#: ../templates/upload_persona_tmpl.php:1
+#: ../templates/upload_persona_tmpl.php:7
+#: ../templates/upload_persona_tmpl.php:13
+#: ../templates/upload_success_tmpl.php:28
+msgid "Create Your Persona"
+msgstr "Create Your Persona"
+
+#: ../templates/upload_persona_tmpl.php:11
+msgid "Edit Your Own"
+msgstr "Edit Your Own"
+
+#: ../templates/upload_persona_tmpl.php:11
+#: ../templates/upload_success_tmpl.php:7
+#: ../templates/upload_success_tmpl.php:12
+#, php-format
+msgid "Create Your Own"
+msgstr "Create Your Own"
+
+#: ../templates/upload_persona_tmpl.php:23
+msgid "Persona Name"
+msgstr "Persona Name"
+
+#: ../templates/upload_persona_tmpl.php:29
+msgid "Text Color"
+msgstr "Text Color"
+
+#: ../templates/upload_persona_tmpl.php:35
+msgid "Header Image"
+msgstr "Header Image"
+
+#: ../templates/upload_persona_tmpl.php:41
+msgid "Description"
+msgstr "Description"
+
+#: ../templates/upload_persona_tmpl.php:49
+msgid "Category"
+msgstr "Category"
+
+#: ../templates/upload_persona_tmpl.php:69
+msgid "Accent Color"
+msgstr "Accent Color"
+
+#: ../templates/upload_persona_tmpl.php:75
+msgid "Footer Image"
+msgstr "Footer Image"
+
+#: ../templates/upload_persona_tmpl.php:81
+msgid "I'm creating a Persona to..."
+msgstr "I'm creating a Persona to..."
+
+#: ../templates/upload_persona_tmpl.php:85
+msgid "have some fun"
+msgstr "have some fun"
+
+#: ../templates/upload_persona_tmpl.php:85
+msgid "build a brand"
+msgstr "build a brand"
+
+#: ../templates/upload_persona_tmpl.php:85
+msgid "support a non-profit cause"
+msgstr "support a non-profit cause"
+
+#: ../templates/upload_persona_tmpl.php:85
+msgid "other"
+msgstr "other"
+
+#: ../templates/upload_persona_tmpl.php:90
+msgid " selected"
+msgstr " selected"
+
+#: ../templates/upload_persona_tmpl.php:100
+msgid "Reason:"
+msgstr "Reason:"
+
+#: ../templates/upload_persona_tmpl.php:108
+msgid "submit"
+msgstr "submit"
+
+#: ../templates/upload_persona_tmpl.php:109
+#, php-format
+#, %s url
+msgid ""
+"By clicking submit I affirm that I am the rightful owner of this content "
+"(see <a href=\"%s\" target=\"_blank\">guidelines</a>) and understand that "
+"this design will be publicly available in the Gallery upon approval."
+msgstr ""
+"By clicking submit I affirm that I am the rightful owner of this content "
+"(see <a href=\"%s\" target=\"_blank\">guidelines</a>) and understand that "
+"this design will be publicly available in the Gallery upon approval."
+
+#: ../templates/upload_persona_tmpl.php:116
+#: ../templates/delete_persona_success_tmpl.php:17
+#: ../templates/delete_persona_tmpl.php:38
+#: ../templates/upload_success_tmpl.php:23
+msgid "Step 1:"
+msgstr "Step 1:"
+
+#: ../templates/upload_persona_tmpl.php:117
+#: ../templates/upload_success_tmpl.php:24
+msgid "Terms of Service"
+msgstr "Terms of Service"
+
+#: ../templates/upload_persona_tmpl.php:121
+#: ../templates/delete_persona_success_tmpl.php:22
+#: ../templates/delete_persona_tmpl.php:43
+#: ../templates/upload_success_tmpl.php:27
+msgid "Step 2:"
+msgstr "Step 2:"
+
+#: ../templates/upload_persona_tmpl.php:127
+#: ../templates/upload_success_tmpl.php:32
+msgid "Step 3:"
+msgstr "Step 3:"
+
+#: ../templates/upload_persona_tmpl.php:128
+#: ../templates/upload_success_tmpl.php:33
+msgid "Finish!"
+msgstr "Finish!"
+
+#: ../templates/featured_personas.php:27
+msgid "Featured Personas"
+msgstr "Featured Personas"
+
+#: ../templates/featured_personas.php:47 ../templates/gallery.php:79
+#, php-format
+msgid "view details >>"
+msgstr "view details >>"
+
+#: ../templates/forgot_password_reset_tmpl.php:1
+#: ../templates/forgot_password_done_tmpl.php:1
+#: ../templates/forgot_password_tmpl.php:1
+#: ../templates/forgot_password_thanks_tmpl.php:1
+msgid "Forgot Your Password"
+msgstr "Forgot Your Password"
+
+#: ../templates/forgot_password_reset_tmpl.php:7
+#: ../templates/forgot_password_reset_tmpl.php:10
+#: ../templates/forgot_password_done_tmpl.php:7
+#: ../templates/forgot_password_tmpl.php:7
+#: ../templates/forgot_password_tmpl.php:10
+#: ../templates/forgot_password_thanks_tmpl.php:7
+#: ../templates/forgot_password_thanks_tmpl.php:11
+#, php-format
+msgid "Forgot Your Password?"
+msgstr "Forgot Your Password?"
+
+#: ../templates/forgot_password_reset_tmpl.php:10 ../templates/nav.php:11
+#: ../templates/forgot_password_tmpl.php:10
+#: ../templates/forgot_password_thanks_tmpl.php:11
+#, php-format
+msgid "Sign In"
+msgstr "Sign In"
+
+#: ../templates/forgot_password_reset_tmpl.php:16
+msgid "Enter your new password:"
+msgstr "Enter your new password:"
+
+#: ../templates/forgot_password_reset_tmpl.php:22
+msgid "New password"
+msgstr "New password"
+
+#: ../templates/forgot_password_reset_tmpl.php:27
+msgid "Re-type your new password"
+msgstr "Re-type your new password"
+
+#: ../templates/forgot_password_reset_tmpl.php:31
+msgid "reset password"
+msgstr "reset password"
+
+#: ../templates/persona_detail.php:16 ../personadetail.php:118
+#, php-format
+msgid "Remove from favorites"
+msgstr "Remove from favorites"
+
+#: ../templates/persona_detail.php:16 ../personadetail.php:118
+#, php-format
+msgid "Add to favorites"
+msgstr "Add to favorites"
+
+#: ../templates/persona_detail.php:18
+msgid "favorited"
+msgstr "favorited"
+
+#: ../templates/persona_detail.php:29
+msgid "<strong>Description:</strong>"
+msgstr "<strong>Description:</strong>"
+
+#: ../templates/persona_detail.php:34 ../templates/gallery.php:83
+msgid "try it now"
+msgstr "try it now"
+
+#: ../templates/persona_detail.php:46
+msgid ""
+"We are unable to find this persona. Please return to the gallery and try "
+"again."
+msgstr ""
+"We are unable to find this persona. Please return to the gallery and try "
+"again."
+
+#: ../templates/nav.php:5
+#, php-format
+#, %s username 
+msgid "Welcome, %s"
+msgstr "Welcome, %s"
+
+#: ../templates/nav.php:5
+#, php-format
+msgid "Edit Account"
+msgstr "Edit Account"
+
+#: ../templates/nav.php:5
+#, php-format
+msgid "Sign Out"
+msgstr "Sign Out"
+
+#: ../templates/nav.php:10
+msgid "You have been signed out | "
+msgstr "You have been signed out | "
+
+#: ../templates/nav.php:16
+#, php-format
+msgid "Mozilla Labs Personas"
+msgstr "Mozilla Labs Personas"
+
+#: ../templates/nav.php:24 ../firstrun.php:28
+msgid "Check it out! Your browser's all dressed up."
+msgstr "Check it out! Your browser's all dressed up."
+
+#: ../templates/nav.php:34 ../templates/gallery.php:33
+#, php-format
+msgid "Gallery"
+msgstr "Gallery"
+
+#: ../templates/nav.php:35
+#, php-format
+msgid "Create <br/>Your Own"
+msgstr "Create <br/>Your Own"
+
+#: ../templates/nav.php:37
+#, php-format
+msgid "Frequent <br/>Questions"
+msgstr "Frequent <br/>Questions"
+
+#: ../templates/nav.php:40
+msgid "Search personas:"
+msgstr "Search personas:"
+
+#: ../templates/delete_persona_success_tmpl.php:1
+#: ../templates/delete_persona_tmpl.php:5
+msgid "Delete your Persona"
+msgstr "Delete your Persona"
+
+#: ../templates/delete_persona_success_tmpl.php:7
+#: ../templates/delete_persona_success_tmpl.php:11
+#: ../templates/delete_persona_tmpl.php:14
+#: ../templates/delete_persona_tmpl.php:18
+#, php-format
+msgid "Delete Your Persona"
+msgstr "Delete Your Persona"
+
+#: ../templates/delete_persona_success_tmpl.php:8
+#: ../templates/delete_persona_tmpl.php:15
+msgid "Thanks for sharing your persona with us."
+msgstr "Thanks for sharing your persona with us."
+
+#: ../templates/delete_persona_success_tmpl.php:12
+msgid ""
+"Thank you for letting us host your persona. We'll look forward to seeing "
+"your future efforts!"
+msgstr ""
+"Thank you for letting us host your persona. We'll look forward to seeing "
+"your future efforts!"
+
+#: ../templates/delete_persona_success_tmpl.php:23
+#: ../templates/delete_persona_tmpl.php:44
+msgid "Finish"
+msgstr "Finish"
+
+#: ../templates/delete_persona_success_tmpl.php:33 ../personadetail.php:103
+#, php-format
+msgid "Upgrade your browser to get the most out of this website. <a href="
+msgstr "Upgrade your browser to get the most out of this website. <a href="
+
+#: ../templates/delete_persona_success_tmpl.php:35
+#: ../templates/delete_persona_tmpl.php:55 ../templates/gallery.php:118
+#: ../personadetail.php:105
+#, php-format
+msgid "wear this"
+msgstr "wear this"
+
+#: ../templates/delete_persona_success_tmpl.php:36
+#: ../templates/delete_persona_tmpl.php:56 ../templates/gallery.php:119
+#: ../personadetail.php:106
+#, php-format
+msgid "get personas now!"
+msgstr "get personas now!"
+
+#: ../templates/delete_persona_success_tmpl.php:37
+#: ../templates/delete_persona_tmpl.php:57 ../templates/gallery.php:120
+#: ../personadetail.php:107
+#, php-format
+msgid "get personas with firefox"
+msgstr "get personas with firefox"
+
+#: ../templates/delete_persona_tmpl.php:4
+msgid "Please provide a reason for deletion"
+msgstr "Please provide a reason for deletion"
+
+#: ../templates/delete_persona_tmpl.php:27
+msgid "Delete Reason:"
+msgstr "Delete Reason:"
+
+#: ../templates/delete_persona_tmpl.php:29
+msgid "confirm deletion"
+msgstr "confirm deletion"
+
+#: ../templates/forgot_password_done_tmpl.php:10
+#, php-format
+#, %s url
+#, %s url
+msgid ""
+"<a href=\"%s\">Personas Home</a> : <a href=\"%s\">Sign In</a> : Forgot Your "
+"Password?"
+msgstr ""
+"<a href=\"%s\">Personas Home</a> : <a href=\"%s\">Sign In</a> : Forgot Your "
+"Password?"
+
+#: ../templates/forgot_password_done_tmpl.php:11
+#, php-format
+#, %s url
+msgid "Your password has been reset. You may <a href=\"%s\">sign in</a> now."
+msgstr "Your password has been reset. You may <a href=\"%s\">sign in</a> now."
+
+#: ../templates/upload_success_tmpl.php:1
+#: ../templates/upload_success_tmpl.php:14
+msgid "Success!"
+msgstr "Success!"
+
+#: ../templates/upload_success_tmpl.php:8
+msgid "It's easy to create your own Persona just follow the easy steps below!"
+msgstr "It's easy to create your own Persona just follow the easy steps below!"
+
+#: ../templates/upload_success_tmpl.php:17
+#, php-format
+msgid "View Personas Gallery"
+msgstr "View Personas Gallery"
+
+#: ../templates/forgot_password_tmpl.php:15
+msgid "Please enter your Personas username below"
+msgstr "Please enter your Personas username below"
+
+#: ../templates/forgot_password_tmpl.php:18
+msgid "Username:"
+msgstr "Username:"
+
+#: ../templates/forgot_password_tmpl.php:22
+msgid "continue"
+msgstr "continue"
+
+#: ../templates/gallery_rss.php:3 ../templates/gallery_rss.php:5
+#, php-format
+#, %s category
+#, %s tab
+msgid "Personas - %s - %s"
+msgstr "Personas - %s - %s"
+
+#: ../templates/change_user_details.php:5
+msgid "Login Name:"
+msgstr "Login Name:"
+
+#: ../templates/change_user_details.php:9 ../templates/signup_form.php:8
+msgid "Email"
+msgstr "Email"
+
+#: ../templates/change_user_details.php:14 ../templates/signup_form.php:18
+msgid "Display Username*"
+msgstr "Display Username*"
+
+#: ../templates/change_user_details.php:20 ../templates/signup_form.php:34
+msgid "Designer Description*"
+msgstr "Designer Description*"
+
+#: ../templates/change_user_details.php:25 ../templates/signup_form.php:39
+msgid "I'd like to receive news and information about Personas"
+msgstr "I'd like to receive news and information about Personas"
+
+#: ../templates/change_user_details.php:26 ../templates/signup_form.php:59
+msgid ""
+"* <i>denotes an optional field. These entries will be displayed in the "
+"personas gallery.</i>"
+msgstr ""
+"* <i>denotes an optional field. These entries will be displayed in the "
+"personas gallery.</i>"
+
+#: ../templates/change_user_details.php:30 ../templates/signup_form.php:63
+msgid ""
+"Mozilla values your privacy. We will not sell or rent your email address."
+msgstr ""
+"Mozilla values your privacy. We will not sell or rent your email address."
+
+#: ../templates/signup_form.php:2
+msgid "New Personas Designer?"
+msgstr "New Personas Designer?"
+
+#: ../templates/signup_form.php:13
+msgid "Login Name"
+msgstr "Login Name"
+
+#: ../templates/signup_form.php:23 ../templates/login_form.php:13
+msgid "Password"
+msgstr "Password"
+
+#: ../templates/signup_form.php:28
+msgid "Confirm Password"
+msgstr "Confirm Password"
+
+#: ../templates/signup_form.php:60
+msgid "sign me up"
+msgstr "sign me up"
+
+#: ../templates/pagination.php:18
+msgid "Page:"
+msgstr "Page:"
+
+#: ../templates/login_form.php:2
+msgid "Already a Personas Designer?"
+msgstr "Already a Personas Designer?"
+
+#: ../templates/login_form.php:8
+msgid "Username"
+msgstr "Username"
+
+#: ../templates/login_form.php:15
+msgid "Minimum 6 characters"
+msgstr "Minimum 6 characters"
+
+#: ../templates/login_form.php:18
+msgid "Remember me on this computer"
+msgstr "Remember me on this computer"
+
+#: ../templates/login_form.php:19
+msgid "sign in"
+msgstr "sign in"
+
+#: ../templates/login_form.php:21
+#, php-format
+msgid "Forgot your password?"
+msgstr "Forgot your password?"
+
+#: ../templates/forgot_password_thanks_tmpl.php:8
+msgid "Follow the easy steps below to start dressing up your browser!"
+msgstr "Follow the easy steps below to start dressing up your browser!"
+
+#: ../templates/forgot_password_thanks_tmpl.php:13
+msgid "Your password reset information has been e-mailed to you."
+msgstr "Your password reset information has been e-mailed to you."
+
+#: ../templates/gallery.php:17 ../personadetail.php:83
+msgid ""
+"Your browser, your style! Dress it up with easy-to-change \"skins\" for your "
+"Firefox."
+msgstr ""
+"Your browser, your style! Dress it up with easy-to-change \"skins\" for your "
+"Firefox."
+
+#: ../templates/gallery.php:50
+msgid ""
+"<p>We were unable to locate any personas that match those search terms. "
+"Please try again</p>"
+msgstr ""
+"<p>We were unable to locate any personas that match those search terms. "
+"Please try again</p>"
+
+#: ../templates/gallery.php:55
+msgid ""
+"<p>There are no personas available here. Please use the navigation on the "
+"left to choose another category.</p>"
+msgstr ""
+"<p>There are no personas available here. Please use the navigation on the "
+"left to choose another category.</p>"
+
+#: ../templates/gallery.php:73
+#, php-format
+#, %s url
+#, %s username
+msgid "<strong>Designer:</strong> <a href=\"%s\">%s</a>"
+msgstr "<strong>Designer:</strong> <a href=\"%s\">%s</a>"
+
+#: ../templates/gallery.php:74
+#, php-format
+#, %s date
+msgid "<strong>Added:</strong> %s"
+msgstr "<strong>Added:</strong> %s"
+
+#: ../templates/gallery.php:91
+#, php-format
+msgid "Edit"
+msgstr "Edit"
+
+#: ../templates/gallery.php:93
+#, php-format
+msgid "Delete"
+msgstr "Delete"
+
+#: ../templates/popular_personas.php:2
+msgid "Most Popular Personas"
+msgstr "Most Popular Personas"
+
+#: ../updated.php:10
+msgid "Updated"
+msgstr "Updated"
+
+#: ../updated.php:18
+msgid "You've been updated to the latest version of Personas!"
+msgstr "You've been updated to the latest version of Personas!"
+
+#: ../demo_install.php:15 ../demo_install.php:20
+#, php-format
+msgid "Watch Our Demo"
+msgstr "Watch Our Demo"
+
+#: ../demo_create.php:20 ../personadetail.php:86
+#, php-format
+#, %s url
+msgid "<a href=\"%s\">"
+msgstr "<a href=\"%s\">"
+
+#: ../demo_create.php:57
 msgid ""
 "The header image is displayed as the background of the top of the browser "
 "window, nestling in behind the toolbars, address bar, search bar and the tab "
@@ -154,45 +1313,51 @@ msgid ""
 "                \t\t\tIt will be <b>anchored to the top-right corner</b> of "
 "the browser window."
 msgstr ""
+"The header image is displayed as the background of the top of the browser "
+"window, nestling in behind the toolbars, address bar, search bar and the tab "
+"strip.  \n"
+"                \t\t\tIt will be <b>anchored to the top-right corner</b> of "
+"the browser window."
 
-#: ../server/demo_create.php:67
+#: ../demo_create.php:64
 msgid ""
 "View a sample Persona Header <b><a href=\"/static/img/Persona_Header_LABS.jpg"
 "\">here</a></b>."
 msgstr ""
+"View a sample Persona Header <b><a href=\"/static/img/Persona_Header_LABS.jpg"
+"\">here</a></b>."
 
-#: ../server/demo_create.php:69
+#: ../demo_create.php:66
 msgid ""
 "View the sample Persona Header as seen in <b><a href=\"/static/img/"
 "tut_XPheader.jpg\">XP</a></b>, <b><a href=\"/static/img/tut_VISTAheader.jpg"
 "\">Vista</a></b>, and <b><a href=\"/static/img/tut_OSXheader.jpg\">OSX</a></"
 "b>."
 msgstr ""
+"View the sample Persona Header as seen in <b><a href=\"/static/img/"
+"tut_XPheader.jpg\">XP</a></b>, <b><a href=\"/static/img/tut_VISTAheader.jpg"
+"\">Vista</a></b>, and <b><a href=\"/static/img/tut_OSXheader.jpg\">OSX</a></"
+"b>."
 
-#: ../server/demo_create.php:81
+#: ../demo_create.php:78
 msgid "Dimensions should be <b>3000px wide x 200px high</b>"
-msgstr ""
+msgstr "Dimensions should be <b>3000px wide x 200px high</b>"
 
-#: ../server/demo_create.php:83
-msgid "PNG or JPG file format"
-msgstr ""
-
-#: ../server/demo_create.php:85
-msgid "subtle, soft contrast images and gradients work best"
-msgstr ""
-
-#: ../server/demo_create.php:95
+#: ../demo_create.php:92
 msgid "highly detailed images will compete with the browser UI"
-msgstr ""
+msgstr "highly detailed images will compete with the browser UI"
 
-#: ../server/demo_create.php:97
+#: ../demo_create.php:94
 msgid ""
 "Firefox may reveal more of the lower portion of the image if it or an "
 "extension adds another toolbar or other UI\n"
 "                \t\t\telement to the top of the window"
 msgstr ""
+"Firefox may reveal more of the lower portion of the image if it or an "
+"extension adds another toolbar or other UI\n"
+"                \t\t\telement to the top of the window"
 
-#: ../server/demo_create.php:100
+#: ../demo_create.php:97
 msgid ""
 "the right-hand side of the image should have the most important information "
 "- as a user\n"
@@ -200,167 +1365,1421 @@ msgid ""
 "browser reveals more of the left-hand side of the\n"
 "                \t\t\t\timage"
 msgstr ""
+"the right-hand side of the image should have the most important information "
+"- as a user\n"
+"                \t\t\t\tincreases the width of the browser window, the "
+"browser reveals more of the left-hand side of the\n"
+"                \t\t\t\timage"
 
-#: ../server/demo_create.php:112
-msgid "images must be no larger than 300kb in filesize"
-msgstr ""
-
-#: ../server/demo_create.php:114
+#: ../demo_create.php:111
 msgid "images over 3000px x 200px will not be approved"
-msgstr ""
+msgstr "images over 3000px x 200px will not be approved"
 
-#: ../server/demo_create.php:116
-msgid ""
-"never use artwork/logos/photography that you do not have the legal rights to "
-"use - you will have to prove you have the rights if the content is questioned"
-msgstr ""
-
-#: ../server/demo_create.php:126
+#: ../demo_create.php:123
 #, php-format
+#, %url
 msgid "<b><a href=\"%s\">Continue to Step 2</a> &raquo;</b>"
-msgstr ""
+msgstr "<b><a href=\"%s\">Continue to Step 2</a> &raquo;</b>"
 
-#: ../server/demo_create.php:137
+#: ../demo_create.php:134 ../demo_create4.php:79
 #, php-format
+#, %s url
 msgid ""
 "Did you know you can test a Persona before you submit it?  <b><a href=\"%s"
 "\">Find out how!</a>&raquo;</b>"
 msgstr ""
+"Did you know you can test a Persona before you submit it?  <b><a href=\"%s"
+"\">Find out how!</a>&raquo;</b>"
 
-#: ../server/demo_create.php:141
-msgid "Online Image Editor Resources"
-msgstr ""
-
-#: ../server/demo_create.php:145
-msgid ""
-"SUMO Paint offers professional and easy to use tools for creating and "
-"editing images within a browser. SUMO Paint is a free image editing software "
-"that gives you the opportunity to create, edit and comment images online "
-"with powerful tools and layer support."
-msgstr ""
-
-#: ../server/demo_create.php:146
-msgid ""
-"Tweak, rotate and touch up photoswith Photoshop&reg; Express, your free "
-"online photo editor."
-msgstr ""
-
-#: ../server/demo_create.php:147
-msgid ""
-"All the Photoshop features you actually need, at a fraction of the price. "
-"Did we mention built-in collaboration? Create and edit with the world!"
-msgstr ""
-
-#: ../server/delete_persona.php:54
-msgid "Removing a persona"
-msgstr ""
-
-#: ../server/delete_persona.php:79
+#: ../upload_forms.php:37 ../delete_persona.php:79
 msgid "You don't have permission to edit that"
+msgstr "You don't have permission to edit that"
+
+#: ../upload_forms.php:62
+msgid "Please make sure to agree to the licensing agreement"
+msgstr "Please make sure to agree to the licensing agreement"
+
+#: ../upload_forms.php:65
+msgid "Please make sure to choose the appropriate license"
+msgstr "Please make sure to choose the appropriate license"
+
+#: ../upload_forms.php:94
+msgid "Unknown category"
+msgstr "Unknown category"
+
+#: ../upload_forms.php:97
+msgid "Please limit your description to 500 characters"
+msgstr "Please limit your description to 500 characters"
+
+#: ../upload_forms.php:105
+msgid ""
+"Please use only alphanumerics, underscore, hyphen, space, period and "
+"ampersand in your persona name"
 msgstr ""
+"Please use only alphanumerics, underscore, hyphen, space, period and "
+"ampersand in your persona name"
+
+#: ../upload_forms.php:107
+msgid "Please begin your persona name with a letter"
+msgstr "Please begin your persona name with a letter"
+
+#: ../upload_forms.php:109
+msgid "name cannot start with a period"
+msgstr "name cannot start with a period"
+
+#: ../upload_forms.php:111
+msgid "Please use alphanumeric characters in your persona name"
+msgstr "Please use alphanumeric characters in your persona name"
+
+#: ../upload_forms.php:113
+msgid "Please use at least 6 characters in your persona name"
+msgstr "Please use at least 6 characters in your persona name"
+
+#: ../upload_forms.php:115
+msgid "Please limit your persona name to 40 characters"
+msgstr "Please limit your persona name to 40 characters"
+
+#: ../upload_forms.php:120
+msgid "That name is already in use. Please select another one"
+msgstr "That name is already in use. Please select another one"
+
+#: ../upload_forms.php:125
+msgid "Unrecognized accent color"
+msgstr "Unrecognized accent color"
+
+#: ../upload_forms.php:129
+msgid "Unrecognized text color"
+msgstr "Unrecognized text color"
+
+#: ../upload_forms.php:132
+msgid "Please provide a reason for creating this persona"
+msgstr "Please provide a reason for creating this persona"
+
+#: ../upload_forms.php:139
+msgid "Please include a header image"
+msgstr "Please include a header image"
+
+#: ../upload_forms.php:141
+msgid "Please limit your header file size to 300K"
+msgstr "Please limit your header file size to 300K"
+
+#: ../upload_forms.php:143
+msgid "Please use alphanumeric characters in your header image name"
+msgstr "Please use alphanumeric characters in your header image name"
+
+#: ../upload_forms.php:150
+msgid "Please include a footer image"
+msgstr "Please include a footer image"
+
+#: ../upload_forms.php:152
+msgid "Please limit your footer file size to 300K"
+msgstr "Please limit your footer file size to 300K"
+
+#: ../upload_forms.php:154
+msgid "Please use alphanumeric characters in your footer image name"
+msgstr "Please use alphanumeric characters in your footer image name"
+
+#: ../upload_forms.php:159
+msgid "Please use different names for the header and the footer"
+msgstr "Please use different names for the header and the footer"
+
+#: ../upload_forms.php:177
+msgid ""
+"We do not recognize the format of your header image. Please let us know at "
+"persona-devel@mozilla.com if you think this is in error."
+msgstr ""
+"We do not recognize the format of your header image. Please let us know at "
+"persona-devel@mozilla.com if you think this is in error."
+
+#: ../upload_forms.php:179
+#, php-format
+#, %d width 
+#, %d height 
+msgid ""
+"Please make sure your header image is at least 2500x200 pixels (it appears "
+"to be %dx%d)"
+msgstr ""
+"Please make sure your header image is at least 2500x200 pixels (it appears "
+"to be %dx%d)"
+
+#: ../upload_forms.php:181
+#, php-format
+#, %d width 
+#, %d height 
+msgid ""
+"Please make sure your header image is less than 500 pixels tall so that it "
+"can appear in the browser (it appears to be %dx%d)"
+msgstr ""
+"Please make sure your header image is less than 500 pixels tall so that it "
+"can appear in the browser (it appears to be %dx%d)"
+
+#: ../upload_forms.php:189
+msgid ""
+"We do not recognize the format of your footer image. Please let us know at "
+"persona-devel@mozilla.com if you think this is in error."
+msgstr ""
+"We do not recognize the format of your footer image. Please let us know at "
+"persona-devel@mozilla.com if you think this is in error."
+
+#: ../upload_forms.php:191
+#, php-format
+#, %d width 
+#, %d height 
+msgid ""
+"Please make sure your footer image is at least 2500x100 pixels (it appears "
+"to be %dx%d)"
+msgstr ""
+"Please make sure your footer image is at least 2500x100 pixels (it appears "
+"to be %dx%d)"
+
+#: ../upload_forms.php:193
+#, php-format
+#, %d width 
+#, %d height 
+msgid ""
+"Please make sure your footer image is less than 250 pixels tall so that it "
+"can appear in the browser (it appears to be %dx%d)"
+msgstr ""
+"Please make sure your footer image is less than 250 pixels tall so that it "
+"can appear in the browser (it appears to be %dx%d)"
+
+#: ../upload_forms.php:208
+msgid ""
+"You have successfully edited your Persona. Once it's approved, you'll be "
+"able to view it in the Gallery."
+msgstr ""
+"You have successfully edited your Persona. Once it's approved, you'll be "
+"able to view it in the Gallery."
+
+#: ../upload_forms.php:214
+msgid ""
+"You have successfully added your Persona. Once it's approved, you'll be able "
+"to view it in the Gallery."
+msgstr ""
+"You have successfully added your Persona. Once it's approved, you'll be able "
+"to view it in the Gallery."
+
+#: ../upload_forms.php:220 ../upload_forms.php:234
+msgid ""
+"A problem occured uploading your persona. Please contact persona-"
+"devel@mozilla.com to let us know about this issue. Thank you."
+msgstr ""
+"A problem occured uploading your persona. Please contact persona-"
+"devel@mozilla.com to let us know about this issue. Thank you."
+
+#: ../delete_persona.php:48
+#, php-format
+#, %s name
+#, %s reason
+msgid ""
+"We have had to remove your persona '%s' from the gallery for the following "
+"reason: %s.\n"
+"\n"
+"\n"
+"\t\t    If you have any questions about this decision, please contact us at "
+"personas@mozilla.com. We look forward to seeing your contributions to the "
+"community in the future.\n"
+"\n"
+"\n"
+"\t\t    Best Wishes,\n"
+"\n"
+"\t\t    The Personas Team\n"
+msgstr ""
+"We have had to remove your persona '%s' from the gallery for the following "
+"reason: %s.\n"
+"\n"
+"\n"
+"\t\t    If you have any questions about this decision, please contact us at "
+"personas@mozilla.com. We look forward to seeing your contributions to the "
+"community in the future.\n"
+"\n"
+"\n"
+"\t\t    Best Wishes,\n"
+"\n"
+"\t\t    The Personas Team\n"
+
+#. TODO
+#: ../delete_persona.php:54
+msgid "Removing a persona"
+msgstr "Removing a persona"
+
+#: ../privacy.php:6 ../privacy.php:19
+#, php-format
+msgid "Privacy Policy"
+msgstr "Privacy Policy"
+
+#: ../privacy.php:23
+msgid "Mozilla Personas Privacy Policy"
+msgstr "Mozilla Personas Privacy Policy"
+
+#: ../privacy.php:24
+msgid "Dated: March 20, 2009"
+msgstr "Dated: March 20, 2009"
+
+#: ../privacy.php:25
+msgid ""
+"We're working hard to protect your privacy while delivering products and "
+"services that bring you the performance and protection you desire in your "
+"personal computing.  This privacy policy explains how Mozilla Corporation "
+"(\"Mozilla\"), a wholly-owned subsidiary of the non-profit Mozilla "
+"Foundation, collects and uses information about users of the official "
+"Mozilla Personas add-on (\"Personas\") for Mozilla Firefox&#174; web browser "
+"(\"Firefox\").  It does not apply to other Mozilla websites, products or "
+"services."
+msgstr ""
+"We're working hard to protect your privacy while delivering products and "
+"services that bring you the performance and protection you desire in your "
+"personal computing.  This privacy policy explains how Mozilla Corporation "
+"(\"Mozilla\"), a wholly-owned subsidiary of the non-profit Mozilla "
+"Foundation, collects and uses information about users of the official "
+"Mozilla Personas add-on (\"Personas\") for Mozilla Firefox&#174; web browser "
+"(\"Firefox\").  It does not apply to other Mozilla websites, products or "
+"services."
+
+#: ../privacy.php:26
+msgid "Types of Information"
+msgstr "Types of Information"
+
+#: ../privacy.php:27
+msgid ""
+"Personas collects certain information that falls into the following "
+"categories:"
+msgstr ""
+"Personas collects certain information that falls into the following "
+"categories:"
+
+#: ../privacy.php:28
+msgid ""
+"<em>\"Personal Information\"</em> is information that you provide to us that "
+"personally identifies you, such as your name and email address.  Except as "
+"described below, Mozilla does not collect or require users of Personas to "
+"furnish Personal Information.  To protect your privacy any Personal "
+"Information will be available only to Mozilla employees, contractors, and "
+"selected contributors who signed confidentiality agreements that prohibit "
+"them from using or disclosing such information other than for internal "
+"Mozilla purposes."
+msgstr ""
+"<em>\"Personal Information\"</em> is information that you provide to us that "
+"personally identifies you, such as your name and email address.  Except as "
+"described below, Mozilla does not collect or require users of Personas to "
+"furnish Personal Information.  To protect your privacy any Personal "
+"Information will be available only to Mozilla employees, contractors, and "
+"selected contributors who signed confidentiality agreements that prohibit "
+"them from using or disclosing such information other than for internal "
+"Mozilla purposes."
+
+#: ../privacy.php:29
+msgid ""
+"<em>\"Non-Personal Information\"</em> is information that cannot be directly "
+"associated with a specific person or entity.  Non-Personal Information "
+"includes but is not limited to your computer's configuration, the Persona "
+"Design (as defined below) and the version of Personas you use."
+msgstr ""
+"<em>\"Non-Personal Information\"</em> is information that cannot be directly "
+"associated with a specific person or entity.  Non-Personal Information "
+"includes but is not limited to your computer's configuration, the Persona "
+"Design (as defined below) and the version of Personas you use."
+
+#: ../privacy.php:30
+msgid ""
+"<em>\"Potentially Personal Information\"</em> is information that is Non-"
+"Personal Information in and of itself but that could be used in conjunction "
+"with other information to personally identify you.  For example, Internet "
+"Protocol (\"IP\") addresses (the addresses of computers on the internet), "
+"which is Non-Personal Information in and of itself, could be Personal "
+"Information when combined with internet service provider (\"ISP\") records."
+msgstr ""
+"<em>\"Potentially Personal Information\"</em> is information that is Non-"
+"Personal Information in and of itself but that could be used in conjunction "
+"with other information to personally identify you.  For example, Internet "
+"Protocol (\"IP\") addresses (the addresses of computers on the internet), "
+"which is Non-Personal Information in and of itself, could be Personal "
+"Information when combined with internet service provider (\"ISP\") records."
+
+#: ../privacy.php:31
+msgid ""
+"<em>\"Aggregate Data\"</em> is information that is recorded about users and "
+"collected into groups so it no longer reflects or references an individually "
+"identifiable user.  Aggregate Data does not contain any Personal Information."
+msgstr ""
+"<em>\"Aggregate Data\"</em> is information that is recorded about users and "
+"collected into groups so it no longer reflects or references an individually "
+"identifiable user.  Aggregate Data does not contain any Personal Information."
+
+#: ../privacy.php:32
+msgid "Personal Information"
+msgstr "Personal Information"
+
+#: ../privacy.php:33
+msgid ""
+"<em>Downloading Personas.</em>  Mozilla does not collect any Personal "
+"Information if you are downloading Personas."
+msgstr ""
+"<em>Downloading Personas.</em>  Mozilla does not collect any Personal "
+"Information if you are downloading Personas."
+
+#: ../privacy.php:34
+msgid ""
+"<em>Creating a Custom Persona.</em>  If you are creating a Custom Persona "
+"for your own use, Mozilla does not collect any Personal Information."
+msgstr ""
+"<em>Creating a Custom Persona.</em>  If you are creating a Custom Persona "
+"for your own use, Mozilla does not collect any Personal Information."
+
+#: ../privacy.php:35
+msgid ""
+"<em>Contributing a Design to the Personas Gallery.</em> The Personas gallery "
+"is where you can browse all the available designs.  If you contribute a "
+"design or image (each a \"Persona Design\") to the Personas gallery, Mozilla "
+"collects the following Personal Information: (1) your user name and (2) your "
+"email address.  Your user name will be used to attribute your Persona Design "
+"to you and will be publicly available on the Personas gallery.  You do not "
+"have to provide your real name; you can use a nickname or avatar.  Your "
+"email address will not be publicly available or shared with any third "
+"parties.  Mozilla will use your email address only to contact you regarding "
+"your design or to provide any additional information that you elect or opt "
+"in to receive."
+msgstr ""
+"<em>Contributing a Design to the Personas Gallery.</em> The Personas gallery "
+"is where you can browse all the available designs.  If you contribute a "
+"design or image (each a \"Persona Design\") to the Personas gallery, Mozilla "
+"collects the following Personal Information: (1) your user name and (2) your "
+"email address.  Your user name will be used to attribute your Persona Design "
+"to you and will be publicly available on the Personas gallery.  You do not "
+"have to provide your real name; you can use a nickname or avatar.  Your "
+"email address will not be publicly available or shared with any third "
+"parties.  Mozilla will use your email address only to contact you regarding "
+"your design or to provide any additional information that you elect or opt "
+"in to receive."
+
+#: ../privacy.php:36
+msgid ""
+"In addition, Mozilla does not publicly release information gathered in "
+"connection with commercial transactions (i.e., transactions involving money)."
+msgstr ""
+"In addition, Mozilla does not publicly release information gathered in "
+"connection with commercial transactions (i.e., transactions involving money)."
+
+#: ../privacy.php:37
+msgid ""
+"Mozilla does not make publicly available Personal Information that it "
+"specifically promises at the time of collection to maintain in confidence."
+msgstr ""
+"Mozilla does not make publicly available Personal Information that it "
+"specifically promises at the time of collection to maintain in confidence."
+
+#: ../privacy.php:38
+msgid "Interactive Product Features"
+msgstr "Interactive Product Features"
+
+#: ../privacy.php:39
+msgid ""
+"If you have Personas installed, each time you open Firefox Personas loads "
+"your selected Persona Design from the Mozilla server.  Once per day Personas "
+"checks to see if your selected Persona Design still is available in its list "
+"of Persona Designs.  This feature sends the same information that web "
+"browsers typically transfer with any HTTP requests including user agent and, "
+"Potentially Personally-Identifying Information such as, your IP address."
+msgstr ""
+"If you have Personas installed, each time you open Firefox Personas loads "
+"your selected Persona Design from the Mozilla server.  Once per day Personas "
+"checks to see if your selected Persona Design still is available in its list "
+"of Persona Designs.  This feature sends the same information that web "
+"browsers typically transfer with any HTTP requests including user agent and, "
+"Potentially Personally-Identifying Information such as, your IP address."
+
+#: ../privacy.php:40
+msgid ""
+"Personas has a feature that refreshes the Personas gallery once per day.  "
+"This feature sends the following Non-Personal Information to Mozilla: "
+msgstr ""
+"Personas has a feature that refreshes the Personas gallery once per day.  "
+"This feature sends the following Non-Personal Information to Mozilla: "
+
+#: ../privacy.php:42
+msgid "the category and ID of Persona Design selected;"
+msgstr "the category and ID of Persona Design selected;"
+
+#: ../privacy.php:43
+msgid "the date/time the Persona Design was selected;"
+msgstr "the date/time the Persona Design was selected;"
+
+#: ../privacy.php:44
+msgid "the ID and version of the application you used (e.g., Firefox 3.0.7);"
+msgstr "the ID and version of the application you used (e.g., Firefox 3.0.7);"
+
+#: ../privacy.php:45
+msgid "your locale (e.g., English-US);"
+msgstr "your locale (e.g., English-US);"
+
+#: ../privacy.php:46
+msgid "your operating system (i.e.,  Linux, Windows or Mac); and"
+msgstr "your operating system (i.e.,  Linux, Windows or Mac); and"
+
+#: ../privacy.php:47
+msgid "your computer's architecture."
+msgstr "your computer's architecture."
+
+#: ../privacy.php:49
+msgid ""
+"Personas relies on Firefox's automatic update feature for updates.  See the "
+"<a href=\"http://www.mozilla.com/legal/privacy/firefox-en.html\">Firefox "
+"Privacy Policy</a> for privacy details of the Firefox automatic update "
+"feature. "
+msgstr ""
+"Personas relies on Firefox's automatic update feature for updates.  See the "
+"<a href=\"http://www.mozilla.com/legal/privacy/firefox-en.html\">Firefox "
+"Privacy Policy</a> for privacy details of the Firefox automatic update "
+"feature. "
+
+#: ../privacy.php:50
+msgid ""
+"We use this information to improve our products and services and to support "
+"decision making regarding feature and capacity planning.  Mozilla is an open "
+"organization that believes in sharing as much information as possible about "
+"its products, its operations, and its associations. Accordingly, we may "
+"release public reports containing Aggregate Data so that our global "
+"community and Personas partners may make better product and design decisions "
+"and so that users of Personas will know which are the most popular Persona "
+"Designs and Personas designers will know how many times their Persona Design "
+"was downloaded.  "
+msgstr ""
+"We use this information to improve our products and services and to support "
+"decision making regarding feature and capacity planning.  Mozilla is an open "
+"organization that believes in sharing as much information as possible about "
+"its products, its operations, and its associations. Accordingly, we may "
+"release public reports containing Aggregate Data so that our global "
+"community and Personas partners may make better product and design decisions "
+"and so that users of Personas will know which are the most popular Persona "
+"Designs and Personas designers will know how many times their Persona Design "
+"was downloaded.  "
+
+#: ../privacy.php:51
+msgid "Privacy Policy Changes"
+msgstr "Privacy Policy Changes"
+
+#: ../privacy.php:54
+msgid "For More Information"
+msgstr "For More Information"
+
+#: ../privacy.php:55
+msgid ""
+"If you have questions about this privacy policy, please contact Mozilla at "
+"<a href=\"mailto:privacy@mozilla.com\">privacy@mozilla.com</a>.  In your "
+"email, please identify the specific product or policy about which you have "
+"questions."
+msgstr ""
+"If you have questions about this privacy policy, please contact Mozilla at "
+"<a href=\"mailto:privacy@mozilla.com\">privacy@mozilla.com</a>.  In your "
+"email, please identify the specific product or policy about which you have "
+"questions."
 
 #. should default to popular
-#: ../server/viewpersonas.php:58 ../server/viewpersonas.php:118
+#: ../viewpersonas.php:59 ../viewpersonas.php:119
 msgid "Popular"
-msgstr ""
+msgstr "Popular"
 
-#: ../server/viewpersonas.php:58
+#: ../viewpersonas.php:59
 msgid "Recent"
-msgstr ""
+msgstr "Recent"
 
-#: ../server/viewpersonas.php:58 ../server/viewpersonas.php:86
-#: ../server/viewpersonas.php:92 ../server/viewpersonas.php:95
-#: ../server/viewpersonas.php:101 ../server/viewpersonas.php:119
+#: ../viewpersonas.php:59 ../viewpersonas.php:87 ../viewpersonas.php:93
+#: ../viewpersonas.php:96 ../viewpersonas.php:102 ../viewpersonas.php:120
 msgid "All"
-msgstr ""
+msgstr "All"
 
-#: ../server/viewpersonas.php:58
+#: ../viewpersonas.php:59
 msgid "My"
-msgstr ""
+msgstr "My"
 
-#: ../server/viewpersonas.php:58
+#: ../viewpersonas.php:59
 msgid "Favorites"
-msgstr ""
+msgstr "Favorites"
 
-#: ../server/viewpersonas.php:66
+#: ../viewpersonas.php:67 ../personadetail.php:55 ../personadetail.php:86
+#, php-format
 msgid "View Personas"
-msgstr ""
+msgstr "View Personas"
 
-#: ../server/viewpersonas.php:90
+#: ../viewpersonas.php:91
 msgid "all"
-msgstr ""
+msgstr "all"
 
-#: ../server/viewpersonas.php:94
+#: ../viewpersonas.php:95
 msgid "recent"
-msgstr ""
+msgstr "recent"
 
-#: ../server/viewpersonas.php:97
+#: ../viewpersonas.php:98
 msgid "my"
-msgstr ""
+msgstr "my"
 
-#: ../server/viewpersonas.php:99
+#: ../viewpersonas.php:100
 msgid "My Personas"
-msgstr ""
+msgstr "My Personas"
 
-#: ../server/viewpersonas.php:103
+#: ../viewpersonas.php:104
 msgid "favorites"
-msgstr ""
+msgstr "favorites"
 
-#: ../server/viewpersonas.php:105
+#: ../viewpersonas.php:106
 msgid "My Favorite Personas"
-msgstr ""
+msgstr "My Favorite Personas"
 
-#: ../server/viewpersonas.php:109
+#: ../viewpersonas.php:110
 msgid "search"
-msgstr ""
+msgstr "search"
 
-#: ../server/viewpersonas.php:110
+#: ../viewpersonas.php:111
 msgid "Search Personas"
-msgstr ""
+msgstr "Search Personas"
 
-#: ../server/change_password.php:18
+#: ../faq.php:25
+msgid "What are Personas?"
+msgstr "What are Personas?"
+
+#: ../faq.php:27
+msgid ""
+"Personas are lightweight \"skins\" that change the look of your Firefox web "
+"browser. You can easily switch between Personas with just a few clicks. "
+"There are hundreds of Personas to choose from, with more added every day. "
+"You can even create your own and share it with others."
+msgstr ""
+"Personas are lightweight \"skins\" that change the look of your Firefox web "
+"browser. You can easily switch between Personas with just a few clicks. "
+"There are hundreds of Personas to choose from, with more added every day. "
+"You can even create your own and share it with others."
+
+#: ../faq.php:29
+msgid "How do I add Personas to my Firefox?"
+msgstr "How do I add Personas to my Firefox?"
+
+#: ../faq.php:30
+#, php-format
+#, %s url
+msgid ""
+"In less than 60 seconds, you can install a Persona and transform the look of "
+"your Firefox web browser. Visit <a href=\"%s\">getpersonas.com</a> and click "
+"the download button. After installation, you will be asked to restart "
+"Firefox."
+msgstr ""
+"In less than 60 seconds, you can install a Persona and transform the look of "
+"your Firefox web browser. Visit <a href=\"%s\">getpersonas.com</a> and click "
+"the download button. After installation, you will be asked to restart "
+"Firefox."
+
+#: ../faq.php:32
+#, php-format
+#, %s url
+msgid ""
+"If you want to see how it works, you can watch a quick video demonstration "
+"<a href=\"%s\">here</a>."
+msgstr ""
+"If you want to see how it works, you can watch a quick video demonstration "
+"<a href=\"%s\">here</a>."
+
+#: ../faq.php:34
+msgid ""
+"Once Personas are installed, you'll be able to choose and change your "
+"selected Persona any time simply by clicking on the little fox mask in the "
+"lower left-hand corner of your browser window."
+msgstr ""
+"Once Personas are installed, you'll be able to choose and change your "
+"selected Persona any time simply by clicking on the little fox mask in the "
+"lower left-hand corner of your browser window."
+
+#: ../faq.php:35
+msgid "How do I create or edit my designer profile?"
+msgstr "How do I create or edit my designer profile?"
+
+#: ../faq.php:37
+#, php-format
+#, %s url
+msgid ""
+"If you are a new Personas designer, you will be asked to create a profile "
+"when\n"
+"                                  you first sign up <a href=\"%s\">here</a>. "
+"You will have the option to include a \"display\n"
+"                                  name\" and \"designer description\", both "
+"of which will be displayed in the public\n"
+"                                  gallery."
+msgstr ""
+"If you are a new Personas designer, you will be asked to create a profile "
+"when\n"
+"                                  you first sign up <a href=\"%s\">here</a>. "
+"You will have the option to include a \"display\n"
+"                                  name\" and \"designer description\", both "
+"of which will be displayed in the public\n"
+"                                  gallery."
+
+#: ../faq.php:42
+#, php-format
+#, %s url
+msgid ""
+"If you are an existing Personas designer, you can edit and add to your "
+"profile <a href=\"%s\">here</a>."
+msgstr ""
+"If you are an existing Personas designer, you can edit and add to your "
+"profile <a href=\"%s\">here</a>."
+
+#: ../faq.php:46
+msgid "How can I add or change my current Persona?"
+msgstr "How can I add or change my current Persona?"
+
+#: ../faq.php:47
+msgid "There are two easy ways to change your Persona:"
+msgstr "There are two easy ways to change your Persona:"
+
+#: ../faq.php:49
+#, php-format
+#, %s url
+msgid ""
+"Visit the Personas website at %s, check out the gallery, choose your "
+"favorite Persona, and click on your choice to instantly change the look of "
+"your browser.<br> OR"
+msgstr ""
+"Visit the Personas website at %s, check out the gallery, choose your "
+"favorite Persona, and click on your choice to instantly change the look of "
+"your browser.<br> OR"
+
+#: ../faq.php:50
+msgid ""
+"Click on the little fox mask in the lower left hand corner of your browser, "
+"then select a Persona that suits your style."
+msgstr ""
+"Click on the little fox mask in the lower left hand corner of your browser, "
+"then select a Persona that suits your style."
+
+#: ../faq.php:53
+msgid ""
+"I can't seem to find Personas for Firefox after I downloaded it and "
+"installed it.  Where is it?"
+msgstr ""
+"I can't seem to find Personas for Firefox after I downloaded it and "
+"installed it.  Where is it?"
+
+#: ../faq.php:54
+msgid ""
+"Look for the little fox mask in the lower left-hand corner of your Firefox "
+"browser window."
+msgstr ""
+"Look for the little fox mask in the lower left-hand corner of your Firefox "
+"browser window."
+
+#: ../faq.php:57
+msgid "Can I create my own Persona?"
+msgstr "Can I create my own Persona?"
+
+#: ../faq.php:59
+#, php-format
+#, %s url
+msgid ""
+"Absolutely! All you need to do is create two graphics files in your favorite "
+"graphics editing program (<em>e.g.</em>, Photoshop). To get started read "
+"more about how to <a href=\"%s\">create a Persona</a>."
+msgstr ""
+"Absolutely! All you need to do is create two graphics files in your favorite "
+"graphics editing program (<em>e.g.</em>, Photoshop). To get started read "
+"more about how to <a href=\"%s\">create a Persona</a>."
+
+#: ../faq.php:61
+msgid "Are there any guidelines for content allowed in the Personas gallery?"
+msgstr "Are there any guidelines for content allowed in the Personas gallery?"
+
+#: ../faq.php:62
+msgid ""
+"Yes. We are big fans of creativity, but want to ensure that the art "
+"displayed in the Personas gallery meets a basic set of guidelines. "
+"Specifically:"
+msgstr ""
+"Yes. We are big fans of creativity, but want to ensure that the art "
+"displayed in the Personas gallery meets a basic set of guidelines. "
+"Specifically:"
+
+#: ../faq.php:65
+msgid ""
+"The logo, image, or art within your design is either your original work, or "
+"you are authorized to license and distribute it"
+msgstr ""
+"The logo, image, or art within your design is either your original work, or "
+"you are authorized to license and distribute it"
+
+#: ../faq.php:66
+msgid ""
+"Your design does not contain provocative, lewd, or sexual content (ie, it is "
+"PG-rated)"
+msgstr ""
+"Your design does not contain provocative, lewd, or sexual content (ie, it is "
+"PG-rated)"
+
+#: ../faq.php:67
+msgid "Your design does not include any identifiable non-celebrity person(s)"
+msgstr "Your design does not include any identifiable non-celebrity person(s)"
+
+#: ../faq.php:68
+msgid ""
+"Your design does not contain violence or violent acts, nor does it exhibit "
+"discriminatory behavior or signs"
+msgstr ""
+"Your design does not contain violence or violent acts, nor does it exhibit "
+"discriminatory behavior or signs"
+
+#: ../faq.php:69
+msgid ""
+"Your design does not violate any applicable law, regulation or ordinance"
+msgstr ""
+"Your design does not violate any applicable law, regulation or ordinance"
+
+#: ../faq.php:72
+msgid "After creating a Persona, can I edit the design?"
+msgstr "After creating a Persona, can I edit the design?"
+
+#: ../faq.php:73
+#, php-format
+#, %s url
+msgid ""
+"Yes. If at any point you need to edit your Persona design \n"
+"                after it has been submitted to the gallery, simply visit <a "
+"href=\"%s\">this link</a>, log in to\n"
+"               your account, and go to the \"Personas Home : Gallery : All : "
+"My\" section. \n"
+"               From there, you can make changes to the settings you entered "
+"upon creation."
+msgstr ""
+"Yes. If at any point you need to edit your Persona design \n"
+"                after it has been submitted to the gallery, simply visit <a "
+"href=\"%s\">this link</a>, log in to\n"
+"               your account, and go to the \"Personas Home : Gallery : All : "
+"My\" section. \n"
+"               From there, you can make changes to the settings you entered "
+"upon creation."
+
+#: ../faq.php:78
+msgid "What's the maximum file size allowable for my persona?"
+msgstr "What's the maximum file size allowable for my persona?"
+
+#: ../faq.php:80
+msgid ""
+"The persona that you upload may not exceed 300KB for the header or the "
+"footer\n"
+"               image."
+msgstr ""
+"The persona that you upload may not exceed 300KB for the header or the "
+"footer\n"
+"               image."
+
+#: ../faq.php:85
+msgid ""
+"Do I still retain ownership over Persona artwork that I upload to the "
+"Personas website?"
+msgstr ""
+"Do I still retain ownership over Persona artwork that I upload to the "
+"Personas website?"
+
+#: ../faq.php:87
+msgid "Yes."
+msgstr "Yes."
+
+#: ../faq.php:90
+msgid "What's the difference between a Firefox theme and Personas for Firefox?"
+msgstr ""
+"What's the difference between a Firefox theme and Personas for Firefox?"
+
+#: ../faq.php:92
+msgid ""
+"Personas allow you to \"skin\" the top and bottom areas of Firefox only (the "
+"header and footer of the browser chrome) without any change to the look of "
+"the navigation buttons or menus. With Personas, you can easily switch "
+"between many different lightweight skins with no further installation "
+"required."
+msgstr ""
+"Personas allow you to \"skin\" the top and bottom areas of Firefox only (the "
+"header and footer of the browser chrome) without any change to the look of "
+"the navigation buttons or menus. With Personas, you can easily switch "
+"between many different lightweight skins with no further installation "
+"required."
+
+#: ../faq.php:94
+msgid ""
+"Like Personas, a Firefox theme is a type of Firefox add-on that extends the "
+"functionality of your browser and allows you to \"skin\" it in a variety of "
+"ways. However, unlike Personas, a theme changes the appearance of navigation "
+"buttons, toolbars and menus."
+msgstr ""
+"Like Personas, a Firefox theme is a type of Firefox add-on that extends the "
+"functionality of your browser and allows you to \"skin\" it in a variety of "
+"ways. However, unlike Personas, a theme changes the appearance of navigation "
+"buttons, toolbars and menus."
+
+#: ../faq.php:97
+msgid ""
+"If I have an existing Firefox theme installed, will Personas still work?"
+msgstr ""
+"If I have an existing Firefox theme installed, will Personas still work?"
+
+#: ../faq.php:99
+msgid ""
+"Yes, Personas will work. However, it's strongly recommended that you "
+"uninstall a theme when using Personas. To disable a current Firefox theme, "
+"go to the \"Tools\" menu and select \"Add-ons\" to display the add-ons "
+"manager. Then click on the \"Themes\" button at the top of the add-ons "
+"manager window, click on the \"Default\" theme for Firefox, and click on "
+"\"Use theme\". After a quick restart, you'll be ready to dress up your "
+"browser with Personas."
+msgstr ""
+"Yes, Personas will work. However, it's strongly recommended that you "
+"uninstall a theme when using Personas. To disable a current Firefox theme, "
+"go to the \"Tools\" menu and select \"Add-ons\" to display the add-ons "
+"manager. Then click on the \"Themes\" button at the top of the add-ons "
+"manager window, click on the \"Default\" theme for Firefox, and click on "
+"\"Use theme\". After a quick restart, you'll be ready to dress up your "
+"browser with Personas."
+
+#: ../faq.php:102
+msgid "Do I have to add my Persona to the public gallery?"
+msgstr "Do I have to add my Persona to the public gallery?"
+
+#: ../faq.php:104
+msgid ""
+"No. When you upload your Persona at GetPersonas.com, you can choose to add "
+"it to the public gallery or keep it private. If you want to upload a custom "
+"Persona without visiting GetPersonas.com, you can do so anytime by following "
+"these steps:"
+msgstr ""
+"No. When you upload your Persona at GetPersonas.com, you can choose to add "
+"it to the public gallery or keep it private. If you want to upload a custom "
+"Persona without visiting GetPersonas.com, you can do so anytime by following "
+"these steps:"
+
+#: ../faq.php:107
+msgid "Enable custom Personas in your version of Personas:"
+msgstr "Enable custom Personas in your version of Personas:"
+
+#: ../faq.php:109 ../faq.php:118
+msgid ""
+"Click on the little fox mask icon in the lower left-hand corner of your "
+"browser"
+msgstr ""
+"Click on the little fox mask icon in the lower left-hand corner of your "
+"browser"
+
+#: ../faq.php:110
+msgid "Select \"Preferences...\""
+msgstr "Select \"Preferences...\""
+
+#: ../faq.php:111
+msgid "Under \"Advanced\", select \"Show Custom Persona Menu\""
+msgstr "Under \"Advanced\", select \"Show Custom Persona Menu\""
+
+#: ../faq.php:112
+msgid "Close the preferences window"
+msgstr "Close the preferences window"
+
+#: ../faq.php:116
+msgid "Create your custom Persona:"
+msgstr "Create your custom Persona:"
+
+#: ../faq.php:119
+msgid "Select \"Custom Persona\", then select \"Edit\" from its sub-menu"
+msgstr "Select \"Custom Persona\", then select \"Edit\" from its sub-menu"
+
+#: ../faq.php:120
+msgid ""
+"Specify a header, footer, text color and accent color for a Persona that's "
+"locally stored on your computer"
+msgstr ""
+"Specify a header, footer, text color and accent color for a Persona that's "
+"locally stored on your computer"
+
+#: ../faq.php:121
+msgid ""
+"Your new Persona will be automatically selected, or you can manually choose "
+"it from the little fox mask menu"
+msgstr ""
+"Your new Persona will be automatically selected, or you can manually choose "
+"it from the little fox mask menu"
+
+#: ../faq.php:125
+msgid "What kind of computer and operating system does Personas work with?"
+msgstr "What kind of computer and operating system does Personas work with?"
+
+#: ../faq.php:127
+msgid ""
+"Personas work with any type of computer that has Firefox installed. This "
+"includes Apple Mac, Linux and Windows platforms. You must have "
+"administrative rights to add Personas to your Firefox browser."
+msgstr ""
+"Personas work with any type of computer that has Firefox installed. This "
+"includes Apple Mac, Linux and Windows platforms. You must have "
+"administrative rights to add Personas to your Firefox browser."
+
+#: ../faq.php:130
+msgid "How do I uninstall Personas for Firefox?"
+msgstr "How do I uninstall Personas for Firefox?"
+
+#: ../faq.php:132
+msgid ""
+"If you've decided Personas doesn't work for you, you can uninstall with a "
+"few easy steps:"
+msgstr ""
+"If you've decided Personas doesn't work for you, you can uninstall with a "
+"few easy steps:"
+
+#: ../faq.php:134
+msgid "Open the Add-ons dialog box by going to \"Tools->Add-ons\""
+msgstr "Open the Add-ons dialog box by going to \"Tools->Add-ons\""
+
+#: ../faq.php:135
+msgid "Click on the \"Extensions\" button on the top"
+msgstr "Click on the \"Extensions\" button on the top"
+
+#: ../faq.php:136
+msgid "Select \"Personas\""
+msgstr "Select \"Personas\""
+
+#: ../faq.php:137
+msgid "Click \"Uninstall\""
+msgstr "Click \"Uninstall\""
+
+#: ../faq.php:138
+msgid "Restart Firefox"
+msgstr "Restart Firefox"
+
+#: ../faq.php:142
+msgid "How do I provide feedback?"
+msgstr "How do I provide feedback?"
+
+#: ../faq.php:144
+msgid ""
+"Personas is currently in beta, so we're always looking for ways to improve "
+"the product. We'd love to hear what you think. Visit the <a href=\"https://"
+"labs.mozilla.com/forum/?CategoryID=18\">Personas</a> forums to send us your "
+"feedback."
+msgstr ""
+"Personas is currently in beta, so we're always looking for ways to improve "
+"the product. We'd love to hear what you think. Visit the <a href=\"https://"
+"labs.mozilla.com/forum/?CategoryID=18\">Personas</a> forums to send us your "
+"feedback."
+
+#: ../faq.php:148
+msgid "Is Personas for Firefox open source?"
+msgstr "Is Personas for Firefox open source?"
+
+#: ../faq.php:150
+msgid ""
+"Yes. The source code for Personas is available under the MPL/GPL/LGPL tri-"
+"license. You can view the source <a href=\"http://hg.mozilla.org/labs/"
+"personas/personas\">here</a>."
+msgstr ""
+"Yes. The source code for Personas is available under the MPL/GPL/LGPL tri-"
+"license. You can view the source <a href=\"http://hg.mozilla.org/labs/"
+"personas/personas\">here</a>."
+
+#: ../firstrun.php:10
+msgid "Thanks for installing Personas"
+msgstr "Thanks for installing Personas"
+
+#: ../firstrun.php:39
+msgid "Thanks for Installing Personas for Firefox!"
+msgstr "Thanks for Installing Personas for Firefox!"
+
+#: ../firstrun.php:40
+msgid "The Easiest Way to Dress Up Your Browser."
+msgstr "The Easiest Way to Dress Up Your Browser."
+
+#: ../firstrun.php:43
+msgid "Browse the Gallery!"
+msgstr "Browse the Gallery!"
+
+#: ../firstrun.php:53
+msgid "Get Started with Personas"
+msgstr "Get Started with Personas"
+
+#: ../firstrun.php:55
+#, php-format
+#, %s url
+msgid ""
+"Click on the fox mask in the lower left corner of your Firefox browser, or "
+"go to the Personas page directly from <a href=\"%s\">here</a>."
+msgstr ""
+"Click on the fox mask in the lower left corner of your Firefox browser, or "
+"go to the Personas page directly from <a href=\"%s\">here</a>."
+
+#: ../firstrun.php:56
+#, php-format
+#, %s url
+msgid ""
+"Next, select a Persona from the list, or check out the <a href=\"%s"
+"\">Personas gallery</a>."
+msgstr ""
+"Next, select a Persona from the list, or check out the <a href=\"%s"
+"\">Personas gallery</a>."
+
+#: ../firstrun.php:57
+#, php-format
+#, %s url
+msgid ""
+"You can change your persona as much as you like! Choose a new one from the "
+"list or <a href=\"%s\">create your own</a>."
+msgstr ""
+"You can change your persona as much as you like! Choose a new one from the "
+"list or <a href=\"%s\">create your own</a>."
+
+#: ../firstrun.php:60
+#, php-format
+#, %s url
+msgid ""
+"Have a Personas question or comment? Check out our <a href=\"%s\">FAQ</a> "
+"section or <a href=\"https://labs.mozilla.com/forum/?CategoryID=18"
+"\">discussion forum</a>."
+msgstr ""
+"Have a Personas question or comment? Check out our <a href=\"%s\">FAQ</a> "
+"section or <a href=\"https://labs.mozilla.com/forum/?CategoryID=18"
+"\">discussion forum</a>."
+
+#: ../firstrun.php:65
+msgid "Find out more about Firefox"
+msgstr "Find out more about Firefox"
+
+#: ../firstrun.php:66
+msgid ""
+"Wondering what to do now? Our <a href=\"http://www.mozilla.com/firefox/"
+"central/\">Getting Started</a> page has plenty of helpful information."
+msgstr ""
+"Wondering what to do now? Our <a href=\"http://www.mozilla.com/firefox/"
+"central/\">Getting Started</a> page has plenty of helpful information."
+
+#: ../firstrun.php:67
+msgid ""
+"Questions? Our <a href=\"https://labs.mozilla.com/forum/?CategoryID=18"
+"\">Support page</a> has answers."
+msgstr ""
+"Questions? Our <a href=\"https://labs.mozilla.com/forum/?CategoryID=18"
+"\">Support page</a> has answers."
+
+#: ../firstrun.php:82
+msgid "Click on the fox mask to get started!"
+msgstr "Click on the fox mask to get started!"
+
+#: ../firstrun.php:68
+msgid ""
+"Ready to customize? Now that you've got Firefox and Personas, find out more "
+"about all the ways you can <a href=\"https://addons.mozilla.org/firefox"
+"\">personalize Firefox</a>!"
+msgstr ""
+"Ready to customize? Now that you've got Firefox and Personas, find out more "
+"about all the ways you can <a href=\"https://addons.mozilla.org/firefox"
+"\">personalize Firefox</a>!"
+
+#: ../change_password.php:18
+#, php-format
+#, %s url
 msgid ""
 "Oops!  We are unable to locate the username you entered.  Please try again, "
-"or <a href='https://www.getpersonas.com/upload'>create a new one</a>."
+"or <a href=\"%s\">create a new one</a>."
 msgstr ""
+"Oops!  We are unable to locate the username you entered.  Please try again, "
+"or <a href=\"%s\">create a new one</a>."
 
-#: ../server/change_password.php:26
+#: ../change_password.php:26
 msgid ""
 "We have no email address on file for you. Please contact personas-"
 "devel@mozilla.com"
 msgstr ""
+"We have no email address on file for you. Please contact personas-"
+"devel@mozilla.com"
 
-#: ../server/change_password.php:38
-msgid "Resetting your personas password"
+#: ../change_password.php:32
+#, php-format
+#, %s url
+msgid ""
+"So many passwords to remember! You asked to reset your personas password. To "
+"do so, please visit:\n"
+"\n"
+"\n"
+"\t\t\t\t\t\t%s\n"
+"\n"
+"\n"
+"\t\t\t\t\t\tThis link will let you change your password to something new. If "
+"you didn't ask for this, don't worry, we'll keep your password safe.\n"
+"\n"
+"\n"
+"\t\t\t\t\t\tBest Wishes,\n"
+"\n"
+"\t\t\t\t\t\tThe Personas Team\n"
 msgstr ""
+"So many passwords to remember! You asked to reset your personas password. To "
+"do so, please visit:\n"
+"\n"
+"\n"
+"\t\t\t\t\t\t%s\n"
+"\n"
+"\n"
+"\t\t\t\t\t\tThis link will let you change your password to something new. If "
+"you didn't ask for this, don't worry, we'll keep your password safe.\n"
+"\n"
+"\n"
+"\t\t\t\t\t\tBest Wishes,\n"
+"\n"
+"\t\t\t\t\t\tThe Personas Team\n"
 
-#: ../server/change_password.php:40
+#: ../change_password.php:38
+msgid "Resetting your personas password"
+msgstr "Resetting your personas password"
+
+#: ../change_password.php:40
 msgid ""
 "There was a problem with our mail server. Please try again in a few minutes. "
 "If it continues to not work, please contact personas-devel@mozilla.com"
 msgstr ""
+"There was a problem with our mail server. Please try again in a few minutes. "
+"If it continues to not work, please contact personas-devel@mozilla.com"
 
-#: ../server/change_password.php:50 ../server/change_password.php:77
-#: ../server/change_password.php:133
+#: ../change_password.php:50 ../change_password.php:77
+#: ../change_password.php:133
 msgid "There was an internal error. Please contact personas-devel@mozilla.com"
-msgstr ""
+msgstr "There was an internal error. Please contact personas-devel@mozilla.com"
 
-#: ../server/change_password.php:67 ../server/change_password.php:100
+#: ../change_password.php:67 ../change_password.php:100
 msgid ""
 "The code you submitted is not valid for that username. Please request "
 "another one"
 msgstr ""
+"The code you submitted is not valid for that username. Please request "
+"another one"
 
-#: ../server/change_password.php:107
-msgid "Password must be at least 6 characters long"
-msgstr ""
-
-#: ../server/change_password.php:114
+#: ../change_password.php:114
 msgid ""
 "The password should contain at least one alphabetic character and at least "
 "one non-alphabetic character"
 msgstr ""
+"The password should contain at least one alphabetic character and at least "
+"one non-alphabetic character"
 
-#: ../server/change_password.php:121
+#: ../change_password.php:121
 msgid "The password and confirmation do not match. Please try again"
+msgstr "The password and confirmation do not match. Please try again"
+
+#: ../personadetail.php:90
+#, php-format
+msgid "We are unable to locate the persona you requested."
+msgstr "We are unable to locate the persona you requested."
+
+#: ../personadetail.php:113
+#, php-format
+msgid "loading..."
+msgstr "loading..."
+
+#: ../demo_create3.php:30 ../demo_create4.php:30
+msgid ""
+"Personas are made up of two graphic image files - a \"header\" image and a "
+"\"footer\" image - which skin\n"
+"                \t\t\tthe default Firefox UI background."
 msgstr ""
+"Personas are made up of two graphic image files - a \"header\" image and a "
+"\"footer\" image - which skin\n"
+"                \t\t\tthe default Firefox UI background."
+
+#. TODO close <p> tags
+#: ../demo_create3.php:56
+msgid ""
+"In general, designs that feature rich content areas in the top-right corner "
+"of the browser work\n"
+"                \t\t\tbest. Though that may be true, you should always check "
+"to see where the UI elements sit on top of\n"
+"                \t\t\tyour designs within the different platform versions of "
+"Firefox."
+msgstr ""
+"In general, designs that feature rich content areas in the top-right corner "
+"of the browser work\n"
+"                \t\t\tbest. Though that may be true, you should always check "
+"to see where the UI elements sit on top of\n"
+"                \t\t\tyour designs within the different platform versions of "
+"Firefox."
+
+#: ../demo_create3.php:59
+msgid ""
+"This may be a critical step in\n"
+"                \t\t\tfinalizing your image, depending on the importance of "
+"the visual information you are including in\n"
+"                \t\t\tyour designs."
+msgstr ""
+"This may be a critical step in\n"
+"                \t\t\tfinalizing your image, depending on the importance of "
+"the visual information you are including in\n"
+"                \t\t\tyour designs."
+
+#: ../demo_create3.php:63
+msgid "Option 1: Test on Your Own Computer"
+msgstr "Option 1: Test on Your Own Computer"
+
+#: ../demo_create3.php:65
+msgid ""
+"Within the Personas menu in the bottom left of the browser's status bar, you "
+"can enable an \"offline\" \n"
+"                            Persona on your own personal computer by "
+"enabling a setting within Preferences.  In doing this, you can test your \n"
+"                            Personas before submitting them to the online "
+"catalog."
+msgstr ""
+"Within the Personas menu in the bottom left of the browser's status bar, you "
+"can enable an \"offline\" \n"
+"                            Persona on your own personal computer by "
+"enabling a setting within Preferences.  In doing this, you can test your \n"
+"                            Personas before submitting them to the online "
+"catalog."
+
+#: ../demo_create3.php:69
+msgid ""
+"Follow these four steps to get the Custom Personas option up and running in "
+"your browser:"
+msgstr ""
+"Follow these four steps to get the Custom Personas option up and running in "
+"your browser:"
+
+#: ../demo_create3.php:77
+msgid ""
+"If you have Personas installed, click on the little fox on the bottom left "
+"of your computer screen and click on \"Preferences\""
+msgstr ""
+"If you have Personas installed, click on the little fox on the bottom left "
+"of your computer screen and click on \"Preferences\""
+
+#: ../demo_create3.php:79
+msgid ""
+"Ensure the box \"Show Custom Persona in Menu\" is checked and close the box."
+msgstr ""
+"Ensure the box \"Show Custom Persona in Menu\" is checked and close the box."
+
+#: ../demo_create3.php:81
+msgid ""
+"Click on the little fox again. Mouse over \"Custom\" in the menu and to the "
+"right find and click \"Edit\""
+msgstr ""
+"Click on the little fox again. Mouse over \"Custom\" in the menu and to the "
+"right find and click \"Edit\""
+
+#: ../demo_create3.php:83
+msgid "Build your Persona using the upload fields and additional settings."
+msgstr "Build your Persona using the upload fields and additional settings."
+
+#: ../demo_create3.php:97
+msgid ""
+"Once your images are playing nice with the UI for all the OS flavors of "
+"Firefox, save final copies (PNG or JPG) -\n"
+"                \t\t\tbut be sure to check to ensure they don't exceed 300k "
+"in filesize!. (Note: This will only test your Persona on the platform you "
+"are currently using)"
+msgstr ""
+"Once your images are playing nice with the UI for all the OS flavors of "
+"Firefox, save final copies (PNG or JPG) -\n"
+"                \t\t\tbut be sure to check to ensure they don't exceed 300k "
+"in filesize!. (Note: This will only test your Persona on the platform you "
+"are currently using)"
+
+#: ../demo_create3.php:104
+msgid "Option 2: Cross-Platform Photoshop PSD Header Template"
+msgstr "Option 2: Cross-Platform Photoshop PSD Header Template"
+
+#: ../demo_create3.php:108
+msgid ""
+"We've created a positioning template that can be used to help figure out "
+"placement of your\n"
+"                \t\t\tartwork. The template is structured to allow testing "
+"of your Persona header within OSX, Windows XP and Windows Vista\n"
+"                \t\t\tflavors of the browser."
+msgstr ""
+"We've created a positioning template that can be used to help figure out "
+"placement of your\n"
+"                \t\t\tartwork. The template is structured to allow testing "
+"of your Persona header within OSX, Windows XP and Windows Vista\n"
+"                \t\t\tflavors of the browser."
+
+#: ../demo_create3.php:112
+msgid "Download the Personas Header Template:"
+msgstr "Download the Personas Header Template:"
+
+#: ../demo_create3.php:118
+msgid ""
+"The key to using this PSD template is to simply layer your Persona header "
+"image underneath one of\n"
+"                \t\t\tthe three OS layers.  Be sure to turn off any of the "
+"OS layers you aren't using, as they will\n"
+"                \t\t\toverlap each other due to their transparency."
+msgstr ""
+"The key to using this PSD template is to simply layer your Persona header "
+"image underneath one of\n"
+"                \t\t\tthe three OS layers.  Be sure to turn off any of the "
+"OS layers you aren't using, as they will\n"
+"                \t\t\toverlap each other due to their transparency."
+
+#: ../demo_create3.php:123
+msgid "Photoshop overlay layerset"
+msgstr "Photoshop overlay layerset"
+
+#: ../demo_create3.php:129
+msgid ""
+"Once you turn on an OS layer, you will be able to see where the UI elements "
+"will sit on top of\n"
+"                \t\t\tyour designs and you can flag any conflicts that may "
+"arise."
+msgstr ""
+"Once you turn on an OS layer, you will be able to see where the UI elements "
+"will sit on top of\n"
+"                \t\t\tyour designs and you can flag any conflicts that may "
+"arise."
+
+#: ../demo_create3.php:132
+msgid ""
+"Once your images are playing nice with the UI for all the OS flavors of "
+"Firefox, save final copies (PNG or JPG) -\n"
+"                \t\t\tbut be sure to check to ensure they don't exceed 300k "
+"in filesize!"
+msgstr ""
+"Once your images are playing nice with the UI for all the OS flavors of "
+"Firefox, save final copies (PNG or JPG) -\n"
+"                \t\t\tbut be sure to check to ensure they don't exceed 300k "
+"in filesize!"
+
+#: ../demo_create3.php:147
+#, php-format
+msgid "Back to Step 2"
+msgstr "Back to Step 2"
+
+#: ../demo_create3.php:150
+#, php-format
+msgid "Continue to Step 4"
+msgstr "Continue to Step 4"
+
+#: ../demo_create4.php:54
+msgid ""
+"Now that you have finalized the artwork, it is time to share! One thing to "
+"note, please do be sure\n"
+"                \t\tthat you have the rights to use whatever image or design "
+"you use in your Persona. (We don't want to\n"
+"                \t\tget any nasty lawyer letters!"
+msgstr ""
+"Now that you have finalized the artwork, it is time to share! One thing to "
+"note, please do be sure\n"
+"                \t\tthat you have the rights to use whatever image or design "
+"you use in your Persona. (We don't want to\n"
+"                \t\tget any nasty lawyer letters!"
+
+#: ../demo_create4.php:58
+msgid ""
+"Follow the link below to start the process and add your creations to the "
+"constantly growing\n"
+"                \t\tcatalog of Firefox Personas!"
+msgstr ""
+"Follow the link below to start the process and add your creations to the "
+"constantly growing\n"
+"                \t\tcatalog of Firefox Personas!"
+
+#: ../demo_create4.php:61
+#, php-format
+msgid "Go submit your first Persona:"
+msgstr "Go submit your first Persona:"
+
+#: ../demo_create4.php:67
+#, php-format
+msgid "Back to Step 3"
+msgstr "Back to Step 3"

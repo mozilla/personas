@@ -76,7 +76,7 @@
                                     <p><?= $persona['short_description'] ?></p>
                                 <?php } ?>
                                 <p><?printf(_("%d active daily users"), number_format($persona['popularity']));?></p>
-                                <p><?printf("<a href=\"%s\" class=\"view\">" . _("view details »"), $locale_conf->url('/persona/' . ($persona['id'] < 10 ? "0" : "") . $persona['id']));?></a></p>
+                                <p><?printf("<a href=\"%s\" class=\"view\">" . _("view details >>"), $locale_conf->url('/persona/' . ($persona['id'] < 10 ? "0" : "") . $persona['id']));?></a></p>
                                 
                                 <?php if($showWearThis) { ?>
                                     <p id="buttons">

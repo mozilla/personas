@@ -46,7 +46,7 @@ $locale_conf = new LANGUAGE_CONFIG($_SERVER['HTTP_HOST'], true);
 if ($locale_conf->redirect_required())
 {
     header("Location: " . $locale_conf->url($_SERVER['REQUEST_URI']));
-    echo $_SERVER['REQUEST_URI'];
+    exit;
 }
 
 class LANGUAGE_CONFIG
@@ -364,8 +364,8 @@ class LANGUAGE_CONFIG
      * @param string path to turn into a link
      */
     //TODO: what happens when the path requires https?
-    function url($docpath) {
-        $http_prefix = (empty($_SERVER['HTTPS'])) ? 'http://' : 'https://';
+    function url($docpath, $use_https=false) {
+        $http_prefix = ($use_https) ? 'https://' : 'http://';
         return "$http_prefix$this->base_url/$this->current_language$docpath";
     }
 

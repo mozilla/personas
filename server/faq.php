@@ -37,9 +37,9 @@
                                <p><?printf(_("If you are a new Personas designer, you will be asked to create a profile when
                                   you first sign up <a href=\"%s\">here</a>. You will have the option to include a \"display
                                   name\" and \"designer description\", both of which will be displayed in the public
-                                  gallery."), $locale_conf->url('/signin?return=/upload'));?></p>
+                                  gallery."), $locale_conf->url('/signin?return=/upload', true));?></p>
 
-                                  <p><?printf(_("If you are an existing Personas designer, you can edit and add to your profile <a href=\"%s\">here</a>."), $locale_conf->url('/profile'));?></p>
+                                  <p><?printf(_("If you are an existing Personas designer, you can edit and add to your profile <a href=\"%s\">here</a>."), $locale_conf->url('/profile', true));?></p>
 
                            </dd>
                 
@@ -117,7 +117,7 @@
                <ul>
                  <li><?= _("Click on the little fox mask icon in the lower left-hand corner of your browser");?></li>
                  <li><?= _("Select \"Custom Persona\", then select \"Edit\" from its sub-menu");?></li>
-                 <li><?= _("Specify a header, footer, text color and accent color for a Persona that’s locally stored on your computer");?></li>
+                 <li><?= _("Specify a header, footer, text color and accent color for a Persona that's locally stored on your computer");?></li>
                  <li><?= _("Your new Persona will be automatically selected, or you can manually choose it from the little fox mask menu");?></li>
                  </ul>
 </ol>
@@ -141,7 +141,7 @@
 
                <dt><?= _("How do I provide feedback?");?> </dt>
 
-               <dd><p><?= _("Personas is currently in beta, so we’re always looking for ways to improve the product. We’d love to hear what you think. Visit the <a href=\"https://labs.mozilla.com/forum/?CategoryID=18\">Personas</a> forums to send us your feedback.");?></p>
+               <dd><p><?= _("Personas is currently in beta, so we're always looking for ways to improve the product. We'd love to hear what you think. Visit the <a href=\"https://labs.mozilla.com/forum/?CategoryID=18\">Personas</a> forums to send us your feedback.");?></p>
 
 
 
