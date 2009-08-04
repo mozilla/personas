@@ -4,7 +4,7 @@
         <div id="inner-wrapper">
 <?php include 'nav.php'; ?>
             <div id="header">
-                <h2>A Problem Occurred</h2>
+                <h2><?= _("A Problem Occurred");?></h2>
             </div>
             <div id="maincontent">
                 <?= $_errors['error'] ?>

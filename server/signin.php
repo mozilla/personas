@@ -1,6 +1,7 @@
 <?php
 	require_once 'lib/personas_constants.php';
 	require_once 'lib/user.php';	
+	require_once "lib/language.php";
 
 	$user = new PersonaUser();
 	$_errors = array();
@@ -44,7 +45,7 @@
 		}
 		else
 		{
-			$_errors['login_user'] = "Invalid username or password. Please try again";
+			$_errors['login_user'] = _("Invalid username or password. Please try again");
 		}
 	}
 	
@@ -72,34 +73,34 @@
 		);
 		
 		if (!$captcha_response->is_valid) 
-			$_errors['captcha'] = "Invalid captcha response. Please try again.";
+			$_errors['captcha'] = _("Invalid captcha response. Please try again.");
 
 		if (!preg_match('/^[A-Z0-9\._%+-]+@[A-Z0-9\.-]+\.[A-Z]{2,4}$/i', $create['email'])) 
-			$_errors['create_email'] = "Invalid email address";
+			$_errors['create_email'] = _("Invalid email address");
 
 		if (!preg_match('/^[A-Z0-9\._-]+$/i', $create['username'])) 
-			$_errors['create_username'] = "Illegal characters in the login name (alphanumerics, period, underscore and dash only)";
+			$_errors['create_username'] = _("Illegal characters in the login name (alphanumerics, period, underscore and dash only)");
 		elseif (strlen($create['username']) > 32)
-			$_errors['create_username'] = "Please limit your login name to 32 characters or less";
+			$_errors['create_username'] = _("Please limit your login name to 32 characters or less");
 		elseif (strlen($create['username']) < 6)
-			$_errors['create_username'] = "Please use at least 6 characters in your login name";
+			$_errors['create_username'] = _("Please use at least 6 characters in your login name");
 			
 		if (strlen($password) < 6)
-			$_errors['create_password'] = "Password must be at least 6 characters long";
+			$_errors['create_password'] = _("Password must be at least 6 characters long");
 		elseif (!preg_match('/[A-Z]/i', $password) || !preg_match('/[^A-Z]/i', $password) )
-			$_errors['create_password'] = "Password should contain at least one alphabetic character and at least one non-alphabetic character";
+			$_errors['create_password'] = _("Password should contain at least one alphabetic character and at least one non-alphabetic character");
 		
 		if ($password != $passwordconf)
-			$_errors['create_passconf'] = "Password does not match confirmation";
+			$_errors['create_passconf'] = _("Password does not match confirmation");
 		
 		if (strlen($create['display_username']) > 32)
-			$_errors['create_display_username'] = "Please limit your display name to 32 characters or less";
+			$_errors['create_display_username'] = _("Please limit your display name to 32 characters or less");
 
 		if (strlen($create['description']) > 256)
-			$_errors['create_description'] = "Please limit your description to 256 characters or less";
+			$_errors['create_description'] = _("Please limit your description to 256 characters or less");
 
 		if ($user->user_exists($create['username']))
-			$_errors['create_username'] = "Login name already in use";
+			$_errors['create_username'] = _("Login name already in use");
 		
 		
 		if (count($_errors) == 0)
@@ -116,7 +117,7 @@
 		}
 	}
 
-	$title = "Login"; 
+	$title = _("Login"); 
 	include 'templates/header.php'; 
 ?>
 <body>
@@ -128,7 +129,7 @@
             </div>
             <div id="maincontent" class="login-signup">
                 <div id="breadcrumbs">
-                    Personas Home : Login    
+                    <?= _("Personas Home : Login");?>    
                 </div>
 				<?php if (array_key_exists('success_message', $_errors)) echo '<p class="logout-success">' . $_errors['success_message'] . '</p>' ?>
 <?php include 'templates/login_form.php'; ?>

@@ -20,6 +20,12 @@ function dispatchPersonaEvent(aType, aNode)
     } catch(e) {}
 }
 
+$.chooseLocale = function (currentLang) {
+    $('#language').change(function() {
+        var newLang = $("#language option:selected").attr('value');
+        location.href = location.href.replace(currentLang, newLang);
+    });
+}
 
 $.fn.slider = function (options) {
 

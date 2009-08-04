@@ -1,15 +1,15 @@
 <rss version="2.0" xmlns:media="http://search.yahoo.com/mrss/">
 <channel>
-	<title>Personas - <?= $category ?> - <?= $tab ?></title>
+	<title><?printf(_("Personas - %s - %s"), $category, $tab);?></title>
 <link><?= $path ?></link>
-<description>Personas - <?= $category ?> - <?= $tab ?></description>
+<description><?printf(_("Personas - %s - %s", $category, $tab);?></description>
 <?php
 	foreach ($list as &$persona)
 	{
 ?>
 	<item>
 		<title><?= $persona['name'] ?></title>
-		<link>http://getpersonas.com/persona/<?= $persona['id'] ?></link>
+		<link><?= $locale_conf->url('/persona/' . $persona['id']);?></link>
 		<description><?= $persona['description'] ?></description>
 		<media:content url="<?= $persona['header_url'] ?>" type="<?= $persona['media_type'] ?>">
 			<media:title><?= $persona['name'] ?></media:title>

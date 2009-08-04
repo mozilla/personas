@@ -52,7 +52,7 @@
 	$path = array_key_exists('PATH_INFO', $_SERVER) ? $_SERVER['PATH_INFO'] : '/';
 	$path = substr($path, 1); #chop the lead slash
 	list($persona_id) = explode('/', $path);
-	$page_header = 'View Personas';
+	$page_header = _("View Personas");
 	
 	if (!is_numeric($persona_id))
 		$persona_id = null;
@@ -80,15 +80,14 @@
 <?php include 'templates/nav.php'; ?>
             <div id="header">
                 <h2><?= $page_header ?></h2>
-                <h3>Your browser, your style! Dress it up with easy-to-change "skins" for your
-                Firefox.</h3>
+                <h3><?= _("Your browser, your style! Dress it up with easy-to-change \"skins\" for your Firefox.");?></h3>
             </div>
             <div id="maincontent">
-                <p id="breadcrumbs"><a href="http://www.getpersonas.com">Personas Home</a> : View Personas</p>
+                <p id="breadcrumbs"><?printf(_("<a href=\"%s\">" . _("Personas Home") . "</a> : " . _("View Personas"), $locale_conf->url('/'));?></p>
 <?php if ($persona['status'] == 1)
 		include 'templates/persona_detail.php';
 	  else
-	  	echo "We are unable to locate the persona you requested."
+	  	echo _("We are unable to locate the persona you requested.");
 ?>
 			</div>
 <?php include 'templates/category_nav.php'; ?>
@@ -101,22 +100,22 @@
 		
 
         $(document).ready(function () {
-            $("#header").ie6Warning({"message":'<div id="ie6">Upgrade your browser to get the most out of this website. <a href="%LINK%">Download Firefox for free</a>.</div>'});
+            $("#header").ie6Warning({"message":'<div id="ie6"><?= _("Upgrade your browser to get the most out of this website. <a href="%LINK%">Download Firefox for free</a>.");?></div>'});
             $("#try-button").personasButton({
-                                        'hasPersonas':'<span>wear this</span><span>&nbsp;</span>',
-                                        'hasFirefox':'<span>get personas now!</span><span>&nbsp;</span>',
-                                        'noFirefox':'<span>get personas with firefox</span><span>&nbsp;</span>'
+                                        'hasPersonas':'<span><?= _("wear this");?></span><span>&nbsp;</span>',
+                                        'hasFirefox':'<span><?= _("get personas now!");?></span><span>&nbsp;</span>',
+                                        'noFirefox':'<span><?= _("get personas with firefox");?></span><span>&nbsp;</span>'
                                         });
             
             var favorite_action = <?= $favorite_persona ? 0 : 1 ?>;
             $(".favorite a").click(function() {                 
                 //change to loading here
-              	$(this).html("loading...");
+              	$(this).html(<?= _("loading...");?>);
     			$.get('/favorite/<?= $persona_id ?>/<?= $nonce ?>', {"action": favorite_action, "ajax":true}, 
     				function(data) 
     					{ 
     						favorite_action = favorite_action ? 0 : 1;
-    						$(".favorite a").html(favorite_action ? "Add to favorites" : "Remove from favorites");
+    						$(".favorite a").html(favorite_action ? <?= _("Add to favorites") . " : " . _("Remove from favorites");?>);
                             if(favorite_action) {
                                 $(".favorite a").removeClass("favorited");
                             } else {

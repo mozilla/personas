@@ -14,7 +14,7 @@
 	{
 		if (!($category == 'Designer' && $header_text = $user->get_description($tab)))
 		{
-			$header_text = 'Your browser, your style! Dress it up with easy-to-change "skins" for your Firefox.';
+			$header_text = _("Your browser, your style! Dress it up with easy-to-change \"skins\" for your Firefox.");
 		}
 ?>
 			<div id="header">
@@ -23,7 +23,20 @@
             </div>
 <?php } ?>
 			<div id="maincontent">
-                <p id="breadcrumbs"><a href="http://www.getpersonas.com">Personas Home</a> : <a href="http://www.getpersonas.com/gallery/All/Popular">Gallery</a> : <?= $category ?><?php if ($category == 'Designer') { echo " : $display_username"; } else if ($tab != "All") { echo " : $tab"; } ?></p>
+                <p id="breadcrumbs">
+                    <?
+                        $append_extra = "";
+                        if ($category == 'Designer')
+                            $append_extra = " : $display_username";
+                        else if ($tab != "All")
+                            $append_extra = " : $tab";
+                        printf("<a href=\"%s\">" . _("Personas Home") . "</a> : <a href=\"%s\">" . _("Gallery") . "</a> : %s%s", 
+                            $locale_conf->url('/'), 
+                            $locale_conf->url('/gallery/All/Popular'), 
+                            $category, 
+                            $append_extra);
+                    ?>
+                </p>
                 <div id="gallery">
 <?php
 			
@@ -34,12 +47,12 @@
 <?php
 				if (count($list) == 0 && array_key_exists('p', $_GET))
 				{
-					echo "<p>We were unable to locate any personas that match those search terms. Please try again</p>";
+					echo _("<p>We were unable to locate any personas that match those search terms. Please try again</p>");
 				}
 			}
 			elseif (count($list) == 0)
 			{
-				echo "<p>There are no personas available here. Please use the navigation on the left to choose another category.</p>";
+				echo _("<p>There are no personas available here. Please use the navigation on the left to choose another category.</p>");
 			}
 			
 			
@@ -57,17 +70,17 @@
                                 <div class="preview">
                                     <a href="/persona/<?= ($persona['id'] < 10 ? "0" : "") . $persona['id'] ?>"><img src="<?= $persona['preview_url'] ?>" alt="<?= $persona['name'] ?>" persona="<?= $persona['json'] ?>"/></a>
                                 </div>
-                                <p class="designer"><strong>Designer:</strong> <a href="/gallery/Designer/<?= $persona['author'] ?>"><?= $persona['display_username'] ?></a></p>
-                                <p class="added"><strong>Added:</strong> <?= $persona['date'] ?></p>
+                                <p class="designer"><?printf(_("<strong>Designer:</strong> <a href=\"%s\">%s</a>"), $locale_conf->url("/gallery/Designer/" . $persona['author']), $persona['display_username']);?></p>
+                                <p class="added"><? printf(_("<strong>Added:</strong> %s") . $persona['date']);?></p>
                                 <?php if($showDescription) { ?>
                                     <p><?= $persona['short_description'] ?></p>
                                 <?php } ?>
-                                <p><?= number_format($persona['popularity']) ?> active daily users</p>
-                                <p><a href="<?= "/persona/" . ($persona['id'] < 10 ? "0" : "") . $persona['id'] ?>" class="view">view details »</a></p>
+                                <p><?printf(_("%d active daily users"), number_format($persona['popularity']));?></p>
+                                <p><?printf("<a href=\"%s\" class=\"view\">" . _("view details >>"), $locale_conf->url('/persona/' . ($persona['id'] < 10 ? "0" : "") . $persona['id']));?></a></p>
                                 
                                 <?php if($showWearThis) { ?>
                                     <p id="buttons">
-                                        <a href="#" class="button try-button" persona="<?= $persona['json'] ?>"><span>try it now</span><span>&nbsp;</span></a>
+                                        <a href="#" class="button try-button" persona="<?= $persona['json'] ?>"><span><?= _("try it now");?></span><span>&nbsp;</span></a>
                                     </p>
                                 <?php } ?>
                                 
@@ -75,9 +88,9 @@
 				if ($user->has_admin_privs() || ($tab == 'My' && $persona['locale'] == PERSONAS_LOCALE))
 				{
 ?>
-								<p><a href="/upload?id=<?= $persona['id'] ?>" target="_blank">Edit</a>
+								<p><?printf("<a href=\"%s\" target=\"_blank\">" . _("Edit") . "</a>", $locale_conf->url('/upload?id=' . $persona['id']));?>
 								| 
-								<a href="/delete/<?= $persona['id'] ?>" target="_blank">Delete</a></p>
+								<?printf("<a href=\"%s\" target=\"_blank\">" . _("Delete") . "</a>", $locale_conf->url('/delete/' . $persona['id']));?></p>
 <?php
 				}
 ?>
@@ -104,9 +117,9 @@
         
         <?php if($showWearThis) { ?>
             $(".try-button").personasButton({
-                'hasPersonas':'<span>wear this</span><span>&nbsp;</span>',
-                'hasFirefox':'<span>get personas now!</span><span>&nbsp;</span>',
-                'noFirefox':'<span>get personas with firefox</span><span>&nbsp;</span>'
+                'hasPersonas':'<span><?= _("wear this");?></span><span>&nbsp;</span>',
+                'hasFirefox':'<span><?= _("get personas now!");?></span><span>&nbsp;</span>',
+                'noFirefox':'<span><?= _("get personas with firefox");?></span><span>&nbsp;</span>'
             });
         <?php } ?>
     </script>

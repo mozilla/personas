@@ -7,7 +7,7 @@
 	$db = new PersonaStorage();
 	$user = new PersonaUser();
 
-	$title = "Updated"; 
+	$title = _("Updated"); 
 	include 'templates/header.php'; 
 ?>
 <body class="updated">
@@ -15,7 +15,7 @@
         <div id="inner-wrapper">
 <?php include 'templates/nav.php'; ?>
             <div id="header">
-                <h2>You've been updated to the latest version of Personas!</h2>
+                <h2><?= _("You've been updated to the latest version of Personas!");?></h2>
 
             </div>
             

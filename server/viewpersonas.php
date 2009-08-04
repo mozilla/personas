@@ -40,6 +40,7 @@
 	require_once 'lib/personas_functions.php';	
 	require_once 'lib/storage.php';
 	require_once 'lib/user.php';
+	require_once "lib/language.php";
 	
 	$db = new PersonaStorage();
 	$user = new PersonaUser();
@@ -55,7 +56,7 @@
 	
 	$categories = $db->get_categories();
 	array_unshift($categories, 'All');
-	$tabs = array('Popular', 'Recent', 'All', 'My', 'Favorites');
+	$tabs = array(_('Popular'), _('Recent'), _('All'), _('My'), _('Favorites'));
 	
 	$path = array_key_exists('PATH_INFO', $_SERVER) ? $_SERVER['PATH_INFO'] : '/';
 	$path = substr($path, 1); #chop the lead slash
@@ -63,7 +64,7 @@
 
 	$category = urldecode(ucfirst($category));
 		
-	$page_header = "View Personas";
+	$page_header = _("View Personas");
 
 	$list = array(); #grab the appropriate personas for display
 	
@@ -75,7 +76,7 @@
 		if ($tab) #tab is actually the author here
 		{
 			$list = $db->get_persona_by_author($tab); 
-			$title = $page_header = "Personas by " . $display_username;
+			$title = $page_header = "Personas by " . $display_username; //TODO
 			$showWearThis = true;
 			$showDescription = false;
 		}
@@ -83,40 +84,40 @@
 	else
 	{
 		if (!in_array($category, $categories))
-			$category = 'All';
+			$category = _('All');
 
 		switch(strtolower($tab))
 		{
-			case 'all':
+			case _('all'): // TODO: should these be localized?
 				$page = is_numeric($page) && $page > 0 ? $page : 1;
-				$list = $db->get_all_personas($category == 'All' ? null : $category, $page - 1);
+				$list = $db->get_all_personas($category == _('All') ? null : $category, $page - 1);
 				break;
-			case 'recent':
-				$list = $db->get_recent_personas($category == 'All' ? null : $category);
+			case _('recent'):
+				$list = $db->get_recent_personas($category == _('All') ? null : $category);
 				break;
-			case 'my':
+			case _('my'):
 				$user->force_signin();
-				$title = $page_header = "My Personas";
+				$title = $page_header = _("My Personas");
 				if ($user->get_username())
-					$list = $db->get_persona_by_author($user->get_username(), $category == 'All' ? null : $category);	
+					$list = $db->get_persona_by_author($user->get_username(), $category == _('All') ? null : $category);	
 				break;
-			case 'favorites':
+			case _('favorites'):
 				$user->force_signin();
-				$title = $page_header = "My Favorite Personas";
+				$title = $page_header = _("My Favorite Personas");
 				if ($user->get_username())
 					$list = $db->get_user_favorites($user->get_username(), $category);
 				break;
-			case 'search':
-				$title = $page_header = 'Search Personas';
+			case _('search'):
+				$title = $page_header = _('Search Personas');
 				if (array_key_exists('p', $_GET) && $_GET['p'])
 				{
-					$title = $page_header = "Personas Search Results for " . htmlspecialchars($_GET['p']);
+					$title = $page_header = "Personas Search Results for " . htmlspecialchars($_GET['p']);  //TODO
 					$list = $db->search_personas($_GET['p'], $category, PERSONA_GALLERY_PAGE_SIZE);
 				}
 				break;
 			default: #should default to popular
-				$tab = 'Popular';
-				$list = $db->get_popular_personas($category == 'All' ? null : $category);
+				$tab = _('Popular');
+				$list = $db->get_popular_personas($category == _('All') ? null : $category);
 				break;
 		}
 	}
@@ -144,7 +145,7 @@
 		{
 			$persona['preview_url'] = PERSONAS_LIVE_PREFIX . '/' . url_prefix($persona['id']) . '/' . "preview.jpg";
 			$persona['json'] = htmlentities(json_encode(extract_record_data($persona)));
-			$persona['date'] = date("n/j/Y", strtotime($persona['approve']));
+			$persona['date'] = date("n/j/Y", strtotime($persona['approve']));   //TODO: don't we have to localize dates too?
 			$persona['short_description'] = $persona['description'];
 			if (strlen($persona['short_description']) > $description_max)
 			{

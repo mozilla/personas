@@ -45,13 +45,13 @@
 	
 	function send_delete_email($address, $reason, $name)
 	{
-		$message = "We have had to remove your persona '$name' from the gallery for the following reason: $reason.\n\n"; 
-		$message .= "If you have any questions about this decision, please contact us at personas@mozilla.com. We look forward to seeing your contributions to the community in the future.\n\n";
-		$message .= "Best Wishes,\n";
-		$message .= "The Personas Team\n";
+		$message = sprintf(_("We have had to remove your persona '%s' from the gallery for the following reason: %s.\n\n
+		    If you have any questions about this decision, please contact us at personas@mozilla.com. We look forward to seeing your contributions to the community in the future.\n\n
+		    Best Wishes,\n
+		    The Personas Team\n"), $name, $reason);
 		
-		$header = "From: personas@mozilla.com\r\n";
-		return mail($address, 'Removing a persona', $message, $header);
+		$header = "From: personas@mozilla.com\r\n"; //TODO
+		return mail($address, _('Removing a persona'), $message, $header);
 	}
 
 
@@ -76,7 +76,7 @@
 	
 	if (!($user->has_admin_privs() || $persona['author'] == $auth_user))
 	{
-		$override_error = "You don't have permission to edit that";
+		$override_error = _("You don't have permission to edit that");
 		include 'templates/delete_persona_tmpl.php';
 		exit;
 	}
@@ -87,7 +87,7 @@
 		$db->reject_persona($persona['id']);
 		if ($persona['author'] != $auth_user)
 			send_delete_email($user->get_email($persona['author']), $_POST['dreason'], $persona['name']);
-		$db->log_action($user->get_username(), $persona['id'], "Pulled" . (array_key_exists('dreason', $_POST) ? " - " . $_POST['dreason'] : ""));
+		$db->log_action($user->get_username(), $persona['id'], "Pulled" . (array_key_exists('dreason', $_POST) ? " - " . $_POST['dreason'] : ""));  //TODO: localizing logs necessary?
 		include 'templates/delete_persona_success_tmpl.php';
 	}
 	else

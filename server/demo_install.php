@@ -1,9 +1,10 @@
 <?php
 	require_once 'lib/personas_constants.php';
 	require_once 'lib/user.php';	
+    require_once 'lib/language.php';
 
 	$user = new PersonaUser();
-	$title = "How to Get Started"; 
+	$title = _("How to Get Started"); 
 	include 'templates/header.php'; 
 ?>
 <body>
@@ -11,15 +12,15 @@
         <div id="inner-wrapper">
 <?php include 'templates/nav.php'; ?>
             <div id="header">
-                <h2>Watch Our Demo</h2>
-                <h3>Personas are lightweight, easy to install and easy to change “skins” for your Firefox web browser.</h3>
+                <h2><?= _("Watch Our Demo");?></h2>
+                <h3><?= _("Personas are lightweight, easy to install and easy to change \"skins\" for your Firefox web browser.");?></h3>
             </div>
             <div id="maincontent" class="demo">
                 <div id="breadcrumbs">
-                    <a href="/">Personas Home</a> : Watch Our Demo    
+                    <?printf("<a href=\"%s\">" . _("Personas Home") . "</a> : " . _("Watch Our Demo"), $locale_conf->url('/'));?>
                 </div>
-                <h3>How to Get Started</h3>
-                
+                <h3><?= _("How to Get Started");?></h3>
+                    <? // This really should be converted to open <video> :-P ?>
 					<object width="400" height="300"><param name="allowfullscreen" value="true"/>
 					<param name="allowscriptaccess" value="always" />
 					<param name="movie" value="http://vimeo.com/moogaloop.swf?clip_id=3841582&amp;server=vimeo.com&amp;show_title=1&amp;show_byline=1&amp;show_portrait=0&amp;color=&amp;fullscreen=1" />
