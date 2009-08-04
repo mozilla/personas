@@ -25,7 +25,7 @@ msgid "How To"
 msgstr "How To"
 
 #: ../demo_create2.php:16 ../demo_install.php:16 ../demo_create.php:16
-#: ../faq.php:17 ../demo_create3.php:17 ../demo_create4.php:17
+#: ../demo_create3.php:17 ../demo_create4.php:17
 msgid ""
 "Personas are lightweight, easy to install and easy to change \"skins\" for "
 "your Firefox web browser."
@@ -42,8 +42,7 @@ msgstr ""
 #: ../templates/forgot_password_tmpl.php:10
 #: ../templates/forgot_password_thanks_tmpl.php:11 ../templates/gallery.php:33
 #: ../demo_install.php:20 ../demo_create.php:20 ../privacy.php:19
-#: ../faq.php:21 ../personadetail.php:86 ../demo_create3.php:21
-#: ../demo_create4.php:21
+#: ../personadetail.php:86 ../demo_create3.php:21 ../demo_create4.php:21
 #, php-format
 msgid "Personas Home"
 msgstr "Personas Home"
@@ -231,54 +230,6 @@ msgstr "You have been logged out."
 msgid "Return to the Personas Homepage"
 msgstr "Return to the Personas Homepage"
 
-#: ../index.php:11
-msgid "Dress up your web browser"
-msgstr "Dress up your web browser"
-
-#: ../index.php:19
-msgid "What will your browser wear today?"
-msgstr "What will your browser wear today?"
-
-#: ../index.php:20
-msgid ""
-"Personas are lightweight, easy-to-install and easy-to-change \"skins\" for "
-"your Firefox web browser."
-msgstr ""
-"Personas are lightweight, easy-to-install and easy-to-change \"skins\" for "
-"your Firefox web browser."
-
-#: ../index.php:24
-msgid ""
-"<a href=\"https://addons.mozilla.org/firefox/downloads/latest/10900\" class="
-"\"get-personas\" id=\"download\"><span>Get Personas for Firefox - Free</span>"
-msgstr ""
-"<a href=\"https://addons.mozilla.org/firefox/downloads/latest/10900\" class="
-"\"get-personas\" id=\"download\"><span>Get Personas for Firefox - Free</span>"
-
-#: ../index.php:26
-msgid "Get Firefox and Personas - Free"
-msgstr "Get Firefox and Personas - Free"
-
-#: ../index.php:29
-msgid "Firefox Add-on for Windows, Mac or Linux"
-msgstr "Firefox Add-on for Windows, Mac or Linux"
-
-#: ../index.php:35
-msgid "Theme your browser according to your mood, hobby or season."
-msgstr "Theme your browser according to your mood, hobby or season."
-
-#: ../index.php:36
-msgid "Click the green download button to get started!"
-msgstr "Click the green download button to get started!"
-
-#: ../index.php:52 ../templates/delete_persona_tmpl.php:53
-msgid ""
-"Upgrade your browser to get the most out of this website. <a href=\"%LINK%"
-"\">Download Firefox for free</a>."
-msgstr ""
-"Upgrade your browser to get the most out of this website. <a href=\"%LINK%"
-"\">Download Firefox for free</a>."
-
 #: ../profile.php:32 ../signin.php:79
 msgid "Invalid email address"
 msgstr "Invalid email address"
@@ -292,7 +243,6 @@ msgid "Please limit your description to 256 characters or less"
 msgstr "Please limit your description to 256 characters or less"
 
 #: ../profile.php:54 ../profile.php:62 ../profile.php:73
-#: ../templates/change_user_details.php:2
 msgid "Change User Details"
 msgstr "Change User Details"
 
@@ -682,7 +632,6 @@ msgid "How to Get Started"
 msgstr "How to Get Started"
 
 #: ../templates/get_personas.php:29 ../templates/get_personas.php:34
-#: ../faq.php:8 ../faq.php:16 ../faq.php:21
 #, php-format
 msgid "Frequent Questions"
 msgstr "Frequent Questions"
@@ -701,41 +650,9 @@ msgstr ""
 msgid "Get Firefox and Personas"
 msgstr "Get Firefox and Personas"
 
-#: ../templates/footer.php:4
-msgid "Other languages:"
-msgstr "Other languages:"
-
-#: ../templates/footer.php:16
-#, php-format
-#, %s year
-msgid "Copyright &copy; %s Mozilla."
-msgstr "Copyright &copy; %s Mozilla."
-
-#: ../templates/footer.php:16
-#, php-format
-msgid ""
-" <a href=\"http://labs.mozilla.com/projects/firefox-personas/\">Personas</a> "
-"is a <a href=\"http://labs.mozilla.com\">Mozilla Labs</a> experiment. | <a "
-"href=\"http://labs.mozilla.com/about-labs/\">"
-msgstr ""
-" <a href=\"http://labs.mozilla.com/projects/firefox-personas/\">Personas</a> "
-"is a <a href=\"http://labs.mozilla.com\">Mozilla Labs</a> experiment. | <a "
-"href=\"http://labs.mozilla.com/about-labs/\">"
-
-#: ../templates/footer.php:16
-#, php-format
-msgid "About Mozilla Labs"
-msgstr "About Mozilla Labs"
-
-#: ../templates/footer.php:16
-#, php-format
-msgid "Privacy"
-msgstr "Privacy"
-
 #. TODO lang="en"?
 #: ../templates/header.php:13
 #, php-format
-#, %s title
 msgid "Personas for Firefox | %s"
 msgstr "Personas for Firefox | %s"
 
@@ -765,7 +682,6 @@ msgstr "Movers and Shakers"
 #: ../templates/persona_detail.php:39 ../templates/gallery.php:78
 #: ../templates/popular_personas.php:16
 #, php-format
-#, %d number of active daily users 
 msgid "%d active daily users"
 msgstr "%d active daily users"
 
@@ -858,7 +774,6 @@ msgstr "submit"
 
 #: ../templates/upload_persona_tmpl.php:109
 #, php-format
-#, %s url
 msgid ""
 "By clicking submit I affirm that I am the rightful owner of this content "
 "(see <a href=\"%s\" target=\"_blank\">guidelines</a>) and understand that "
@@ -979,7 +894,6 @@ msgstr ""
 
 #: ../templates/nav.php:5
 #, php-format
-#, %s username 
 msgid "Welcome, %s"
 msgstr "Welcome, %s"
 
@@ -1002,7 +916,7 @@ msgstr "You have been signed out | "
 msgid "Mozilla Labs Personas"
 msgstr "Mozilla Labs Personas"
 
-#: ../templates/nav.php:24 ../firstrun.php:28
+#: ../templates/nav.php:24
 msgid "Check it out! Your browser's all dressed up."
 msgstr "Check it out! Your browser's all dressed up."
 
@@ -1062,21 +976,21 @@ msgid "Upgrade your browser to get the most out of this website. <a href="
 msgstr "Upgrade your browser to get the most out of this website. <a href="
 
 #: ../templates/delete_persona_success_tmpl.php:35
-#: ../templates/delete_persona_tmpl.php:55 ../templates/gallery.php:118
+#: ../templates/delete_persona_tmpl.php:55 ../templates/gallery.php:120
 #: ../personadetail.php:105
 #, php-format
 msgid "wear this"
 msgstr "wear this"
 
 #: ../templates/delete_persona_success_tmpl.php:36
-#: ../templates/delete_persona_tmpl.php:56 ../templates/gallery.php:119
+#: ../templates/delete_persona_tmpl.php:56 ../templates/gallery.php:121
 #: ../personadetail.php:106
 #, php-format
 msgid "get personas now!"
 msgstr "get personas now!"
 
 #: ../templates/delete_persona_success_tmpl.php:37
-#: ../templates/delete_persona_tmpl.php:57 ../templates/gallery.php:120
+#: ../templates/delete_persona_tmpl.php:57 ../templates/gallery.php:122
 #: ../personadetail.php:107
 #, php-format
 msgid "get personas with firefox"
@@ -1094,10 +1008,16 @@ msgstr "Delete Reason:"
 msgid "confirm deletion"
 msgstr "confirm deletion"
 
+#: ../templates/delete_persona_tmpl.php:53
+msgid ""
+"Upgrade your browser to get the most out of this website. <a href=\"%LINK%"
+"\">Download Firefox for free</a>."
+msgstr ""
+"Upgrade your browser to get the most out of this website. <a href=\"%LINK%"
+"\">Download Firefox for free</a>."
+
 #: ../templates/forgot_password_done_tmpl.php:10
 #, php-format
-#, %s url
-#, %s url
 msgid ""
 "<a href=\"%s\">Personas Home</a> : <a href=\"%s\">Sign In</a> : Forgot Your "
 "Password?"
@@ -1107,7 +1027,6 @@ msgstr ""
 
 #: ../templates/forgot_password_done_tmpl.php:11
 #, php-format
-#, %s url
 msgid "Your password has been reset. You may <a href=\"%s\">sign in</a> now."
 msgstr "Your password has been reset. You may <a href=\"%s\">sign in</a> now."
 
@@ -1139,93 +1058,12 @@ msgstr "continue"
 
 #: ../templates/gallery_rss.php:3 ../templates/gallery_rss.php:5
 #, php-format
-#, %s category
-#, %s tab
 msgid "Personas - %s - %s"
 msgstr "Personas - %s - %s"
-
-#: ../templates/change_user_details.php:5
-msgid "Login Name:"
-msgstr "Login Name:"
-
-#: ../templates/change_user_details.php:9 ../templates/signup_form.php:8
-msgid "Email"
-msgstr "Email"
-
-#: ../templates/change_user_details.php:14 ../templates/signup_form.php:18
-msgid "Display Username*"
-msgstr "Display Username*"
-
-#: ../templates/change_user_details.php:20 ../templates/signup_form.php:34
-msgid "Designer Description*"
-msgstr "Designer Description*"
-
-#: ../templates/change_user_details.php:25 ../templates/signup_form.php:39
-msgid "I'd like to receive news and information about Personas"
-msgstr "I'd like to receive news and information about Personas"
-
-#: ../templates/change_user_details.php:26 ../templates/signup_form.php:59
-msgid ""
-"* <i>denotes an optional field. These entries will be displayed in the "
-"personas gallery.</i>"
-msgstr ""
-"* <i>denotes an optional field. These entries will be displayed in the "
-"personas gallery.</i>"
-
-#: ../templates/change_user_details.php:30 ../templates/signup_form.php:63
-msgid ""
-"Mozilla values your privacy. We will not sell or rent your email address."
-msgstr ""
-"Mozilla values your privacy. We will not sell or rent your email address."
-
-#: ../templates/signup_form.php:2
-msgid "New Personas Designer?"
-msgstr "New Personas Designer?"
-
-#: ../templates/signup_form.php:13
-msgid "Login Name"
-msgstr "Login Name"
-
-#: ../templates/signup_form.php:23 ../templates/login_form.php:13
-msgid "Password"
-msgstr "Password"
-
-#: ../templates/signup_form.php:28
-msgid "Confirm Password"
-msgstr "Confirm Password"
-
-#: ../templates/signup_form.php:60
-msgid "sign me up"
-msgstr "sign me up"
 
 #: ../templates/pagination.php:18
 msgid "Page:"
 msgstr "Page:"
-
-#: ../templates/login_form.php:2
-msgid "Already a Personas Designer?"
-msgstr "Already a Personas Designer?"
-
-#: ../templates/login_form.php:8
-msgid "Username"
-msgstr "Username"
-
-#: ../templates/login_form.php:15
-msgid "Minimum 6 characters"
-msgstr "Minimum 6 characters"
-
-#: ../templates/login_form.php:18
-msgid "Remember me on this computer"
-msgstr "Remember me on this computer"
-
-#: ../templates/login_form.php:19
-msgid "sign in"
-msgstr "sign in"
-
-#: ../templates/login_form.php:21
-#, php-format
-msgid "Forgot your password?"
-msgstr "Forgot your password?"
 
 #: ../templates/forgot_password_thanks_tmpl.php:8
 msgid "Follow the easy steps below to start dressing up your browser!"
@@ -1261,14 +1099,11 @@ msgstr ""
 
 #: ../templates/gallery.php:73
 #, php-format
-#, %s url
-#, %s username
 msgid "<strong>Designer:</strong> <a href=\"%s\">%s</a>"
 msgstr "<strong>Designer:</strong> <a href=\"%s\">%s</a>"
 
 #: ../templates/gallery.php:74
 #, php-format
-#, %s date
 msgid "<strong>Added:</strong> %s"
 msgstr "<strong>Added:</strong> %s"
 
@@ -1301,7 +1136,6 @@ msgstr "Watch Our Demo"
 
 #: ../demo_create.php:20 ../personadetail.php:86
 #, php-format
-#, %s url
 msgid "<a href=\"%s\">"
 msgstr "<a href=\"%s\">"
 
@@ -1377,13 +1211,11 @@ msgstr "images over 3000px x 200px will not be approved"
 
 #: ../demo_create.php:123
 #, php-format
-#, %url
 msgid "<b><a href=\"%s\">Continue to Step 2</a> &raquo;</b>"
 msgstr "<b><a href=\"%s\">Continue to Step 2</a> &raquo;</b>"
 
 #: ../demo_create.php:134 ../demo_create4.php:79
 #, php-format
-#, %s url
 msgid ""
 "Did you know you can test a Persona before you submit it?  <b><a href=\"%s"
 "\">Find out how!</a>&raquo;</b>"
@@ -1493,8 +1325,6 @@ msgstr ""
 
 #: ../upload_forms.php:179
 #, php-format
-#, %d width 
-#, %d height 
 msgid ""
 "Please make sure your header image is at least 2500x200 pixels (it appears "
 "to be %dx%d)"
@@ -1504,8 +1334,6 @@ msgstr ""
 
 #: ../upload_forms.php:181
 #, php-format
-#, %d width 
-#, %d height 
 msgid ""
 "Please make sure your header image is less than 500 pixels tall so that it "
 "can appear in the browser (it appears to be %dx%d)"
@@ -1523,8 +1351,6 @@ msgstr ""
 
 #: ../upload_forms.php:191
 #, php-format
-#, %d width 
-#, %d height 
 msgid ""
 "Please make sure your footer image is at least 2500x100 pixels (it appears "
 "to be %dx%d)"
@@ -1534,8 +1360,6 @@ msgstr ""
 
 #: ../upload_forms.php:193
 #, php-format
-#, %d width 
-#, %d height 
 msgid ""
 "Please make sure your footer image is less than 250 pixels tall so that it "
 "can appear in the browser (it appears to be %dx%d)"
@@ -1569,8 +1393,6 @@ msgstr ""
 
 #: ../delete_persona.php:48
 #, php-format
-#, %s name
-#, %s reason
 msgid ""
 "We have had to remove your persona '%s' from the gallery for the following "
 "reason: %s.\n"
@@ -1933,546 +1755,8 @@ msgstr "search"
 msgid "Search Personas"
 msgstr "Search Personas"
 
-#: ../faq.php:25
-msgid "What are Personas?"
-msgstr "What are Personas?"
-
-#: ../faq.php:27
-msgid ""
-"Personas are lightweight \"skins\" that change the look of your Firefox web "
-"browser. You can easily switch between Personas with just a few clicks. "
-"There are hundreds of Personas to choose from, with more added every day. "
-"You can even create your own and share it with others."
-msgstr ""
-"Personas are lightweight \"skins\" that change the look of your Firefox web "
-"browser. You can easily switch between Personas with just a few clicks. "
-"There are hundreds of Personas to choose from, with more added every day. "
-"You can even create your own and share it with others."
-
-#: ../faq.php:29
-msgid "How do I add Personas to my Firefox?"
-msgstr "How do I add Personas to my Firefox?"
-
-#: ../faq.php:30
-#, php-format
-#, %s url
-msgid ""
-"In less than 60 seconds, you can install a Persona and transform the look of "
-"your Firefox web browser. Visit <a href=\"%s\">getpersonas.com</a> and click "
-"the download button. After installation, you will be asked to restart "
-"Firefox."
-msgstr ""
-"In less than 60 seconds, you can install a Persona and transform the look of "
-"your Firefox web browser. Visit <a href=\"%s\">getpersonas.com</a> and click "
-"the download button. After installation, you will be asked to restart "
-"Firefox."
-
-#: ../faq.php:32
-#, php-format
-#, %s url
-msgid ""
-"If you want to see how it works, you can watch a quick video demonstration "
-"<a href=\"%s\">here</a>."
-msgstr ""
-"If you want to see how it works, you can watch a quick video demonstration "
-"<a href=\"%s\">here</a>."
-
-#: ../faq.php:34
-msgid ""
-"Once Personas are installed, you'll be able to choose and change your "
-"selected Persona any time simply by clicking on the little fox mask in the "
-"lower left-hand corner of your browser window."
-msgstr ""
-"Once Personas are installed, you'll be able to choose and change your "
-"selected Persona any time simply by clicking on the little fox mask in the "
-"lower left-hand corner of your browser window."
-
-#: ../faq.php:35
-msgid "How do I create or edit my designer profile?"
-msgstr "How do I create or edit my designer profile?"
-
-#: ../faq.php:37
-#, php-format
-#, %s url
-msgid ""
-"If you are a new Personas designer, you will be asked to create a profile "
-"when\n"
-"                                  you first sign up <a href=\"%s\">here</a>. "
-"You will have the option to include a \"display\n"
-"                                  name\" and \"designer description\", both "
-"of which will be displayed in the public\n"
-"                                  gallery."
-msgstr ""
-"If you are a new Personas designer, you will be asked to create a profile "
-"when\n"
-"                                  you first sign up <a href=\"%s\">here</a>. "
-"You will have the option to include a \"display\n"
-"                                  name\" and \"designer description\", both "
-"of which will be displayed in the public\n"
-"                                  gallery."
-
-#: ../faq.php:42
-#, php-format
-#, %s url
-msgid ""
-"If you are an existing Personas designer, you can edit and add to your "
-"profile <a href=\"%s\">here</a>."
-msgstr ""
-"If you are an existing Personas designer, you can edit and add to your "
-"profile <a href=\"%s\">here</a>."
-
-#: ../faq.php:46
-msgid "How can I add or change my current Persona?"
-msgstr "How can I add or change my current Persona?"
-
-#: ../faq.php:47
-msgid "There are two easy ways to change your Persona:"
-msgstr "There are two easy ways to change your Persona:"
-
-#: ../faq.php:49
-#, php-format
-#, %s url
-msgid ""
-"Visit the Personas website at %s, check out the gallery, choose your "
-"favorite Persona, and click on your choice to instantly change the look of "
-"your browser.<br> OR"
-msgstr ""
-"Visit the Personas website at %s, check out the gallery, choose your "
-"favorite Persona, and click on your choice to instantly change the look of "
-"your browser.<br> OR"
-
-#: ../faq.php:50
-msgid ""
-"Click on the little fox mask in the lower left hand corner of your browser, "
-"then select a Persona that suits your style."
-msgstr ""
-"Click on the little fox mask in the lower left hand corner of your browser, "
-"then select a Persona that suits your style."
-
-#: ../faq.php:53
-msgid ""
-"I can't seem to find Personas for Firefox after I downloaded it and "
-"installed it.  Where is it?"
-msgstr ""
-"I can't seem to find Personas for Firefox after I downloaded it and "
-"installed it.  Where is it?"
-
-#: ../faq.php:54
-msgid ""
-"Look for the little fox mask in the lower left-hand corner of your Firefox "
-"browser window."
-msgstr ""
-"Look for the little fox mask in the lower left-hand corner of your Firefox "
-"browser window."
-
-#: ../faq.php:57
-msgid "Can I create my own Persona?"
-msgstr "Can I create my own Persona?"
-
-#: ../faq.php:59
-#, php-format
-#, %s url
-msgid ""
-"Absolutely! All you need to do is create two graphics files in your favorite "
-"graphics editing program (<em>e.g.</em>, Photoshop). To get started read "
-"more about how to <a href=\"%s\">create a Persona</a>."
-msgstr ""
-"Absolutely! All you need to do is create two graphics files in your favorite "
-"graphics editing program (<em>e.g.</em>, Photoshop). To get started read "
-"more about how to <a href=\"%s\">create a Persona</a>."
-
-#: ../faq.php:61
-msgid "Are there any guidelines for content allowed in the Personas gallery?"
-msgstr "Are there any guidelines for content allowed in the Personas gallery?"
-
-#: ../faq.php:62
-msgid ""
-"Yes. We are big fans of creativity, but want to ensure that the art "
-"displayed in the Personas gallery meets a basic set of guidelines. "
-"Specifically:"
-msgstr ""
-"Yes. We are big fans of creativity, but want to ensure that the art "
-"displayed in the Personas gallery meets a basic set of guidelines. "
-"Specifically:"
-
-#: ../faq.php:65
-msgid ""
-"The logo, image, or art within your design is either your original work, or "
-"you are authorized to license and distribute it"
-msgstr ""
-"The logo, image, or art within your design is either your original work, or "
-"you are authorized to license and distribute it"
-
-#: ../faq.php:66
-msgid ""
-"Your design does not contain provocative, lewd, or sexual content (ie, it is "
-"PG-rated)"
-msgstr ""
-"Your design does not contain provocative, lewd, or sexual content (ie, it is "
-"PG-rated)"
-
-#: ../faq.php:67
-msgid "Your design does not include any identifiable non-celebrity person(s)"
-msgstr "Your design does not include any identifiable non-celebrity person(s)"
-
-#: ../faq.php:68
-msgid ""
-"Your design does not contain violence or violent acts, nor does it exhibit "
-"discriminatory behavior or signs"
-msgstr ""
-"Your design does not contain violence or violent acts, nor does it exhibit "
-"discriminatory behavior or signs"
-
-#: ../faq.php:69
-msgid ""
-"Your design does not violate any applicable law, regulation or ordinance"
-msgstr ""
-"Your design does not violate any applicable law, regulation or ordinance"
-
-#: ../faq.php:72
-msgid "After creating a Persona, can I edit the design?"
-msgstr "After creating a Persona, can I edit the design?"
-
-#: ../faq.php:73
-#, php-format
-#, %s url
-msgid ""
-"Yes. If at any point you need to edit your Persona design \n"
-"                after it has been submitted to the gallery, simply visit <a "
-"href=\"%s\">this link</a>, log in to\n"
-"               your account, and go to the \"Personas Home : Gallery : All : "
-"My\" section. \n"
-"               From there, you can make changes to the settings you entered "
-"upon creation."
-msgstr ""
-"Yes. If at any point you need to edit your Persona design \n"
-"                after it has been submitted to the gallery, simply visit <a "
-"href=\"%s\">this link</a>, log in to\n"
-"               your account, and go to the \"Personas Home : Gallery : All : "
-"My\" section. \n"
-"               From there, you can make changes to the settings you entered "
-"upon creation."
-
-#: ../faq.php:78
-msgid "What's the maximum file size allowable for my persona?"
-msgstr "What's the maximum file size allowable for my persona?"
-
-#: ../faq.php:80
-msgid ""
-"The persona that you upload may not exceed 300KB for the header or the "
-"footer\n"
-"               image."
-msgstr ""
-"The persona that you upload may not exceed 300KB for the header or the "
-"footer\n"
-"               image."
-
-#: ../faq.php:85
-msgid ""
-"Do I still retain ownership over Persona artwork that I upload to the "
-"Personas website?"
-msgstr ""
-"Do I still retain ownership over Persona artwork that I upload to the "
-"Personas website?"
-
-#: ../faq.php:87
-msgid "Yes."
-msgstr "Yes."
-
-#: ../faq.php:90
-msgid "What's the difference between a Firefox theme and Personas for Firefox?"
-msgstr ""
-"What's the difference between a Firefox theme and Personas for Firefox?"
-
-#: ../faq.php:92
-msgid ""
-"Personas allow you to \"skin\" the top and bottom areas of Firefox only (the "
-"header and footer of the browser chrome) without any change to the look of "
-"the navigation buttons or menus. With Personas, you can easily switch "
-"between many different lightweight skins with no further installation "
-"required."
-msgstr ""
-"Personas allow you to \"skin\" the top and bottom areas of Firefox only (the "
-"header and footer of the browser chrome) without any change to the look of "
-"the navigation buttons or menus. With Personas, you can easily switch "
-"between many different lightweight skins with no further installation "
-"required."
-
-#: ../faq.php:94
-msgid ""
-"Like Personas, a Firefox theme is a type of Firefox add-on that extends the "
-"functionality of your browser and allows you to \"skin\" it in a variety of "
-"ways. However, unlike Personas, a theme changes the appearance of navigation "
-"buttons, toolbars and menus."
-msgstr ""
-"Like Personas, a Firefox theme is a type of Firefox add-on that extends the "
-"functionality of your browser and allows you to \"skin\" it in a variety of "
-"ways. However, unlike Personas, a theme changes the appearance of navigation "
-"buttons, toolbars and menus."
-
-#: ../faq.php:97
-msgid ""
-"If I have an existing Firefox theme installed, will Personas still work?"
-msgstr ""
-"If I have an existing Firefox theme installed, will Personas still work?"
-
-#: ../faq.php:99
-msgid ""
-"Yes, Personas will work. However, it's strongly recommended that you "
-"uninstall a theme when using Personas. To disable a current Firefox theme, "
-"go to the \"Tools\" menu and select \"Add-ons\" to display the add-ons "
-"manager. Then click on the \"Themes\" button at the top of the add-ons "
-"manager window, click on the \"Default\" theme for Firefox, and click on "
-"\"Use theme\". After a quick restart, you'll be ready to dress up your "
-"browser with Personas."
-msgstr ""
-"Yes, Personas will work. However, it's strongly recommended that you "
-"uninstall a theme when using Personas. To disable a current Firefox theme, "
-"go to the \"Tools\" menu and select \"Add-ons\" to display the add-ons "
-"manager. Then click on the \"Themes\" button at the top of the add-ons "
-"manager window, click on the \"Default\" theme for Firefox, and click on "
-"\"Use theme\". After a quick restart, you'll be ready to dress up your "
-"browser with Personas."
-
-#: ../faq.php:102
-msgid "Do I have to add my Persona to the public gallery?"
-msgstr "Do I have to add my Persona to the public gallery?"
-
-#: ../faq.php:104
-msgid ""
-"No. When you upload your Persona at GetPersonas.com, you can choose to add "
-"it to the public gallery or keep it private. If you want to upload a custom "
-"Persona without visiting GetPersonas.com, you can do so anytime by following "
-"these steps:"
-msgstr ""
-"No. When you upload your Persona at GetPersonas.com, you can choose to add "
-"it to the public gallery or keep it private. If you want to upload a custom "
-"Persona without visiting GetPersonas.com, you can do so anytime by following "
-"these steps:"
-
-#: ../faq.php:107
-msgid "Enable custom Personas in your version of Personas:"
-msgstr "Enable custom Personas in your version of Personas:"
-
-#: ../faq.php:109 ../faq.php:118
-msgid ""
-"Click on the little fox mask icon in the lower left-hand corner of your "
-"browser"
-msgstr ""
-"Click on the little fox mask icon in the lower left-hand corner of your "
-"browser"
-
-#: ../faq.php:110
-msgid "Select \"Preferences...\""
-msgstr "Select \"Preferences...\""
-
-#: ../faq.php:111
-msgid "Under \"Advanced\", select \"Show Custom Persona Menu\""
-msgstr "Under \"Advanced\", select \"Show Custom Persona Menu\""
-
-#: ../faq.php:112
-msgid "Close the preferences window"
-msgstr "Close the preferences window"
-
-#: ../faq.php:116
-msgid "Create your custom Persona:"
-msgstr "Create your custom Persona:"
-
-#: ../faq.php:119
-msgid "Select \"Custom Persona\", then select \"Edit\" from its sub-menu"
-msgstr "Select \"Custom Persona\", then select \"Edit\" from its sub-menu"
-
-#: ../faq.php:120
-msgid ""
-"Specify a header, footer, text color and accent color for a Persona that's "
-"locally stored on your computer"
-msgstr ""
-"Specify a header, footer, text color and accent color for a Persona that's "
-"locally stored on your computer"
-
-#: ../faq.php:121
-msgid ""
-"Your new Persona will be automatically selected, or you can manually choose "
-"it from the little fox mask menu"
-msgstr ""
-"Your new Persona will be automatically selected, or you can manually choose "
-"it from the little fox mask menu"
-
-#: ../faq.php:125
-msgid "What kind of computer and operating system does Personas work with?"
-msgstr "What kind of computer and operating system does Personas work with?"
-
-#: ../faq.php:127
-msgid ""
-"Personas work with any type of computer that has Firefox installed. This "
-"includes Apple Mac, Linux and Windows platforms. You must have "
-"administrative rights to add Personas to your Firefox browser."
-msgstr ""
-"Personas work with any type of computer that has Firefox installed. This "
-"includes Apple Mac, Linux and Windows platforms. You must have "
-"administrative rights to add Personas to your Firefox browser."
-
-#: ../faq.php:130
-msgid "How do I uninstall Personas for Firefox?"
-msgstr "How do I uninstall Personas for Firefox?"
-
-#: ../faq.php:132
-msgid ""
-"If you've decided Personas doesn't work for you, you can uninstall with a "
-"few easy steps:"
-msgstr ""
-"If you've decided Personas doesn't work for you, you can uninstall with a "
-"few easy steps:"
-
-#: ../faq.php:134
-msgid "Open the Add-ons dialog box by going to \"Tools->Add-ons\""
-msgstr "Open the Add-ons dialog box by going to \"Tools->Add-ons\""
-
-#: ../faq.php:135
-msgid "Click on the \"Extensions\" button on the top"
-msgstr "Click on the \"Extensions\" button on the top"
-
-#: ../faq.php:136
-msgid "Select \"Personas\""
-msgstr "Select \"Personas\""
-
-#: ../faq.php:137
-msgid "Click \"Uninstall\""
-msgstr "Click \"Uninstall\""
-
-#: ../faq.php:138
-msgid "Restart Firefox"
-msgstr "Restart Firefox"
-
-#: ../faq.php:142
-msgid "How do I provide feedback?"
-msgstr "How do I provide feedback?"
-
-#: ../faq.php:144
-msgid ""
-"Personas is currently in beta, so we're always looking for ways to improve "
-"the product. We'd love to hear what you think. Visit the <a href=\"https://"
-"labs.mozilla.com/forum/?CategoryID=18\">Personas</a> forums to send us your "
-"feedback."
-msgstr ""
-"Personas is currently in beta, so we're always looking for ways to improve "
-"the product. We'd love to hear what you think. Visit the <a href=\"https://"
-"labs.mozilla.com/forum/?CategoryID=18\">Personas</a> forums to send us your "
-"feedback."
-
-#: ../faq.php:148
-msgid "Is Personas for Firefox open source?"
-msgstr "Is Personas for Firefox open source?"
-
-#: ../faq.php:150
-msgid ""
-"Yes. The source code for Personas is available under the MPL/GPL/LGPL tri-"
-"license. You can view the source <a href=\"http://hg.mozilla.org/labs/"
-"personas/personas\">here</a>."
-msgstr ""
-"Yes. The source code for Personas is available under the MPL/GPL/LGPL tri-"
-"license. You can view the source <a href=\"http://hg.mozilla.org/labs/"
-"personas/personas\">here</a>."
-
-#: ../firstrun.php:10
-msgid "Thanks for installing Personas"
-msgstr "Thanks for installing Personas"
-
-#: ../firstrun.php:39
-msgid "Thanks for Installing Personas for Firefox!"
-msgstr "Thanks for Installing Personas for Firefox!"
-
-#: ../firstrun.php:40
-msgid "The Easiest Way to Dress Up Your Browser."
-msgstr "The Easiest Way to Dress Up Your Browser."
-
-#: ../firstrun.php:43
-msgid "Browse the Gallery!"
-msgstr "Browse the Gallery!"
-
-#: ../firstrun.php:53
-msgid "Get Started with Personas"
-msgstr "Get Started with Personas"
-
-#: ../firstrun.php:55
-#, php-format
-#, %s url
-msgid ""
-"Click on the fox mask in the lower left corner of your Firefox browser, or "
-"go to the Personas page directly from <a href=\"%s\">here</a>."
-msgstr ""
-"Click on the fox mask in the lower left corner of your Firefox browser, or "
-"go to the Personas page directly from <a href=\"%s\">here</a>."
-
-#: ../firstrun.php:56
-#, php-format
-#, %s url
-msgid ""
-"Next, select a Persona from the list, or check out the <a href=\"%s"
-"\">Personas gallery</a>."
-msgstr ""
-"Next, select a Persona from the list, or check out the <a href=\"%s"
-"\">Personas gallery</a>."
-
-#: ../firstrun.php:57
-#, php-format
-#, %s url
-msgid ""
-"You can change your persona as much as you like! Choose a new one from the "
-"list or <a href=\"%s\">create your own</a>."
-msgstr ""
-"You can change your persona as much as you like! Choose a new one from the "
-"list or <a href=\"%s\">create your own</a>."
-
-#: ../firstrun.php:60
-#, php-format
-#, %s url
-msgid ""
-"Have a Personas question or comment? Check out our <a href=\"%s\">FAQ</a> "
-"section or <a href=\"https://labs.mozilla.com/forum/?CategoryID=18"
-"\">discussion forum</a>."
-msgstr ""
-"Have a Personas question or comment? Check out our <a href=\"%s\">FAQ</a> "
-"section or <a href=\"https://labs.mozilla.com/forum/?CategoryID=18"
-"\">discussion forum</a>."
-
-#: ../firstrun.php:65
-msgid "Find out more about Firefox"
-msgstr "Find out more about Firefox"
-
-#: ../firstrun.php:66
-msgid ""
-"Wondering what to do now? Our <a href=\"http://www.mozilla.com/firefox/"
-"central/\">Getting Started</a> page has plenty of helpful information."
-msgstr ""
-"Wondering what to do now? Our <a href=\"http://www.mozilla.com/firefox/"
-"central/\">Getting Started</a> page has plenty of helpful information."
-
-#: ../firstrun.php:67
-msgid ""
-"Questions? Our <a href=\"https://labs.mozilla.com/forum/?CategoryID=18"
-"\">Support page</a> has answers."
-msgstr ""
-"Questions? Our <a href=\"https://labs.mozilla.com/forum/?CategoryID=18"
-"\">Support page</a> has answers."
-
-#: ../firstrun.php:82
-msgid "Click on the fox mask to get started!"
-msgstr "Click on the fox mask to get started!"
-
-#: ../firstrun.php:68
-msgid ""
-"Ready to customize? Now that you've got Firefox and Personas, find out more "
-"about all the ways you can <a href=\"https://addons.mozilla.org/firefox"
-"\">personalize Firefox</a>!"
-msgstr ""
-"Ready to customize? Now that you've got Firefox and Personas, find out more "
-"about all the ways you can <a href=\"https://addons.mozilla.org/firefox"
-"\">personalize Firefox</a>!"
-
 #: ../change_password.php:18
 #, php-format
-#, %s url
 msgid ""
 "Oops!  We are unable to locate the username you entered.  Please try again, "
 "or <a href=\"%s\">create a new one</a>."
@@ -2490,7 +1774,6 @@ msgstr ""
 
 #: ../change_password.php:32
 #, php-format
-#, %s url
 msgid ""
 "So many passwords to remember! You asked to reset your personas password. To "
 "do so, please visit:\n"
@@ -2783,3 +2066,565 @@ msgstr "Go submit your first Persona:"
 #, php-format
 msgid "Back to Step 3"
 msgstr "Back to Step 3"
+
+#~ msgid "Dress up your web browser"
+#~ msgstr "Dress up your web browser"
+
+#~ msgid "What will your browser wear today?"
+#~ msgstr "What will your browser wear today?"
+
+#~ msgid ""
+#~ "Personas are lightweight, easy-to-install and easy-to-change \"skins\" "
+#~ "for your Firefox web browser."
+#~ msgstr ""
+#~ "Personas are lightweight, easy-to-install and easy-to-change \"skins\" "
+#~ "for your Firefox web browser."
+
+#~ msgid ""
+#~ "<a href=\"https://addons.mozilla.org/firefox/downloads/latest/10900\" "
+#~ "class=\"get-personas\" id=\"download\"><span>Get Personas for Firefox - "
+#~ "Free</span>"
+#~ msgstr ""
+#~ "<a href=\"https://addons.mozilla.org/firefox/downloads/latest/10900\" "
+#~ "class=\"get-personas\" id=\"download\"><span>Get Personas for Firefox - "
+#~ "Free</span>"
+
+#~ msgid "Get Firefox and Personas - Free"
+#~ msgstr "Get Firefox and Personas - Free"
+
+#~ msgid "Firefox Add-on for Windows, Mac or Linux"
+#~ msgstr "Firefox Add-on for Windows, Mac or Linux"
+
+#~ msgid "Theme your browser according to your mood, hobby or season."
+#~ msgstr "Theme your browser according to your mood, hobby or season."
+
+#~ msgid "Click the green download button to get started!"
+#~ msgstr "Click the green download button to get started!"
+
+#~ msgid "Other languages:"
+#~ msgstr "Other languages:"
+
+#~ msgid "Copyright &copy; %s Mozilla."
+#~ msgstr "Copyright &copy; %s Mozilla."
+
+#~ msgid ""
+#~ " <a href=\"http://labs.mozilla.com/projects/firefox-personas/\">Personas</"
+#~ "a> is a <a href=\"http://labs.mozilla.com\">Mozilla Labs</a> experiment. "
+#~ "| <a href=\"http://labs.mozilla.com/about-labs/\">"
+#~ msgstr ""
+#~ " <a href=\"http://labs.mozilla.com/projects/firefox-personas/\">Personas</"
+#~ "a> is a <a href=\"http://labs.mozilla.com\">Mozilla Labs</a> experiment. "
+#~ "| <a href=\"http://labs.mozilla.com/about-labs/\">"
+
+#~ msgid "About Mozilla Labs"
+#~ msgstr "About Mozilla Labs"
+
+#~ msgid "Privacy"
+#~ msgstr "Privacy"
+
+#~ msgid "Login Name:"
+#~ msgstr "Login Name:"
+
+#~ msgid "Email"
+#~ msgstr "Email"
+
+#~ msgid "Display Username*"
+#~ msgstr "Display Username*"
+
+#~ msgid "Designer Description*"
+#~ msgstr "Designer Description*"
+
+#~ msgid "I'd like to receive news and information about Personas"
+#~ msgstr "I'd like to receive news and information about Personas"
+
+#~ msgid ""
+#~ "* <i>denotes an optional field. These entries will be displayed in the "
+#~ "personas gallery.</i>"
+#~ msgstr ""
+#~ "* <i>denotes an optional field. These entries will be displayed in the "
+#~ "personas gallery.</i>"
+
+#~ msgid ""
+#~ "Mozilla values your privacy. We will not sell or rent your email address."
+#~ msgstr ""
+#~ "Mozilla values your privacy. We will not sell or rent your email address."
+
+#~ msgid "New Personas Designer?"
+#~ msgstr "New Personas Designer?"
+
+#~ msgid "Login Name"
+#~ msgstr "Login Name"
+
+#~ msgid "Password"
+#~ msgstr "Password"
+
+#~ msgid "Confirm Password"
+#~ msgstr "Confirm Password"
+
+#~ msgid "sign me up"
+#~ msgstr "sign me up"
+
+#~ msgid "Already a Personas Designer?"
+#~ msgstr "Already a Personas Designer?"
+
+#~ msgid "Username"
+#~ msgstr "Username"
+
+#~ msgid "Minimum 6 characters"
+#~ msgstr "Minimum 6 characters"
+
+#~ msgid "Remember me on this computer"
+#~ msgstr "Remember me on this computer"
+
+#~ msgid "sign in"
+#~ msgstr "sign in"
+
+#~ msgid "Forgot your password?"
+#~ msgstr "Forgot your password?"
+
+#~ msgid "What are Personas?"
+#~ msgstr "What are Personas?"
+
+#~ msgid ""
+#~ "Personas are lightweight \"skins\" that change the look of your Firefox "
+#~ "web browser. You can easily switch between Personas with just a few "
+#~ "clicks. There are hundreds of Personas to choose from, with more added "
+#~ "every day. You can even create your own and share it with others."
+#~ msgstr ""
+#~ "Personas are lightweight \"skins\" that change the look of your Firefox "
+#~ "web browser. You can easily switch between Personas with just a few "
+#~ "clicks. There are hundreds of Personas to choose from, with more added "
+#~ "every day. You can even create your own and share it with others."
+
+#~ msgid "How do I add Personas to my Firefox?"
+#~ msgstr "How do I add Personas to my Firefox?"
+
+#~ msgid ""
+#~ "In less than 60 seconds, you can install a Persona and transform the look "
+#~ "of your Firefox web browser. Visit <a href=\"%s\">getpersonas.com</a> and "
+#~ "click the download button. After installation, you will be asked to "
+#~ "restart Firefox."
+#~ msgstr ""
+#~ "In less than 60 seconds, you can install a Persona and transform the look "
+#~ "of your Firefox web browser. Visit <a href=\"%s\">getpersonas.com</a> and "
+#~ "click the download button. After installation, you will be asked to "
+#~ "restart Firefox."
+
+#~ msgid ""
+#~ "If you want to see how it works, you can watch a quick video "
+#~ "demonstration <a href=\"%s\">here</a>."
+#~ msgstr ""
+#~ "If you want to see how it works, you can watch a quick video "
+#~ "demonstration <a href=\"%s\">here</a>."
+
+#~ msgid ""
+#~ "Once Personas are installed, you'll be able to choose and change your "
+#~ "selected Persona any time simply by clicking on the little fox mask in "
+#~ "the lower left-hand corner of your browser window."
+#~ msgstr ""
+#~ "Once Personas are installed, you'll be able to choose and change your "
+#~ "selected Persona any time simply by clicking on the little fox mask in "
+#~ "the lower left-hand corner of your browser window."
+
+#~ msgid "How do I create or edit my designer profile?"
+#~ msgstr "How do I create or edit my designer profile?"
+
+#~ msgid ""
+#~ "If you are a new Personas designer, you will be asked to create a profile "
+#~ "when\n"
+#~ "                                  you first sign up <a href=\"%s\">here</"
+#~ "a>. You will have the option to include a \"display\n"
+#~ "                                  name\" and \"designer description\", "
+#~ "both of which will be displayed in the public\n"
+#~ "                                  gallery."
+#~ msgstr ""
+#~ "If you are a new Personas designer, you will be asked to create a profile "
+#~ "when\n"
+#~ "                                  you first sign up <a href=\"%s\">here</"
+#~ "a>. You will have the option to include a \"display\n"
+#~ "                                  name\" and \"designer description\", "
+#~ "both of which will be displayed in the public\n"
+#~ "                                  gallery."
+
+#~ msgid ""
+#~ "If you are an existing Personas designer, you can edit and add to your "
+#~ "profile <a href=\"%s\">here</a>."
+#~ msgstr ""
+#~ "If you are an existing Personas designer, you can edit and add to your "
+#~ "profile <a href=\"%s\">here</a>."
+
+#~ msgid "How can I add or change my current Persona?"
+#~ msgstr "How can I add or change my current Persona?"
+
+#~ msgid "There are two easy ways to change your Persona:"
+#~ msgstr "There are two easy ways to change your Persona:"
+
+#~ msgid ""
+#~ "Visit the Personas website at %s, check out the gallery, choose your "
+#~ "favorite Persona, and click on your choice to instantly change the look "
+#~ "of your browser.<br> OR"
+#~ msgstr ""
+#~ "Visit the Personas website at %s, check out the gallery, choose your "
+#~ "favorite Persona, and click on your choice to instantly change the look "
+#~ "of your browser.<br> OR"
+
+#~ msgid ""
+#~ "Click on the little fox mask in the lower left hand corner of your "
+#~ "browser, then select a Persona that suits your style."
+#~ msgstr ""
+#~ "Click on the little fox mask in the lower left hand corner of your "
+#~ "browser, then select a Persona that suits your style."
+
+#~ msgid ""
+#~ "I can't seem to find Personas for Firefox after I downloaded it and "
+#~ "installed it.  Where is it?"
+#~ msgstr ""
+#~ "I can't seem to find Personas for Firefox after I downloaded it and "
+#~ "installed it.  Where is it?"
+
+#~ msgid ""
+#~ "Look for the little fox mask in the lower left-hand corner of your "
+#~ "Firefox browser window."
+#~ msgstr ""
+#~ "Look for the little fox mask in the lower left-hand corner of your "
+#~ "Firefox browser window."
+
+#~ msgid "Can I create my own Persona?"
+#~ msgstr "Can I create my own Persona?"
+
+#~ msgid ""
+#~ "Absolutely! All you need to do is create two graphics files in your "
+#~ "favorite graphics editing program (<em>e.g.</em>, Photoshop). To get "
+#~ "started read more about how to <a href=\"%s\">create a Persona</a>."
+#~ msgstr ""
+#~ "Absolutely! All you need to do is create two graphics files in your "
+#~ "favorite graphics editing program (<em>e.g.</em>, Photoshop). To get "
+#~ "started read more about how to <a href=\"%s\">create a Persona</a>."
+
+#~ msgid ""
+#~ "Are there any guidelines for content allowed in the Personas gallery?"
+#~ msgstr ""
+#~ "Are there any guidelines for content allowed in the Personas gallery?"
+
+#~ msgid ""
+#~ "Yes. We are big fans of creativity, but want to ensure that the art "
+#~ "displayed in the Personas gallery meets a basic set of guidelines. "
+#~ "Specifically:"
+#~ msgstr ""
+#~ "Yes. We are big fans of creativity, but want to ensure that the art "
+#~ "displayed in the Personas gallery meets a basic set of guidelines. "
+#~ "Specifically:"
+
+#~ msgid ""
+#~ "The logo, image, or art within your design is either your original work, "
+#~ "or you are authorized to license and distribute it"
+#~ msgstr ""
+#~ "The logo, image, or art within your design is either your original work, "
+#~ "or you are authorized to license and distribute it"
+
+#~ msgid ""
+#~ "Your design does not contain provocative, lewd, or sexual content (ie, it "
+#~ "is PG-rated)"
+#~ msgstr ""
+#~ "Your design does not contain provocative, lewd, or sexual content (ie, it "
+#~ "is PG-rated)"
+
+#~ msgid ""
+#~ "Your design does not include any identifiable non-celebrity person(s)"
+#~ msgstr ""
+#~ "Your design does not include any identifiable non-celebrity person(s)"
+
+#~ msgid ""
+#~ "Your design does not contain violence or violent acts, nor does it "
+#~ "exhibit discriminatory behavior or signs"
+#~ msgstr ""
+#~ "Your design does not contain violence or violent acts, nor does it "
+#~ "exhibit discriminatory behavior or signs"
+
+#~ msgid ""
+#~ "Your design does not violate any applicable law, regulation or ordinance"
+#~ msgstr ""
+#~ "Your design does not violate any applicable law, regulation or ordinance"
+
+#~ msgid "After creating a Persona, can I edit the design?"
+#~ msgstr "After creating a Persona, can I edit the design?"
+
+#~ msgid ""
+#~ "Yes. If at any point you need to edit your Persona design \n"
+#~ "                after it has been submitted to the gallery, simply visit "
+#~ "<a href=\"%s\">this link</a>, log in to\n"
+#~ "               your account, and go to the \"Personas Home : Gallery : "
+#~ "All : My\" section. \n"
+#~ "               From there, you can make changes to the settings you "
+#~ "entered upon creation."
+#~ msgstr ""
+#~ "Yes. If at any point you need to edit your Persona design \n"
+#~ "                after it has been submitted to the gallery, simply visit "
+#~ "<a href=\"%s\">this link</a>, log in to\n"
+#~ "               your account, and go to the \"Personas Home : Gallery : "
+#~ "All : My\" section. \n"
+#~ "               From there, you can make changes to the settings you "
+#~ "entered upon creation."
+
+#~ msgid "What's the maximum file size allowable for my persona?"
+#~ msgstr "What's the maximum file size allowable for my persona?"
+
+#~ msgid ""
+#~ "The persona that you upload may not exceed 300KB for the header or the "
+#~ "footer\n"
+#~ "               image."
+#~ msgstr ""
+#~ "The persona that you upload may not exceed 300KB for the header or the "
+#~ "footer\n"
+#~ "               image."
+
+#~ msgid ""
+#~ "Do I still retain ownership over Persona artwork that I upload to the "
+#~ "Personas website?"
+#~ msgstr ""
+#~ "Do I still retain ownership over Persona artwork that I upload to the "
+#~ "Personas website?"
+
+#~ msgid "Yes."
+#~ msgstr "Yes."
+
+#~ msgid ""
+#~ "What's the difference between a Firefox theme and Personas for Firefox?"
+#~ msgstr ""
+#~ "What's the difference between a Firefox theme and Personas for Firefox?"
+
+#~ msgid ""
+#~ "Personas allow you to \"skin\" the top and bottom areas of Firefox only "
+#~ "(the header and footer of the browser chrome) without any change to the "
+#~ "look of the navigation buttons or menus. With Personas, you can easily "
+#~ "switch between many different lightweight skins with no further "
+#~ "installation required."
+#~ msgstr ""
+#~ "Personas allow you to \"skin\" the top and bottom areas of Firefox only "
+#~ "(the header and footer of the browser chrome) without any change to the "
+#~ "look of the navigation buttons or menus. With Personas, you can easily "
+#~ "switch between many different lightweight skins with no further "
+#~ "installation required."
+
+#~ msgid ""
+#~ "Like Personas, a Firefox theme is a type of Firefox add-on that extends "
+#~ "the functionality of your browser and allows you to \"skin\" it in a "
+#~ "variety of ways. However, unlike Personas, a theme changes the appearance "
+#~ "of navigation buttons, toolbars and menus."
+#~ msgstr ""
+#~ "Like Personas, a Firefox theme is a type of Firefox add-on that extends "
+#~ "the functionality of your browser and allows you to \"skin\" it in a "
+#~ "variety of ways. However, unlike Personas, a theme changes the appearance "
+#~ "of navigation buttons, toolbars and menus."
+
+#~ msgid ""
+#~ "If I have an existing Firefox theme installed, will Personas still work?"
+#~ msgstr ""
+#~ "If I have an existing Firefox theme installed, will Personas still work?"
+
+#~ msgid ""
+#~ "Yes, Personas will work. However, it's strongly recommended that you "
+#~ "uninstall a theme when using Personas. To disable a current Firefox "
+#~ "theme, go to the \"Tools\" menu and select \"Add-ons\" to display the add-"
+#~ "ons manager. Then click on the \"Themes\" button at the top of the add-"
+#~ "ons manager window, click on the \"Default\" theme for Firefox, and click "
+#~ "on \"Use theme\". After a quick restart, you'll be ready to dress up your "
+#~ "browser with Personas."
+#~ msgstr ""
+#~ "Yes, Personas will work. However, it's strongly recommended that you "
+#~ "uninstall a theme when using Personas. To disable a current Firefox "
+#~ "theme, go to the \"Tools\" menu and select \"Add-ons\" to display the add-"
+#~ "ons manager. Then click on the \"Themes\" button at the top of the add-"
+#~ "ons manager window, click on the \"Default\" theme for Firefox, and click "
+#~ "on \"Use theme\". After a quick restart, you'll be ready to dress up your "
+#~ "browser with Personas."
+
+#~ msgid "Do I have to add my Persona to the public gallery?"
+#~ msgstr "Do I have to add my Persona to the public gallery?"
+
+#~ msgid ""
+#~ "No. When you upload your Persona at GetPersonas.com, you can choose to "
+#~ "add it to the public gallery or keep it private. If you want to upload a "
+#~ "custom Persona without visiting GetPersonas.com, you can do so anytime by "
+#~ "following these steps:"
+#~ msgstr ""
+#~ "No. When you upload your Persona at GetPersonas.com, you can choose to "
+#~ "add it to the public gallery or keep it private. If you want to upload a "
+#~ "custom Persona without visiting GetPersonas.com, you can do so anytime by "
+#~ "following these steps:"
+
+#~ msgid "Enable custom Personas in your version of Personas:"
+#~ msgstr "Enable custom Personas in your version of Personas:"
+
+#~ msgid ""
+#~ "Click on the little fox mask icon in the lower left-hand corner of your "
+#~ "browser"
+#~ msgstr ""
+#~ "Click on the little fox mask icon in the lower left-hand corner of your "
+#~ "browser"
+
+#~ msgid "Select \"Preferences...\""
+#~ msgstr "Select \"Preferences...\""
+
+#~ msgid "Under \"Advanced\", select \"Show Custom Persona Menu\""
+#~ msgstr "Under \"Advanced\", select \"Show Custom Persona Menu\""
+
+#~ msgid "Close the preferences window"
+#~ msgstr "Close the preferences window"
+
+#~ msgid "Create your custom Persona:"
+#~ msgstr "Create your custom Persona:"
+
+#~ msgid "Select \"Custom Persona\", then select \"Edit\" from its sub-menu"
+#~ msgstr "Select \"Custom Persona\", then select \"Edit\" from its sub-menu"
+
+#~ msgid ""
+#~ "Specify a header, footer, text color and accent color for a Persona "
+#~ "that's locally stored on your computer"
+#~ msgstr ""
+#~ "Specify a header, footer, text color and accent color for a Persona "
+#~ "that's locally stored on your computer"
+
+#~ msgid ""
+#~ "Your new Persona will be automatically selected, or you can manually "
+#~ "choose it from the little fox mask menu"
+#~ msgstr ""
+#~ "Your new Persona will be automatically selected, or you can manually "
+#~ "choose it from the little fox mask menu"
+
+#~ msgid "What kind of computer and operating system does Personas work with?"
+#~ msgstr "What kind of computer and operating system does Personas work with?"
+
+#~ msgid ""
+#~ "Personas work with any type of computer that has Firefox installed. This "
+#~ "includes Apple Mac, Linux and Windows platforms. You must have "
+#~ "administrative rights to add Personas to your Firefox browser."
+#~ msgstr ""
+#~ "Personas work with any type of computer that has Firefox installed. This "
+#~ "includes Apple Mac, Linux and Windows platforms. You must have "
+#~ "administrative rights to add Personas to your Firefox browser."
+
+#~ msgid "How do I uninstall Personas for Firefox?"
+#~ msgstr "How do I uninstall Personas for Firefox?"
+
+#~ msgid ""
+#~ "If you've decided Personas doesn't work for you, you can uninstall with a "
+#~ "few easy steps:"
+#~ msgstr ""
+#~ "If you've decided Personas doesn't work for you, you can uninstall with a "
+#~ "few easy steps:"
+
+#~ msgid "Open the Add-ons dialog box by going to \"Tools->Add-ons\""
+#~ msgstr "Open the Add-ons dialog box by going to \"Tools->Add-ons\""
+
+#~ msgid "Click on the \"Extensions\" button on the top"
+#~ msgstr "Click on the \"Extensions\" button on the top"
+
+#~ msgid "Select \"Personas\""
+#~ msgstr "Select \"Personas\""
+
+#~ msgid "Click \"Uninstall\""
+#~ msgstr "Click \"Uninstall\""
+
+#~ msgid "Restart Firefox"
+#~ msgstr "Restart Firefox"
+
+#~ msgid "How do I provide feedback?"
+#~ msgstr "How do I provide feedback?"
+
+#~ msgid ""
+#~ "Personas is currently in beta, so we're always looking for ways to "
+#~ "improve the product. We'd love to hear what you think. Visit the <a href="
+#~ "\"https://labs.mozilla.com/forum/?CategoryID=18\">Personas</a> forums to "
+#~ "send us your feedback."
+#~ msgstr ""
+#~ "Personas is currently in beta, so we're always looking for ways to "
+#~ "improve the product. We'd love to hear what you think. Visit the <a href="
+#~ "\"https://labs.mozilla.com/forum/?CategoryID=18\">Personas</a> forums to "
+#~ "send us your feedback."
+
+#~ msgid "Is Personas for Firefox open source?"
+#~ msgstr "Is Personas for Firefox open source?"
+
+#~ msgid ""
+#~ "Yes. The source code for Personas is available under the MPL/GPL/LGPL tri-"
+#~ "license. You can view the source <a href=\"http://hg.mozilla.org/labs/"
+#~ "personas/personas\">here</a>."
+#~ msgstr ""
+#~ "Yes. The source code for Personas is available under the MPL/GPL/LGPL tri-"
+#~ "license. You can view the source <a href=\"http://hg.mozilla.org/labs/"
+#~ "personas/personas\">here</a>."
+
+#~ msgid "Thanks for installing Personas"
+#~ msgstr "Thanks for installing Personas"
+
+#~ msgid "Thanks for Installing Personas for Firefox!"
+#~ msgstr "Thanks for Installing Personas for Firefox!"
+
+#~ msgid "The Easiest Way to Dress Up Your Browser."
+#~ msgstr "The Easiest Way to Dress Up Your Browser."
+
+#~ msgid "Browse the Gallery!"
+#~ msgstr "Browse the Gallery!"
+
+#~ msgid "Get Started with Personas"
+#~ msgstr "Get Started with Personas"
+
+#~ msgid ""
+#~ "Click on the fox mask in the lower left corner of your Firefox browser, "
+#~ "or go to the Personas page directly from <a href=\"%s\">here</a>."
+#~ msgstr ""
+#~ "Click on the fox mask in the lower left corner of your Firefox browser, "
+#~ "or go to the Personas page directly from <a href=\"%s\">here</a>."
+
+#~ msgid ""
+#~ "Next, select a Persona from the list, or check out the <a href=\"%s"
+#~ "\">Personas gallery</a>."
+#~ msgstr ""
+#~ "Next, select a Persona from the list, or check out the <a href=\"%s"
+#~ "\">Personas gallery</a>."
+
+#~ msgid ""
+#~ "You can change your persona as much as you like! Choose a new one from "
+#~ "the list or <a href=\"%s\">create your own</a>."
+#~ msgstr ""
+#~ "You can change your persona as much as you like! Choose a new one from "
+#~ "the list or <a href=\"%s\">create your own</a>."
+
+#~ msgid ""
+#~ "Have a Personas question or comment? Check out our <a href=\"%s\">FAQ</a> "
+#~ "section or <a href=\"https://labs.mozilla.com/forum/?CategoryID=18"
+#~ "\">discussion forum</a>."
+#~ msgstr ""
+#~ "Have a Personas question or comment? Check out our <a href=\"%s\">FAQ</a> "
+#~ "section or <a href=\"https://labs.mozilla.com/forum/?CategoryID=18"
+#~ "\">discussion forum</a>."
+
+#~ msgid "Find out more about Firefox"
+#~ msgstr "Find out more about Firefox"
+
+#~ msgid ""
+#~ "Wondering what to do now? Our <a href=\"http://www.mozilla.com/firefox/"
+#~ "central/\">Getting Started</a> page has plenty of helpful information."
+#~ msgstr ""
+#~ "Wondering what to do now? Our <a href=\"http://www.mozilla.com/firefox/"
+#~ "central/\">Getting Started</a> page has plenty of helpful information."
+
+#~ msgid ""
+#~ "Questions? Our <a href=\"https://labs.mozilla.com/forum/?CategoryID=18"
+#~ "\">Support page</a> has answers."
+#~ msgstr ""
+#~ "Questions? Our <a href=\"https://labs.mozilla.com/forum/?CategoryID=18"
+#~ "\">Support page</a> has answers."
+
+#~ msgid "Click on the fox mask to get started!"
+#~ msgstr "Click on the fox mask to get started!"
+
+#~ msgid ""
+#~ "Ready to customize? Now that you've got Firefox and Personas, find out "
+#~ "more about all the ways you can <a href=\"https://addons.mozilla.org/"
+#~ "firefox\">personalize Firefox</a>!"
+#~ msgstr ""
+#~ "Ready to customize? Now that you've got Firefox and Personas, find out "
+#~ "more about all the ways you can <a href=\"https://addons.mozilla.org/"
+#~ "firefox\">personalize Firefox</a>!"
