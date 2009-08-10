@@ -165,7 +165,7 @@ let PersonaController = {
         aIID.equals(Ci.nsIDOMEventListener) ||
         aIID.equals(Ci.nsISupports))
       return this;
-    
+
     throw Cr.NS_ERROR_NO_INTERFACE;
   },
 
@@ -349,7 +349,7 @@ let PersonaController = {
           // #navigator-toolbox toolbarbutton[disabled="true"],
           // #browser-toolbox toolbarbutton[disabled="true"],
           // #browser-bottombox toolbarbutton[disabled="true"]
-          //   { color: #cccccc !important; } 
+          //   { color: #cccccc !important; }
 
           // Stop iterating through stylesheets.
           break;
@@ -492,7 +492,7 @@ let PersonaController = {
   /**
    * Preview the persona specified by a web page via a PreviewPersona event.
    * Checks to ensure the page is hosted on a server authorized to set personas.
-   * 
+   *
    * @param   event   {Event}
    *          the PreviewPersona DOM event
    */
@@ -528,7 +528,7 @@ let PersonaController = {
   /**
    * Reset the persona as specified by a web page via a ResetPersona event.
    * Checks to ensure the page is hosted on a server authorized to reset personas.
-   * 
+   *
    * @param event   {Event}
    *        the ResetPersona DOM event
    */
@@ -562,7 +562,7 @@ let PersonaController = {
    * a web page via a CheckPersonas event.  Checks to ensure the page is hosted
    * on a host in the whitelist before responding to the event, so only
    * whitelisted pages can find out if Personas is installed.
-   * 
+   *
    * @param event   {Event}
    *        the CheckPersonas DOM event
    */
@@ -572,7 +572,7 @@ let PersonaController = {
   },
 
   onSelectPreferences: function() {
-    window.openDialog('chrome://personas/content/preferences.xul', '', 
+    window.openDialog('chrome://personas/content/preferences.xul', '',
                       'chrome,titlebar,toolbar,centerscreen');
   },
 
@@ -624,7 +624,7 @@ let PersonaController = {
    * equals one of the entries in the whitelist.  For example, if
    * www.mozilla.com is an entry in the whitelist, then www.mozilla.com matches,
    * but labs.mozilla.com, mozilla.com, and evil.com do not.
-   * 
+   *
    * @param aEvent {Event} the DOM event
    */
   _authorizeHost: function(aEvent) {
@@ -707,6 +707,37 @@ let PersonaController = {
     document.getElementById("defaultPersona").setAttribute("checked", (PersonaService.selected == "default" ? "true" : "false"));
 
     // FIXME: factor out the duplicate code below.
+
+    // Create the Favorites menu.
+    {
+      let menu = document.createElement("menu");
+      menu.setAttribute("label", this._strings.get("favorites"));
+
+      let popupmenu = menu.appendChild(document.createElement("menupopup"));
+
+      if (!PersonaService.isUserSignedIn) {
+        let item = popupmenu.appendChild(document.createElement("menuitem"));
+        item.setAttribute("label", this._strings.get("favoritesSignIn"));
+        item.setAttribute("oncommand",
+                          "openUILinkIn('" + this._siteURL + "signin?return=/gallery/All/Favorites', 'tab')");
+      } else {
+
+        if (PersonaService.personas && PersonaService.personas.favorites) {
+          for each (let persona in PersonaService.personas.favorites)
+            popupmenu.appendChild(this._createPersonaItem(persona));
+          popupmenu.appendChild(document.createElement("menuseparator"));
+        }
+
+        let item = popupmenu.appendChild(document.createElement("menuitem"));
+        item.setAttribute("label", this._strings.get("useRandomPersona", [this._strings.get("favorites")]));
+        item.setAttribute("type", "checkbox");
+        item.setAttribute("checked", (PersonaService.selected == "randomFavorite"));
+        item.setAttribute("autocheck", "false");
+        item.setAttribute("oncommand", "PersonaController.toggleFavoritesRotation()");
+      }
+
+      this._menuPopup.insertBefore(menu, closingSeparator);
+    }
 
     // Create the Most Popular menu.
     {
@@ -828,7 +859,7 @@ let PersonaController = {
     item.setAttribute("persona", this.JSON.stringify(persona));
     item.addEventListener("DOMMenuItemActive", function(evt) { PersonaController.onPreviewPersona(evt) }, false);
     item.addEventListener("DOMMenuItemInactive", function(evt) { PersonaController.onResetPersona(evt) }, false);
-    
+
     return item;
   },
 
@@ -843,8 +874,15 @@ let PersonaController = {
     item.setAttribute("category", category);
 
     return item;
-  }
+  },
 
+  toggleFavoritesRotation : function() {
+    if (PersonaService.selected != "randomFavorite") {
+      PersonaService.selected = "randomFavorite";
+    } else {
+      PersonaService.selected = "current";
+    }
+  }
 };
 
 // Import generic modules into the persona controller rather than

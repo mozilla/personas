@@ -53,6 +53,9 @@ Cu.import("resource://personas/modules/URI.js");
 
 const PERSONAS_EXTENSION_ID = "personas@christopher.beard";
 
+const COOKIE_INITIAL_PERSONA = "initial_persona";
+const COOKIE_USER = "PERSONA_USER";
+
 let PersonaService = {
   THUNDERBIRD_ID: "{3550f703-e582-4d05-9a08-453d09bdfdc6}",
   FIREFOX_ID:     "{ec8030f7-c20a-464f-9b0e-13a3a9e97384}",
@@ -96,15 +99,19 @@ let PersonaService = {
   _init: function() {
     // Observe quit so we can destroy ourselves.
     Observers.add("quit-application", this.onQuitApplication, this);
+    // Observe the "cookie-changed" topic to load the favorite personas when
+    // the user signs in.
+    Observers.add("cookie-changed", this.onCookieChanged, this);
 
-    this._prefs.observe("useTextColor",   this.onUseColorChanged, this);
-    this._prefs.observe("useAccentColor", this.onUseColorChanged, this);
-
-    let timerManager = Cc["@mozilla.org/updates/timer-manager;1"].
-                       getService(Ci.nsIUpdateTimerManager);
+    this._prefs.observe("useTextColor",   this.onUseColorChanged,     this);
+    this._prefs.observe("useAccentColor", this.onUseColorChanged,     this);
+    this._prefs.observe("selected",       this.onSelectedModeChanged, this);
 
     if (this.extension && this.extension.firstRun)
       this._setFirstRunPersona();
+
+    let timerManager = Cc["@mozilla.org/updates/timer-manager;1"].
+                       getService(Ci.nsIUpdateTimerManager);
 
     // Refresh data, then set a timer to refresh it periodically.
     // This isn't quite right, since we always load data on startup, even if
@@ -131,11 +138,27 @@ let PersonaService = {
     timerManager.registerTimer("personas-persona-refresh-timer",
                                personaRefreshCallback,
                                86400 /* in seconds == one day */);
+
+    this.refreshFavorites();
+    // Refresh the favorite personas once per day.
+    let favoritesRefreshCallback = {
+      _svc: this,
+      notify: function(timer) { this._svc.refreshFavorites() }
+    };
+    timerManager.registerTimer("personas-favorites-refresh-timer",
+                               favoritesRefreshCallback,
+                               86400 /* in seconds == one day */);
+
+    this._rotationTimer = Cc["@mozilla.org/timer;1"].createInstance(Ci.nsITimer);
+    this.onSelectedModeChanged();
   },
 
   _destroy: function() {
-    this._prefs.ignore("useTextColor",   this.onUseColorChanged, this);
-    this._prefs.ignore("useAccentColor", this.onUseColorChanged, this);
+    Observers.remove("cookie-changed", this.onCookieChanged, this);
+
+    this._prefs.ignore("useTextColor",   this.onUseColorChanged,     this);
+    this._prefs.ignore("useAccentColor", this.onUseColorChanged,     this);
+    this._prefs.ignore("selected",       this.onSelectedModeChanged, this);
   },
 
 
@@ -252,10 +275,37 @@ let PersonaService = {
     // at least an older version of the data available to us the moment
     // the browser starts, and pick a new random persona from the cached data.
     if (this.selected == "random") {
-      this.currentPersona = this._getRandomPersona(this.category);
+      this.currentPersona = this._getRandomPersonaFromCategory(this.category);
       this._prefs.reset("persona.lastRefreshed");
       Observers.notify("personas:persona:changed");
     }
+  },
+
+  /**
+   * Makes a request to obtain the favorite personas json. This occurs only if
+   * a user is currenly signed in.
+   */
+  refreshFavorites : function() {
+    // Only refresh if the user is signed in at the moment.
+    if (this.isUserSignedIn) {
+      let url = this._prefs.get("siteURL") + "gallery/All/Favorites?json=1";
+      let t = this;
+      this._makeRequest(url, function(evt) { t.onFavoritesLoadComplete(evt) });
+    }
+  },
+
+  /**
+   * Handles the response from the refreshFavorites method. Loads the favorite
+   * personas list.
+   * @param aEvent The Http request event object.
+   */
+  onFavoritesLoadComplete : function(aEvent) {
+    let request = aEvent.target;
+
+    if (request.status != 200)
+      throw("problem loading favorites: " + request.status + " - " + request.statusText);
+
+    this.personas.favorites = JSON.parse(request.responseText);
   },
 
   _refreshPersona: function() {
@@ -343,7 +393,8 @@ let PersonaService = {
   /**
    * extensions.personas.selected: the type of persona that the user selected;
    * possible values are default (the default Firefox theme), random (a random
-   * persona from a category), and current (the value of this.currentPersona).
+   * persona from a category), current (the value of this.currentPersona), and
+   * randomFavorite (a random persona from the favorite list).
    */
   get selected()        { return this._prefs.get("selected") },
   set selected(newVal)  {        this._prefs.set("selected", newVal) },
@@ -402,10 +453,23 @@ let PersonaService = {
 
   changeToRandomPersona: function(category) {
     this.category = category;
-    this.currentPersona = this._getRandomPersona(category);
+    this.currentPersona = this._getRandomPersonaFromCategory(category);
     this.selected = "random";
     this._prefs.set("persona.lastChanged", new Date().getTime().toString());
     Observers.notify("personas:persona:changed");
+  },
+
+  changeToRandomFavoritePersona : function() {
+    if (this.personas &&
+        this.personas.favorites &&
+        this.personas.favorites.length > 0 &&
+        this.isUserSignedIn) {
+
+      this.currentPersona = this._getRandomPersonaFromArray(this.personas.favorites);
+      this.selected = "randomFavorite";
+      this._prefs.set("persona.lastChanged", new Date().getTime().toString());
+      Observers.notify("personas:persona:changed");
+    }
   },
 
   changeToPersona: function(persona) {
@@ -417,40 +481,42 @@ let PersonaService = {
     Observers.notify("personas:persona:changed");
   },
 
-  _getRandomPersona: function(categoryName) {
-    let persona;
+  _getRandomPersonaFromArray : function(aPersonaArray) {
+    // Get a random item from the list, trying up to five times to get one
+    // that is different from the currently-selected item in the category
+    // (if any).  We use Math.floor instead of Math.round to pick a random
+    // number because the JS reference says Math.round returns a non-uniform
+    // distribution
+    // <http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Math:random#Examples>.
+    if (aPersonaArray && aPersonaArray.length > 0) {
+      let randomIndex, randomItem;
+      for (let i = 0; i < 5; i++) {
+        randomIndex = Math.floor(Math.random() * aPersonaArray.length);
+        randomItem = aPersonaArray[randomIndex];
+        if (!this.currentPersona || randomItem.id != this.currentPersona.id)
+          break;
+      }
 
+      return randomItem;
+    }
+    return this.currentPersona;
+  },
+
+  _getRandomPersonaFromCategory: function(aCategoryName) {
     // If we have the list of categories, use it to pick a random persona
     // from the selected category.
     if (this.personas && this.personas.categories) {
       let personas;
       for each (let category in this.personas.categories) {
-        if (categoryName == category.name) {
+        if (aCategoryName == category.name) {
           personas = category.personas;
           break;
         }
       }
 
-      // Get a random item from the list, trying up to five times to get one
-      // that is different from the currently-selected item in the category
-      // (if any).  We use Math.floor instead of Math.round to pick a random
-      // number because the JS reference says Math.round returns a non-uniform
-      // distribution
-      // <http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Math:random#Examples>.
-      if (personas && personas.length > 0) {
-        let randomIndex, randomItem;
-        for (let i = 0; i < 5; i++) {
-          randomIndex = Math.floor(Math.random() * personas.length);
-          randomItem = personas[randomIndex];
-          if (!this.currentPersona || randomItem.id != this.currentPersona.id)
-            break;
-        }
-
-        persona = randomItem;
-      }
+      return this._getRandomPersonaFromArray(personas);
     }
-
-    return persona || this.currentPersona;
+    return this.currentPersona;
   },
 
   _addPersonaToRecent: function(persona) {
@@ -537,7 +603,7 @@ let PersonaService = {
       // match any of the authorized hosts.
       let cookieHost = cookie.host.replace(/^\./, "");
 
-      if (cookie.name == "initial_persona" &&
+      if (cookie.name == COOKIE_INITIAL_PERSONA &&
           authorizedHosts.some(function(v) v == cookieHost)) {
 
         // There could be more than one "initial_persona" cookie. The cookie
@@ -560,11 +626,85 @@ let PersonaService = {
     }
   },
 
+  /**
+   * Whether or not a user is signed in, determined by the presence of a cookie
+   * named "PERSONA_USER".
+   * @return True if signed in, false otherwise.
+   */
+  get isUserSignedIn() {
+    let cookieManager =
+      Cc["@mozilla.org/cookiemanager;1"].getService(Ci.nsICookieManager2);
+
+    let userCookie = {
+      QueryInterface: XPCOMUtils.generateQI([Ci.nsICookie2, Ci.nsICookie]),
+      host: this._prefs.get("host"),
+      path: "/",
+      name: COOKIE_USER
+    };
+
+    return cookieManager.cookieExists(userCookie);
+  },
+
+  //**************************************************************************//
+  // Random Rotation
+
+  _rotationTimer : null,
+
+  /**
+   * Checks the current value of the "selected" preference and sets the
+   * rotation timer accordingly.
+   */
+  onSelectedModeChanged: function() {
+    this._rotationTimer.cancel();
+
+    let selectedMode = this.selected;
+
+    if (selectedMode == "random" || selectedMode == "randomFavorite") {
+      let interval = this._prefs.get("rotationInterval") * 1000;
+      let that = this;
+
+      this._rotationTimer.initWithCallback(
+        { notify: function(aTimer) { that._rotatePersona(); } },
+        interval, Ci.nsITimer.TYPE_REPEATING_SLACK);
+
+      this._rotatePersona();
+    }
+  },
+
+  /**
+   * Changes the current persona to a random persona of the same category (while
+   * in "random" mode) or a random persona from he favorite list (while in
+   * "randomFavorite" mode).
+   */
+  _rotatePersona : function() {
+    switch (this.selected) {
+      case "random":
+        this.changeToRandomPersona(this.category);
+        break;
+      case "randomFavorite":
+        this.changeToRandomFavoritePersona();
+        break;
+    }
+  },
+
+  /**
+   * Monitors changes in cookies. If the modified cookie is the Personas session
+   * cookie, then the favorites are refreshed (if the user is signed in).
+   * @param aCookie The cookie that has been added, changed or removed.
+   */
+  onCookieChanged : function(aCookie) {
+    aCookie.QueryInterface(Ci.nsICookie);
+
+    if (aCookie.name == COOKIE_USER &&
+        aCookie.host == this._prefs.get("host")) {
+      this.refreshFavorites();
+    }
+  },
+
   onQuitApplication: function() {
     Observers.remove("quit-application", this.onQuitApplication, this);
     this._destroy();
   }
-
 };
 
 let DateUtils = {

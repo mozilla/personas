@@ -30,6 +30,9 @@ pref("extensions.personas.url", "http://www.getpersonas.com/static/");
 // We load a variety of URLs relative to this one.
 pref("extensions.personas.siteURL", "http://www.getpersonas.com/");
 
+// The host which creates cookies relevant to this add-on.
+pref("extensions.personas.host", "www.getpersonas.com");
+
 // The authorizedHosts preference is a comma and/or space-separated list
 // of domains allowed to set and preview personas.
 // At a minimum, it must contain a value matching the domain at which the web
@@ -44,7 +47,7 @@ pref("extensions.personas.lastlistupdate", "");
 
 // The interval between consecutive persona reloads.  Measured in minutes,
 // with a default of 24 hours and a minimum of one minute.
-pref("extensions.personas.reloadInterval", 1440); 
+pref("extensions.personas.reloadInterval", 1440);
 
 // The interval between consecutive persona snapshots.  Measured in seconds,
 // with a default of 1 hour and a minimum of one second.
@@ -63,7 +66,7 @@ pref("extensions.personas.previewEnabled", true);
 // by Persona in the feed.
 pref("extensions.personas.useAccentColor", true);
 
-// User preference to enable/disable use of the text color provided 
+// User preference to enable/disable use of the text color provided
 // by Persona in the feed.
 pref("extensions.personas.useTextColor", true);
 pref("extensions.personas.showCustomMenu", false);
@@ -79,3 +82,7 @@ pref("extensions.personas.data.version", 1);
 // to this JSON record).
 // FIXME: find, document, and reference the bug in question.
 pref("extensions.personas.initial", "{\"id\":\"33\",\"name\":\"Groovy Blue\",\"accentcolor\":\"499bee\",\"textcolor\":null,\"header\":\"3/3/33/tbox-groovy_blue.jpg\",\"footer\":\"3/3/33/stbar-groovy_blue.jpg\"}");
+
+// User preference to specify the rotation interval of personas (in seconds)
+// while in "random" or "randomFavorite" mode.
+pref("extensions.personas.rotationInterval", 3600); // in seconds == 1 hour
