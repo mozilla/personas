@@ -63,7 +63,7 @@
             </div>
             <div id="maincontent">
                 <div id="breadcrumbs">
-                    <?printf("<a href=\"%s\">" . _("Personas Home") . "</a> : " _("User Details"), $locale_conf->url('/'));?>
+                    <?php printf("<a href=\"%s\">" . _("Personas Home") . "</a> : " ._("User Details"), $locale_conf->url('/'));?>
                 </div>
 <?php 
 		if ($updated)
