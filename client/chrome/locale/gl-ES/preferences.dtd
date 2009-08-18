@@ -1,10 +1,8 @@
 <!ENTITY preferences.title "Preferencias de Personas">
 <!ENTITY generalSettings.label "Xeral">
 <!ENTITY previewEnabled.label "Pre-visualizar ao seleccionar no menú">
-<!ENTITY reportSelection.label "Participar no seguemento de popularidade">
-<!ENTITY reportSelection.title "Detalles">
 <!ENTITY displaySettings.label "Amosar">
-<!ENTITY useTextColor.label "Empregar cor de texto">
-<!ENTITY useAccentColor.label "Empregar cor da barra de título">
+<!ENTITY useTextColor.label "Empregar a cor de texto">
+<!ENTITY useAccentColor.label "Empregar a cor da barra de título">
 <!ENTITY advancedSettings.label "Avanzado">
-<!ENTITY showCustomMenu.label "Amosar Persona personalizado no menú">
+<!ENTITY showCustomMenu.label "Amosar a personalización no menú">

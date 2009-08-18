@@ -1,8 +1,6 @@
 <!ENTITY preferences.title "Настройки Personas">
 <!ENTITY generalSettings.label "Общие">
 <!ENTITY previewEnabled.label "Показывать превью при выборе из меню">
-<!ENTITY reportSelection.label "Участвовать в выборе популярных скинов">
-<!ENTITY reportSelection.title "Подробнее">
 <!ENTITY displaySettings.label "Отображение">
 <!ENTITY useTextColor.label "Использовать цвет текста">
 <!ENTITY useAccentColor.label "Использовать цвет строки заголовка (Mac OS X)">

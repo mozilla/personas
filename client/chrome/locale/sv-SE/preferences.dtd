@@ -1,8 +1,6 @@
 <!ENTITY preferences.title "Personas Inställningar">
 <!ENTITY generalSettings.label "Allmänt">
 <!ENTITY previewEnabled.label "Visa förhandsgranskning vid val från menyn">
-<!ENTITY reportSelection.label "Delta i popularitet tracking">
-<!ENTITY reportSelection.title "Detaljer">
 <!ENTITY displaySettings.label "Display">
 <!ENTITY useTextColor.label "Använd textfärg">
 <!ENTITY useAccentColor.label "Använd accent färg">
