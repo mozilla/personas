@@ -34,16 +34,16 @@ style chrome://personas/content/customPersonaEditor.xul chrome://messenger/skin/
 # localizations in alphabetical order
 # Localizations that are commented out are disabled because they are out of date.
 locale   personas   bg-BG       chrome/locale/bg-BG/
-locale   personas   cs-CZ       chrome/locale/cs-CZ/
+#locale   personas   cs-CZ       chrome/locale/cs-CZ/
 locale   personas   da-DK       chrome/locale/da-DK/
-locale   personas   de-DE       chrome/locale/de-DE/
+#locale   personas   de-DE       chrome/locale/de-DE/
 locale   personas   en-US       chrome/locale/en-US/
-locale   personas   es-CL       chrome/locale/es-CL/
+#locale   personas   es-CL       chrome/locale/es-CL/
 #locale   personas   es-ES       chrome/locale/es-ES/
 #locale   personas   es-VE       chrome/locale/es-VE/
 locale   personas   fi-FI       chrome/locale/fi-FI/
 locale   personas   fr-FR       chrome/locale/fr-FR/
-locale   personas   fy-NL       chrome/locale/fy-NL/
+#locale   personas   fy-NL       chrome/locale/fy-NL/
 locale   personas   gl-ES       chrome/locale/gl-ES/
 locale   personas   he-IL       chrome/locale/he-IL/
 #locale   personas   hr-HR       chrome/locale/hr-HR/
@@ -59,7 +59,7 @@ locale   personas   ru-RU       chrome/locale/ru-RU/
 #locale   personas   sk-SK       chrome/locale/sk-SK/
 locale   personas   sr-RS       chrome/locale/sr-RS/
 locale   personas   sv-SE       chrome/locale/sv-SE/
-locale   personas   tr-TR       chrome/locale/tr-TR/
-locale   personas   vi-VN       chrome/locale/vi-VN/
-locale   personas   zh-CN       chrome/locale/zh-CN/
-locale   personas   zh-TW       chrome/locale/zh-TW/
+#locale   personas   tr-TR       chrome/locale/tr-TR/
+#locale   personas   vi-VN       chrome/locale/vi-VN/
+#locale   personas   zh-CN       chrome/locale/zh-CN/
+#locale   personas   zh-TW       chrome/locale/zh-TW/
