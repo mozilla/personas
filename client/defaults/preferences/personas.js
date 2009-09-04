@@ -4,14 +4,28 @@
 //   current: a persona selected by the user
 // When this preference is set to "random" or "current", the current persona
 // is stored in extensions.personas.current.
-pref("extensions.personas.selected", "default");
+pref("extensions.personas.selected", "current");
 
-// The current persona.  Generally, this is the persona that the user selected
-// from a menu in the extension or from the web directory of personas.  But if
-// the user selected "random persona from [category]", then this is the persona
-// we randomly selected from the category.  And if the user selected a custom
-// persona, then this is that persona.
-pref("extensions.personas.current", "");
+// The initial persona that should get set on first run for a BYOB/bundle/
+// distribution build.
+//
+// We don't specify this preference by default, as it should only be specified
+// by a distribution.ini file. If you want to change the initial persona
+// that gets set for other builds, change the hardcoded value in service.js.
+//
+// pref("extensions.personas.initial", ...);
+
+// The current persona that is displayed in Firefox browser windows.
+// Generally, this is the persona that the user selected from a menu
+// in the extension or from the web gallery of personas.  But if the user
+// selected "random persona from [category]", then this is the persona
+// we randomly selected from the category.  And if the user selected
+// a custom persona, then this is that persona.
+//
+// We don't set this preference by default, as it gets set on first run
+// by the service and subsequently by the user.
+//
+// pref("extensions.personas.current", ...);
 
 // The category from which we pick a random persona, when the user selects
 // "random persona from [category]".
@@ -73,15 +87,6 @@ pref("extensions.personas.showCustomMenu", false);
 
 // The version of the JSON data feed that this extension expects.
 pref("extensions.personas.data.version", 1);
-
-// The persona that the extension auto-selects on first run.
-// Note: we store it here and apply it on first run because of a bug in Firefox
-// partner packages that prevents us from merely setting the default preferences
-// in this file so that this persona is selected (i.e. setting
-// extensions.personas.selected to "current" and extensions.personas.current
-// to this JSON record).
-// FIXME: find, document, and reference the bug in question.
-pref("extensions.personas.initial", "{\"id\":\"33\",\"name\":\"Groovy Blue\",\"accentcolor\":\"499bee\",\"textcolor\":null,\"header\":\"3/3/33/tbox-groovy_blue.jpg\",\"footer\":\"3/3/33/stbar-groovy_blue.jpg\"}");
 
 // User preference to specify the rotation interval of personas (in seconds)
 // while in "random" or "randomFavorite" mode.
