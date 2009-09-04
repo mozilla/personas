@@ -103,8 +103,49 @@ let PersonaService = {
     let timerManager = Cc["@mozilla.org/updates/timer-manager;1"].
                        getService(Ci.nsIUpdateTimerManager);
 
+    // Get the initial persona specified by a cookie, if any.  The gallery
+    // sets this when users download Personas from the Details page
+    // for a specific persona, so that the user sees that persona when they
+    // install the extension.  We only check for a cookie on first run,
+    // because it would be expensive to traverse cookies every time, and since
+    // the gallery only sets the initial persona cookie on installation.
+    let personaFromCookie;
     if (this.extension && this.extension.firstRun)
-      this._setFirstRunPersona();
+      personaFromCookie = this._getPersonaFromCookie();
+
+    // Change to the initial persona if preferences indicate that a persona
+    // should be active but they don't specify the persona that is active.
+    // This normally happens only on first run, although it could theoretically
+    // happen at other times.
+    //
+    // The initial persona is either the persona specified by a cookie (set by
+    // the gallery), the one specified by the extensions.personas.initial
+    // preference (set by a distribution.ini file for a BYOB/bundle/distributon
+    // build), or the Groovy Blue persona which is hardcoded into this code.
+    //
+    // NOTE: the logic here is carefully designed to achieve the correct outcome
+    // under a variety of circumstances and should be changed with caution!
+    // See bug 513765 and bug 503300 for some details on why it works this way.
+    //
+    if (this._prefs.get("selected") == "current" && !this._prefs.get("current")) {
+      if (personaFromCookie)
+        this.changeToPersona(personaFromCookie);
+      else if (this._prefs.has("initial"))
+        this.changeToPersona(JSON.parse(this._prefs.get("initial")));
+      else {
+        this.changeToPersona(
+          {
+            id: "33",
+            name: "Groovy Blue",
+            // XXX Shouldn't this color value have a # before it?
+            accentcolor: "499bee",
+            textcolor: null,
+            header: "3/3/33/tbox-groovy_blue.jpg",
+            footer: "3/3/33/stbar-groovy_blue.jpg"
+          }
+        );
+      }
+    }
 
     // Refresh data, then set a timer to refresh it periodically.
     // This isn't quite right, since we always load data on startup, even if
@@ -518,9 +559,9 @@ let PersonaService = {
   },
 
   /**
-   * Sets the persona specified by the initial_persona cookie during first run.
+   * Gets the persona specified by the initial_persona cookie.
    */
-  _setFirstRunPersona : function() {
+  _getPersonaFromCookie: function() {
     let authorizedHosts = this._prefs.get("authorizedHosts").split(/[, ]+/);
     let cookieManager =
       Cc["@mozilla.org/cookiemanager;1"].getService(Ci.nsICookieManager);
@@ -551,13 +592,10 @@ let PersonaService = {
       }
     }
 
-    if (null != selectedCookie) {
-      let personaJSON = decodeURIComponent(selectedCookie.value);
-      this.changeToPersona(JSON.parse(personaJSON));
-    }
-    else {
-      this.changeToPersona(JSON.parse(this._prefs.get("initial")));
-    }
+    if (selectedCookie)
+      return JSON.parse(decodeURIComponent(selectedCookie.value));
+
+    return null;
   },
 
   onQuitApplication: function() {
