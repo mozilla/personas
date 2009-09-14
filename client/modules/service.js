@@ -346,7 +346,12 @@ let PersonaService = {
     if (request.status != 200)
       throw("problem loading favorites: " + request.status + " - " + request.statusText);
 
-    this.favorites = JSON.parse(request.responseText);
+    try {
+        this.favorites = JSON.parse(request.responseText);
+    }
+    catch(ex) {
+      Cu.reportError(ex + " parsing favorites JSON: " + request.responseText);
+    }
   },
 
   _refreshPersona: function() {
