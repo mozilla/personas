@@ -347,11 +347,42 @@ let PersonaService = {
       throw("problem loading favorites: " + request.status + " - " + request.statusText);
 
     try {
-        this.favorites = JSON.parse(request.responseText);
+      this.favorites = JSON.parse(request.responseText);
     }
     catch(ex) {
       Cu.reportError(ex + " parsing favorites JSON: " + request.responseText);
     }
+  },
+
+  /**
+   * Adds the given persona to the favorites list. If the persona is already
+   * in the list then it is replaced.
+   * @param aPersona The persona object to be added.
+   */
+  addFavoritePersona : function(aPersona) {
+    // Make sure the favorites list exists.
+    if (!this.favorites)
+      this.favorites = [];
+
+    let i = this._findPersonaInArray(aPersona, this.favorites);
+    if (i >= 0)
+      this.favorites[i] = aPersona;
+    else
+      this.favorites.push(aPersona);
+  },
+
+  /**
+   * Removes the given persona from the favorites list, if found.
+   * @param aPersona The persona object to be removed.
+   */
+  removeFavoritePersona : function(aPersona) {
+    // Abort if the favorites list hasn't been created.
+    if (!this.favorites)
+      return;
+
+    let i = this._findPersonaInArray(aPersona, this.favorites);
+    if (i >= 0)
+      this.favorites.splice(i, 1);
   },
 
   _refreshPersona: function() {
@@ -524,6 +555,20 @@ let PersonaService = {
     this._prefs.reset("persona.lastRefreshed");
     this._prefs.set("persona.lastChanged", new Date().getTime().toString());
     Observers.notify("personas:persona:changed");
+  },
+
+  /**
+   * Looks for the given persona in the given array and returns its index.
+   * @param aPersona The persona to be found.
+   * @param aPersonaArray The array in which to look for the persona.
+   * @return The index of the persona in the array; -1 if not found.
+   */
+  _findPersonaInArray : function(aPersona, aPersonaArray) {
+    for (let i = 0; i < aPersonaArray.length; i++) {
+      if (aPersonaArray[i].id == aPersona.id)
+        return i;
+    }
+    return -1;
   },
 
   _getRandomPersonaFromArray : function(aPersonaArray) {

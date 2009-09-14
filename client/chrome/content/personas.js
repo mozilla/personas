@@ -198,6 +198,12 @@ let PersonaController = {
       case "CheckPersonas":
         this.onCheckPersonasFromContent(aEvent);
         break;
+      case "AddFavoritePersona":
+        this.onAddFavoritePersonaFromContent(aEvent);
+        break;
+      case "RemoveFavoritePersona":
+        this.onRemoveFavoritePersonaFromContent(aEvent);
+        break;
     }
   },
 
@@ -230,6 +236,8 @@ let PersonaController = {
     document.addEventListener("PreviewPersona", this, false, true);
     document.addEventListener("ResetPersona", this, false, true);
     document.addEventListener("CheckPersonas", this, false, true);
+    document.addEventListener("AddFavoritePersona", this, false, true);
+    document.addEventListener("RemoveFavoritePersona", this, false, true);
 
     // Check for a first-run or updated extension and display some additional
     // information to users.
@@ -260,6 +268,8 @@ let PersonaController = {
     document.removeEventListener("PreviewPersona", this, false);
     document.removeEventListener("ResetPersona", this, false);
     document.removeEventListener("CheckPersonas", this, false);
+    document.removeEventListener("AddFavoritePersona", this, false);
+    document.removeEventListener("RemoveFavoritePersona", this, false);
 
     this.Observers.remove("personas:persona:changed", this);
   },
@@ -616,6 +626,65 @@ let PersonaController = {
       default:
         throw "unknown application ID " + PersonaService.appInfo.ID;
     }
+  },
+
+  /**
+   * Adds the favorite persona specified by a web page via a AddFavoritePersona event.
+   * Checks to ensure the page is hosted on a server authorized to select personas.
+   *
+   * @param event   {Event}
+   *        the AddFavoritePersona DOM event
+   */
+  onAddFavoritePersonaFromContent: function(event) {
+    this._authorizeHost(event);
+    this.onAddFavoritePersona(event);
+  },
+
+  /**
+   * Adds the persona specified by the DOM node target of the given event to
+   * the favorites list.
+   *
+   * @param event   {Event}
+   *        the AddFavoritePersona DOM event
+   */
+  onAddFavoritePersona: function(event) {
+    let node = event.target;
+
+    if (!node.hasAttribute("persona"))
+      throw "node does not have 'persona' attribute";
+
+    let persona = node.getAttribute("persona");
+    PersonaService.addFavoritePersona(this.JSON.parse(persona));
+  },
+
+  /**
+   * Removes the favorite persona specified by a web page via a
+   * RemoveFavoritePersona event.
+   * Checks to ensure the page is hosted on a server authorized to select personas.
+   *
+   * @param event   {Event}
+   *        the RemoveFavoritePersona DOM event
+   */
+  onRemoveFavoritePersonaFromContent: function(event) {
+    this._authorizeHost(event);
+    this.onRemoveFavoritePersona(event);
+  },
+
+  /**
+   * Removes the persona specified by the DOM node target of the given event
+   * from the favorites list.
+   *
+   * @param event   {Event}
+   *        the RemoveFavoritePersona DOM event
+   */
+  onRemoveFavoritePersonaFromContent: function(event) {
+    let node = event.target;
+
+    if (!node.hasAttribute("persona"))
+      throw "node does not have 'persona' attribute";
+
+    let persona = node.getAttribute("persona");
+    PersonaService.removeFavoritePersona(this.JSON.parse(persona));
   },
 
   /**
