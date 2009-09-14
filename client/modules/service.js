@@ -346,7 +346,7 @@ let PersonaService = {
     if (request.status != 200)
       throw("problem loading favorites: " + request.status + " - " + request.statusText);
 
-    this.personas.favorites = JSON.parse(request.responseText);
+    this.favorites = JSON.parse(request.responseText);
   },
 
   _refreshPersona: function() {
@@ -431,6 +431,9 @@ let PersonaService = {
   // Loaded upon service initialization and reloaded periodically thereafter.
   personas: null,
 
+  // The JSON feed of favorite personas retrieved from the server.
+  favorites: null,
+
   /**
    * extensions.personas.selected: the type of persona that the user selected;
    * possible values are default (the default Firefox theme), random (a random
@@ -501,12 +504,8 @@ let PersonaService = {
   },
 
   changeToRandomFavoritePersona : function() {
-    if (this.personas &&
-        this.personas.favorites &&
-        this.personas.favorites.length > 0 &&
-        this.isUserSignedIn) {
-
-      this.currentPersona = this._getRandomPersonaFromArray(this.personas.favorites);
+    if (this.favorites && this.favorites.length > 0 && this.isUserSignedIn) {
+      this.currentPersona = this._getRandomPersonaFromArray(this.favorites);
       this.selected = "randomFavorite";
       this._prefs.set("persona.lastChanged", new Date().getTime().toString());
       Observers.notify("personas:persona:changed");

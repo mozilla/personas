@@ -722,8 +722,8 @@ let PersonaController = {
                           "openUILinkIn('" + this._siteURL + "signin?return=/gallery/All/Favorites', 'tab')");
       } else {
 
-        if (PersonaService.personas && PersonaService.personas.favorites) {
-          for each (let persona in PersonaService.personas.favorites)
+        if (PersonaService.favorites) {
+          for each (let persona in PersonaService.favorites)
             popupmenu.appendChild(this._createPersonaItem(persona));
           popupmenu.appendChild(document.createElement("menuseparator"));
         }
