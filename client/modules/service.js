@@ -223,6 +223,12 @@ let PersonaService = {
     request = request.QueryInterface(Ci.nsIXMLHttpRequest);
     request.open("GET", url, true);
 
+    // Force the request to include cookies even though this chrome code
+    // is seen as a third-party, so the server knows the user for which we are
+    // requesting favorites (or anything else user-specific in the future).
+    request.channel.QueryInterface(Ci.nsIHttpChannelInternal).
+      forceAllowThirdPartyCookie = true;
+
     if (headers)
       for (let header in headers)
         request.setRequestHeader(header, headers[header]);
