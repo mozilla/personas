@@ -226,8 +226,13 @@ let PersonaService = {
     // Force the request to include cookies even though this chrome code
     // is seen as a third-party, so the server knows the user for which we are
     // requesting favorites (or anything else user-specific in the future).
-    request.channel.QueryInterface(Ci.nsIHttpChannelInternal).
-      forceAllowThirdPartyCookie = true;
+    // This only works in Firefox 3.6; in Firefox 3.5 the request will instead
+    // fail to send cookies if the user has disabled third-party cookies.
+    try {
+      request.channel.QueryInterface(Ci.nsIHttpChannelInternal).
+        forceAllowThirdPartyCookie = true;
+    }
+    catch(ex) { /* user is using Firefox 3.5 */ }
 
     if (headers)
       for (let header in headers)
@@ -356,7 +361,8 @@ let PersonaService = {
       this.favorites = JSON.parse(request.responseText);
     }
     catch(ex) {
-      Cu.reportError(ex + " parsing favorites JSON: " + request.responseText);
+      Cu.reportError("error parsing favorites data; perhaps you are using " +
+                     "Firefox 3.5 and have disabled third-party cookies?");
     }
   },
 
