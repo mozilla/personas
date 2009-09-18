@@ -161,6 +161,43 @@ let PersonaController = {
    */
   _escapeURLForCSS: function(url) url.replace(/[(),\s'"]/g, "\$&"),
 
+  openURLInTab: function(url) {
+    switch (PersonaService.appInfo.ID) {
+      case PersonaService.THUNDERBIRD_ID:
+        // Thunderbird's "openTab" implementation for the "contentTab" mode
+        // automatically switches to an existing tab containing the URL we are
+        // opening, so we don't have to check for one here.
+        Cc['@mozilla.org/appshell/window-mediator;1'].
+        getService(Ci.nsIWindowMediator).
+        getMostRecentWindow("mail:3pane").
+        document.getElementById("tabmail").
+        openTab("contentTab", { contentPage: url });
+        break;
+
+      case PersonaService.FIREFOX_ID:
+      default: {
+        // Firefox's "openUILinkIn" implementation doesn't check if there is
+        // already an existing tab containing the URL we are opening, so we have
+        // to check for one here.
+        let found = false;
+        let tabBrowser = window.getBrowser();
+        // Check each tab of this browser for the editor XUL file
+        let numTabs = tabBrowser.browsers.length;
+        for (let index = 0; index < numTabs; index++) {
+          let currentBrowser = tabBrowser.getBrowserAtIndex(index);
+          if (url == currentBrowser.currentURI.spec) {
+            tabBrowser.selectedTab = tabBrowser.mTabs[index];
+            found = true;
+            break;
+          }
+        }
+        if (!found)
+          window.openUILinkIn(url, "tab");
+        break;
+      }
+    }
+  },
+
 
   //**************************************************************************//
   // XPCOM Interface Implementations
@@ -255,12 +292,14 @@ let PersonaController = {
     if (lastVersion == "firstrun") {
       // Show the first run page.
       let firstRunURL = this._siteURL + "firstrun?version=" + thisVersion;
-      setTimeout(function() { window.openUILinkIn(firstRunURL, "tab") }, 500);
+      let t = this;
+      setTimeout(function() t.openURLInTab(firstRunURL), 500);
       this._prefs.set("lastversion", thisVersion);
     }
     else if (lastVersion != thisVersion) {
       let updatedURL = this._siteURL + "updated?version=" + thisVersion;
-      setTimeout(function() { window.openUILinkIn(updatedURL, "tab") }, 500);
+      let t = this;
+      setTimeout(function() t.openURLInTab(updatedURL), 500);
       this._prefs.set("lastversion", thisVersion);
     }
 
@@ -594,45 +633,11 @@ let PersonaController = {
   },
 
   onViewDirectory: function() {
-    window.openUILinkIn(this._siteURL + "gallery/All/Popular", "tab");
+    this.openURLInTab(this._siteURL + "gallery/All/Popular");
   },
 
   onEditCustomPersona: function() {
-    let editorUrl = "chrome://personas/content/customPersonaEditor.xul";
-
-    switch (PersonaService.appInfo.ID) {
-      case PersonaService.THUNDERBIRD_ID:
-        Cc['@mozilla.org/appshell/window-mediator;1'].
-        getService(Ci.nsIWindowMediator).
-        getMostRecentWindow("mail:3pane").
-        document.getElementById("tabmail").
-        openTab("contentTab",
-                "chrome://personas/content/customPersonaEditor.xul",
-                this._strings.get("customPersona"));
-	break;
-      case PersonaService.FIREFOX_ID:
-        let found = false;
-        let tabbrowser = window.getBrowser();
-
-        // Check each tab of this browser for the editor XUL file
-        let numTabs = tabbrowser.browsers.length;
-        for (let index = 0; index < numTabs; index++) {
-          let currentBrowser = tabbrowser.getBrowserAtIndex(index);
-          if (editorUrl == currentBrowser.currentURI.spec) {
-            // The editor is already opened. Select this tab.
-            tabbrowser.selectedTab = tabbrowser.mTabs[index];
-            found = true;
-            break;
-          }
-        }
-
-        // If the editor's not open...
-        if (!found)
-          window.openUILinkIn(editorUrl, "tab");
-        break;
-      default:
-        throw "unknown application ID " + PersonaService.appInfo.ID;
-    }
+    this.openURLInTab("chrome://personas/content/customPersonaEditor.xul");
   },
 
   /**
@@ -795,7 +800,9 @@ let PersonaController = {
         let item = popupmenu.appendChild(document.createElement("menuitem"));
         item.setAttribute("label", this._strings.get("favoritesSignIn"));
         item.setAttribute("oncommand",
-                          "openUILinkIn('" + this._siteURL + "signin?return=/gallery/All/Favorites', 'tab')");
+                          "PersonaController.openURLInTab('" +
+                          this._siteURL +
+                          "signin?return=/gallery/All/Favorites')");
       } else {
 
         if (PersonaService.favorites) {
