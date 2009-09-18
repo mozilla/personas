@@ -1,4 +1,4 @@
-<!ENTITY personas_app_title "Personas for Firefox">
+<!ENTITY personas_app_title "Personas">
 <!ENTITY useDefaultPersona.label "既定を利用する">
 <!ENTITY preferences.label "設定...">
 <!ENTITY viewDirectory.label "直接表示...">
