@@ -87,6 +87,12 @@ let PersonaController = {
     return this._strings = new this.StringBundle("chrome://personas/locale/personas.properties");
   },
 
+  get _brandStrings() {
+    delete this._brandStrings;
+    return this._brandStrings =
+      new this.StringBundle("chrome://branding/locale/brand.properties");
+  },
+
   get _menu() {
     delete this._menu;
     return this._menu = document.getElementById("personas-menu");
@@ -216,7 +222,8 @@ let PersonaController = {
     // is unavailable.
     // FIXME: make this a DTD entity rather than a properties string.
     document.getElementById("personasDataUnavailableTooltip").label =
-    this._strings.get("dataUnavailable");
+      this._strings.get("dataUnavailable",
+                        [this._brandStrings.get("brandShortName")]);
 
     // Record the default header and footer background images so we can
     // revert to them if the user selects the default persona.
