@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<RDF xmlns="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:em="http://www.mozilla.org/2004/em-rdf#">
+
+<Description about="urn:mozilla:extension:@extension_id@">
+  <em:updates>
+    <Seq>
+      <li>
+	<Description>
+          <em:version>@package_version@</em:version>
+          <em:targetApplication> <!-- Firefox -->
+            <Description>
+              <em:id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</em:id>
+              <em:minVersion>3.5</em:minVersion>
+              <em:maxVersion>3.6a2pre</em:maxVersion>
+              <em:updateLink>@package_url@</em:updateLink>
+            </Description>
+          </em:targetApplication>
+          <em:targetApplication> <!-- Thunderbird -->
+            <Description>
+	      <em:id>{3550f703-e582-4d05-9a08-453d09bdfdc6}</em:id>
+	      <em:minVersion>3.0b1</em:minVersion>
+	      <em:maxVersion>3.0pre</em:maxVersion>
+              <em:updateLink>@package_url@</em:updateLink>
+            </Description>
+          </em:targetApplication>
+        </Description>
+      </li>
+    </Seq>
+  </em:updates>
+</Description>
+
+</RDF>

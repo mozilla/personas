@@ -3,9 +3,9 @@
      xmlns:em="http://www.mozilla.org/2004/em-rdf#">
   <Description about="urn:mozilla:install-manifest">
 
-    <em:id>personas@christopher.beard</em:id>
+    <em:id>@extension_id@</em:id>
     <em:name>Personas</em:name>
-    <em:version>1.3a1pre</em:version>
+    <em:version>@package_version@</em:version>
     <em:description>Themes, skins, fur coats and more.</em:description>
 
     <em:creator>Chris Beard</em:creator>
@@ -40,6 +40,7 @@
     <em:homepageURL>http://www.getpersonas.com/</em:homepageURL>
     <em:iconURL>chrome://personas/content/personas_32x32.png</em:iconURL>
     <em:optionsURL>chrome://personas/content/preferences.xul</em:optionsURL>
+    @update_url_tag@
 
     <em:targetApplication> <!-- Firefox -->
       <Description>

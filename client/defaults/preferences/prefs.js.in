@@ -91,3 +91,14 @@ pref("extensions.personas.data.version", 1);
 // User preference to specify the rotation interval of personas (in seconds)
 // while in "random" or "randomFavorite" mode.
 pref("extensions.personas.rotationInterval", 3600); // in seconds == 1 hour
+
+// The ID of the Mercurial revision from which a particular package is built.
+// This can help us narrow down the cause of a problem reported by a user.
+pref("extensions.personas.revisionID", "@revision_id@");
+
+// The distribution channel for a particular package.  We use this to determine
+// whether or not to display the "updated" page when the user updates the addon.
+// We do show the page when the user updates to a new release build; we don't
+// show it when the user upgrades to a new development build (which would get
+// old fast since they come out so often).
+pref("extensions.personas.channel", "@channel@");

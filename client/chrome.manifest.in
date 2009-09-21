@@ -1,0 +1,65 @@
+overlay chrome://browser/content/browser.xul      chrome://personas/content/personas.xul   application={ec8030f7-c20a-464f-9b0e-13a3a9e97384}
+overlay chrome://messenger/content/messenger.xul  chrome://personas/content/messenger.xul  application={3550f703-e582-4d05-9a08-453d09bdfdc6}
+
+# Register a resource: protocol alias so we can refer to files in this package
+# with URLs of the form resource://personas/path/to/file,
+# f.e. resource://personas/modules/service.js.
+resource personas   ./
+
+content  personas             @chrome_path@content/
+
+# Register skins for various combinations of application (Firefox, Thunderbird),
+# application version (3.0, 3.5), operating system (Windows, Mac OS X, Linux,
+# SunOS, FreeBSD) and OS version (XP, Vista) so we can make Personas look right
+# on them.  Make sure you're editing the right skin(s) when making changes!
+skin  personas  classic/1.0  @chrome_path@skin/winxp/             application={ec8030f7-c20a-464f-9b0e-13a3a9e97384}                      os=WINNT   osversion<6
+skin  personas  classic/1.0  @chrome_path@skin/winxp/             application={ec8030f7-c20a-464f-9b0e-13a3a9e97384}                      os=WINCE
+skin  personas  classic/1.0  @chrome_path@skin/vista/             application={ec8030f7-c20a-464f-9b0e-13a3a9e97384}                      os=WINNT   osversion>=6
+skin  personas  classic/1.0  @chrome_path@skin/mac3.0/            application={ec8030f7-c20a-464f-9b0e-13a3a9e97384}  appversion<3.1b2    os=Darwin
+skin  personas  classic/1.0  @chrome_path@skin/mac3.1/            application={ec8030f7-c20a-464f-9b0e-13a3a9e97384}  appversion>=3.1b2   os=Darwin
+skin  personas  classic/1.0  @chrome_path@skin/linux/             application={ec8030f7-c20a-464f-9b0e-13a3a9e97384}                      os=Linux
+skin  personas  classic/1.0  @chrome_path@skin/linux/             application={ec8030f7-c20a-464f-9b0e-13a3a9e97384}                      os=SunOS
+skin  personas  classic/1.0  @chrome_path@skin/linux/             application={ec8030f7-c20a-464f-9b0e-13a3a9e97384}                      os=FreeBSD
+skin  personas  classic/1.0  @chrome_path@skin/linux/thunderbird/ application={3550f703-e582-4d05-9a08-453d09bdfdc6}                      os=Linux
+skin  personas  classic/1.0  @chrome_path@skin/linux/thunderbird/ application={3550f703-e582-4d05-9a08-453d09bdfdc6}                      os=SunOS
+skin  personas  classic/1.0  @chrome_path@skin/linux/thunderbird/ application={3550f703-e582-4d05-9a08-453d09bdfdc6}                      os=FreeBSD
+skin  personas  classic/1.0  @chrome_path@skin/winxp/thunderbird/ application={3550f703-e582-4d05-9a08-453d09bdfdc6}                      os=WINNT   osversion<6
+skin  personas  classic/1.0  @chrome_path@skin/vista/thunderbird/ application={3550f703-e582-4d05-9a08-453d09bdfdc6}                      os=WINNT   osversion>=6
+skin  personas  classic/1.0  @chrome_path@skin/mac/thunderbird/   application={3550f703-e582-4d05-9a08-453d09bdfdc6}                      os=Darwin
+
+# Choose default stylesheet for customPersonaEditor.xul according to application (Firefox, Thunderbird).
+style chrome://personas/content/customPersonaEditor.xul chrome://browser/skin/    application={ec8030f7-c20a-464f-9b0e-13a3a9e97384}
+style chrome://personas/content/customPersonaEditor.xul chrome://messenger/skin/  application={3550f703-e582-4d05-9a08-453d09bdfdc6}
+
+# localizations in alphabetical order
+# Localizations that are commented out are disabled because they are out of date.
+locale   personas   bg-BG       @chrome_path@locale/bg-BG/
+#locale   personas   cs-CZ       @chrome_path@locale/cs-CZ/
+locale   personas   da-DK       @chrome_path@locale/da-DK/
+#locale   personas   de-DE       @chrome_path@locale/de-DE/
+locale   personas   en-US       @chrome_path@locale/en-US/
+#locale   personas   es-CL       @chrome_path@locale/es-CL/
+#locale   personas   es-ES       @chrome_path@locale/es-ES/
+#locale   personas   es-VE       @chrome_path@locale/es-VE/
+locale   personas   fi-FI       @chrome_path@locale/fi-FI/
+locale   personas   fr-FR       @chrome_path@locale/fr-FR/
+#locale   personas   fy-NL       @chrome_path@locale/fy-NL/
+locale   personas   gl-ES       @chrome_path@locale/gl-ES/
+locale   personas   he-IL       @chrome_path@locale/he-IL/
+#locale   personas   hr-HR       @chrome_path@locale/hr-HR/
+locale   personas   hu-HU       @chrome_path@locale/hu-HU/
+locale   personas   it-IT       @chrome_path@locale/it-IT/
+locale   personas   ja-JP       @chrome_path@locale/ja-JP/
+locale   personas   ko-KR       @chrome_path@locale/ko-KR/
+#locale   personas   nb-NO       @chrome_path@locale/nb-NO/
+locale   personas   nl-NL       @chrome_path@locale/nl-NL/
+locale   personas   pl-PL       @chrome_path@locale/pl-PL/
+locale   personas   pt-BR       @chrome_path@locale/pt-BR/
+locale   personas   ru-RU       @chrome_path@locale/ru-RU/
+#locale   personas   sk-SK       @chrome_path@locale/sk-SK/
+locale   personas   sr-RS       @chrome_path@locale/sr-RS/
+locale   personas   sv-SE       @chrome_path@locale/sv-SE/
+#locale   personas   tr-TR       @chrome_path@locale/tr-TR/
+#locale   personas   vi-VN       @chrome_path@locale/vi-VN/
+#locale   personas   zh-CN       @chrome_path@locale/zh-CN/
+#locale   personas   zh-TW       @chrome_path@locale/zh-TW/
