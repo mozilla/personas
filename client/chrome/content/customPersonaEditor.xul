@@ -42,6 +42,7 @@
 
 <page id="customPersonaEditor"
       xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+      title="Custom Persona"
       align="center"
       onload="CustomPersonaEditor.onLoad()"
       onunload="CustomPersonaEditor.onUnload()">
