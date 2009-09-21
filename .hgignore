@@ -1,8 +1,8 @@
 # files generated from .in templates
-^chrome\.manifest$
-^defaults/preferences/prefs.js$
-^install\.rdf$
-^update\.rdf$
+^client/chrome\.manifest$
+^client/defaults/preferences/prefs.js$
+^client/install\.rdf$
+^client/update\.rdf$
 
 # JARs and XPIs
 \.jar$
@@ -13,4 +13,4 @@
 
 # the local mirror of the web distribution directory, for developers
 # who distribute their builds via the website
-^dist$
+^client/dist$
