@@ -37,6 +37,6 @@
 
 /**
  * This stylesheet is a placeholder for the rule that specifies the text color
- * when a persona is selected.  We insert the rule programmatically when
- * applying a persona and delete it when reverting to the default persona.
+ * and overrides when a persona is selected.  We insert the rule programmatically
+ * when applying a persona and delete it when reverting to the default persona.
  */

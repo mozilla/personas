@@ -21,6 +21,7 @@
  *   Chris Beard <cbeard@mozilla.org>
  *   Myk Melez <myk@mozilla.org>
  *   Chris <kidkog@gmail.com>
+ *   Byron Jones (glob) <bugzilla@glob.com.au>
  *
  * Alternatively, the contents of this file may be used under the terms of
  * either the GNU General Public License Version 2 or later (the "GPL"), or
@@ -347,7 +348,7 @@ let PersonaController = {
       let textColor = persona.textcolor || "black";
       for (let i = 0; i < document.styleSheets.length; i++) {
         let styleSheet = document.styleSheets[i];
-        if (styleSheet.href == "chrome://personas/content/textColor.css") {
+        if (styleSheet.href == "chrome://personas/content/overlay.css") {
           while (styleSheet.cssRules.length > 0)
             styleSheet.deleteRule(0);
 
@@ -428,6 +429,39 @@ let PersonaController = {
       }
       this._setTitlebarColors(general, active, inactive);
     }
+
+    // Opacity overrides (firefox only)
+    if (PersonaService.appInfo.ID == PersonaService.FIREFOX_ID) {
+      let overrideOpacity = this._prefs.get("override.opacity");
+      let overrideActiveOpacity = this._prefs.get("override.activeOpacity");
+      for (let i = 0; i < document.styleSheets.length; i++) {
+        let styleSheet = document.styleSheets[i];
+        if (styleSheet.href == "chrome://personas/content/overlay.css") {
+          if (typeof(overrideOpacity) != "undefined") {
+            styleSheet.insertRule(
+              "#main-window[persona] .tabbrowser-tab " +
+              "{ opacity: " + overrideOpacity + " !important; }",
+              0
+            );
+          }
+          if (typeof(overrideActiveOpacity) != "undefined") {
+            styleSheet.insertRule(
+              "#main-window[persona] .tabbrowser-tab[selected=\"true\"] " +
+              "{ opacity: " + overrideActiveOpacity + " !important; }",
+              0
+            );
+            styleSheet.insertRule(
+              "#main-window[persona] #urlbar, " +
+              "#main-window[persona] #searchbar " +
+              "{ opacity: " + overrideActiveOpacity + " !important; }",
+              0
+            );
+          }
+          break;
+        }
+      }
+    }
+
   },
 
   _applyDefault: function() {
@@ -442,7 +476,7 @@ let PersonaController = {
     // Reset the text color.
     for (let i = 0; i < document.styleSheets.length; i++) {
       let styleSheet = document.styleSheets[i];
-      if (styleSheet.href == "chrome://personas/content/textColor.css") {
+      if (styleSheet.href == "chrome://personas/content/overlay.css") {
         while (styleSheet.cssRules.length > 0)
           styleSheet.deleteRule(0);
         break;
