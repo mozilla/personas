@@ -165,7 +165,8 @@ substitute := perl -p -e 's/@([^@]+)@/defined $$ENV{$$1} ? $$ENV{$$1} : $$&/ge'
 
 # The variables to substitute for their values in .in files.
 export package_version update_url_tag package_url revision_id chrome_path \
-       channel extension_id
+       channel extension_id \
+       fx_min_version fx_max_version tb_min_version tb_max_version
 
 
 ################################################################################

@@ -55,3 +55,12 @@ version           := 1.3a1
 site_url_base     := https://people.mozilla.com/~cbeard/personas/dist
 site_path_local   := dist
 site_path_remote  := people.mozilla.com:/home/cbeard/public_html/personas/dist
+
+# The minimum and maximum versions of Firefox and Thunderbird with which
+# the extension is compatible.  These are used in both the install and update
+# manifests.
+fx_min_version    := 3.0
+fx_max_version    := 3.6b1pre
+
+tb_min_version    := 3.0b1
+tb_max_version    := 3.0pre
