@@ -12,31 +12,34 @@
     <em:contributor>Myk Melez</em:contributor>
     <em:contributor>Huang Yaoquan</em:contributor>
 
-    <!-- Localizers (from Babelzilla and other places) in alphabetical order -->
-    <em:translator>a007son</em:translator>        <!-- zh-TW, forum      -->
-    <em:translator>AtteL</em:translator>          <!-- fi-FI, Babelzilla -->
-    <em:translator>dogi</em:translator>           <!-- de-DE, Babelzilla -->
-    <em:translator>drry</em:translator>           <!-- ja,    Babelzilla -->
-    <em:translator>Ersen Yoldac</em:translator>   <!-- tr-TR, Babelzilla -->
-    <em:translator>fernph</em:translator>         <!-- pt-BR, Babelzilla -->
-    <em:translator>Funkin2x</em:translator>       <!-- es-CL, Babelzilla -->
-    <em:translator>funTomas</em:translator>       <!-- cs-CZ, Babelzilla -->
-    <em:translator>Joergen</em:translator>        <!-- da-DK, Babelzilla -->
-    <em:translator>jojaba</em:translator>         <!-- fr-FR, Babelzilla -->
-    <em:translator>jooliaan</em:translator>       <!-- it-IT, Babelzilla -->
-    <em:translator>kkemenczy</em:translator>      <!-- hu-HU, Babelzilla -->
-    <em:translator>kustodian</em:translator>      <!-- sr-RS, Babelzilla -->
-    <em:translator>Lisman</em:translator>         <!-- it-IT, Babelzilla -->
-    <em:translator>lois</em:translator>           <!-- gl-ES, Babelzilla -->
-    <em:translator>loveleeyoungae</em:translator> <!-- vi-VN, Babelzilla -->
-    <em:translator>moZes</em:translator>          <!-- fy-NL, nl-NL, Babelzilla -->
-    <em:translator>pia</em:translator>            <!-- eu-ES, Babelzilla -->
-    <em:translator>SiiiE</em:translator>          <!-- he-IL, Babelzilla -->
-    <em:translator>spjutster</em:translator>      <!-- sv-SE, Babelzilla -->
-    <em:translator>steekid</em:translator>        <!-- zh-CN, Babelzilla -->
-    <em:translator>stoyan</em:translator>         <!-- bg-BG, Babelzilla -->
-    <em:translator>Wareczek</em:translator>       <!-- pl-PL, Babelzilla -->
-    <em:translator>wtspout</em:translator>        <!-- ko-KR, Babelzilla -->
+    <!-- Localizers (from Babelzilla) in alphabetical order by localizer name.
+       - Note: some localizers have localized into more than one localization,
+       - while some localizations have more than one localizer.  The comments
+       - next to each entry list each localizer's localization(s). -->
+    <em:translator>a007son</em:translator>        <!-- zh-TW -->
+    <em:translator>AtteL</em:translator>          <!-- fi-FI -->
+    <em:translator>dogi</em:translator>           <!-- de-DE -->
+    <em:translator>drry</em:translator>           <!-- ja    -->
+    <em:translator>Ersen Yoldac</em:translator>   <!-- tr-TR -->
+    <em:translator>fernph</em:translator>         <!-- pt-BR -->
+    <em:translator>Funkin2x</em:translator>       <!-- es-CL -->
+    <em:translator>funTomas</em:translator>       <!-- cs-CZ -->
+    <em:translator>Joergen</em:translator>        <!-- da-DK -->
+    <em:translator>jojaba</em:translator>         <!-- fr-FR -->
+    <em:translator>jooliaan</em:translator>       <!-- it-IT -->
+    <em:translator>kkemenczy</em:translator>      <!-- hu-HU -->
+    <em:translator>kustodian</em:translator>      <!-- sr-RS -->
+    <em:translator>Lisman</em:translator>         <!-- it-IT -->
+    <em:translator>lois</em:translator>           <!-- gl-ES -->
+    <em:translator>loveleeyoungae</em:translator> <!-- vi-VN -->
+    <em:translator>moZes</em:translator>          <!-- fy-NL, nl-NL -->
+    <em:translator>pia</em:translator>            <!-- eu-ES -->
+    <em:translator>SiiiE</em:translator>          <!-- he-IL -->
+    <em:translator>spjutster</em:translator>      <!-- sv-SE -->
+    <em:translator>steekid</em:translator>        <!-- zh-CN -->
+    <em:translator>stoyan</em:translator>         <!-- bg-BG -->
+    <em:translator>Wareczek</em:translator>       <!-- pl-PL -->
+    <em:translator>wtspout</em:translator>        <!-- ko-KR -->
 
     <em:homepageURL>http://www.getpersonas.com/</em:homepageURL>
     <em:iconURL>chrome://personas/content/personas_32x32.png</em:iconURL>
