@@ -12,11 +12,10 @@
     <em:contributor>Myk Melez</em:contributor>
     <em:contributor>Huang Yaoquan</em:contributor>
 
-    <!-- Localizers (from Babelzilla) in alphabetical order by localizer name.
+    <!-- Localizers from Babelzilla in alphabetical order by localizer name.
        - Note: some localizers have localized into more than one localization,
        - while some localizations have more than one localizer.  The comments
        - next to each entry list each localizer's localization(s). -->
-    <em:translator>a007son</em:translator>        <!-- zh-TW -->
     <em:translator>AtteL</em:translator>          <!-- fi-FI -->
     <em:translator>dogi</em:translator>           <!-- de-DE -->
     <em:translator>drry</em:translator>           <!-- ja    -->
