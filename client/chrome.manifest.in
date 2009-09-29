@@ -42,7 +42,7 @@ locale   personas   en-US       @chrome_path@locale/en-US/
 locale   personas   eu-ES       @chrome_path@locale/eu-ES/
 locale   personas   fi-FI       @chrome_path@locale/fi-FI/
 locale   personas   fr-FR       @chrome_path@locale/fr-FR/
-#locale   personas   fy-NL       @chrome_path@locale/fy-NL/
+locale   personas   fy-NL       @chrome_path@locale/fy-NL/
 locale   personas   gl-ES       @chrome_path@locale/gl-ES/
 locale   personas   he-IL       @chrome_path@locale/he-IL/
 #locale   personas   hr-HR       @chrome_path@locale/hr-HR/
