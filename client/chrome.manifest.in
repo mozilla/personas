@@ -39,8 +39,6 @@ locale   personas   da-DK       @chrome_path@locale/da-DK/
 locale   personas   de-DE       @chrome_path@locale/de-DE/
 locale   personas   en-US       @chrome_path@locale/en-US/
 #locale   personas   es-CL       @chrome_path@locale/es-CL/
-#locale   personas   es-ES       @chrome_path@locale/es-ES/
-#locale   personas   es-VE       @chrome_path@locale/es-VE/
 locale   personas   fi-FI       @chrome_path@locale/fi-FI/
 locale   personas   fr-FR       @chrome_path@locale/fr-FR/
 #locale   personas   fy-NL       @chrome_path@locale/fy-NL/
