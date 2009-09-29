@@ -49,7 +49,7 @@ name              := personas
 # 1.4x0d200909191530, where "x0d" is required by a peculiarity of Mozilla's
 # version comparator (nsIVersionComparator) and the rest of the string is
 # a timestamp.
-version           := 1.3a1
+version           := 1.3
 
 # These variables control publication of the extension to a remote website.
 site_url_base     := https://people.mozilla.com/~cbeard/personas/dist
