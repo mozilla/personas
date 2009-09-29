@@ -60,6 +60,6 @@ locale   personas   ru-RU       @chrome_path@locale/ru-RU/
 locale   personas   sr-RS       @chrome_path@locale/sr-RS/
 locale   personas   sv-SE       @chrome_path@locale/sv-SE/
 #locale   personas   tr-TR       @chrome_path@locale/tr-TR/
-#locale   personas   vi-VN       @chrome_path@locale/vi-VN/
+locale   personas   vi-VN       @chrome_path@locale/vi-VN/
 #locale   personas   zh-CN       @chrome_path@locale/zh-CN/
 #locale   personas   zh-TW       @chrome_path@locale/zh-TW/
