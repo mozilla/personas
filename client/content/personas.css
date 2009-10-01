@@ -67,6 +67,9 @@
   list-style-image: url("chrome://personas/content/new.png");
 }
 
+#personas-current menu {
+  font-weight: bold !important;
+}
 
 /**
  * Header and footer rules are designed to do four things:

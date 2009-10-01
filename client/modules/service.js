@@ -49,6 +49,7 @@ Cu.import("resource://gre/modules/XPCOMUtils.jsm");
 Cu.import("resource://personas/modules/JSON.js");
 Cu.import("resource://personas/modules/Observers.js");
 Cu.import("resource://personas/modules/Preferences.js");
+Cu.import("resource://personas/modules/StringBundle.js");
 Cu.import("resource://personas/modules/URI.js");
 
 const PERSONAS_EXTENSION_ID = "personas@christopher.beard";
@@ -68,6 +69,11 @@ let PersonaService = {
   get _prefs() {
     delete this._prefs;
     return this._prefs = new Preferences("extensions.personas.");
+  },
+
+  get _strings() {
+    delete this._strings;
+    return this._strings = new StringBundle("chrome://personas/locale/personas.properties");
   },
 
   get appInfo() {
@@ -154,14 +160,15 @@ let PersonaService = {
     let timerManager = Cc["@mozilla.org/updates/timer-manager;1"].
                        getService(Ci.nsIUpdateTimerManager);
 
+    // Load cached personas data
+    this.loadDataFromCache();
+
     // Refresh data, then set a timer to refresh it periodically.
     // This isn't quite right, since we always load data on startup, even if
     // we've recently refreshed it.  And the timer that refreshes data ignores
     // the data load on startup, so if it's been more than the timer interval
     // since a user last started her browser, we load the data twice:
     // once because the browser starts and once because the refresh timer fires.
-    // FIXME: save the data to disk when we retrieve it and then retrieve it
-    // from there on startup instead of loading it over the network.
     this.refreshData();
     let dataRefreshCallback = {
       _svc: this,
@@ -179,6 +186,9 @@ let PersonaService = {
     timerManager.registerTimer("personas-persona-refresh-timer",
                                personaRefreshCallback,
                                86400 /* in seconds == one day */);
+
+    // Load cached favorite personas
+    this.loadFavoritesFromCache();
 
     this.refreshFavorites();
     // Refresh the favorite personas once per day.
@@ -214,7 +224,7 @@ let PersonaService = {
   //**************************************************************************//
   // Data Retrieval
 
-  _makeRequest: function(url, loadCallback, headers) {
+  _makeRequest: function(url, loadCallback, headers, aIsBinary) {
     let request = Cc["@mozilla.org/xmlextras/xmlhttprequest;1"].createInstance();
 
     request = request.QueryInterface(Ci.nsIDOMEventTarget);
@@ -237,6 +247,9 @@ let PersonaService = {
     if (headers)
       for (let header in headers)
         request.setRequestHeader(header, headers[header]);
+
+    if (aIsBinary)
+      request.overrideMimeType('text/plain; charset=x-user-defined');
 
     request.send(null);
   },
@@ -316,16 +329,30 @@ let PersonaService = {
 
     this.personas = JSON.parse(request.responseText);
 
+    // Cache the response
+    let cacheDirectory =
+      FileUtils.getDirectory(FileUtils.getPersonasDirectory(), "cache");
+    FileUtils.writeFile(cacheDirectory, "personas.json", request.responseText);
+  },
+
+  /**
+   * Attempts to load this.personas from the cached file in cache/personas.json
+   */
+  loadDataFromCache : function() {
+    let cacheDirectory =
+      FileUtils.getDirectory(FileUtils.getPersonasDirectory(), "cache");
+    let data = FileUtils.readFile(cacheDirectory, "personas.json");
+
+    try { this.personas = JSON.parse(data); }
+    catch (e) {
+      // Could not load from cached data, file empty or does not exist perhaps
+      return;
+    }
+
     // Now that we have data, pick a new random persona.  Currently, this is
     // the only time we pick a random persona besides when the user selects
     // the "Random From [category]" menuitem, which means the user gets a new
     // random persona each time they start the browser.
-    // FIXME: depending on how long it takes data to load, this might cause
-    // the old randomly selected persona to appear briefly before the new one
-    // gets selected, which is ugly, so delay displaying the old random persona
-    // until we reach this point; or cache the feed across sessions, so we have
-    // at least an older version of the data available to us the moment
-    // the browser starts, and pick a new random persona from the cached data.
     if (this.selected == "random") {
       this.currentPersona = this._getRandomPersonaFromCategory(this.category);
       this._prefs.reset("persona.lastRefreshed");
@@ -363,6 +390,27 @@ let PersonaService = {
     catch(ex) {
       Cu.reportError("error parsing favorites data; perhaps you are using " +
                      "Firefox 3.5 and have disabled third-party cookies?");
+      return;
+    }
+
+    // Cache the response
+    let cacheDirectory =
+      FileUtils.getDirectory(FileUtils.getPersonasDirectory(), "cache");
+    FileUtils.writeFile(cacheDirectory, "favorites.json", request.responseText);
+  },
+
+  /**
+   * Attempts to load this.favorites from the cached file in
+   * cache/favorites.json
+   */
+  loadFavoritesFromCache : function() {
+    let cacheDirectory =
+      FileUtils.getDirectory(FileUtils.getPersonasDirectory(), "cache");
+    let data = FileUtils.readFile(cacheDirectory, "favorites.json");
+
+    try { this.favorites = JSON.parse(data); }
+    catch (e) {
+      // Could not load from cached data, file empty or does not exist perhaps
     }
   },
 
@@ -503,7 +551,10 @@ let PersonaService = {
     return null;
   },
   set currentPersona(newVal) {
-    try       { this._prefs.set("current", JSON.stringify(newVal)) }
+    try {
+      this._prefs.set("current", JSON.stringify(newVal));
+      this._cachePersonaImages(newVal);
+    }
     catch(ex) { Cu.reportError("error setting current persona: " + ex) }
   },
 
@@ -561,12 +612,68 @@ let PersonaService = {
   },
 
   changeToPersona: function(persona) {
+    // Check whether the persona is in the favorites or the recent lists,
+    // in which case the change-notification should not be shown.
+    let recent = this.getRecentPersonas();
+    let favorites = this.favorites;
+    let inRecent =
+      (recent && recent.some(function(v) v.id == persona.id));
+    let inFavorites =
+      (favorites && favorites.some(function(v) v.id == persona.id));
+
     this.currentPersona = persona;
     this._addPersonaToRecent(persona);
     this.selected = "current";
     this._prefs.reset("persona.lastRefreshed");
     this._prefs.set("persona.lastChanged", new Date().getTime().toString());
     Observers.notify("personas:persona:changed");
+
+    // Show the notification if the selected persona is not in the favorite or
+    // recent lists.
+    if (!inRecent && !inFavorites)
+      this._showPersonaChangeNotification();
+  },
+
+  /**
+   * Reverts the current persona to the previously selected persona, if
+   * available                                    
+   */
+  revertToPreviousPersona : function() {
+    let previousPersona = this._prefs.get("lastselected1");
+    if (previousPersona) {
+      this.currentPersona = JSON.parse(previousPersona);
+      this._revertRecent();
+      this.selected = "current";
+      this.resetPersona();
+    }
+  },
+
+  /**
+   * Shows a notification displaying the currently selected persona and button
+   * to revert the changes.
+   */
+  _showPersonaChangeNotification : function() {
+    // Obtain most recent window and its notification box
+    let wm =
+      Cc["@mozilla.org/appshell/window-mediator;1"].  
+        getService(Ci.nsIWindowMediator);
+    let window = wm.getMostRecentWindow("navigator:browser");
+    let notificationBox = window.getBrowser().getNotificationBox();
+
+    let message = this._strings.get(
+      "notification.personaSelected", [this.currentPersona.name,
+                                       (this.currentPersona.display_username ? this.currentPersona.display_username : this.currentPersona.author)]);
+
+    let revertButton = {
+      label     : this._strings.get("notification.revertButton.label"),
+      accesskey : this._strings.get("notification.revertButton.accesskey"),
+      popup     : null,
+      callback  : function() { PersonaService.revertToPreviousPersona(); }
+    };
+
+    notificationBox.appendNotification(
+      message, "personas-change-notification", null,
+      notificationBox.PRIORITY_INFO_MEDIUM, [ revertButton ] );
   },
 
   /**
@@ -621,10 +728,19 @@ let PersonaService = {
     return this.currentPersona;
   },
 
-  _addPersonaToRecent: function(persona) {
-    // Parse the list of recent personas.
+  /**
+   * Obtains the list of recently selected personas, parsed from the
+   * "lastselected" preferences.
+   * @param aHowMany (Optional, default 4) How many personas to obtain.
+   * @return The list of recent personas.
+   */
+  getRecentPersonas : function(aHowMany) {
+    if (!aHowMany)
+      aHowMany = 4;
+
+    // Parse the list from the preferences
     let personas = [];
-    for (let i = 0; i < 4; i++) {
+    for (let i = 0; i < aHowMany; i++) {
       if (this._prefs.has("lastselected" + i)) {
         try {
           personas.push(JSON.parse(this._prefs.get("lastselected" + i)));
@@ -632,6 +748,12 @@ let PersonaService = {
         catch(ex) {}
       }
     }
+
+    return personas;
+  },
+
+  _addPersonaToRecent: function(persona) {
+    let personas = this.getRecentPersonas();
 
     // Remove personas with the same ID (i.e. don't allow the recent persona
     // to appear twice on the list).  Afterwards, we'll add the recent persona
@@ -647,8 +769,28 @@ let PersonaService = {
     // only serialize the first four back to preferences, so the oldest one
     // drops off the end of the list.
 
+    // We store five in case we need to revert changes in the list alter on,
+    // even though only four will be displayed.
+    for (let i = 0; i < 5; i++) {
+      if (i < personas.length)
+        this._prefs.set("lastselected" + i, JSON.stringify(personas[i]));
+      else
+        this._prefs.reset("lastselected" + i);
+    }
+  },
+
+  /**
+   * Removes the most recent persona from the recent list, and leaves the
+   * following four personas as the most recent.
+   */
+  _revertRecent: function() {
+    // Create a new list of recent personas, removing the first one, but
+    // including the 5th (hidden) one.
+    let personas = this.getRecentPersonas(5);
+    personas.shift();
+
     // Serialize the list of recent personas.
-    for (let i = 0; i < 4; i++) {
+    for (let i = 0; i < 5; i++) {
       if (i < personas.length)
         this._prefs.set("lastselected" + i, JSON.stringify(personas[i]));
       else
@@ -786,6 +928,95 @@ let PersonaService = {
     }
   },
 
+  //**************************************************************************//
+  // Persona Images Caching
+
+  /**
+   * Caches the header and footer images of the given persona inside the
+   * directory [profile]/personas/cache/[persona.id]. It removes all other
+   * existing persona directories before doing so.
+   * @param aPersona The persona for which to cache the images.
+   */
+  _cachePersonaImages : function(aPersona) {
+    let cacheDirectory =
+      FileUtils.getDirectory(FileUtils.getPersonasDirectory(), "cache");
+
+    // Remove all other subdirectories in the cache directory
+    // XXX: In the future, if we want to keep more than one persona cached
+    // this step would be removed.
+    let subdirs = FileUtils.getDirectoryEntries(cacheDirectory);
+    for (let i = 0; i < subdirs.length; i++) {
+      if (subdirs[i].isDirectory())
+        subdirs[i].remove(true);
+    }
+
+    // Create directory for the given persona
+    let personaDir = FileUtils.getDirectory(cacheDirectory, aPersona.id);
+
+    // Save header
+    let headerURI = URI.get(aPersona.header, null, URI.get(this.baseURI));
+    let headerCallback = function(aEvent) {
+      let request = aEvent.target;
+      if (request.status == 200) {
+        FileUtils.writeBinaryFile(
+          personaDir.clone(),
+          "header" + FileUtils.getFileExtension(aPersona.header),
+          request.responseText);
+      }
+    };
+    this._makeRequest(headerURI.spec, headerCallback, null, true);
+
+    // Save footer
+    let footerURI = URI.get(aPersona.footer, null, URI.get(this.baseURI));
+    let footerCallback = function(aEvent) {
+      let request = aEvent.target;
+      if (request.status == 200) {
+        FileUtils.writeBinaryFile(
+          personaDir.clone(),
+          "footer" + FileUtils.getFileExtension(aPersona.footer),
+          request.responseText);
+      }
+    };
+    this._makeRequest(footerURI.spec, footerCallback, null, true);
+  },
+
+  /**
+   * Obtains the cached images of the given persona. This are stored in the
+   * _cachePersonaImages method under the directory
+   * [profile]/personas/cache/[persona.id].
+   * @param aPersona The persona for which to look the cached images.
+   * @return An object with "header" and "footer" properties, each containing
+   * the file URL of the image. Null otherwise.
+   */
+  getCachedPersonaImages : function(aPersona) {
+    let cacheDirectory =
+      FileUtils.getDirectory(FileUtils.getPersonasDirectory(), "cache");
+
+    let personaDir = FileUtils.getDirectory(cacheDirectory, aPersona.id, true);
+    if (personaDir.exists()) {
+
+      let headerFile = personaDir.clone();
+      let footerFile = personaDir.clone();
+
+      headerFile.append("header" + FileUtils.getFileExtension(aPersona.header));
+      footerFile.append("footer" + FileUtils.getFileExtension(aPersona.footer));
+
+      if (headerFile.exists() && footerFile.exists()) {
+        let ios =
+          Cc["@mozilla.org/network/io-service;1"].getService(Ci.nsIIOService);
+
+        let headerURI = ios.newFileURI(headerFile);
+        let footerURI = ios.newFileURI(footerFile);
+
+        return {
+          header : headerURI.spec,
+          footer : footerURI.spec
+        };
+      }
+    }
+    return null;
+  },
+
   /**
    * Monitors changes in cookies. If the modified cookie is the Personas session
    * cookie, then the favorites are refreshed (if the user is signed in).
@@ -862,6 +1093,174 @@ let DateUtils = {
     let seconds = this._pad(date.getUTCSeconds());
     return dayOfWeek + ", " + day + " " + month + " " + year + " " +
            hours + ":" + minutes + ":" + seconds + " GMT";
+  }
+};
+
+let FileUtils = {
+  /**
+   * Obtains the file extension of the given file name.
+   * @param aFileName The file extension, if any.
+   */
+  getFileExtension : function(aFileName) {
+    let extension_regex = /\.[^\.]+$/;
+    return aFileName.match(extension_regex);
+  },
+
+  /**
+   * Gets the [profile]/personas directory.
+   * @return The reference to the personas directory (nsIFile).
+   */
+  getPersonasDirectory : function() {
+    let directoryService =
+      Cc["@mozilla.org/file/directory_service;1"].getService(Ci.nsIProperties);
+    let dir = directoryService.get("ProfD", Ci.nsIFile);
+
+    return this.getDirectory(dir, "personas");
+  },
+
+  /**
+   * Gets a reference to a directory (nsIFile) specified by the given name,
+   * located inside the given parent directory.
+   * @param aParentDirectory The parent directory of the directory to obtain.
+   * @param aDirectoryName The name of the directory to obtain.
+   * @param aDontCreate (Optional) Whether or not to create the directory if it
+   * does not exist.
+   * @return The reference to the directory (nsIFile).
+   */
+  getDirectory : function(aParentDirectory, aDirectoryName, aDontCreate) {
+    let dir = aParentDirectory.clone();
+    try {
+      dir.append(aDirectoryName);
+      if (!dir.exists() || !dir.isDirectory()) {
+        if (!aDontCreate) {
+          // read and write permissions to owner and group, read-only for others.
+          dir.create(Ci.nsIFile.DIRECTORY_TYPE, 0774);
+        }
+      }
+    }
+    catch (ex) {
+      Cu.reportError("Could not create '" + aDirectoryName + "' directory");
+      dir = null;
+    }
+    return dir;
+  },
+
+  /**
+   * Gets an array of the entries (nsIFile) found in the given directory.
+   * @param aDirectory The directory from which to obtain the entries.
+   * @return The array of entries.
+   */
+  getDirectoryEntries : function(aDirectory) {
+    let entries = [];
+    try {
+      let enu = aDirectory.directoryEntries;
+      while (enu.hasMoreElements()) {
+        let entry = enu.getNext().QueryInterface(Ci.nsIFile);
+        entries.push(entry);
+      }
+    }
+    catch (ex) {
+      Cu.reportError("Could not read entries of directory");
+    }
+    return entries;
+  },
+
+  /**
+   * Reads the contents of a text file located at the given directory.
+   * @param aDirectory The directory in which the file is read from (nsIFile)
+   * @param aFileName The name of the file to be read.
+   * @return The contents of the file (string), if any.
+   */
+  readFile : function(aDirectory, aFileName) {
+    let data = "";
+
+    try {
+      let file = aDirectory.clone();
+      file.append(aFileName);
+
+      if (file.exists()) {
+        let fstream =
+          Cc["@mozilla.org/network/file-input-stream;1"].
+            createInstance(Ci.nsIFileInputStream);
+        fstream.init(file, -1, 0, 0);
+
+        let cstream =
+          Cc["@mozilla.org/intl/converter-input-stream;1"].
+            createInstance(Ci.nsIConverterInputStream);
+        cstream.init(fstream, "UTF-8", 0, 0);
+
+        let (str = {}) {
+          // read the whole file
+          while (cstream.readString(-1, str))
+            data += str.value;
+        }
+        cstream.close(); // this also closes fstream
+      }
+    }
+    catch (ex) {
+      Cu.reportError("Could not read file " + aFileName);
+    }
+
+    return data;
+  },
+
+  /**
+   * Writes a text file in the given directory. If the file already exists it is
+   * overwritten.
+   * @param aDirectory The directory in which the file will be written (nsIFile).
+   * @param aFileName The name of the file to be written.
+   * @param aData The contents of the file.
+   */
+  writeFile : function(aDirectory, aFileName, aData) {
+    try {
+      let file = aDirectory.clone();
+      file.append(aFileName);
+
+      let foStream =
+        Cc["@mozilla.org/network/file-output-stream;1"].
+          createInstance(Ci.nsIFileOutputStream);
+      // flags are write, create, truncate
+      foStream.init(file, 0x02 | 0x08 | 0x20, 0666, 0);
+
+      let converter =
+        Cc["@mozilla.org/intl/converter-output-stream;1"].
+          createInstance(Ci.nsIConverterOutputStream);
+      converter.init(foStream, "UTF-8", 0, 0);
+      converter.writeString(aData);
+      converter.close(); // this also closes foStream
+    }
+    catch (ex) {
+      Cu.reportError("Could not write file " + aFileName);
+    }
+  },
+
+  /**
+   * Writes a binary file in the given directory. If the file already exists it
+   * is overwritten.
+   * @param aDirectory The directory in which the file will be written (nsIFile).
+   * @param aFileName The name of the file to be written.
+   * @param aData The binary contents of the file.
+   */
+  writeBinaryFile : function(aDirectory, aFileName, aData) {
+    try {
+      let file = aDirectory.clone();
+      file.append(aFileName);
+
+      let stream =
+        Cc["@mozilla.org/network/safe-file-output-stream;1"].
+          createInstance(Ci.nsIFileOutputStream);
+      // Flags are: write, create, truncate
+      stream.init(file, 0x04 | 0x08 | 0x20, 0600, 0);
+
+      stream.write(aData, aData.length);
+      if (stream instanceof Ci.nsISafeOutputStream)
+        stream.finish();
+      else
+        stream.close();
+    }
+    catch (ex) {
+      Cu.reportError("Could not write binary file " + aFileName);
+    }
   }
 };
 

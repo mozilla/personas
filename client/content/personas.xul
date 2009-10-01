@@ -57,7 +57,12 @@
        <menupopup id="personas-selector-menu"
                   onpopupshowing="return PersonaController.onPopupShowing(event)"
                   onpopuphiding="PersonaController.onPopupHiding(event)">
-        <menuitem id="persona-current" class="menu-iconic"/>
+        <menu id="persona-current" class="menu-iconic">
+          <menupopup id="persona-current-context-menu">
+            <menuitem id="persona-current-view-detail"/>
+            <menuitem id="persona-current-view-designer"/>
+          </menupopup>
+        </menu>
         <menuseparator id="personasOpeningSeparator"/>
         <menuseparator id="personasClosingSeparator" hidden="true"/>
         <menu id="custom-menu">
@@ -76,8 +81,6 @@
         <menuseparator/>
         <menuitem label="&preferences.label;"
                   oncommand="PersonaController.onSelectPreferences(event)"/>
-        <menuitem label="&viewDirectory.label;" 
-                  oncommand="PersonaController.onViewDirectory(event)"/>
       </menupopup>
     </menu>
   </menupopup>

@@ -157,6 +157,20 @@ let PersonaController = {
   },
 
   /**
+   * Format numbers for readability, e.g. 1000 = 1,000
+   */
+  _formatNumber: function(nStr) {
+    nStr += '';
+    x = nStr.split('.');
+    x1 = x[0];
+    x2 = x.length > 1 ? '.' + x[1] : '';
+    var rgx = /(\d+)(\d{3})/;
+    while (rgx.test(x1))
+        x1 = x1.replace(rgx, '$1' + ',' + '$2');
+    return x1 + x2;
+  },
+
+  /**
    * Escape CSS special characters in unquoted URLs,
    * per http://www.w3.org/TR/CSS21/syndata.html#uri.
    */
@@ -326,21 +340,36 @@ let PersonaController = {
   // Appearance Updates
 
   _applyPersona: function(persona) {
-    // Style the header.
-    this._header.setAttribute("persona", persona.id);
-    // Use the URI module to resolve the possibly relative URI to an absolute one.
-    let headerURI = this.URI.get(persona.header,
-                                 null,
-                                 this.URI.get(PersonaService.baseURI));
-    this._header.style.backgroundImage = "url(" + this._escapeURLForCSS(headerURI.spec) + ")";
 
-    // Style the footer.
+    // Style header and footer
+    this._header.setAttribute("persona", persona.id);
     this._footer.setAttribute("persona", persona.id);
+
     // Use the URI module to resolve the possibly relative URI to an absolute one.
     let footerURI = this.URI.get(persona.footer,
                                  null,
                                  this.URI.get(PersonaService.baseURI));
     this._footer.style.backgroundImage = "url(" + this._escapeURLForCSS(footerURI.spec) + ")";
+
+    // First try to obtain the images from the cache
+    let images = PersonaService.getCachedPersonaImages(persona);
+    if (images && images.header && images.footer) {
+      this._header.style.backgroundImage = "url(" + images.header + ")";
+      this._footer.style.backgroundImage = "url(" + images.footer + ")";
+    }
+    // Else set them from their original source
+    else {
+      // Use the URI module to resolve the possibly relative URI to an absolute one.
+      let headerURI = this.URI.get(persona.header,
+                                   null,
+                                   this.URI.get(PersonaService.baseURI));
+      this._header.style.backgroundImage = "url(" + this._escapeURLForCSS(headerURI.spec) + ")";
+      // Use the URI module to resolve the possibly relative URI to an absolute one.
+      let footerURI = this.URI.get(persona.footer,
+                                   null,
+                                   this.URI.get(PersonaService.baseURI));
+      this._footer.style.backgroundImage = "url(" + this._escapeURLForCSS(footerURI.spec) + ")";
+    }
 
     // Style the text color.
     if (this._prefs.get("useTextColor")) {
@@ -802,21 +831,38 @@ let PersonaController = {
     let personaStatus = document.getElementById("persona-current");
     let name = PersonaService.currentPersona ? PersonaService.currentPersona.name
                                              : this._strings.get("unnamedPersona");
+
+    personaStatus.setAttribute("class", "menuitem-iconic");
+
     if (PersonaService.selected == "random") {
-      personaStatus.setAttribute("class", "menuitem-iconic");
-      personaStatus.setAttribute("image", "chrome://personas/content/random-feed-16x16.png");
-      personaStatus.setAttribute("label", this._strings.get("randomPersona",
-                                                            [PersonaService.category,
-                                                             name]));
-    }
-    else {
-      personaStatus.removeAttribute("class");
+      personaStatus.setAttribute("label", this._strings.get("randomPersona", [PersonaService.category, name]));
+      personaStatus.setAttribute("image", PersonaService.currentPersona.dataurl ? PersonaService.currentPersona.dataurl
+                                          : "chrome://personas/content/personas_16x16.png");
+
+    } if (PersonaService.selected == "default") {
+      personaStatus.setAttribute("label", this._strings.get("Default"));
       personaStatus.removeAttribute("image");
-      if (PersonaService.selected == "default")
-        personaStatus.setAttribute("label", this._strings.get("Default"));
-      else
-        personaStatus.setAttribute("label", name);
+      personaStatus.removeAttribute("menuitem-iconic");
+    } else {
+      personaStatus.setAttribute("label", name);
+      personaStatus.setAttribute("image", PersonaService.currentPersona.dataurl ? PersonaService.currentPersona.dataurl
+                                          : "chrome://personas/content/personas_16x16.png");
     }
+
+    let personaStatusDetail = document.getElementById("persona-current-view-detail");
+    personaStatusDetail.setAttribute("disabled", PersonaService.currentPersona.detailURL ? "false" : "true");
+    personaStatusDetail.setAttribute("label", this._strings.get("viewDetail"));
+    personaStatusDetail.setAttribute("oncommand",
+                          "PersonaController.openURLInTab('" +
+                             PersonaService.currentPersona.detailURL + "')");
+
+    let personaStatusDesigner = document.getElementById("persona-current-view-designer");
+    let designerLabel = PersonaService.currentPersona.display_username ? 
+                          PersonaService.currentPersona.display_username : PersonaService.currentPersona.author;
+    personaStatusDesigner.setAttribute("label", this._strings.get("viewDesigner", [designerLabel]));
+    let designerURL = this._siteURL + "gallery/Designer/" + PersonaService.currentPersona.author;
+    personaStatusDesigner.setAttribute("oncommand",
+                          "PersonaController.openURLInTab('" + designerURL + "')");
 
     // Update the checkmark on the Default menu item.
     document.getElementById("defaultPersona").setAttribute("checked", (PersonaService.selected == "default" ? "true" : "false"));
@@ -847,10 +893,53 @@ let PersonaController = {
 
         let item = popupmenu.appendChild(document.createElement("menuitem"));
         item.setAttribute("label", this._strings.get("useRandomPersona", [this._strings.get("favorites")]));
-        item.setAttribute("type", "checkbox");
+//        item.setAttribute("type", "checkbox");
         item.setAttribute("checked", (PersonaService.selected == "randomFavorite"));
         item.setAttribute("autocheck", "false");
         item.setAttribute("oncommand", "PersonaController.toggleFavoritesRotation()");
+      }
+
+      this._menuPopup.insertBefore(menu, closingSeparator);
+    }
+
+    // Create the "Recently Selected" menu.
+    {
+      let menu = document.createElement("menu");
+      menu.setAttribute("label", this._strings.get("recent"));
+      let popupmenu = document.createElement("menupopup");
+
+      let recentPersonas = PersonaService.getRecentPersonas();
+      for each (let persona in recentPersonas) {
+        popupmenu.appendChild(this._createPersonaItem(persona));
+      }
+
+      menu.appendChild(popupmenu);
+      this._menuPopup.insertBefore(menu, closingSeparator);
+      this._menuPopup.insertBefore(document.createElement("menuseparator"), closingSeparator);
+    }
+
+    // Create the New & Featured menu.
+    {
+      let menu = document.createElement("menu");
+      menu.setAttribute("label", this._strings.get("new"));
+
+      if (PersonaService.personas) {
+        let popupmenu = document.createElement("menupopup");
+        for each (let persona in PersonaService.personas.featured)
+          popupmenu.appendChild(this._createPersonaItem(persona));
+
+        // Create an item that picks a random persona from the category.
+        popupmenu.appendChild(document.createElement("menuseparator"));
+        popupmenu.appendChild(this._createRandomItem(this._strings.get("new")));
+
+        // Create an item that links to the gallery for this category.
+        popupmenu.appendChild(this._createViewMoreItem(this._strings.get("new"), PersonaService.personas.total));
+
+        menu.appendChild(popupmenu);
+      }
+      else {
+        menu.setAttribute("disabled", "true");
+        menu.setAttribute("tooltip", "personasDataUnavailableTooltip");
       }
 
       this._menuPopup.insertBefore(menu, closingSeparator);
@@ -865,6 +954,15 @@ let PersonaController = {
         let popupmenu = document.createElement("menupopup");
         for each (let persona in PersonaService.personas.popular)
           popupmenu.appendChild(this._createPersonaItem(persona));
+
+        // Create an item that picks a random persona from the category.
+        popupmenu.appendChild(document.createElement("menuseparator"));
+        popupmenu.appendChild(this._createRandomItem(this._strings.get("popular")));
+
+        // Create an item that links to the gallery for this category.
+        popupmenu.appendChild(this._createViewMoreItem(this._strings.get("popular"), 
+                              42 - PersonaService.personas.popular.length));
+
         menu.appendChild(popupmenu);
       }
       else {
@@ -872,60 +970,18 @@ let PersonaController = {
         menu.setAttribute("tooltip", "personasDataUnavailableTooltip");
       }
 
-      this._menuPopup.insertBefore(menu, closingSeparator);
-    }
-
-    // Create the New menu.
-    {
-      let menu = document.createElement("menu");
-      menu.setAttribute("label", this._strings.get("new"));
-
-      if (PersonaService.personas) {
-        let popupmenu = document.createElement("menupopup");
-        for each (let persona in PersonaService.personas.recent)
-          popupmenu.appendChild(this._createPersonaItem(persona));
-        menu.appendChild(popupmenu);
-      }
-      else {
-        menu.setAttribute("disabled", "true");
-        menu.setAttribute("tooltip", "personasDataUnavailableTooltip");
-      }
-
-      this._menuPopup.insertBefore(menu, closingSeparator);
-    }
-
-    // Create the "Recently Selected" menu.
-    {
-      let menu = document.createElement("menu");
-      menu.setAttribute("label", this._strings.get("recent"));
-      let popupmenu = document.createElement("menupopup");
-
-      for (let i = 0; i < 4; i++) {
-        let persona = this._prefs.get("lastselected" + i);
-        if (!persona)
-          continue;
-
-        try { persona = this.JSON.parse(persona) }
-        catch(ex) { continue }
-
-        popupmenu.appendChild(this._createPersonaItem(persona));
-      }
-
-      menu.appendChild(popupmenu);
       this._menuPopup.insertBefore(menu, closingSeparator);
     }
 
     // Create the Categories menu.
     let categoriesMenu = document.createElement("menu");
-    categoriesMenu.setAttribute("label", this._strings.get("categories"));
-
     if (PersonaService.personas) {
       let categoriesPopup = document.createElement("menupopup");
 
       // Create the category-specific submenus.
       for each (let category in PersonaService.personas.categories) {
         let menu = document.createElement("menu");
-        menu.setAttribute("label", category.name);
+        menu.setAttribute("label", category.name + " (" + this._formatNumber(category.total) + ")");
         let popupmenu = document.createElement("menupopup");
 
         for each (let persona in category.personas)
@@ -935,13 +991,19 @@ let PersonaController = {
         popupmenu.appendChild(document.createElement("menuseparator"));
         popupmenu.appendChild(this._createRandomItem(category.name));
 
+        // Create an item that links to the gallery for this category.
+        popupmenu.appendChild(this._createViewMoreItem(category.name, 
+                                                       category.total - category.personas.length));
+
         menu.appendChild(popupmenu);
         categoriesPopup.appendChild(menu);
       }
-
+      categoriesMenu.setAttribute("label", this._strings.get("categories") + 
+                                  " (" + this._formatNumber(PersonaService.personas.total) + ")");
       categoriesMenu.appendChild(categoriesPopup);
     }
     else {
+      categoriesMenu.setAttribute("label", this._strings.get("categories"));
       categoriesMenu.setAttribute("disabled", "true");
       categoriesMenu.setAttribute("tooltip", "personasDataUnavailableTooltip");
     }
@@ -964,9 +1026,17 @@ let PersonaController = {
   _createPersonaItem: function(persona) {
     let item = document.createElement("menuitem");
 
+    let headerURI;
+    if (persona.custom) {
+      headerURI = persona.header;
+    } else {
+      headerURI = persona.dataurl;
+    }
+
     item.setAttribute("class", "menuitem-iconic");
+    item.setAttribute("image", headerURI);
     item.setAttribute("label", persona.name);
-    item.setAttribute("type", "checkbox");
+//    item.setAttribute("type", "checkbox");
     item.setAttribute("checked", (PersonaService.selected != "default" &&
                                   PersonaService.currentPersona &&
                                   PersonaService.currentPersona.id == persona.id));
@@ -980,11 +1050,28 @@ let PersonaController = {
     return item;
   },
 
+  _createViewMoreItem: function(category, number) {
+    let item = document.createElement("menuitem");
+    
+    item.setAttribute("class", "menuitem-iconic"); 
+    item.setAttribute("label", this._strings.get("viewMore", [this._formatNumber(number), category]));
+
+    if (category == "popular" || category == "recent") {
+      item.setAttribute("oncommand",
+                          "PersonaController.openURLInTab(this._siteURL + 'gallery/All/All')");
+    } else {
+      let viewMoreURI = "PersonaController.openURLInTab('" + 
+                           this._siteURL + "gallery/" + category + "/All')";
+      item.setAttribute("oncommand", viewMoreURI);
+    }
+
+    return item;
+  },
+
   _createRandomItem: function(category) {
     let item = document.createElement("menuitem");
 
     item.setAttribute("class", "menuitem-iconic");
-    item.setAttribute("image", "chrome://personas/content/random-feed-16x16.png");
     item.setAttribute("label", this._strings.get("useRandomPersona", [category]));
     item.setAttribute("oncommand", "PersonaController.onSelectPersona(event)");
     item.setAttribute("persona", "random");
