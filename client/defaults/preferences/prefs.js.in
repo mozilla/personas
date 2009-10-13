@@ -33,18 +33,11 @@ pref("extensions.personas.category", "");
 
 pref("extensions.personas.lastversion", "firstrun");
 
-// The URL from which we load the data.
-// Note: this should be the canonical URL, not one that redirects us
+// The host where the gallery and data files are located.
+// Note: this should be the canonical hostname, not one that redirects us
 // to another, since we set the If-Modified-Since header so we can find out
 // when a persona record has changed, and that header doesn't get preserved
 // across redirects because of bug 401564.
-pref("extensions.personas.url", "http://www.getpersonas.com/static/");
-
-// The location of the web directory.
-// We load a variety of URLs relative to this one.
-pref("extensions.personas.siteURL", "http://www.getpersonas.com/");
-
-// The host which creates cookies relevant to this add-on.
 pref("extensions.personas.host", "www.getpersonas.com");
 
 // The authorizedHosts preference is a comma and/or space-separated list

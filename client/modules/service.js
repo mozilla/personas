@@ -262,7 +262,7 @@ let PersonaService = {
    * no matter how many times a user starts the application in a given day).
    */
   refreshData: function() {
-    let url = this.baseURI + "index_" + this._prefs.get("data.version") + ".json";
+    let url = this.dataURL + "index_" + this._prefs.get("data.version") + ".json";
     let t = this;
     this._makeRequest(url, function(evt) { t.onDataLoadComplete(evt) });
   },
@@ -314,7 +314,7 @@ let PersonaService = {
 
     //dump("params: " + [name + "=" + encodeURIComponent(params[name]) for (name in params)].join("&") + "\n");
 
-    let url = this.baseURI + "index_" + this._prefs.get("data.version") + ".json?" +
+    let url = this.dataURL + "index_" + this._prefs.get("data.version") + ".json?" +
               [name + "=" + encodeURIComponent(params[name]) for (name in params)].join("&");
     let t = this;
     this._makeRequest(url, function(evt) { t.onDataLoadComplete(evt) });
@@ -367,7 +367,8 @@ let PersonaService = {
   refreshFavorites : function() {
     // Only refresh if the user is signed in at the moment.
     if (this.isUserSignedIn) {
-      let url = this._prefs.get("siteURL") + "gallery/All/Favorites?json=1";
+      let url =
+        "http://" + this._prefs.get("host") + "/gallery/All/Favorites?json=1";
       let t = this;
       this._makeRequest(url, function(evt) { t.onFavoritesLoadComplete(evt) });
     }
@@ -459,7 +460,7 @@ let PersonaService = {
     if (lastTwoDigits.length == 1)
       lastTwoDigits.unshift("0");
 
-    let url = this.baseURI + lastTwoDigits.join("/") + "/" +
+    let url = this.dataURL + lastTwoDigits.join("/") + "/" +
               this.currentPersona.id + "/" +
               "index_" + this._prefs.get("data.version") + ".json";
 
@@ -566,10 +567,10 @@ let PersonaService = {
   set category(newVal)  {        this._prefs.set("category", newVal) },
 
   /**
-   * extensions.personas.url
+   * The URL at which the static data is located.
    */
-  get baseURI() {
-    return this._prefs.get("url");
+  get dataURL() {
+    return "http://" + this._prefs.get("host") + "/static/";
   },
 
   /**
@@ -954,7 +955,7 @@ let PersonaService = {
     let personaDir = FileUtils.getDirectory(cacheDirectory, aPersona.id);
 
     // Save header
-    let headerURI = URI.get(aPersona.header, null, URI.get(this.baseURI));
+    let headerURI = URI.get(aPersona.header, null, URI.get(this.dataURL));
     let headerCallback = function(aEvent) {
       let request = aEvent.target;
       if (request.status == 200) {
@@ -967,7 +968,7 @@ let PersonaService = {
     this._makeRequest(headerURI.spec, headerCallback, null, true);
 
     // Save footer
-    let footerURI = URI.get(aPersona.footer, null, URI.get(this.baseURI));
+    let footerURI = URI.get(aPersona.footer, null, URI.get(this.dataURL));
     let footerCallback = function(aEvent) {
       let request = aEvent.target;
       if (request.status == 200) {

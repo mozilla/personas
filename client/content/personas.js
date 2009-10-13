@@ -134,7 +134,7 @@ let PersonaController = {
   },
 
   get _siteURL() {
-    return this._prefs.get("siteURL");
+    return "http://" + this._prefs.get("host") + "/";
   },
 
   get _previewTimeout() {
@@ -348,7 +348,7 @@ let PersonaController = {
     // Use the URI module to resolve the possibly relative URI to an absolute one.
     let footerURI = this.URI.get(persona.footer,
                                  null,
-                                 this.URI.get(PersonaService.baseURI));
+                                 this.URI.get(PersonaService.dataURL));
     this._footer.style.backgroundImage = "url(" + this._escapeURLForCSS(footerURI.spec) + ")";
 
     // First try to obtain the images from the cache
@@ -362,12 +362,12 @@ let PersonaController = {
       // Use the URI module to resolve the possibly relative URI to an absolute one.
       let headerURI = this.URI.get(persona.header,
                                    null,
-                                   this.URI.get(PersonaService.baseURI));
+                                   this.URI.get(PersonaService.dataURL));
       this._header.style.backgroundImage = "url(" + this._escapeURLForCSS(headerURI.spec) + ")";
       // Use the URI module to resolve the possibly relative URI to an absolute one.
       let footerURI = this.URI.get(persona.footer,
                                    null,
-                                   this.URI.get(PersonaService.baseURI));
+                                   this.URI.get(PersonaService.dataURL));
       this._footer.style.backgroundImage = "url(" + this._escapeURLForCSS(footerURI.spec) + ")";
     }
 
