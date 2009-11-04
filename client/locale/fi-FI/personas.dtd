@@ -2,7 +2,7 @@
 <!ENTITY useDefaultPersona.label "Oletus">
 <!ENTITY preferences.label "Asetukset…">
 <!ENTITY viewDirectory.label "Siirry hakemistoon…">
-<!ENTITY customPersona.label "Mukautettu teema">
+<!ENTITY customPersona.label "Mukautettu Persona">
 <!ENTITY customName.label "Nimi:">
 <!ENTITY header.label "Yläosa:">
 <!ENTITY selectBackground.label "Selaa…">
