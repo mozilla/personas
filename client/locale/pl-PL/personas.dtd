@@ -1,17 +1,17 @@
-<!ENTITY personas_app_title "Schematy">
-<!ENTITY useDefaultPersona.label "Domyślny schemat">
-<!ENTITY preferences.label "Preferencje">
-<!ENTITY viewDirectory.label "Wyświetl katalog">
-<!ENTITY customPersona.label "Niestandardowy schemat">
+<!ENTITY personas_app_title "Minimotywy">
+<!ENTITY useDefaultPersona.label "Domyślny motyw">
+<!ENTITY preferences.label "Ustawienia…">
+<!ENTITY viewDirectory.label "Wyświetl galerię">
+<!ENTITY customPersona.label "Motyw użytkownika">
 <!ENTITY customName.label "Nazwa:">
 <!ENTITY header.label "Nagłówek:">
-<!ENTITY selectBackground.label "Przeglądaj...">
+<!ENTITY selectBackground.label "Przeglądaj…">
 <!ENTITY footer.label "Stopka:">
 <!ENTITY textColorPicker.label "Kolor tekstu:">
 <!ENTITY accentColorPicker.label "Kolor akcentu:">
-<!ENTITY useDefaultColor.label "Użyj domyślnych">
+<!ENTITY useDefaultColor.label "Domyślny">
 <!ENTITY okButton.label "OK">
 <!ENTITY contextHomePage.label "Strona domowa">
 <!ENTITY contextPreferences.label "Ustawienia">
 <!ENTITY contextEdit.label "Edytuj">
-<!ENTITY contextApply.label "Akceptuj">
+<!ENTITY contextApply.label "Zastosuj">

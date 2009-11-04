@@ -1,8 +1,8 @@
-<!ENTITY preferences.title "Preferencje schematów">
+<!ENTITY preferences.title "Minimotywy – ustawienia">
 <!ENTITY generalSettings.label "Ogólne">
-<!ENTITY previewEnabled.label "Wyświetlaj podgląd po zaznaczeniu w menu">
+<!ENTITY previewEnabled.label "Wyświetlaj podgląd po wskazaniu motywu">
 <!ENTITY displaySettings.label "Wyświetlanie">
-<!ENTITY useTextColor.label "Zmieniaj kolor tekstu">
-<!ENTITY useAccentColor.label "Zmieniaj kolor akcentu">
+<!ENTITY useTextColor.label "Zezwalaj na zmianę koloru tekstu">
+<!ENTITY useAccentColor.label "Zezwalaj na zmianę koloru akcentu">
 <!ENTITY advancedSettings.label "Zaawansowane">
-<!ENTITY showCustomMenu.label "Wyświetlaj niestandardowe schematy w menu">
+<!ENTITY showCustomMenu.label "Wyświetlaj motywy użytkownika w menu">
