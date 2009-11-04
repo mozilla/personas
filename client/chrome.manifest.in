@@ -67,6 +67,7 @@ locale   personas   fy-NL       @chrome_path@locale/fy-NL/
 locale   personas   gl-ES       @chrome_path@locale/gl-ES/
 locale   personas   he-IL       @chrome_path@locale/he-IL/
 locale   personas   hu-HU       @chrome_path@locale/hu-HU/
+locale   personas   it          @chrome_path@locale/it/
 locale   personas   it-IT       @chrome_path@locale/it-IT/
 locale   personas   ja          @chrome_path@locale/ja/
 locale   personas   ko-KR       @chrome_path@locale/ko-KR/
