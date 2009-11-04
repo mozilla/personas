@@ -146,8 +146,8 @@ let CustomPersonaEditor = {
       this.customPersona = { custom: true };
     }
 
-    this._header.value = this.customPersona.header || "";
-    this._footer.value = this.customPersona.footer || "";
+    this._header.value = this.customPersona.headerURL || "";
+    this._footer.value = this.customPersona.footerURL || "";
     this._customName.value = this.customPersona.name || "";
     this._textColorPicker.color = this.customPersona.textcolor || "#000000";
     this._accentColorPicker.color = this.customPersona.accentcolor || "#C9C9C9";
