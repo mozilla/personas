@@ -57,6 +57,7 @@ locale   personas   bg-BG       @chrome_path@locale/bg-BG/
 locale   personas   cs-CZ       @chrome_path@locale/cs-CZ/
 locale   personas   da-DK       @chrome_path@locale/da-DK/
 locale   personas   de-DE       @chrome_path@locale/de-DE/
+locale   personas   el-GR       @chrome_path@locale/el-GR/
 locale   personas   en-US       @chrome_path@locale/en-US/
 locale   personas   es-CL       @chrome_path@locale/es-CL/
 locale   personas   eu-ES       @chrome_path@locale/eu-ES/
