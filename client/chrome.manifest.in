@@ -76,6 +76,7 @@ locale   personas   nl-NL       @chrome_path@locale/nl-NL/
 locale   personas   pl-PL       @chrome_path@locale/pl-PL/
 locale   personas   pt-BR       @chrome_path@locale/pt-BR/
 locale   personas   ru-RU       @chrome_path@locale/ru-RU/
+locale   personas   sk-SK       @chrome_path@locale/sk-SK/
 locale   personas   sr-RS       @chrome_path@locale/sr-RS/
 locale   personas   sv-SE       @chrome_path@locale/sv-SE/
 locale   personas   tr-TR       @chrome_path@locale/tr-TR/
