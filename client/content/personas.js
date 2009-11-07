@@ -360,12 +360,12 @@ let PersonaController = {
     // Else set them from their original source
     else {
       // Use the URI module to resolve the possibly relative URI to an absolute one.
-      let headerURI = this.URI.get(persona.header,
+      let headerURI = this.URI.get(persona.headerURL,
                                    null,
                                    this.URI.get(PersonaService.dataURL));
       this._header.style.backgroundImage = "url(" + this._escapeURLForCSS(headerURI.spec) + ")";
       // Use the URI module to resolve the possibly relative URI to an absolute one.
-      let footerURI = this.URI.get(persona.footer,
+      let footerURI = this.URI.get(persona.footerURL,
                                    null,
                                    this.URI.get(PersonaService.dataURL));
       this._footer.style.backgroundImage = "url(" + this._escapeURLForCSS(footerURI.spec) + ")";
@@ -1029,7 +1029,7 @@ let PersonaController = {
 
     let headerURI;
     if (persona.custom) {
-      headerURI = persona.header;
+      headerURI = persona.headerURL;
     } else {
       headerURI = persona.dataurl;
     }

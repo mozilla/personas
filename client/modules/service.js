@@ -955,26 +955,26 @@ let PersonaService = {
     let personaDir = FileUtils.getDirectory(cacheDirectory, aPersona.id);
 
     // Save header
-    let headerURI = URI.get(aPersona.header, null, URI.get(this.dataURL));
+    let headerURI = URI.get(aPersona.headerURL, null, URI.get(this.dataURL));
     let headerCallback = function(aEvent) {
       let request = aEvent.target;
       if (request.status == 200) {
         FileUtils.writeBinaryFile(
           personaDir.clone(),
-          "header" + FileUtils.getFileExtension(aPersona.header),
+          "header" + FileUtils.getFileExtension(aPersona.headerURL),
           request.responseText);
       }
     };
     this._makeRequest(headerURI.spec, headerCallback, null, true);
 
     // Save footer
-    let footerURI = URI.get(aPersona.footer, null, URI.get(this.dataURL));
+    let footerURI = URI.get(aPersona.footerURL, null, URI.get(this.dataURL));
     let footerCallback = function(aEvent) {
       let request = aEvent.target;
       if (request.status == 200) {
         FileUtils.writeBinaryFile(
           personaDir.clone(),
-          "footer" + FileUtils.getFileExtension(aPersona.footer),
+          "footer" + FileUtils.getFileExtension(aPersona.footerURL),
           request.responseText);
       }
     };
@@ -999,8 +999,8 @@ let PersonaService = {
       let headerFile = personaDir.clone();
       let footerFile = personaDir.clone();
 
-      headerFile.append("header" + FileUtils.getFileExtension(aPersona.header));
-      footerFile.append("footer" + FileUtils.getFileExtension(aPersona.footer));
+      headerFile.append("header" + FileUtils.getFileExtension(aPersona.headerURL));
+      footerFile.append("footer" + FileUtils.getFileExtension(aPersona.footerURL));
 
       if (headerFile.exists() && footerFile.exists()) {
         let ios =
