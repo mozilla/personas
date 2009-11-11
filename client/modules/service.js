@@ -637,7 +637,7 @@ let PersonaService = {
 
   /**
    * Reverts the current persona to the previously selected persona, if
-   * available                                    
+   * available
    */
   revertToPreviousPersona : function() {
     let previousPersona = this._prefs.get("lastselected1");
@@ -656,7 +656,7 @@ let PersonaService = {
   _showPersonaChangeNotification : function() {
     // Obtain most recent window and its notification box
     let wm =
-      Cc["@mozilla.org/appshell/window-mediator;1"].  
+      Cc["@mozilla.org/appshell/window-mediator;1"].
         getService(Ci.nsIWindowMediator);
     let window = wm.getMostRecentWindow("navigator:browser");
     let notificationBox = window.getBrowser().getNotificationBox();
@@ -958,7 +958,8 @@ let PersonaService = {
     let headerURI = URI.get(aPersona.headerURL, null, URI.get(this.dataURL));
     let headerCallback = function(aEvent) {
       let request = aEvent.target;
-      if (request.status == 200) {
+      // Save only if the folder still exists (Could have been deleted already)
+      if (request.status == 200 && personaDir.exists()) {
         FileUtils.writeBinaryFile(
           personaDir.clone(),
           "header" + FileUtils.getFileExtension(aPersona.headerURL),
@@ -971,7 +972,8 @@ let PersonaService = {
     let footerURI = URI.get(aPersona.footerURL, null, URI.get(this.dataURL));
     let footerCallback = function(aEvent) {
       let request = aEvent.target;
-      if (request.status == 200) {
+      // Save only if the folder still exists (Could have been deleted already)
+      if (request.status == 200 && personaDir.exists()) {
         FileUtils.writeBinaryFile(
           personaDir.clone(),
           "footer" + FileUtils.getFileExtension(aPersona.footerURL),
