@@ -409,6 +409,7 @@ let PersonaController = {
                 styleSheet.insertRule(
                   "#mail-toolbox menubar > menu, " +
                   "#mail-toolbox toolbarbutton, " +
+                  "#mail-toolbox toolbaritem > label, " +
                   "#status-bar " +
                   "{ color: " + textColor + "}",
                   0
