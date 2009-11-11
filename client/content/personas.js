@@ -882,12 +882,21 @@ let PersonaController = {
                              PersonaService.currentPersona.detailURL + "')");
 
     let personaStatusDesigner = document.getElementById("persona-current-view-designer");
-    let designerLabel = PersonaService.currentPersona.display_username ? 
-                          PersonaService.currentPersona.display_username : PersonaService.currentPersona.author;
-    personaStatusDesigner.setAttribute("label", this._strings.get("viewDesigner", [designerLabel]));
-    let designerURL = this._siteURL + "gallery/Designer/" + PersonaService.currentPersona.author;
-    personaStatusDesigner.setAttribute("oncommand",
-                          "PersonaController.openURLInTab('" + designerURL + "')");
+    // collapse the "More From User" menu item for custom personas or personas
+    // with null username. In this case we only check the username is not null
+    // because it is used to generate the url to go to the personas designer page
+    // (bug 526788).
+    if (PersonaService.currentPersona.custom || !PersonaService.currentPersona.username) {
+      personaStatusDesigner.setAttribute("collapsed", true);
+    } else {
+      personaStatusDesigner.removeAttribute("collapsed");
+      let designerLabel = PersonaService.currentPersona.author ?
+                            PersonaService.currentPersona.author : PersonaService.currentPersona.username;
+      personaStatusDesigner.setAttribute("label", this._strings.get("viewDesigner", [designerLabel]));
+      let designerURL = this._siteURL + "gallery/Designer/" + PersonaService.currentPersona.username;
+      personaStatusDesigner.setAttribute("oncommand",
+                            "PersonaController.openURLInTab('" + designerURL + "')");
+    }
 
     // Update the checkmark on the Default menu item.
     document.getElementById("defaultPersona").setAttribute("checked", (PersonaService.selected == "default" ? "true" : "false"));

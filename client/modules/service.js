@@ -630,8 +630,10 @@ let PersonaService = {
     Observers.notify("personas:persona:changed");
 
     // Show the notification if the selected persona is not in the favorite or
-    // recent lists.
-    if (!inRecent && !inFavorites)
+    // recent lists, is not a custom persona and its author or username is not null.
+    // In this case we make sure at least one of these two fields is not null
+    // to prevent bug 526788.
+    if (!inRecent && !inFavorites && !persona.custom && (persona.author || persona.username))
       this._showPersonaChangeNotification();
   },
 
@@ -675,7 +677,7 @@ let PersonaService = {
 
     let message = this._strings.get(
       "notification.personaSelected", [this.currentPersona.name,
-                                       (this.currentPersona.display_username ? this.currentPersona.display_username : this.currentPersona.author)]);
+                                       (this.currentPersona.author ? this.currentPersona.author : this.currentPersona.username)]);
 
     let revertButton = {
       label     : this._strings.get("notification.revertButton.label"),
