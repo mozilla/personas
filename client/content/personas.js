@@ -381,40 +381,54 @@ let PersonaController = {
           while (styleSheet.cssRules.length > 0)
             styleSheet.deleteRule(0);
 
-          // On Mac we do two things differently:
+          // On Mac we do several things differently:
           // 1. make text be regular weight, not bold (not sure why);
-          // 2. explicitly style the Find toolbar label ("Find:" or "Quick Find:"
-          //    in en-US) and status message ("Phrase not found"), which otherwise
-          //    would be custom colors specified in findBar.css.
+          // 2. explicitly style the Find toolbar label ("Find:" or
+          //    "Quick Find:" in en-US) and status message ("Phrase not found"),
+          //    which otherwise would be custom colors specified in findBar.css
+          //    (note: we only do this in Firefox);
+          // 3. style the tab color (Mac tabs are transparent).
           // In order to style the Find toolbar text, we have to both explicitly
           // reference it (.findbar-find-fast, .findbar-find-status) and make
           // the declaration !important to override an !important declaration
           // for the status text in findBar.css.
+          // XXX Isn't |#main-window[persona]| unnecessary in this rule,
+          // given that the rule is only inserted into the stylesheet when
+          // a persona is active?
           if (PersonaService.appInfo.OS == "Darwin") {
-            styleSheet.insertRule(
-              "#main-window[persona] .tabbrowser-tab, " +
-              "#navigator-toolbox menubar > menu, " +
-              "#navigator-toolbox toolbarbutton, " +
-              "#browser-bottombox, " +
-              ".findbar-find-fast, " +
-              ".findbar-find-status, " +
-              "#browser-bottombox toolbarbutton " +
-              "{ color: " + textColor + " !important; font-weight: normal; }",
-              0
-            );
-          }
-          else {
             switch (PersonaService.appInfo.ID) {
+              case PersonaService.FIREFOX_ID:
+                styleSheet.insertRule(
+                  "#main-window[persona] .tabbrowser-tab, " +
+                  "#navigator-toolbox menubar > menu, " +
+                  "#navigator-toolbox toolbarbutton, " +
+                  "#browser-bottombox, " +
+                  ".findbar-find-fast, " +
+                  ".findbar-find-status, " +
+                  "#browser-bottombox toolbarbutton " +
+                  "{ color: " + textColor + " !important; " +
+                  "font-weight: normal; }",
+                  0
+                );
+                break;
               case PersonaService.THUNDERBIRD_ID:
                 styleSheet.insertRule(
+                  ".tabmail-tab, " +
                   "#mail-toolbox menubar > menu, " +
                   "#mail-toolbox toolbarbutton, " +
                   "#mail-toolbox toolbaritem > label, " +
                   "#status-bar " +
-                  "{ color: " + textColor + "}",
+                  "{ color: " + textColor + " !important; " +
+                  "font-weight: normal; }",
                   0
                 );
                 break;
+              default:
+                break;
+            }
+          }
+          else {
+            switch (PersonaService.appInfo.ID) {
               case PersonaService.FIREFOX_ID:
                 styleSheet.insertRule(
                   "#navigator-toolbox menubar > menu, " +
@@ -425,9 +439,19 @@ let PersonaController = {
                   0
                 );
                 break;
+              case PersonaService.THUNDERBIRD_ID:
+                styleSheet.insertRule(
+                  "#mail-toolbox menubar > menu, " +
+                  "#mail-toolbox toolbarbutton, " +
+                  "#mail-toolbox toolbaritem > label, " +
+                  "#status-bar " +
+                  "{ color: " + textColor + "}",
+                  0
+                );
+                break;
               default:
                 break;
-              }
+            }
           }
 
           // FIXME: figure out what to do about the disabled color.  Maybe we
