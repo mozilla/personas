@@ -658,8 +658,20 @@ let PersonaService = {
     let wm =
       Cc["@mozilla.org/appshell/window-mediator;1"].
         getService(Ci.nsIWindowMediator);
-    let window = wm.getMostRecentWindow("navigator:browser");
-    let notificationBox = window.getBrowser().getNotificationBox();
+
+    let notificationBox;
+    switch (this.appInfo.ID) {
+      case this.FIREFOX_ID:
+        notificationBox = wm.getMostRecentWindow("navigator:browser").
+                          getBrowser().getNotificationBox();
+        break;
+      case this.THUNDERBIRD_ID:
+        notificationBox = wm.getMostRecentWindow("mail:3pane").
+                          document.getElementById("mail-notification-box");
+        break;
+      default:
+        throw "unknown application ID " + this.appInfo.ID;
+    }
 
     let message = this._strings.get(
       "notification.personaSelected", [this.currentPersona.name,
