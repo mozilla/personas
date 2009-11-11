@@ -62,5 +62,5 @@ site_path_remote  := people.mozilla.com:/home/cbeard/public_html/personas/dist
 fx_min_version    := 3.0
 fx_max_version    := 3.6.*
 
-tb_min_version    := 3.0b1
+tb_min_version    := 3.0b4
 tb_max_version    := 3.0.*

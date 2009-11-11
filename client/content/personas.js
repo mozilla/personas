@@ -133,6 +133,11 @@ let PersonaController = {
     }
   },
 
+  get _thunderbirdRegExp() {
+    delete this._thunderbirdRegExp;
+    return this._thunderbirdRegExp = new RegExp("^" + this._siteURL);
+  },
+
   get _siteURL() {
     return "http://" + this._prefs.get("host") + "/";
   },
@@ -186,7 +191,8 @@ let PersonaController = {
         getService(Ci.nsIWindowMediator).
         getMostRecentWindow("mail:3pane").
         document.getElementById("tabmail").
-        openTab("contentTab", { contentPage: url });
+        openTab("contentTab", { contentPage: url,
+                                clickHandler: "specialTabs.siteClickHandler(event, PersonaController._thunderbirdRegExp);" });
         break;
 
       case PersonaService.FIREFOX_ID:
