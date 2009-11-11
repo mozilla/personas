@@ -69,14 +69,14 @@ let CustomPersonaEditor = {
   },
 
   get _header() {
-    let header = document.getElementById("header");
+    let header = document.getElementById("headerURL");
     delete this._header;
     this._header = header;
     return this._header;
   },
 
   get _footer() {
-    let footer = document.getElementById("footer");
+    let footer = document.getElementById("footerURL");
     delete this._footer;
     this._footer = footer;
     return this._footer;
@@ -146,8 +146,8 @@ let CustomPersonaEditor = {
       this.customPersona = { custom: true };
     }
 
-    this._header.value = this.customPersona.headerURL || "";
-    this._footer.value = this.customPersona.footerURL || "";
+    this._header.value = this.customPersona.headerURL || this.customPersona.header || "";
+    this._footer.value = this.customPersona.footerURL || this.customPersona.footer || "";
     this._customName.value = this.customPersona.name || "";
     this._textColorPicker.color = this.customPersona.textcolor || "#000000";
     this._accentColorPicker.color = this.customPersona.accentcolor || "#C9C9C9";

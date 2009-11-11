@@ -75,7 +75,7 @@
             <label control="header" value="&header.label;"/>
           </hbox>
           <hbox>
-            <textbox id="header"
+            <textbox id="headerURL"
                      onchange="CustomPersonaEditor.onChangeBackground(event)"/>
             <button id="selectHeaderButton" label="&selectBackground.label;"
                     oncommand="CustomPersonaEditor.onSelectBackground(event)"/>
@@ -86,7 +86,7 @@
             <label control="footer" value="&footer.label;"/>
           </hbox>
           <hbox>
-            <textbox id="footer"
+            <textbox id="footerURL"
                      onchange="CustomPersonaEditor.onChangeBackground(event)"/>
             <button id="selectFooterButton" label="&selectBackground.label;"
                     oncommand="CustomPersonaEditor.onSelectBackground(event)"/>
