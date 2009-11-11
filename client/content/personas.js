@@ -351,12 +351,6 @@ let PersonaController = {
     this._header.setAttribute("persona", persona.id);
     this._footer.setAttribute("persona", persona.id);
 
-    // Use the URI module to resolve the possibly relative URI to an absolute one.
-    let footerURI = this.URI.get(persona.footer,
-                                 null,
-                                 this.URI.get(PersonaService.dataURL));
-    this._footer.style.backgroundImage = "url(" + this._escapeURLForCSS(footerURI.spec) + ")";
-
     // First try to obtain the images from the cache
     let images = PersonaService.getCachedPersonaImages(persona);
     if (images && images.header && images.footer) {
@@ -366,12 +360,12 @@ let PersonaController = {
     // Else set them from their original source
     else {
       // Use the URI module to resolve the possibly relative URI to an absolute one.
-      let headerURI = this.URI.get(persona.headerURL,
+      let headerURI = this.URI.get(persona.headerURL || persona.header,
                                    null,
                                    this.URI.get(PersonaService.dataURL));
       this._header.style.backgroundImage = "url(" + this._escapeURLForCSS(headerURI.spec) + ")";
       // Use the URI module to resolve the possibly relative URI to an absolute one.
-      let footerURI = this.URI.get(persona.footerURL,
+      let footerURI = this.URI.get(persona.footerURL || persona.footer,
                                    null,
                                    this.URI.get(PersonaService.dataURL));
       this._footer.style.backgroundImage = "url(" + this._escapeURLForCSS(footerURI.spec) + ")";
@@ -1059,7 +1053,7 @@ let PersonaController = {
 
     let headerURI;
     if (persona.custom) {
-      headerURI = persona.headerURL;
+      headerURI = persona.headerURL || persona.header;
     } else {
       headerURI = persona.dataurl;
     }

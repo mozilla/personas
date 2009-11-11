@@ -967,28 +967,28 @@ let PersonaService = {
     let personaDir = FileUtils.getDirectory(cacheDirectory, aPersona.id);
 
     // Save header
-    let headerURI = URI.get(aPersona.headerURL, null, URI.get(this.dataURL));
+    let headerURI = URI.get(aPersona.headerURL || aPersona.header, null, URI.get(this.dataURL));
     let headerCallback = function(aEvent) {
       let request = aEvent.target;
       // Save only if the folder still exists (Could have been deleted already)
       if (request.status == 200 && personaDir.exists()) {
         FileUtils.writeBinaryFile(
           personaDir.clone(),
-          "header" + FileUtils.getFileExtension(aPersona.headerURL),
+          "header" + FileUtils.getFileExtension(aPersona.headerURL || aPersona.header),
           request.responseText);
       }
     };
     this._makeRequest(headerURI.spec, headerCallback, null, true);
 
     // Save footer
-    let footerURI = URI.get(aPersona.footerURL, null, URI.get(this.dataURL));
+    let footerURI = URI.get(aPersona.footerURL || aPersona.footer, null, URI.get(this.dataURL));
     let footerCallback = function(aEvent) {
       let request = aEvent.target;
       // Save only if the folder still exists (Could have been deleted already)
       if (request.status == 200 && personaDir.exists()) {
         FileUtils.writeBinaryFile(
           personaDir.clone(),
-          "footer" + FileUtils.getFileExtension(aPersona.footerURL),
+          "footer" + FileUtils.getFileExtension(aPersona.footerURL || aPersona.footer),
           request.responseText);
       }
     };
@@ -1013,8 +1013,10 @@ let PersonaService = {
       let headerFile = personaDir.clone();
       let footerFile = personaDir.clone();
 
-      headerFile.append("header" + FileUtils.getFileExtension(aPersona.headerURL));
-      footerFile.append("footer" + FileUtils.getFileExtension(aPersona.footerURL));
+      headerFile.append("header" +
+                        FileUtils.getFileExtension(aPersona.headerURL || aPersona.header));
+      footerFile.append("footer" +
+                        FileUtils.getFileExtension(aPersona.footerURL || aPersona.footer));
 
       if (headerFile.exists() && footerFile.exists()) {
         let ios =
