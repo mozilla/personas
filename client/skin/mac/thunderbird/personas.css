@@ -51,16 +51,7 @@
   background-position: top right;
 }
 
-/* Make the toolbox, tab and search input transparent so the image shines through them. */
-#messengerWindow[persona] .tabmail-tab,
-#messengerWindow[persona] .tabs-alltabs-box {
-  -moz-appearance: none;
-  background-color: transparent;
-  background-image: none !important;
-}
-#messengerWindow[persona] #tabmail, .tabmail-tabs {
-  background-color:transparent !important;
-}
+/* Make the toolbox and search input transparent so the image shines through them. */
 #messengerWindow[persona] toolbar {
   -moz-appearance: none;
   background-color: transparent;
@@ -80,11 +71,79 @@
   border-bottom-color: inherit;
   border-top-color: inherit;
 }
+
+
+/******************************************************************************/
+/* Make some elements a little transparent so the persona flavors their look. */
+
+#messengerWindow[persona] #searchInput,
+#messengerWindow[persona] #urlbar,
+#messengerWindow[persona] #searchbar {
+  opacity: 0.8;
+}
+
+#messengerWindow[persona] toolbarbutton.bookmark-item {
+  -moz-appearance: none;
+  background-color: transparent;
+}
+
+#messengerWindow[persona] .findbar-find-next,
+#messengerWindow[persona] .findbar-find-previous,
+#messengerWindow[persona] .findbar-highlight {
+  background: url("chrome://personas/skin/white-gray-gradient.png") repeat-x top center;
+  color: inherit !important;
+}
+
+#messengerWindow[persona] .findbar-container > toolbarbutton:not([disabled]):hover:active,
+#messengerWindow[persona] .findbar-container > hbox > toolbarbutton:not([disabled]):hover:active {
+  background-image: url("chrome://personas/skin/white-gray-gradient-active.png");
+  color: inherit !important;
+}
+
+#messengerWindow[persona] .findbar-container > toolbarbutton[disabled],
+#messengerWindow[persona] .findbar-container > hbox > toolbarbutton[disabled] {
+  opacity: 0.5;
+}
+
+
+/******************************************************************************/
+/* Eliminate top/bottom borders from statusbars so they don't mar the persona. */
+
+#status-bar[persona] statusbar {
+  border-top-width: 1px !important;
+  border-top-color: transparent !important;
+}
+
+#status-bar[persona] #FindToolbar {
+  border-top-width: 1px;
+  border-top-color: transparent;
+}
+
+
+/******************************************************************************/
+/* Eliminate text shadows from toolbarbutton, tab, and statusbar text so it
+ * doesn't create an unnatural color stroke on the bottom half of the text. */
+
+#messengerWindow[persona] .toolbarbutton-text,
+#messengerWindow[persona] .tab-text,
+#status-bar[persona] statusbar {
+  text-shadow: none;
+}
+
+
+/******************************************************************************/
+/* Style the tab bar. */
+
+#messengerWindow[persona] .tabmail-tabs {
+  -moz-appearance: none;
+  background-color: transparent;
+  background-image: none !important;
+}
+
 #messengerWindow[persona]:not([active="true"]) .tabmail-strip {
   opacity: 0.8; 
 }
 
-/* Style the tabs. */
 #messengerWindow[persona] .tabmail-strip {
   -moz-appearance: none;
   /*background-image: url(chrome://personas/skin/tabmail-tabs-bkgnd.png) !important;*/
@@ -144,64 +203,6 @@
   -moz-border-right-colors: rgba(0, 0, 0, .1) rgba(0, 0, 0, .2);
   background-color: transparent !important;
   background-image: none !important;
-}
-
-
-/******************************************************************************/
-/* Make some elements a little transparent so the persona flavors their look. */
-
-#messengerWindow[persona] #searchInput,
-#messengerWindow[persona] #urlbar,
-#messengerWindow[persona] #searchbar {
-  opacity: 0.8;
-}
-
-#messengerWindow[persona] toolbarbutton.bookmark-item {
-  -moz-appearance: none;
-  background-color: transparent;
-}
-
-#messengerWindow[persona] .findbar-find-next,
-#messengerWindow[persona] .findbar-find-previous,
-#messengerWindow[persona] .findbar-highlight {
-  background: url("chrome://personas/skin/white-gray-gradient.png") repeat-x top center;
-  color: inherit !important;
-}
-
-#messengerWindow[persona] .findbar-container > toolbarbutton:not([disabled]):hover:active,
-#messengerWindow[persona] .findbar-container > hbox > toolbarbutton:not([disabled]):hover:active {
-  background-image: url("chrome://personas/skin/white-gray-gradient-active.png");
-  color: inherit !important;
-}
-
-#messengerWindow[persona] .findbar-container > toolbarbutton[disabled],
-#messengerWindow[persona] .findbar-container > hbox > toolbarbutton[disabled] {
-  opacity: 0.5;
-}
-
-
-/******************************************************************************/
-/* Eliminate top/bottom borders from statusbars so they don't mar the persona. */
-
-#status-bar[persona] statusbar {
-  border-top-width: 1px !important;
-  border-top-color: transparent !important;
-}
-
-#status-bar[persona] #FindToolbar {
-  border-top-width: 1px;
-  border-top-color: transparent;
-}
-
-
-/******************************************************************************/
-/* Eliminate text shadows from toolbarbutton, tab, and statusbar text so it
- * doesn't create an unnatural color stroke on the bottom half of the text. */
-
-#messengerWindow[persona] .toolbarbutton-text,
-#messengerWindow[persona] .tab-text,
-#status-bar[persona] statusbar {
-  text-shadow: none;
 }
 
 
