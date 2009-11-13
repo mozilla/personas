@@ -143,17 +143,42 @@ let PersonaService = {
       else if (this._prefs.has("initial"))
         this.changeToPersona(JSON.parse(this._prefs.get("initial")));
       else {
-        this.changeToPersona(
-          {
-            id: "33",
-            name: "Groovy Blue",
-            // XXX Shouldn't this color value have a # before it?
-            accentcolor: "499bee",
-            textcolor: null,
-            header: "3/3/33/tbox-groovy_blue.jpg",
-            footer: "3/3/33/stbar-groovy_blue.jpg"
-          }
-        );
+        this.changeToPersona({
+          "id":"33",
+          "name":"Groovy Blue",
+          "accentcolor":"#6699ff",
+          "textcolor":"#07188d",
+          "header":"3\/3\/33\/tbox-groovy_blue.jpg",
+          "footer":"3\/3\/33\/stbar-groovy_blue.jpg",
+          "category":"Abstract",
+          "description":null,
+          "author":"Lee.Tom",
+          "username":"Lee.Tom",
+          "detailURL":"http:\/\/www.getpersonas.com\/persona\/33",
+          "headerURL":"http:\/\/www.getpersonas.com\/static\/3\/3\/33\/tbox-groovy_blue.jpg",
+          "footerURL":"http:\/\/www.getpersonas.com\/static\/3\/3\/33\/stbar-groovy_blue.jpg",
+          "previewURL":"http:\/\/www.getpersonas.com\/static\/3\/3\/33\/preview.jpg",
+          "iconURL":"http:\/\/www.getpersonas.com\/static\/3\/3\/33\/preview_small.jpg",
+          "dataurl":"data:image\/png;base64,\/9j\/4AAQSkZJRgABAQEASABIAAD\/2" +
+                    "wBDAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQIC" +
+                    "AQECAQEBAgICAgICAgICAQICAgICAgICAgL\/2wBDAQEBAQEBAQEBAQ" +
+                    "ECAQEBAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICA" +
+                    "gICAgICAgICAgICAgL\/wAARCAAQABADAREAAhEBAxEB\/8QAFwAAAw" +
+                    "EAAAAAAAAAAAAAAAAABAcICv\/EACAQAAIDAAEFAQEAAAAAAAAAAAME" +
+                    "AQIFBgcIERIjEyX\/xAAZAQACAwEAAAAAAAAAAAAAAAADCAQFBwn\/x" +
+                    "AAlEQACAQMCBgMBAAAAAAAAAAABAgMEERIAIQUGExQiMQcyM1L\/2gA" +
+                    "MAwEAAhEDEQA\/AL9p21L52peGctNVXkGbWsGZhNZlXBWo0sHVSVucA" +
+                    "9BryNibVm9Iq3ahWLengV+g03yTMyl+6aV1YE45YmTZsGsCVxBUjx+p" +
+                    "sovuFgi5IjlgRUhI7RjYHyJy93Y5EKxBW+9wrKN9wjsft65bGnnPK4+" +
+                    "kTguZqqKcdJstEzbuzyTdErUtSFqszqY4uR7lQGdQ+q13rML1vWIrN1" +
+                    "U\/I1N2FTG6oKipx6pUlijxRM+ICsRE8scbuqSDEqCvsAiRJyNRvUBH" +
+                    "qcq9I5XdFTxaNbKcmxdWMcYRSt\/IqokK5a0NdQOicaI0cEnGi6eWiW" +
+                    "TKvqghltgpT1GECpZj+DYQmXSG97SAtxBkXibk9Ul4TzXMk3dSV6wMg" +
+                    "a6MSDshAuB+xYiNQVs4F8jZV1u9RwmCKGdKWneSorMFJGPTQGRWkYlj" +
+                    "ZVAyKqQRckAG+i+M9rHGtTUI31CU3dwGWRG+GN7lTWmhe4VpCxNRnr+" +
+                    "y47Wm9qxSwigg5A0YJT6yDifOtS0MS8Km6JmDdZelgASbgeyrEfUtdg" +
+                    "4VXKoSU0bhlDJStUxz00KgWWORAuboP6IAIBIywKgKSRd7Btf\/2Q=="
+        });
       }
     }
 
