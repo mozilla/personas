@@ -931,6 +931,13 @@ let PersonaController = {
         item.setAttribute("checked", (PersonaService.selected == "randomFavorite"));
         item.setAttribute("autocheck", "false");
         item.setAttribute("oncommand", "PersonaController.toggleFavoritesRotation()");
+
+        // go to my favorites menu item
+        item = popupmenu.appendChild(document.createElement("menuitem"));
+        item.setAttribute("label", this._strings.get("favoritesGoTo"));
+        item.setAttribute("oncommand",
+                          "PersonaController.openURLInTab('" +
+                          this._siteURL + "gallery/All/Favorites" + "')");
       }
 
       this._menuPopup.insertBefore(menu, closingSeparator);
