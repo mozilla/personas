@@ -6,7 +6,7 @@
     <em:id>@extension_id@</em:id>
     <em:name>Personas</em:name>
     <em:version>@package_version@</em:version>
-    <em:description>Themes, skins, fur coats and more.</em:description>
+    <em:description>Your Firefox, your style. Easy-to-change themes.</em:description>
 
     <em:creator>Chris Beard</em:creator>
     <em:contributor>Myk Melez</em:contributor>
