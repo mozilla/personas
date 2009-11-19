@@ -56,11 +56,6 @@
 Cu.import("resource://personas/modules/service.js");
 
 let PersonaController = {
-  _defaultHeaderBackgroundImage: null,
-  _defaultFooterBackgroundImage: null,
-  _defaultTitlebarColor: null,
-  _defaultActiveTitlebarColor: null,
-  _defaultInactiveTitlebarColor: null,
   _previewTimeoutID: null,
   _resetTimeoutID: null,
 
@@ -70,11 +65,12 @@ let PersonaController = {
   // Generic modules get imported into these properties rather than
   // the global namespace so they don't conflict with modules with the same
   // names imported by other extensions.
-  JSON:         null,
-  Observers:    null,
-  Preferences:  null,
-  StringBundle: null,
-  URI:          null,
+  JSON:                    null,
+  Observers:               null,
+  Preferences:             null,
+  StringBundle:            null,
+  URI:                     null,
+  LightweightThemeManager: null,
 
   // Access to extensions.personas.* preferences.  To access other preferences,
   // call the Preferences module directly.
@@ -283,16 +279,6 @@ let PersonaController = {
       this._strings.get("dataUnavailable",
                         [this._brandStrings.get("brandShortName")]);
 
-    // Record the default header and footer background images so we can
-    // revert to them if the user selects the default persona.
-    this._defaultHeaderBackgroundImage = this._header.style.backgroundImage;
-    this._defaultFooterBackgroundImage = this._footer.style.backgroundImage;
-
-    // Save the titlebar colors.
-    this._defaultTitlebarColor         = this._header.getAttribute("titlebarcolor");
-    this._defaultActiveTitlebarColor   = this._header.getAttribute("activetitlebarcolor");
-    this._defaultInactiveTitlebarColor = this._header.getAttribute("inactivetitlebarcolor");
-
     // Observe various changes that we should apply to the browser window.
     this.Observers.add("personas:persona:changed", this);
 
@@ -375,6 +361,7 @@ let PersonaController = {
     if (this._prefs.get("useTextColor")) {
       // FIXME: fall back on the default text color instead of "black".
       let textColor = persona.textcolor || "black";
+      this._header.style.color = textColor;
       for (let i = 0; i < document.styleSheets.length; i++) {
         let styleSheet = document.styleSheets[i];
         if (styleSheet.href == "chrome://personas/content/overlay.css") {
@@ -406,7 +393,7 @@ let PersonaController = {
                   ".findbar-find-fast, " +
                   ".findbar-find-status, " +
                   "#browser-bottombox toolbarbutton " +
-                  "{ color: " + textColor + " !important; " +
+                  "{ color: inherit; " +
                   "font-weight: normal; }",
                   0
                 );
@@ -435,7 +422,7 @@ let PersonaController = {
                   "#navigator-toolbox toolbarbutton, " +
                   "#browser-bottombox, " +
                   "#browser-bottombox toolbarbutton " +
-                  "{ color: " + textColor + "}",
+                  "{ color: inherit; }",
                   0
                 );
                 break;
@@ -477,9 +464,9 @@ let PersonaController = {
         inactive = persona.accentcolor;
       }
       else {
-        general  = this._defaultTitlebarColor;
-        active   = this._defaultActiveTitlebarColor;
-        inactive = this._defaultInactiveTitlebarColor;
+        general  = "";
+        active   = "";
+        inactive = "";
       }
       this._setTitlebarColors(general, active, inactive);
     }
@@ -519,13 +506,23 @@ let PersonaController = {
   },
 
   _applyDefault: function() {
+    if (this.LightweightThemeManager) {
+      // Unselect the current lightweight theme, if any. By setting it to null,
+      // the default theme will be set and the service will trigger this method
+      // again.
+      if (this.LightweightThemeManager.currentTheme) {
+        this.LightweightThemeManager.currentTheme = null;
+        return;
+      }
+    }
+
     // Reset the header.
     this._header.removeAttribute("persona");
-    this._header.style.backgroundImage = this._defaultHeaderBackgroundImage;
+    this._header.style.backgroundImage = "";
 
     // Reset the footer.
     this._footer.removeAttribute("persona");
-    this._footer.style.backgroundImage = this._defaultFooterBackgroundImage;
+    this._footer.style.backgroundImage = "";
 
     // Reset the text color.
     for (let i = 0; i < document.styleSheets.length; i++) {
@@ -536,12 +533,11 @@ let PersonaController = {
         break;
       }
     }
+    this._header.style.color = "";
 
     // Reset the titlebar color.
     if (this._prefs.get("useAccentColor")) {
-      this._setTitlebarColors(this._defaultTitlebarColor,
-                              this._defaultActiveTitlebarColor,
-                              this._defaultInactiveTitlebarColor);
+      this._setTitlebarColors("", "", "");
     }
   },
 
@@ -1001,7 +997,7 @@ let PersonaController = {
         popupmenu.appendChild(this._createRandomItem(this._strings.get("popular")));
 
         // Create an item that links to the gallery for this category.
-        popupmenu.appendChild(this._createViewMoreItem(this._strings.get("popular"), 
+        popupmenu.appendChild(this._createViewMoreItem(this._strings.get("popular"),
                               42 - PersonaService.personas.popular.length));
 
         menu.appendChild(popupmenu);
@@ -1033,13 +1029,13 @@ let PersonaController = {
         popupmenu.appendChild(this._createRandomItem(category.name));
 
         // Create an item that links to the gallery for this category.
-        popupmenu.appendChild(this._createViewMoreItem(category.name, 
+        popupmenu.appendChild(this._createViewMoreItem(category.name,
                                                        category.total - category.personas.length));
 
         menu.appendChild(popupmenu);
         categoriesPopup.appendChild(menu);
       }
-      categoriesMenu.setAttribute("label", this._strings.get("categories") + 
+      categoriesMenu.setAttribute("label", this._strings.get("categories") +
                                   " (" + this._formatNumber(PersonaService.personas.total) + ")");
       categoriesMenu.appendChild(categoriesPopup);
     }
@@ -1093,15 +1089,15 @@ let PersonaController = {
 
   _createViewMoreItem: function(category, number) {
     let item = document.createElement("menuitem");
-    
-    item.setAttribute("class", "menuitem-iconic"); 
+
+    item.setAttribute("class", "menuitem-iconic");
     item.setAttribute("label", this._strings.get("viewMore", [this._formatNumber(number), category]));
 
     if (category == "popular" || category == "recent") {
       item.setAttribute("oncommand",
                           "PersonaController.openURLInTab(this._siteURL + 'gallery/All/All')");
     } else {
-      let viewMoreURI = "PersonaController.openURLInTab('" + 
+      let viewMoreURI = "PersonaController.openURLInTab('" +
                            this._siteURL + "gallery/" + category + "/All')";
       item.setAttribute("oncommand", viewMoreURI);
     }
@@ -1139,6 +1135,11 @@ Cu.import("resource://personas/modules/Preferences.js",   PersonaController);
 Cu.import("resource://personas/modules/StringBundle.js",  PersonaController);
 Cu.import("resource://personas/modules/URI.js",           PersonaController);
 
+// Import modules that come with Firefox into the persona controller rather
+// than the global namespace.
+// LightweightThemeManager may not be not available (Firefox < 3.6 or Thunderbird)
+try { Cu.import("resource://gre/modules/LightweightThemeManager.jsm", PersonaController); }
+catch (e) {}
 
 window.addEventListener("load", function(e) { PersonaController.startUp(e) }, false);
 window.addEventListener("unload", function(e) { PersonaController.shutDown(e) }, false);
