@@ -8,6 +8,7 @@
 <!ENTITY selectBackground.label "Prehľadávať">
 <!ENTITY footer.label "Päta:">
 <!ENTITY textColorPicker.label "Farba textu:">
+<!ENTITY accentColorPicker.label "Farba akcentu:">
 <!ENTITY useDefaultColor.label "Použiť predvolené">
 <!ENTITY okButton.label "OK">
 <!ENTITY contextHomePage.label "Domovská stránka">
