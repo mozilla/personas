@@ -716,9 +716,11 @@ let PersonaService = {
         throw "unknown application ID " + this.appInfo.ID;
     }
 
-    let message = this._strings.get(
-      "notification.personaSelected", [this.currentPersona.name,
-                                       (this.currentPersona.author ? this.currentPersona.author : this.currentPersona.username)]);
+    let message = this._strings.get("notification.personaWasSelected",
+                                    [this.currentPersona.name,
+                                     (this.currentPersona.author ?
+                                      this.currentPersona.author :
+                                      this.currentPersona.username)]);
 
     let revertButton = {
       label     : this._strings.get("notification.revertButton.label"),
