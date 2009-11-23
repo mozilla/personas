@@ -78,7 +78,9 @@
 
 #messengerWindow[persona] #searchInput,
 #messengerWindow[persona] #urlbar,
-#messengerWindow[persona] #searchbar {
+#messengerWindow[persona] #searchbar,
+#messengerWindow[persona] #mail-bar3 > toolbaritem > menulist /* View and Folder menus */
+{
   opacity: 0.8;
 }
 

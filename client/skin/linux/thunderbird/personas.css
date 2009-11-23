@@ -61,9 +61,12 @@
   -moz-appearance: none;
 }
 
+/* Make some elements translucent so the persona flavors their appearance. */
 #messengerWindow[persona] #searchInput,
 #messengerWindow[persona] .tabmail-tab,
-#messengerWindow[persona] .tabs-alltabs-box {
+#messengerWindow[persona] .tabs-alltabs-box,
+#messengerWindow[persona] #mail-bar3 > toolbaritem > menulist /* View and Folder menus */
+{
   opacity: 0.8;
 }
 
