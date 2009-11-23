@@ -716,6 +716,12 @@ let PersonaService = {
         throw "unknown application ID " + this.appInfo.ID;
     }
 
+    // If there is another notification of the same kind already, remove it.
+    let oldNotification =
+      notificationBox.getNotificationWithValue("lwtheme-install-notification");
+    if (oldNotification)
+      notificationBox.removeNotification(oldNotification);
+
     let message = this._strings.get("notification.personaWasSelected",
                                     [this.currentPersona.name,
                                      (this.currentPersona.author ?
@@ -730,7 +736,7 @@ let PersonaService = {
     };
 
     notificationBox.appendNotification(
-      message, "personas-change-notification", null,
+      message, "lwtheme-install-notification", null,
       notificationBox.PRIORITY_INFO_MEDIUM, [ revertButton ] );
   },
 
