@@ -1,7 +1,7 @@
 <!ENTITY personas_app_title "Personas">
 <!ENTITY useDefaultPersona.label "既定を利用する">
-<!ENTITY preferences.label "設定...">
-<!ENTITY viewDirectory.label "ギャラリー表示...">
+<!ENTITY preferences.label "設定">
+<!ENTITY viewDirectory.label "ギャラリーを見る">
 <!ENTITY customPersona.label "カスタムペルソナ">
 <!ENTITY customName.label "名前:">
 <!ENTITY header.label "ヘッダー:">

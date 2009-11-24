@@ -1,11 +1,11 @@
 <!ENTITY personas_app_title "Personas">
-<!ENTITY useDefaultPersona.label "Стиль по умолчанию">
+<!ENTITY useDefaultPersona.label "По умолчанию">
 <!ENTITY preferences.label "Настройки">
 <!ENTITY viewDirectory.label "Просмотреть каталог">
 <!ENTITY customPersona.label "Скин пользователя">
 <!ENTITY customName.label "Название:">
 <!ENTITY header.label "Верхнее изображение:">
-<!ENTITY selectBackground.label "Просмотреть...">
+<!ENTITY selectBackground.label "Просмотреть…">
 <!ENTITY footer.label "Нижнее изображение:">
 <!ENTITY textColorPicker.label "Цвет текста:">
 <!ENTITY accentColorPicker.label "Цвет строки заголовка:">

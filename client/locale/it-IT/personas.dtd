@@ -1,7 +1,7 @@
 <!ENTITY personas_app_title "Personas">
 <!ENTITY useDefaultPersona.label "Predefinito">
 <!ENTITY preferences.label "Opzioni...">
-<!ENTITY viewDirectory.label "Visualizza archivio...">
+<!ENTITY viewDirectory.label "Visualizza galleria...">
 <!ENTITY customPersona.label "Personalizzazioni">
 <!ENTITY customName.label "Nome:">
 <!ENTITY header.label "Intestazione:">

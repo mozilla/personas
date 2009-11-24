@@ -1,7 +1,7 @@
 <!ENTITY personas_app_title "Personas">
 <!ENTITY useDefaultPersona.label "ברירת מחדל">
 <!ENTITY preferences.label "העדפות...">
-<!ENTITY viewDirectory.label "הצג ספרייה...">
+<!ENTITY viewDirectory.label "הצגת גלריה...">
 <!ENTITY customPersona.label "Persona מותאם אישית">
 <!ENTITY customName.label "שם:">
 <!ENTITY header.label "כותרת עליונה:">

@@ -1,8 +1,8 @@
-<!ENTITY preferences.title "Îñîáèñò³ íàëàøòóâàííÿ">
-<!ENTITY generalSettings.label "Çàãàëüí³">
-<!ENTITY previewEnabled.label "Ïîêàçàòè ïîïåðåäí³é ïåðåãëÿä ïðè âèáîð³ ç ìåíþ">
-<!ENTITY displaySettings.label "Â³äîáðàæåííÿ">
-<!ENTITY useTextColor.label "Âèêîðèñòîâóâàòè êîë³ð òåêñòó">
-<!ENTITY useAccentColor.label "Âèêîðèñòîâóâàòè íàãîëîøåíèé êîë³ð">
-<!ENTITY advancedSettings.label "Äîäàòêîâ³">
-<!ENTITY showCustomMenu.label "Ïîêàçóâàòè íàëàøòîâàíó Persona â ìåíþ">
+<!ENTITY preferences.title "ÐžÑÐ¾Ð±Ð¸ÑÑ‚Ñ– Ð½Ð°Ð»Ð°ÑˆÑ‚ÑƒÐ²Ð°Ð½Ð½Ñ">
+<!ENTITY generalSettings.label "Ð—Ð°Ð³Ð°Ð»ÑŒÐ½Ñ–">
+<!ENTITY previewEnabled.label "ÐŸÐ¾ÐºÐ°Ð·Ð°Ñ‚Ð¸ Ð¿Ð¾Ð¿ÐµÑ€ÐµÐ´Ð½Ñ–Ð¹ Ð¿ÐµÑ€ÐµÐ³Ð»ÑÐ´ Ð¿Ñ€Ð¸ Ð²Ð¸Ð±Ð¾Ñ€Ñ– Ð· Ð¼ÐµÐ½ÑŽ">
+<!ENTITY displaySettings.label "Ð’Ñ–Ð´Ð¾Ð±Ñ€Ð°Ð¶ÐµÐ½Ð½Ñ">
+<!ENTITY useTextColor.label "Ð’Ð¸ÐºÐ¾Ñ€Ð¸ÑÑ‚Ð¾Ð²ÑƒÐ²Ð°Ñ‚Ð¸ ÐºÐ¾Ð»Ñ–Ñ€ Ñ‚ÐµÐºÑÑ‚Ñƒ">
+<!ENTITY useAccentColor.label "Ð’Ð¸ÐºÐ¾Ñ€Ð¸ÑÑ‚Ð¾Ð²ÑƒÐ²Ð°Ñ‚Ð¸ Ð½Ð°Ð³Ð¾Ð»Ð¾ÑˆÐµÐ½Ð¸Ð¹ ÐºÐ¾Ð»Ñ–Ñ€">
+<!ENTITY advancedSettings.label "Ð”Ð¾Ð´Ð°Ñ‚ÐºÐ¾Ð²Ñ–">
+<!ENTITY showCustomMenu.label "ÐŸÐ¾ÐºÐ°Ð·ÑƒÐ²Ð°Ñ‚Ð¸ Ð½Ð°Ð»Ð°ÑˆÑ‚Ð¾Ð²Ð°Ð½Ñƒ Persona Ð² Ð¼ÐµÐ½ÑŽ">
