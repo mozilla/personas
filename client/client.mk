@@ -52,9 +52,9 @@ name              := personas
 version           := 1.5
 
 # These variables control publication of the extension to a remote website.
-site_url_base     := https://people.mozilla.com/~cbeard/personas/dist
+site_url_base     := https://ftp.mozilla.org/pub/mozilla.org/labs/personas
 site_path_local   := dist
-site_path_remote  := people.mozilla.com:/home/cbeard/public_html/personas/dist
+site_path_remote  := stage.mozilla.org:/home/ftp/pub/labs/personas
 
 # The minimum and maximum versions of Firefox and Thunderbird with which
 # the extension is compatible.  These are used in both the install and update
