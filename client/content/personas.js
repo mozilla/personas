@@ -279,13 +279,17 @@ let PersonaController = {
       this._strings.get("dataUnavailable",
                         [this._brandStrings.get("brandShortName")]);
 
-    // Observe various changes that we should apply to the browser window.
-    this.Observers.add("personas:persona:changed", this);
+    if (!this.LightweightThemeManager) {
+      // Observe various changes that we should apply to the browser window.
+      this.Observers.add("personas:persona:changed", this);
 
-    // Listen for various persona-related events that can bubble up from content.
-    document.addEventListener("SelectPersona", this, false, true);
-    document.addEventListener("PreviewPersona", this, false, true);
-    document.addEventListener("ResetPersona", this, false, true);
+      // Listen for various persona-related events that can bubble up from content.
+      document.addEventListener("SelectPersona", this, false, true);
+      document.addEventListener("PreviewPersona", this, false, true);
+      document.addEventListener("ResetPersona", this, false, true);
+    }
+    // Listen for various persona-related events that can bubble up from content,
+    // not handled by the LightweightThemeManager.
     document.addEventListener("CheckPersonas", this, false, true);
     document.addEventListener("AddFavoritePersona", this, false, true);
     document.addEventListener("RemoveFavoritePersona", this, false, true);
@@ -310,21 +314,23 @@ let PersonaController = {
       this._prefs.set("lastversion", thisVersion);
     }
 
-    // Apply the current persona to the window.
-    // We don't apply the default persona because Firefox starts with that.
-    if (PersonaService.selected != "default")
+    // Apply the current persona to the window if the LightweightThemeManager
+    // is not available.
+    // Also, we don't apply the default persona because Firefox starts with that.
+    if (!this.LightweightThemeManager && PersonaService.selected != "default")
       this._applyPersona(PersonaService.currentPersona);
   },
 
   shutDown: function() {
-    document.removeEventListener("SelectPersona", this, false);
-    document.removeEventListener("PreviewPersona", this, false);
-    document.removeEventListener("ResetPersona", this, false);
+    if (!this.LightweightThemeManager) {
+      this.Observers.remove("personas:persona:changed", this);
+      document.removeEventListener("SelectPersona", this, false);
+      document.removeEventListener("PreviewPersona", this, false);
+      document.removeEventListener("ResetPersona", this, false);
+    }
     document.removeEventListener("CheckPersonas", this, false);
     document.removeEventListener("AddFavoritePersona", this, false);
     document.removeEventListener("RemoveFavoritePersona", this, false);
-
-    this.Observers.remove("personas:persona:changed", this);
   },
 
 
@@ -506,16 +512,6 @@ let PersonaController = {
   },
 
   _applyDefault: function() {
-    if (this.LightweightThemeManager) {
-      // Unselect the current lightweight theme, if any. By setting it to null,
-      // the default theme will be set and the service will trigger this method
-      // again.
-      if (this.LightweightThemeManager.currentTheme) {
-        this.LightweightThemeManager.currentTheme = null;
-        return;
-      }
-    }
-
     // Reset the header.
     this._header.removeAttribute("persona");
     this._header.style.backgroundImage = "";

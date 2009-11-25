@@ -46,7 +46,7 @@ const Cu = Components.utils;
 Cu.import("resource://gre/modules/XPCOMUtils.jsm");
 // LightweightThemeManager may not be not available (Firefox < 3.6 or Thunderbird)
 try { Cu.import("resource://gre/modules/LightweightThemeManager.jsm"); }
-catch (e) {}
+catch (e) { LightweightThemeManager = null; }
 
 // modules that are generic
 Cu.import("resource://personas/modules/JSON.js");
@@ -397,7 +397,7 @@ let PersonaService = {
     if (this.selected == "random") {
       this.currentPersona = this._getRandomPersonaFromCategory(this.category);
       this._prefs.reset("persona.lastRefreshed");
-      Observers.notify("personas:persona:changed");
+      this._notifyPersonaChanged(this.currentPersona);
     }
   },
 
@@ -552,7 +552,7 @@ let PersonaService = {
     // Set the current persona to the updated version we got from the server,
     // and notify observers about the change.
     this.currentPersona = persona;
-    Observers.notify("personas:persona:changed");
+    this._notifyPersonaChanged(this.currentPersona);
 
     // Record when this refresh took place so the next refresh only looks
     // for changes since this refresh.
@@ -630,10 +630,23 @@ let PersonaService = {
     catch(ex) { Cu.reportError("error setting custom persona: " + ex) }
   },
 
+  /**
+   * Notifies the persona changes or uses the lightweight theme manager
+   * functionality for this purpose (if available)
+   * @param aPersona the persona to be set as current if the lightweight theme
+   * manager is available
+   */
+  _notifyPersonaChanged : function(aPersona) {
+    if (LightweightThemeManager)
+      LightweightThemeManager.currentTheme = aPersona;
+    else
+      Observers.notify("personas:persona:changed");
+  },
+
   changeToDefaultPersona: function() {
     this.selected = "default";
     this._prefs.set("persona.lastChanged", new Date().getTime().toString());
-    Observers.notify("personas:persona:changed");
+    this._notifyPersonaChanged(null);
   },
 
   changeToRandomPersona: function(category) {
@@ -641,7 +654,7 @@ let PersonaService = {
     this.currentPersona = this._getRandomPersonaFromCategory(category);
     this.selected = "random";
     this._prefs.set("persona.lastChanged", new Date().getTime().toString());
-    Observers.notify("personas:persona:changed");
+    this._notifyPersonaChanged(this.currentPersona);
   },
 
   changeToRandomFavoritePersona : function() {
@@ -649,7 +662,7 @@ let PersonaService = {
       this.currentPersona = this._getRandomPersonaFromArray(this.favorites);
       this.selected = "randomFavorite";
       this._prefs.set("persona.lastChanged", new Date().getTime().toString());
-      Observers.notify("personas:persona:changed");
+      this._notifyPersonaChanged(this.currentPersona);
     }
   },
 
@@ -668,7 +681,7 @@ let PersonaService = {
     this.selected = "current";
     this._prefs.reset("persona.lastRefreshed");
     this._prefs.set("persona.lastChanged", new Date().getTime().toString());
-    Observers.notify("personas:persona:changed");
+    this._notifyPersonaChanged(this.currentPersona);
 
     // Show the notification if the selected persona is not in the favorite or
     // recent lists, is not a custom persona and its author or username is not null.
@@ -683,12 +696,20 @@ let PersonaService = {
    * available
    */
   revertToPreviousPersona : function() {
+    let undonePersonaId = this.currentPersona.id;
     let previousPersona = this._prefs.get("lastselected1");
     if (previousPersona) {
       this.currentPersona = JSON.parse(previousPersona);
       this._revertRecent();
       this.selected = "current";
-      this.resetPersona();
+
+      if (LightweightThemeManager) {
+        // forget the lightweight theme too
+        LightweightThemeManager.forgetUsedTheme(undonePersonaId);
+        LightweightThemeManager.currentTheme = this.currentPersona;
+      }
+      else
+        this.resetPersona();
     }
   },
 
@@ -879,16 +900,24 @@ let PersonaService = {
    * call resetPersona when the preview ends, f.e. on mouseout.
    */
   previewPersona: function(persona) {
-    this.previewingPersona = persona;
-    Observers.notify("personas:persona:changed");
+    if (LightweightThemeManager)
+      LightweightThemeManager.previewTheme(persona);
+    else {
+      this.previewingPersona = persona;
+      Observers.notify("personas:persona:changed");
+    }
   },
 
   /**
    * Stop previewing a persona.
    */
   resetPersona: function() {
-    this.previewingPersona = null;
-    Observers.notify("personas:persona:changed");
+    if (LightweightThemeManager)
+      LightweightThemeManager.resetPreview();
+    else {
+      this.previewingPersona = null;
+      Observers.notify("personas:persona:changed");
+    }
   },
 
   /**
@@ -986,9 +1015,9 @@ let PersonaService = {
     }
 
     let currentTheme = LightweightThemeManager.currentTheme;
-    if (currentTheme)
+    if (currentTheme && currentTheme.id != this.currentPersona.id)
       this.changeToPersona(currentTheme);
-    else
+    else if (!currentTheme && this.selected != "default")
       this.changeToDefaultPersona();
   },
 
