@@ -111,15 +111,10 @@ let PersonaService = {
     // Observe the "cookie-changed" topic to load the favorite personas when
     // the user signs in.
     Observers.add("cookie-changed", this.onCookieChanged, this);
-    // Observe the "lightweight-theme-changed" topic to call
-    // this.changeToDefaultPersona, in order to set the current theme as the
-    // default one.
+    // Observe the "lightweight-theme-changed" to sync the add-on with the
+    // lightweight theme manager.
     Observers.add("lightweight-theme-changed",
                   this.onLightweightThemeChanged, this);
-    // Observe the "lightweight-theme-preview-requested" topic to ignore the
-    // subsequent "lightweight-theme-changed" notifications.
-    Observers.add("lightweight-theme-preview-requested",
-                  this.onLightweightThemePreviewed, this);
 
     this._prefs.observe("useTextColor",   this.onUseColorChanged,     this);
     this._prefs.observe("useAccentColor", this.onUseColorChanged,     this);
@@ -245,8 +240,6 @@ let PersonaService = {
     Observers.remove("cookie-changed", this.onCookieChanged, this);
     Observers.remove("lightweight-theme-changed",
                      this.onLightweightThemeChanged, this);
-    Observers.remove("lightweight-theme-preview-requested",
-                     this.onLightweightThemePreviewed, this);
 
     this._prefs.ignore("useTextColor",   this.onUseColorChanged,     this);
     this._prefs.ignore("useAccentColor", this.onUseColorChanged,     this);
@@ -983,37 +976,11 @@ let PersonaService = {
   // Lightweight Themes - Personas synchronization
 
   /**
-   * This flag keeps track of how many "lightweight-theme-changed" observer topic
-   * notifications have to be ignored before applying the changes in the add-on.
-   * The topic is fired very often, even when a theme is being previewed, so
-   * the add-on must ignore it in such cases.
-   * FIXME: This is an alternative solution until bug 529769 is resolved:
-   * https://bugzilla.mozilla.org/show_bug.cgi?id=529769
-   */
-  _ignoreThemeChangedCount : 0,
-
-  /**
-   * Sets the "ignore theme changed topic" flag to two, in order to ignore the
-   * next two notifications: one when a theme is being previewed and one when
-   * the current theme is restored.
-   */
-  onLightweightThemePreviewed: function() {
-    this._ignoreThemeChangedCount = 2;
-  },
-
-  /**
    * Updates the add-on to reflect the changes from the Tools - Add-ons - Themes
    * dialog. If a lightweight theme is set, it is also set as the add-on's current
    * persona. If a regular theme is set, the current persona is set to "default".
    */
-  onLightweightThemeChanged: function(aSubject, aData) {
-    // The notification is fired very often. The changes are only applied when
-    // the ignore flag is set to zero.
-    if (this._ignoreThemeChangedCount > 0) {
-      this._ignoreThemeChangedCount--;
-      return;
-    }
-
+  onLightweightThemeChanged: function() {
     let currentTheme = LightweightThemeManager.currentTheme;
     if (currentTheme && currentTheme.id != this.currentPersona.id)
       this.changeToPersona(currentTheme);
