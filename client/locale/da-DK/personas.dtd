@@ -1,12 +1,12 @@
 <!ENTITY personas_app_title "Personas">
 <!ENTITY useDefaultPersona.label "Standard">
 <!ENTITY preferences.label "Indstillinger...">
-<!ENTITY viewDirectory.label "Vis katalog...">
+<!ENTITY viewDirectory.label "Vis galleri...">
 <!ENTITY customPersona.label "Tilpas Persona">
 <!ENTITY customName.label "Navn:">
-<!ENTITY header.label "Værktøjslinjer:">
+<!ENTITY header.label "Hoved:">
 <!ENTITY selectBackground.label "Gennemse...">
-<!ENTITY footer.label "Statuslinje:">
+<!ENTITY footer.label "Fod:">
 <!ENTITY textColorPicker.label "Tekstfarve:">
 <!ENTITY accentColorPicker.label "Accentfarve:">
 <!ENTITY useDefaultColor.label "Brug standard">
