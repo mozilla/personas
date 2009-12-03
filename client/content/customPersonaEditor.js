@@ -143,7 +143,10 @@ let CustomPersonaEditor = {
       this.customPersona.custom = true;
     }
     catch(ex) {
-      this.customPersona = { custom: true };
+      this.customPersona = {
+        id: 0,
+        name: this._strings.get("customPersona"),
+        custom: true };
     }
 
     this._header.value = this.customPersona.headerURL || this.customPersona.header || "";
