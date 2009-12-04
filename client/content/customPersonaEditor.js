@@ -47,6 +47,15 @@ Cu.import("resource://personas/modules/StringBundle.js");
 // modules that are Personas-specific
 Cu.import("resource://personas/modules/service.js");
 
+// FIXME: This is a workaround for bug 532741
+// Transparent 1x1px image, used for the header and footer when not specified.
+const NULL_IMAGE =
+  "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAQMAAAAl21bKAAAAA3NC" +
+  "SVQICAjb4U/gAAAABlBMVEX///////9VfPVsAAAAAnRSTlMA/1uRIrUAAAAJcEhZcwAACxIAAA" +
+  "sSAdLdfvwAAAAWdEVYdENyZWF0aW9uIFRpbWUAMTIvMDQvMDmzVtkkAAAAIHRFWHRTb2Z0d2Fy" +
+  "ZQBNYWNyb21lZGlhIEZpcmV3b3JrcyBNWLuRKiQAAAAKSURBVHicY2AAAAACAAFIr6RxAAAAAE" +
+  "lFTkSuQmCC";
+
 let CustomPersonaEditor = {
   //**************************************************************************//
   // Shortcuts
@@ -146,6 +155,8 @@ let CustomPersonaEditor = {
       this.customPersona = {
         id: 0,
         name: this._strings.get("customPersona"),
+        headerURL: NULL_IMAGE,
+        footerURL: NULL_IMAGE,
         custom: true };
     }
 
@@ -154,6 +165,14 @@ let CustomPersonaEditor = {
     this._customName.value = this.customPersona.name || "";
     this._textColorPicker.color = this.customPersona.textcolor || "#000000";
     this._accentColorPicker.color = this.customPersona.accentcolor || "#C9C9C9";
+
+    // FIXME: This is a workaround for bug 532741, where the LightweightThemeManager
+    // needs a header and footer to be specified in order to preview the persona.
+    // Remove the null image info from the textboxes
+    if (this._header.value == NULL_IMAGE)
+      this._header.value = "";
+    if (this._footer.value == NULL_IMAGE)
+      this._footer.value = "";
 
     PersonaService.previewPersona(this.customPersona);
   },
@@ -175,7 +194,7 @@ let CustomPersonaEditor = {
     let value = control.value.replace(/^\s*|\s*$/g, "");
 
     if (value == "")
-      this.customPersona[property] = null;
+      this.customPersona[property] = NULL_IMAGE;
     else
       this.customPersona[property] = value;
 
