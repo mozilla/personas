@@ -1,9 +1,17 @@
 // The type of persona the user selected.  Valid values:
-//   default: the default Firefox theme (i.e. no persona)
-//    random: a persona randomly selected from extensions.personas.category
-//   current: a persona selected by the user
-// When this preference is set to "random" or "current", the current persona
-// is stored in extensions.personas.current.
+//
+//   default:
+//     the default Firefox theme (i.e. no persona)
+//   random:
+//     a persona randomly selected from extensions.personas.category
+//   randomFavorite:
+//      a persona randomly selected from the user's favorites
+//   current:
+//     a persona selected by the user
+//
+// When this preference is set to "random", "randomFavorite", or "current",
+// the current persona is stored in extensions.personas.current.
+//
 pref("extensions.personas.selected", "current");
 
 // The initial persona that should get set on first run for a BYOB/bundle/
@@ -19,8 +27,10 @@ pref("extensions.personas.selected", "current");
 // Generally, this is the persona that the user selected from a menu
 // in the extension or from the web gallery of personas.  But if the user
 // selected "random persona from [category]", then this is the persona
-// we randomly selected from the category.  And if the user selected
-// a custom persona, then this is that persona.
+// we randomly selected from the category; if the user selected "random
+// from my favorites", this is the persona we randomly selected from
+// the user's favorites; and if the user selected a custom persona,
+// then this is that persona.
 //
 // We don't set this preference by default, as it gets set on first run
 // by the service and subsequently by the user.
