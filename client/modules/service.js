@@ -50,6 +50,7 @@ catch (e) { LightweightThemeManager = null; }
 
 // modules that are generic
 Cu.import("resource://personas/modules/JSON.js");
+Cu.import("resource://personas/modules/log4moz.js");
 Cu.import("resource://personas/modules/Observers.js");
 Cu.import("resource://personas/modules/Preferences.js");
 Cu.import("resource://personas/modules/StringBundle.js");
@@ -99,6 +100,11 @@ let PersonaService = {
     // in Thunderbird, return it here.
 
     return this.extension = null;
+  },
+
+  get _log() {
+    delete this._log;
+    return this._log = Log4Moz.getConfiguredLogger("PersonaService");
   },
 
 
@@ -630,6 +636,7 @@ let PersonaService = {
    * manager is available
    */
   _notifyPersonaChanged : function(aPersona) {
+    this._log.debug("_notifyPersonaChanged:\n" + Log4Moz.getStackTrace());
     if (LightweightThemeManager)
       LightweightThemeManager.currentTheme = aPersona;
     else

@@ -108,3 +108,6 @@ pref("extensions.personas.channel", "@channel@");
 
 // Preference to switch per-window personas mode on
 pref("extensions.personas.perwindow", false);
+
+pref("PersonaService.logging.console", "@console_log_level@");
+pref("PersonaService.logging.dump", "@dump_log_level@");

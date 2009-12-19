@@ -87,6 +87,8 @@ ifeq ($(channel),dev)
   package_name    := $(name)-$(channel)-$(package_version).xpi
   package_alias   := $(name)-$(channel)-latest.xpi
   package_url     := $(site_url_base)/$(package_name)
+  console_log_level := Debug
+  dump_log_level  := Debug
   # Automatically archive chrome in JAR archive when building for this channel.
   jar             := 1
 
@@ -99,6 +101,8 @@ else ifeq ($(channel),rel)
   package_version := $(version)
   package_name    := $(name)-$(version).xpi
   package_url     := 
+  console_log_level := None
+  dump_log_level  := None
   # Automatically archive chrome in JAR archive when building for this channel.
   jar             := 1
 
@@ -111,6 +115,8 @@ else
   package_version := 0
   package_name    := $(name).xpi
   package_url     := 
+  console_log_level := Debug
+  dump_log_level  := Debug
 endif
 
 dotin_files       := $(shell find . -type f -name \*.in)
@@ -165,7 +171,7 @@ substitute := perl -p -e 's/@([^@]+)@/defined $$ENV{$$1} ? $$ENV{$$1} : $$&/ge'
 
 # The variables to substitute for their values in .in files.
 export package_version update_url_tag package_url revision_id chrome_path \
-       channel extension_id \
+       channel extension_id console_log_level dump_log_level \
        fx_min_version fx_max_version tb_min_version tb_max_version
 
 
