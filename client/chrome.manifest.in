@@ -70,6 +70,7 @@ locale   personas   hu-HU       @chrome_path@locale/hu-HU/
 locale   personas   it          @chrome_path@locale/it/
 locale   personas   it-IT       @chrome_path@locale/it-IT/
 locale   personas   ja          @chrome_path@locale/ja/
+locale   personas   ja-JP-mac   @chrome_path@locale/ja-JP-mac/
 locale   personas   ko-KR       @chrome_path@locale/ko-KR/
 locale   personas   mk-MK       @chrome_path@locale/mk-MK/
 locale   personas   nl-NL       @chrome_path@locale/nl-NL/
