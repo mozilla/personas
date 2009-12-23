@@ -511,12 +511,22 @@ let PersonaService = {
       headers["If-Modified-Since"] = DateUtils.toRFC1123(date);
     }
 
+    let currentPersona;
+    try       { currentPersona = JSON.stringify(this.currentPersona) }
+    catch(ex) { currentPersona = "error JSON.stringify-ing currentPersona " +
+                                 this.currentPersona + ": " + ex }
+    this._log.debug("_refreshPersona: currentPersona = " + currentPersona +
+                    "; url = " + url);
+
     let t = this;
     this._makeRequest(url, function(evt) { t.onPersonaLoadComplete(evt) }, headers);
   },
 
   onPersonaLoadComplete: function(event) {
     let request = event.target;
+
+    this._log.debug("onPersonaLoadComplete: status = " + request.status +
+                    "; responseText = " + request.responseText);
 
     // 304 means the file we requested has not been modified since the
     // If-Modified-Since date we specified, so there's nothing to do.
