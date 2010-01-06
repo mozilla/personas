@@ -111,7 +111,7 @@ let PersonaController = {
     return this._sessionStore = Cc["@mozilla.org/browser/sessionstore;1"]
                                 .getService(Ci.nsISessionStore);
   },
-  
+
   get _header() {
     delete this._header;
     switch (PersonaService.appInfo.ID) {
@@ -299,6 +299,10 @@ let PersonaController = {
       case "RemoveFavoritePersona":
         this.onRemoveFavoritePersonaFromContent(aEvent);
         break;
+      case "pagehide":
+      case "TabSelect":
+        this.onResetPersona();
+        break;
     }
   },
 
@@ -318,11 +322,13 @@ let PersonaController = {
       // Observe various changes that we should apply to the browser window.
       this.Observers.add("personas:persona:changed", this);
       this.Observers.add("domwindowopened", this);
-      
+
       // Listen for various persona-related events that can bubble up from content.
       document.addEventListener("SelectPersona", this, false, true);
       document.addEventListener("PreviewPersona", this, false, true);
       document.addEventListener("ResetPersona", this, false, true);
+      window.addEventListener("pagehide", this, false, true);
+      gBrowser.tabContainer.addEventListener("TabSelect", this, false);
     }
     // Listen for various persona-related events that can bubble up from content,
     // not handled by the LightweightThemeManager.
@@ -373,6 +379,8 @@ let PersonaController = {
       document.removeEventListener("SelectPersona", this, false);
       document.removeEventListener("PreviewPersona", this, false);
       document.removeEventListener("ResetPersona", this, false);
+      window.removeEventListener("pagehide", this, false);
+      gBrowser.tabContainer.removeEventListener("TabSelect", this, false);
     }
     document.removeEventListener("CheckPersonas", this, false);
     document.removeEventListener("AddFavoritePersona", this, false);
@@ -652,9 +660,9 @@ let PersonaController = {
       throw "node does not have 'persona' attribute";
 
     let persona = node.getAttribute("persona");
-    
+
     // We check if the user wants per-window personas
-    if (this._prefs.get("perwindow")) {      
+    if (this._prefs.get("perwindow")) {
       // Since per-window personas are window-specific, we persist and
       // set them from here instead instead of going through PersonaService.
       switch (persona) {
@@ -714,7 +722,7 @@ let PersonaController = {
 
     //this._previewPersona(event.target.getAttribute("persona"));
     let persona = this.JSON.parse(event.target.getAttribute("persona"));
-    
+
     // We check if the user wants per-window personas
     if (this._prefs.get("perwindow")) {
       // We temporarily set the window specific persona here and let
@@ -768,7 +776,7 @@ let PersonaController = {
       this._sessionStore.getWindowValue(window, "persona")) {
       return;
     }
-    
+
     if (this._previewTimeoutID) {
       window.clearTimeout(this._previewTimeoutID);
       this._previewTimeoutID = null;
@@ -1017,7 +1025,7 @@ let PersonaController = {
           item.setAttribute("autocheck", "false");
           item.setAttribute("oncommand", "PersonaController.toggleFavoritesRotation()");
         }
-        
+
         // go to my favorites menu item
         item = popupmenu.appendChild(document.createElement("menuitem"));
         item.setAttribute("label", this._strings.get("favoritesGoTo"));
