@@ -217,9 +217,9 @@ let PersonaService = {
                                86400 /* in seconds == one day */);
 
     // Refresh the current persona once per day.  We only do this for
-    // Thunderbird, since Firefox's built-in LightweightThemeManager does this
-    // for Firefox nowadays.
-    if (this.appInfo.ID == this.THUNDERBIRD_ID) {
+    // Thunderbird and Firefox < 3.6, since the LightweightThemeManager
+    // does this for Firefox 3.6.
+    if (!LightweightThemeManager) {
       let personaRefreshCallback = {
         _svc: this,
         notify: function(timer) { this._svc._refreshPersona() }
