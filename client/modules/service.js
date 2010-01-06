@@ -210,14 +210,18 @@ let PersonaService = {
                                dataRefreshCallback,
                                86400 /* in seconds == one day */);
 
-    // Refresh the current persona once per day.
-    let personaRefreshCallback = {
-      _svc: this,
-      notify: function(timer) { this._svc._refreshPersona() }
-    };
-    timerManager.registerTimer("personas-persona-refresh-timer",
-                               personaRefreshCallback,
-                               86400 /* in seconds == one day */);
+    // Refresh the current persona once per day.  We only do this for
+    // Thunderbird, since Firefox's built-in LightweightThemeManager does this
+    // for Firefox nowadays.
+    if (this.appInfo.ID == this.THUNDERBIRD_ID) {
+      let personaRefreshCallback = {
+        _svc: this,
+        notify: function(timer) { this._svc._refreshPersona() }
+      };
+      timerManager.registerTimer("personas-persona-refresh-timer",
+                                 personaRefreshCallback,
+                                 86400 /* in seconds == one day */);
+    }
 
     // Load cached favorite personas
     this.loadFavoritesFromCache();
@@ -481,22 +485,18 @@ let PersonaService = {
   },
 
   _refreshPersona: function() {
-    // Only refresh the persona if the user selected a specific persona
-    // from the gallery.  If the user selected a random persona, we'll change it
-    // the next time we refresh the directory; if the user selected
+    // Only refresh the persona if the user selected a specific persona with an
+    // ID and update URL.  If the user selected a random persona, we'll change
+    // it the next time we refresh the directory; if the user selected
     // the default persona, we don't need to refresh it, as it doesn't change;
-    // and if the user selected a custom persona (which doesn't have an ID),
-    // it's not clear what refreshing it would mean.
-    if (this.selected != "current" || !this.currentPersona || !this.currentPersona.id)
+    // if the user selected a custom persona (which doesn't have an ID), it's
+    // not clear what refreshing it would mean; and if the persona doesn't have
+    // an update URL, then we don't have a way to refresh it.
+    if (this.selected != "current" ||
+        !this.currentPersona ||
+        !this.currentPersona.id ||
+        !this.currentPersona.updateURL)
       return;
-
-    let lastTwoDigits = new String(this.currentPersona.id).substr(-2).split("");
-    if (lastTwoDigits.length == 1)
-      lastTwoDigits.unshift("0");
-
-    let url = this.dataURL + lastTwoDigits.join("/") + "/" +
-              this.currentPersona.id + "/" +
-              "index_" + this._prefs.get("data.version") + ".json";
 
     let headers = {};
 
@@ -506,7 +506,9 @@ let PersonaService = {
     }
 
     let t = this;
-    this._makeRequest(url, function(evt) { t.onPersonaLoadComplete(evt) }, headers);
+    this._makeRequest(this.currentPersona.updateURL,
+                      function(evt) { t.onPersonaLoadComplete(evt) },
+                      headers);
   },
 
   onPersonaLoadComplete: function(event) {
@@ -516,15 +518,6 @@ let PersonaService = {
     // If-Modified-Since date we specified, so there's nothing to do.
     if (request.status == 304) {
       //dump("304 - the persona has not been modified\n");
-      return;
-    }
-
-    // 404 means the persona wasn't found, which means we need to unselect it.
-    // FIXME: be kinder to the user and inform them about what we're doing
-    // and why.
-    if (request.status == 404) {
-      //dump("persona " + persona.id + "(" + persona.name + ") no longer exists; unselecting\n");
-      this.changeToDefaultPersona();
       return;
     }
 
@@ -541,6 +534,10 @@ let PersonaService = {
       //dump("persona " + persona.id + "(" + persona.name + ") no longer the current persona; ignoring refresh\n");
       return;
     }
+
+    // If the version strings are identical, the persona hasn't changed.
+    if ((persona.version || "") == (this.currentPersona.version || ""))
+      return;
 
     // Set the current persona to the updated version we got from the server,
     // and notify observers about the change.
