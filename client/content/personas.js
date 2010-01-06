@@ -264,6 +264,10 @@ let PersonaController = {
       case "RemoveFavoritePersona":
         this.onRemoveFavoritePersonaFromContent(aEvent);
         break;
+      case "pagehide":
+      case "TabSelect":
+        this.onResetPersona();
+        break;
     }
   },
 
@@ -287,6 +291,8 @@ let PersonaController = {
       document.addEventListener("SelectPersona", this, false, true);
       document.addEventListener("PreviewPersona", this, false, true);
       document.addEventListener("ResetPersona", this, false, true);
+      window.addEventListener("pagehide", this, false, true);
+      gBrowser.tabContainer.addEventListener("TabSelect", this, false);
     }
     // Listen for various persona-related events that can bubble up from content,
     // not handled by the LightweightThemeManager.
@@ -327,6 +333,8 @@ let PersonaController = {
       document.removeEventListener("SelectPersona", this, false);
       document.removeEventListener("PreviewPersona", this, false);
       document.removeEventListener("ResetPersona", this, false);
+      window.removeEventListener("pagehide", this, false);
+      gBrowser.tabContainer.removeEventListener("TabSelect", this, false);
     }
     document.removeEventListener("CheckPersonas", this, false);
     document.removeEventListener("AddFavoritePersona", this, false);
