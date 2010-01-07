@@ -165,20 +165,6 @@ let PersonaController = {
   },
 
   /**
-   * Format numbers for readability, e.g. 1000 = 1,000
-   */
-  _formatNumber: function(nStr) {
-    nStr += '';
-    x = nStr.split('.');
-    x1 = x[0];
-    x2 = x.length > 1 ? '.' + x[1] : '';
-    var rgx = /(\d+)(\d{3})/;
-    while (rgx.test(x1))
-        x1 = x1.replace(rgx, '$1' + ',' + '$2');
-    return x1 + x2;
-  },
-
-  /**
    * Escape CSS special characters in unquoted URLs,
    * per http://www.w3.org/TR/CSS21/syndata.html#uri.
    */
@@ -1124,7 +1110,7 @@ let PersonaController = {
       // Create the category-specific submenus.
       for each (let category in PersonaService.personas.categories) {
         let menu = document.createElement("menu");
-        menu.setAttribute("label", category.name + " (" + this._formatNumber(category.total) + ")");
+        menu.setAttribute("label", category.name + " (" + (+category.total).toLocaleString() + ")");
         let popupmenu = document.createElement("menupopup");
 
         for each (let persona in category.personas)
@@ -1146,7 +1132,7 @@ let PersonaController = {
         categoriesPopup.appendChild(menu);
       }
       categoriesMenu.setAttribute("label", this._strings.get("categories") +
-                                  " (" + this._formatNumber(PersonaService.personas.total) + ")");
+                                  " (" + (+PersonaService.personas.total).toLocaleString() + ")");
       categoriesMenu.appendChild(categoriesPopup);
     }
     else {
@@ -1201,7 +1187,7 @@ let PersonaController = {
     let item = document.createElement("menuitem");
 
     item.setAttribute("class", "menuitem-iconic");
-    item.setAttribute("label", this._strings.get("viewMore", [this._formatNumber(number), category]));
+    item.setAttribute("label", this._strings.get("viewMore", [(+number).toLocaleString(), category]));
 
     if (category == "popular" || category == "recent") {
       item.setAttribute("oncommand",
