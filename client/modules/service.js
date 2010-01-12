@@ -1055,14 +1055,15 @@ let PersonaService = {
     // Save header if specified.
     let header = aPersona.headerURL || aPersona.header;
     if (header) {
-      let headerURI = URI.get(header, null, URI.get(this.dataURL));
+      let headerURI = URI.get(header, null, URI.get(this.dataURL)).
+                      QueryInterface(Ci.nsIURL);
       let headerCallback = function(aEvent) {
         let request = aEvent.target;
         // Save only if the folder still exists (Could have been deleted already)
         if (request.status == 200 && personaDir.exists()) {
           FileUtils.writeBinaryFile(
             personaDir.clone(),
-            "header" + FileUtils.getFileExtension(header),
+            "header" + "." + headerURI.fileExtension,
             request.responseText);
         }
       };
@@ -1072,14 +1073,15 @@ let PersonaService = {
     // Save footer if specified.
     let footer = aPersona.footerURL || aPersona.footer;
     if (footer) {
-      let footerURI = URI.get(footer, null, URI.get(this.dataURL));
+      let footerURI = URI.get(footer, null, URI.get(this.dataURL)).
+                      QueryInterface(Ci.nsIURL);
       let footerCallback = function(aEvent) {
         let request = aEvent.target;
         // Save only if the folder still exists (Could have been deleted already)
         if (request.status == 200 && personaDir.exists()) {
           FileUtils.writeBinaryFile(
             personaDir.clone(),
-            "footer" + FileUtils.getFileExtension(footer),
+            "footer" + "." + footerURI.fileExtension,
             request.responseText);
         }
       };
@@ -1105,10 +1107,16 @@ let PersonaService = {
       let headerFile = personaDir.clone();
       let footerFile = personaDir.clone();
 
-      headerFile.append("header" +
-                        FileUtils.getFileExtension(aPersona.headerURL || aPersona.header));
-      footerFile.append("footer" +
-                        FileUtils.getFileExtension(aPersona.footerURL || aPersona.footer));
+      let headerFileExtension =
+        URI.get(aPersona.headerURL || aPersona.header, null, URI.get(this.dataURL)).
+        QueryInterface(Ci.nsIURL).fileExtension;
+
+      let footerFileExtension =
+        URI.get(aPersona.footerURL || aPersona.footer, null, URI.get(this.dataURL)).
+        QueryInterface(Ci.nsIURL).fileExtension;
+
+      headerFile.append("header" + "." + headerFileExtension);
+      footerFile.append("footer" + "." + footerFileExtension);
 
       if (headerFile.exists() && footerFile.exists()) {
         let ios =
@@ -1206,16 +1214,6 @@ let DateUtils = {
 };
 
 let FileUtils = {
-  /**
-   * Obtains the file extension of the given file name.
-   * @param aFileName The file extension, if any.
-   */
-  getFileExtension : function(aFileName) {
-    aFileName = String(aFileName);
-    let extension_regex = /\.[^\.]+$/;
-    return aFileName.match(extension_regex);
-  },
-
   /**
    * Gets the [profile]/personas directory.
    * @return The reference to the personas directory (nsIFile).
