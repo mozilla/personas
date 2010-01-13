@@ -61,6 +61,7 @@ locale   personas   el-GR       @chrome_path@locale/el-GR/
 locale   personas   en-US       @chrome_path@locale/en-US/
 locale   personas   es-AR       @chrome_path@locale/es-AR/
 locale   personas   es-CL       @chrome_path@locale/es-CL/
+locale   personas   es-ES       @chrome_path@locale/es-ES/
 locale   personas   eu-ES       @chrome_path@locale/eu-ES/
 locale   personas   fi-FI       @chrome_path@locale/fi-FI/
 locale   personas   fr-FR       @chrome_path@locale/fr-FR/
