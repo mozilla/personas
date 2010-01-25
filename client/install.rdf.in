@@ -48,6 +48,7 @@
     <em:translator>teo</em:translator>            <!-- pl-PL -->
     <em:translator>Wareczek</em:translator>       <!-- pl-PL -->
     <em:translator>wtspout</em:translator>        <!-- ko-KR -->
+    <em:translator>x10firefox</em:translator>     <!-- ro-RO -->
 
     <em:homepageURL>http://www.getpersonas.com/</em:homepageURL>
     <em:iconURL>chrome://personas/content/personas_32x32.png</em:iconURL>
