@@ -292,6 +292,11 @@ let PersonaController = {
     }
   },
 
+  // Tab Monitor methods (Thunderbird)
+  onTabTitleChanged : function(aTab) { /* ignored */ },
+  onTabSwitched : function(aTab, aOldTab) {
+    this.onResetPersona();
+  },
 
   //**************************************************************************//
   // Initialization & Destruction
@@ -314,7 +319,16 @@ let PersonaController = {
       document.addEventListener("PreviewPersona", this, false, true);
       document.addEventListener("ResetPersona", this, false, true);
       window.addEventListener("pagehide", this, false, true);
-      gBrowser.tabContainer.addEventListener("TabSelect", this, false);
+      // Detect when the selected tab is changed to remove the persona being
+      // previewed.
+      switch (PersonaService.appInfo.ID) {
+        case PersonaService.FIREFOX_ID:
+          gBrowser.tabContainer.addEventListener("TabSelect", this, false);
+          break;
+        case PersonaService.THUNDERBIRD_ID:
+          document.getElementById("tabmail").registerTabMonitor(this);
+          break;
+      }
     }
     // Listen for various persona-related events that can bubble up from content,
     // not handled by the LightweightThemeManager.
@@ -366,7 +380,14 @@ let PersonaController = {
       document.removeEventListener("PreviewPersona", this, false);
       document.removeEventListener("ResetPersona", this, false);
       window.removeEventListener("pagehide", this, false);
-      gBrowser.tabContainer.removeEventListener("TabSelect", this, false);
+      switch (PersonaService.appInfo.ID) {
+        case PersonaService.FIREFOX_ID:
+          gBrowser.tabContainer.removeEventListener("TabSelect", this, false);
+          break;
+        case PersonaService.THUNDERBIRD_ID:
+          document.getElementById("tabmail").unregisterTabMonitor(this);
+          break;
+      }
     }
     document.removeEventListener("CheckPersonas", this, false);
     document.removeEventListener("AddFavoritePersona", this, false);
