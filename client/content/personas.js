@@ -1079,7 +1079,10 @@ let PersonaController = {
         }
 
         // Create an item that links to the gallery for this category.
-        popupmenu.appendChild(this._createViewMoreItem(this._strings.get("new"), PersonaService.personas.total));
+        popupmenu.appendChild(
+          this._createViewMoreItem(this._strings.get("new"),
+                                   PersonaService.personas.total,
+                                   "new"));
 
         menu.appendChild(popupmenu);
       }
@@ -1111,7 +1114,8 @@ let PersonaController = {
 
         // Create an item that links to the gallery for this category.
         popupmenu.appendChild(this._createViewMoreItem(this._strings.get("popular"),
-                              42 - PersonaService.personas.popular.length));
+                              42 - PersonaService.personas.popular.length,
+                              "popular"));
 
         menu.appendChild(popupmenu);
       }
@@ -1204,16 +1208,21 @@ let PersonaController = {
     return item;
   },
 
-  _createViewMoreItem: function(category, number) {
+  _createViewMoreItem: function(category, number, categoryId) {
     let item = document.createElement("menuitem");
 
     item.setAttribute("class", "menuitem-iconic");
     item.setAttribute("label", this._strings.get("viewMore", [(+number).toLocaleString(), category]));
 
-    if (category == "popular" || category == "recent") {
+    if (categoryId == "popular") {
       item.setAttribute("oncommand",
-                          "PersonaController.openURLInTab(this._siteURL + 'gallery/All/All')");
-    } else {
+                        "PersonaController.openURLInTab('" + this._siteURL + "gallery/All/Popular')");
+    }
+    else if (categoryId == "new") {
+      item.setAttribute("oncommand",
+                        "PersonaController.openURLInTab('" + this._siteURL + "gallery/All/Recent')");
+    }
+    else {
       let viewMoreURI = "PersonaController.openURLInTab('" +
                            this._siteURL + "gallery/" + category + "/All')";
       item.setAttribute("oncommand", viewMoreURI);
