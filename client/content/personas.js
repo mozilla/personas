@@ -1188,7 +1188,7 @@ let PersonaController = {
     if (persona.custom) {
       headerURI = persona.headerURL || persona.header;
     } else {
-      headerURI = persona.dataurl;
+      headerURI = persona.dataurl || persona.iconURL;
     }
 
     item.setAttribute("class", "menuitem-iconic");
