@@ -155,6 +155,8 @@ let PersonaService = {
         this.changeToPersona(personaFromCookie);
       else if (this._prefs.has("initial"))
         this.changeToPersona(JSON.parse(this._prefs.get("initial")));
+      else if (LightweightThemeManager && LightweightThemeManager.currentTheme)
+        this.changeToPersona(LightweightThemeManager.currentTheme);
       else {
         this.changeToPersona({
           "id":"33",
