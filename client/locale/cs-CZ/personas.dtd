@@ -1,10 +1,10 @@
 <!ENTITY personas_app_title "Personas">
 <!ENTITY useDefaultPersona.label "Výchozí">
 <!ENTITY preferences.label "Nastavení...">
-<!ENTITY viewDirectory.label "Zobrazit adresář...">
+<!ENTITY viewDirectory.label "Zobrazit galerii...">
 <!ENTITY customPersona.label "Vlastní">
 <!ENTITY customName.label "Název:">
-<!ENTITY header.label "Hlavička:">
+<!ENTITY header.label "Záhlaví:">
 <!ENTITY selectBackground.label "Procházet...">
 <!ENTITY footer.label "Zápatí:">
 <!ENTITY textColorPicker.label "Barva textu:">
@@ -13,5 +13,5 @@
 <!ENTITY okButton.label "OK">
 <!ENTITY contextHomePage.label "Domovská stránka">
 <!ENTITY contextPreferences.label "Nastavení">
-<!ENTITY contextEdit.label "Úpravy">
+<!ENTITY contextEdit.label "Upravit">
 <!ENTITY contextApply.label "Použít">

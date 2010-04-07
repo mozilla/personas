@@ -1,8 +1,8 @@
-<!ENTITY personas_app_title "Personas">
+<!ENTITY personas_app_title "Персони">
 <!ENTITY useDefaultPersona.label "Типовий">
-<!ENTITY preferences.label "Вподобання">
+<!ENTITY preferences.label "Налаштування">
 <!ENTITY viewDirectory.label "Переглянути галерею">
-<!ENTITY customPersona.label "Моя Persona">
+<!ENTITY customPersona.label "Моя Персона">
 <!ENTITY customName.label "Ім`я:">
 <!ENTITY header.label "Верхній колонтитул:">
 <!ENTITY selectBackground.label "Вибрати…">
