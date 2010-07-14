@@ -760,7 +760,7 @@ let PersonaService = {
 
     let revertButton = {
       label     : this._strings.get("notification.revertButton.label"),
-      accesskey : this._strings.get("notification.revertButton.accesskey"),
+      accessKey : this._strings.get("notification.revertButton.accesskey"),
       popup     : null,
       callback  : function() { PersonaService.revertToPreviousPersona(); }
     };
