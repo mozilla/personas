@@ -646,8 +646,12 @@ let PersonaService = {
    */
   _notifyPersonaChanged : function(aPersona) {
     this._log.debug("_notifyPersonaChanged:\n" + Log4Moz.getStackTrace());
-    if (LightweightThemeManager)
-      LightweightThemeManager.currentTheme = aPersona;
+    if (LightweightThemeManager) {
+      if (aPersona.custom && LightweightThemeManager.setLocalTheme)
+        LightweightThemeManager.setLocalTheme(aPersona);
+      else
+        LightweightThemeManager.currentTheme = aPersona;
+    }
     else
       Observers.notify("personas:persona:changed");
   },
