@@ -20,6 +20,7 @@
  * Contributor(s):
  *   Chris Beard <cbeard@mozilla.org>
  *   Myk Melez <myk@mozilla.org>
+ *   Jose E. Bolanos <jose@appcoast.com>
  *
  * Alternatively, the contents of this file may be used under the terms of
  * either the GNU General Public License Version 2 or later (the "GPL"), or
@@ -719,7 +720,11 @@ let PersonaService = {
       if (LightweightThemeManager) {
         // forget the lightweight theme too
         LightweightThemeManager.forgetUsedTheme(undonePersonaId);
-        LightweightThemeManager.currentTheme = this.currentPersona;
+
+        if (this.currentPersona.custom && LightweightThemeManager.setLocalTheme)
+          LightweightThemeManager.setLocalTheme(this.currentPersona);
+        else
+          LightweightThemeManager.currentTheme = this.currentPersona;
       }
       else
         this.resetPersona();

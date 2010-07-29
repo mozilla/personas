@@ -95,12 +95,12 @@ ifeq ($(channel),dev)
 # Release Channel
 else ifeq ($(channel),rel)
   # Release build updates are managed by AMO, which provides its own update.
-  update_name     := 
-  update_url      := 
-  update_url_tag  := 
+  update_name     :=
+  update_url      :=
+  update_url_tag  :=
   package_version := $(version)
   package_name    := $(name)-$(version).xpi
-  package_url     := 
+  package_url     :=
   console_log_level := None
   dump_log_level  := None
   # Automatically archive chrome in JAR archive when building for this channel.
@@ -109,12 +109,12 @@ else ifeq ($(channel),rel)
 # No Channel
 else
   # Builds without a channel don't update.
-  update_name     := 
-  update_url      := 
-  update_url_tag  := 
+  update_name     :=
+  update_url      :=
+  update_url_tag  :=
   package_version := 0
   package_name    := $(name).xpi
-  package_url     := 
+  package_url     :=
   console_log_level := Debug
   dump_log_level  := Debug
 endif
@@ -125,7 +125,7 @@ dotin_files       := $(dotin_files:.in=)
 chrome_files      := content/* locale/* skin/*
 
 # FIXME: use a package manifest to determine which files to package.
-package_files     := defaults modules chrome.manifest install.rdf
+package_files     := defaults modules components chrome.manifest install.rdf
 
 ifdef jar
   chrome_path     := jar:chrome.jar!/
