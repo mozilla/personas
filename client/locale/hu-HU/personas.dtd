@@ -15,3 +15,6 @@
 <!ENTITY contextPreferences.label "Beállítások">
 <!ENTITY contextEdit.label "Szerkesztés">
 <!ENTITY contextApply.label "Alkalmaz">
+<!ENTITY usePersona.label "Use Persona">
+<!ENTITY usePersona.accesskey "P">
+<!ENTITY usePersona.tooltip "Use this Persona">

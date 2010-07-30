@@ -15,3 +15,6 @@
 <!ENTITY contextPreferences.label "הגדרות">
 <!ENTITY contextEdit.label "ערוך">
 <!ENTITY contextApply.label "החל">
+<!ENTITY usePersona.label "Use Persona">
+<!ENTITY usePersona.accesskey "P">
+<!ENTITY usePersona.tooltip "Use this Persona">

@@ -15,3 +15,6 @@
 <!ENTITY contextPreferences.label "Paramètres">
 <!ENTITY contextEdit.label "Éditer">
 <!ENTITY contextApply.label "Appliquer">
+<!ENTITY usePersona.label "Use Persona">
+<!ENTITY usePersona.accesskey "P">
+<!ENTITY usePersona.tooltip "Use this Persona">
