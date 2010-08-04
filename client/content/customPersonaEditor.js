@@ -153,7 +153,7 @@ let CustomPersonaEditor = {
     }
     catch(ex) {
       this.customPersona = {
-        id: 0,
+        id: "1",
         name: this._strings.get("customPersona"),
         headerURL: NULL_IMAGE,
         footerURL: NULL_IMAGE,
