@@ -1083,37 +1083,48 @@ let PersonaService = {
     // Save header if specified.
     let header = aPersona.headerURL || aPersona.header;
     if (header) {
-      let headerURI = URI.get(header, null, URI.get(this.dataURL)).
-                      QueryInterface(Ci.nsIURL);
-      let headerCallback = function(aEvent) {
-        let request = aEvent.target;
-        // Save only if the folder still exists (Could have been deleted already)
-        if (request.status == 200 && personaDir.exists()) {
-          FileUtils.writeBinaryFile(
-            personaDir.clone(),
-            "header" + "." + headerURI.fileExtension,
-            request.responseText);
-        }
-      };
-      this._makeRequest(headerURI.spec, headerCallback, null, true);
+      // The header can be a base64 string or a malformed URL, in which case
+      // the error can be safely ignored.
+      try {
+        let headerURI = URI.get(header, null, URI.get(this.dataURL)).
+                        QueryInterface(Ci.nsIURL);
+
+        let headerCallback = function(aEvent) {
+          let request = aEvent.target;
+          // Save only if the folder still exists (Could have been deleted already)
+          if (request.status == 200 && personaDir.exists()) {
+            FileUtils.writeBinaryFile(
+              personaDir.clone(),
+              "header" + "." + headerURI.fileExtension,
+              request.responseText);
+          }
+        };
+        this._makeRequest(headerURI.spec, headerCallback, null, true);
+      }
+      catch (e) {}
     }
 
     // Save footer if specified.
     let footer = aPersona.footerURL || aPersona.footer;
     if (footer) {
-      let footerURI = URI.get(footer, null, URI.get(this.dataURL)).
-                      QueryInterface(Ci.nsIURL);
-      let footerCallback = function(aEvent) {
-        let request = aEvent.target;
-        // Save only if the folder still exists (Could have been deleted already)
-        if (request.status == 200 && personaDir.exists()) {
-          FileUtils.writeBinaryFile(
-            personaDir.clone(),
-            "footer" + "." + footerURI.fileExtension,
-            request.responseText);
-        }
-      };
-      this._makeRequest(footerURI.spec, footerCallback, null, true);
+      // The footer can be a base64 string or a malformed URL, in which case
+      // the error can be safely ignored.
+      try {
+        let footerURI = URI.get(footer, null, URI.get(this.dataURL)).
+                        QueryInterface(Ci.nsIURL);
+        let footerCallback = function(aEvent) {
+          let request = aEvent.target;
+          // Save only if the folder still exists (Could have been deleted already)
+          if (request.status == 200 && personaDir.exists()) {
+            FileUtils.writeBinaryFile(
+              personaDir.clone(),
+              "footer" + "." + footerURI.fileExtension,
+              request.responseText);
+          }
+        };
+        this._makeRequest(footerURI.spec, footerCallback, null, true);
+      }
+      catch (e) {}
     }
   },
 
