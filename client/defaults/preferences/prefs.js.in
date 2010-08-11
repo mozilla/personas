@@ -43,7 +43,7 @@ pref("extensions.personas.category", "");
 
 pref("extensions.personas.lastversion", "firstrun");
 
-// The host where the gallery and data files are located.
+// The host where the gallery files are located.
 // Note: this should be the canonical hostname, not one that redirects us
 // to another, since we set the If-Modified-Since header so we can find out
 // when a persona record has changed, and that header doesn't get preserved
