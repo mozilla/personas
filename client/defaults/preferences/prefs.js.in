@@ -48,7 +48,10 @@ pref("extensions.personas.lastversion", "firstrun");
 // to another, since we set the If-Modified-Since header so we can find out
 // when a persona record has changed, and that header doesn't get preserved
 // across redirects because of bug 401564.
-pref("extensions.personas.host", "getpersonas-cdn.mozilla.net");
+pref("extensions.personas.host", "www.getpersonas.com");
+
+// The host where the data files are located.
+pref("extensions.personas.datahost", "getpersonas-cdn.mozilla.net");
 
 // The authorizedHosts preference is a comma and/or space-separated list
 // of domains allowed to set and preview personas.
