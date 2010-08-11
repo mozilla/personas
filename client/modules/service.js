@@ -620,7 +620,7 @@ let PersonaService = {
    * The URL at which the static data is located.
    */
   get dataURL() {
-    return "http://" + this._prefs.get("host") + "/static/";
+    return "http://" + this._prefs.get("datahost") + "/static/";
   },
 
   /**
