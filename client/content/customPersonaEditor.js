@@ -47,14 +47,6 @@ Cu.import("resource://personas/modules/StringBundle.js");
 // modules that are Personas-specific
 Cu.import("resource://personas/modules/service.js");
 
-// FIXME: This is a workaround for bug 532741
-// Transparent 1x1px image, used for the header and footer when not specified.
-const NULL_IMAGE =
-  "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAQMAAAAl21bKAAAAA3NC" +
-  "SVQICAjb4U/gAAAABlBMVEX///////9VfPVsAAAAAnRSTlMA/1uRIrUAAAAJcEhZcwAACxIAAA" +
-  "sSAdLdfvwAAAAWdEVYdENyZWF0aW9uIFRpbWUAMTIvMDQvMDmzVtkkAAAAIHRFWHRTb2Z0d2Fy" +
-  "ZQBNYWNyb21lZGlhIEZpcmV3b3JrcyBNWLuRKiQAAAAKSURBVHicY2AAAAACAAFIr6RxAAAAAE" +
-  "lFTkSuQmCC";
 
 let CustomPersonaEditor = {
   //**************************************************************************//
@@ -103,6 +95,10 @@ let CustomPersonaEditor = {
     delete this._accentColorPicker;
     this._accentColorPicker = accentColorPicker;
     return this._accentColorPicker;
+  },
+
+  get _blankImage() {
+    return "http://" + this._prefs.get("host") + "/static/img/blank.gif";
   },
 
   customPersona: null,
@@ -155,8 +151,8 @@ let CustomPersonaEditor = {
       this.customPersona = {
         id: "1",
         name: this._strings.get("customPersona"),
-        headerURL: NULL_IMAGE,
-        footerURL: NULL_IMAGE,
+        headerURL: this._blankImage,
+        footerURL: this._blankImage,
         custom: true };
     }
 
@@ -168,10 +164,10 @@ let CustomPersonaEditor = {
 
     // FIXME: This is a workaround for bug 532741, where the LightweightThemeManager
     // needs a header and footer to be specified in order to preview the persona.
-    // Remove the null image info from the textboxes
-    if (this._header.value == NULL_IMAGE)
+    // Remove the blank image info from the textboxes
+    if (this._header.value == this._blankImage)
       this._header.value = "";
-    if (this._footer.value == NULL_IMAGE)
+    if (this._footer.value == this._blankImage)
       this._footer.value = "";
 
     PersonaService.previewPersona(this.customPersona);
@@ -194,7 +190,7 @@ let CustomPersonaEditor = {
     let value = control.value.replace(/^\s*|\s*$/g, "");
 
     if (value == "")
-      this.customPersona[property] = NULL_IMAGE;
+      this.customPersona[property] = this._blankImage;
     else
       this.customPersona[property] = value;
 
