@@ -681,6 +681,13 @@ let PersonaService = {
   },
 
   changeToPersona: function(persona) {
+    // The id must be a string and not an integer in order for the
+    // LightweightThemeManager to accept the persona. Older versions used to
+    // set a zero to the id of custom personas; if so, it needs to be changed
+    // to a "1". See: https://bugzilla.mozilla.org/show_bug.cgi?id=554220
+    if (persona.custom && persona.id === 0)
+      persona.id = "1";
+
     // Check whether the persona is in the favorites or the recent lists,
     // in which case the change-notification should not be shown.
     let recent = this.getRecentPersonas();
