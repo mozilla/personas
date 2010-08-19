@@ -648,7 +648,7 @@ let PersonaService = {
   _notifyPersonaChanged : function(aPersona) {
     this._log.debug("_notifyPersonaChanged:\n" + Log4Moz.getStackTrace());
     if (LightweightThemeManager) {
-      if (aPersona.custom && LightweightThemeManager.setLocalTheme)
+      if (aPersona && aPersona.custom && LightweightThemeManager.setLocalTheme)
         LightweightThemeManager.setLocalTheme(aPersona);
       else
         LightweightThemeManager.currentTheme = aPersona;
@@ -728,7 +728,8 @@ let PersonaService = {
         // forget the lightweight theme too
         LightweightThemeManager.forgetUsedTheme(undonePersonaId);
 
-        if (this.currentPersona.custom && LightweightThemeManager.setLocalTheme)
+        if (this.currentPersona && this.currentPersona.custom &&
+            LightweightThemeManager.setLocalTheme)
           LightweightThemeManager.setLocalTheme(this.currentPersona);
         else
           LightweightThemeManager.currentTheme = this.currentPersona;
