@@ -62,6 +62,7 @@ const PREFIX_ITEM_URI                 = "urn:mozilla:item:";
 var EXTENSIONS_MANAGER_ID = "{8A115FAA-7DCB-4e8f-979B-5F53472F51CF}";
 var gOldHandler = null;
 var gRDF = Cc["@mozilla.org/rdf/rdf-service;1"].getService(Ci.nsIRDFService);
+var gOS = Cc["@mozilla.org/observer-service;1"].getService(Ci.nsIObserverService);
 
 const DEFAULT_THEME = "classic/1.0";
 
@@ -157,9 +158,13 @@ PersonasExtensionManager.prototype = {
     gOldHandler.QueryInterface(aIID);
 
     // Remove the original nsExtensionManager listeners for the
-    // lightweight theme topics.
-    Observers.remove("lightweight-theme-preview-requested", gOldHandler);
-    Observers.remove("lightweight-theme-change-requested", gOldHandler);
+    // lightweight theme topics. This might fail when the given aIID has not
+    // these topics registered, but can be safely ignored.
+    try {
+      gOS.removeObserver(gOldHandler, "lightweight-theme-preview-requested");
+      gOS.removeObserver(gOldHandler, "lightweight-theme-change-requested");
+    }
+    catch (e) {}
 
     inheritCurrentInterface(this, gOldHandler);
     return this;
