@@ -15,6 +15,6 @@
 <!ENTITY contextPreferences.label "Indstillinger">
 <!ENTITY contextEdit.label "Rediger">
 <!ENTITY contextApply.label "Anvend">
-<!ENTITY usePersona.label "Use Persona">
-<!ENTITY usePersona.accesskey "P">
-<!ENTITY usePersona.tooltip "Use this Persona">
+<!ENTITY usePersona.label "Brug Persona">
+<!ENTITY usePersona.accesskey "u">
+<!ENTITY usePersona.tooltip "Brug denne Persona">

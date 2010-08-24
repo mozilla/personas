@@ -15,6 +15,6 @@
 <!ENTITY contextPreferences.label "Asetukset">
 <!ENTITY contextEdit.label "Muokkaa">
 <!ENTITY contextApply.label "Käytä">
-<!ENTITY usePersona.label "Use Persona">
+<!ENTITY usePersona.label "Käytä Personaa">
 <!ENTITY usePersona.accesskey "P">
-<!ENTITY usePersona.tooltip "Use this Persona">
+<!ENTITY usePersona.tooltip "Käytä tätä Personaa">

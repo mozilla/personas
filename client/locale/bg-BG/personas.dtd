@@ -1,4 +1,4 @@
-<!ENTITY personas_app_title "Personas">
+<!ENTITY personas_app_title "Персони">
 <!ENTITY useDefaultPersona.label "Стандартна">
 <!ENTITY preferences.label "Настройки">
 <!ENTITY viewDirectory.label "Преглед на списъка">
@@ -15,6 +15,6 @@
 <!ENTITY contextPreferences.label "Настройки">
 <!ENTITY contextEdit.label "Редакция">
 <!ENTITY contextApply.label "Прилагане">
-<!ENTITY usePersona.label "Use Persona">
-<!ENTITY usePersona.accesskey "P">
-<!ENTITY usePersona.tooltip "Use this Persona">
+<!ENTITY usePersona.label "Използване на Персона">
+<!ENTITY usePersona.accesskey "П">
+<!ENTITY usePersona.tooltip "Използване на тази Персона">
