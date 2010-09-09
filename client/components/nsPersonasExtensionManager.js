@@ -20,6 +20,7 @@
  * Contributor(s):
  *   Jose E. Bolanos <jose@appcoast.com>
  *   Myk Melez <myk@mozilla.org>
+ *   Nils Maier <maierman@web.de>
  *
  * Alternatively, the contents of this file may be used under the terms of
  * either the GNU General Public License Version 2 or later (the "GPL"), or
@@ -58,13 +59,28 @@ const FEATURES_EXTENSION_MANAGER      = "chrome,menubar,extra-chrome,toolbar,dia
 const PREFIX_NS_EM                    = "http://www.mozilla.org/2004/em-rdf#";
 const PREFIX_ITEM_URI                 = "urn:mozilla:item:";
 
-// ID of the original Extension Manager, "@mozilla.org/extensions/manager;1"
-var EXTENSIONS_MANAGER_ID = "{8A115FAA-7DCB-4e8f-979B-5F53472F51CF}";
-var gOldHandler = null;
-var gRDF = Cc["@mozilla.org/rdf/rdf-service;1"].getService(Ci.nsIRDFService);
-var gOS = Cc["@mozilla.org/observer-service;1"].getService(Ci.nsIObserverService);
-
 const DEFAULT_THEME = "classic/1.0";
+
+// If defineLazyServiceGetter is not present we won't load anyway, as this is
+// 3.6+ only
+if ('defineLazyServiceGetter' in XPCOMUtils) {
+  XPCOMUtils.defineLazyServiceGetter(
+    this, "gRDF",
+    "@mozilla.org/rdf/rdf-service;1", "nsIRDFService"
+    );
+  XPCOMUtils.defineLazyServiceGetter(
+    this, "gExtMan",
+    "@mozilla.org/extensions/manager;1", "nsIExtensionManager"
+    );
+  XPCOMUtils.defineLazyServiceGetter(
+    this, "gIoServ",
+    "@mozilla.org/network/io-service;1", "nsIIOService"
+    );
+  XPCOMUtils.defineLazyServiceGetter(
+    this, "gAppStartup",
+    "@mozilla.org/toolkit/app-startup;1", "nsIAppStartup"
+    );
+}
 
 //
 // Utility Functions
@@ -85,33 +101,7 @@ function intData(literal) {
 }
 
 function getURLSpecFromFile(file) {
-  var ioServ = Cc["@mozilla.org/network/io-service;1"].
-               getService(Ci.nsIIOService);
-  var fph = ioServ.getProtocolHandler("file")
-                  .QueryInterface(Ci.nsIFileProtocolHandler);
-  return fph.getURLSpecFromFile(file);
-}
-
-// Given two instances, copy in all properties from "base"
-// and create forwarding methods for all functions and getters.
-// NOTE: Settable properties are not copied.
-function inheritCurrentInterface(self, base) {
-  function defineGetter(prop) {
-    self.__defineGetter__(prop, function() base[prop]);
-  }
-
-  for(let prop in base) {
-    if(typeof self[prop] === 'undefined')
-      if(typeof base[prop] === 'function') {
-        (function(prop) {
-          self[prop] = function() {
-            return base[prop].apply(base,arguments);
-          };
-        })(prop);
-      }
-      else
-        defineGetter(prop);
-  }
+  return gIoServ.newFileURI(file).spec;
 }
 
 function restartApp() {
@@ -124,8 +114,7 @@ function restartApp() {
   if (cancelQuit.data)
     return;
 
-  Cc["@mozilla.org/toolkit/app-startup;1"].getService(Ci.nsIAppStartup).
-    quit(Ci.nsIAppStartup.eRestart | Ci.nsIAppStartup.eAttemptQuit);
+  gAppStartup.quit(Ci.nsIAppStartup.eRestart | Ci.nsIAppStartup.eAttemptQuit);
 }
 
 /**
@@ -144,31 +133,15 @@ function PersonasExtensionManager() {
 }
 
 PersonasExtensionManager.prototype = {
-  classDescription: "Personas Plus Extension Manager",
-  contractID: "@mozilla.org/extensions/manager;1",
-  classID: Components.ID("{DF74077B-EB16-47B0-8C37-12D577A7F1AE}"),
+  classDescription: "Personas Plus Extension Manager Integrator",
+  contractID: "@mozilla.org/extensions/personas-manager;1",
+  classID: Components.ID("{21372722-3631-41c3-8946-950382a3c523}"),
 
-  QueryInterface: function(aIID) {
-    // Retrieve the old nsExtensionsManager anew and then QI to copy the
-    // properties of the requested interface only.
-    delete gOldHandler;
-    gOldHandler =
-      Components.classesByID[EXTENSIONS_MANAGER_ID].
-        getService(Ci.nsIExtensionManager);
-    gOldHandler.QueryInterface(aIID);
-
-    // Remove the original nsExtensionManager listeners for the
-    // lightweight theme topics. This might fail when the given aIID has not
-    // these topics registered, but can be safely ignored.
-    try {
-      gOS.removeObserver(gOldHandler, "lightweight-theme-preview-requested");
-      gOS.removeObserver(gOldHandler, "lightweight-theme-change-requested");
-    }
-    catch (e) {}
-
-    inheritCurrentInterface(this, gOldHandler);
-    return this;
-  },
+  QueryInterface: XPCOMUtils.generateQI([Ci.nsIObserver]),
+  _xpcom_categories: [
+    {category: "profile-after-change"},
+    {category: "app-startup", service: true}
+  ],
 
   /* Whether the current theme is compatible with Personas */
   _currentThemeSkinnable : true,
@@ -192,6 +165,22 @@ PersonasExtensionManager.prototype = {
     let forceSkinning;
 
     switch (topic) {
+      case "app-startup":
+        // Unregister the nsExtensionManager profile-after-change.
+        // PersonasExtensionManager will register it's own and call
+        // nsExtensionManager from there after running some own code.
+        // We need to use app-startup here to be called before the
+        // profile-after-change notification.
+        try {
+          let catMan = Cc["@mozilla.org/categorymanager;1"].
+                       getService(Ci.nsICategoryManager);
+          catMan.deleteCategoryEntry("profile-after-change", "Extension Manager", false);
+        }
+        catch (ex) {
+          // Do nothing here.
+        }
+      break;
+
       case "lightweight-theme-preview-requested":
         forceSkinning = Preferences.get(PREF_FORCE_SKINNING, false);
 
@@ -246,6 +235,20 @@ PersonasExtensionManager.prototype = {
         break;
 
       case "profile-after-change":
+        // Remove the original nsExtensionManager listeners for the
+        // lightweight theme topics. This might fail when the given aIID has not
+        // these topics registered, but can be safely ignored.
+        try {
+          // Cannot use Observers here
+          let os = Cc["@mozilla.org/observer-service;1"].
+                   getService(Ci.nsIObserverService);
+          os.removeObserver(gExtMan, "lightweight-theme-preview-requested");
+          os.removeObserver(gExtMan, "lightweight-theme-change-requested");
+        }
+        catch (ex) {
+          // Do nothing here.
+        }
+
         try {
           if (Preferences.get(PREF_DSS_SWITCHPENDING)) {
             var toSelect = Preferences.get(PREF_DSS_SKIN_TO_SELECT);
@@ -270,18 +273,15 @@ PersonasExtensionManager.prototype = {
             Preferences.reset(PREF_LWTHEME_TO_SELECT);
           }
         }
-        catch (e) {}
+        catch (e) {
+          // Do nothing here.
+        }
 
         // Let the original nsExtensionManager perform actions
         // during "profile-after-change".
-        gOldHandler.observe(subject, topic, data);
+        gExtMan.observe(subject, topic, data);
         // Load current theme properties, e.g. "skinnable" property.
         this._loadThemeProperties();
-        break;
-
-      default:
-        // Let the original nsExtensionManager handle the event.
-        gOldHandler.observe(subject, topic, data);
         break;
     }
   },
@@ -335,7 +335,7 @@ PersonasExtensionManager.prototype = {
     else {
       // Find the current theme and load its install.rdf to read its
       // "skinnable" property.
-      let themes = this.getItemList(Ci.nsIUpdateItem.TYPE_THEME, { });
+      let themes = gExtMan.getItemList(Ci.nsIUpdateItem.TYPE_THEME, { });
       for (let i = 0; i < themes.length; i++) {
         let theme = themes[i];
 
@@ -371,7 +371,7 @@ PersonasExtensionManager.prototype = {
       }
     };
 
-    let location = this.getInstallLocation(aThemeId);
+    let location = gExtMan.getInstallLocation(aThemeId);
     let file = location.getItemFile(aThemeId, "install.rdf");
     this._loadDatasource(file, onInstallRDFLoaded);
   },
@@ -413,7 +413,7 @@ PersonasExtensionManager.prototype = {
    */
   _getItemProperty : function(aItemId, aPropertyName) {
     return this._getDatasourceProperty(
-      this.datasource,
+      gExtMan.datasource,
       PREFIX_ITEM_URI + aItemId,
       PREFIX_NS_EM + aPropertyName);
   },
