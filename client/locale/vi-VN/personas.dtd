@@ -15,3 +15,6 @@
 <!ENTITY contextPreferences.label "Thiết lập">
 <!ENTITY contextEdit.label "Chỉnh sửa">
 <!ENTITY contextApply.label "Áp dụng">
+<!ENTITY usePersona.label "Use Persona">
+<!ENTITY usePersona.accesskey "P">
+<!ENTITY usePersona.tooltip "Use this Persona">

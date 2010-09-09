@@ -15,3 +15,6 @@
 <!ENTITY contextPreferences.label "Сетинзи">
 <!ENTITY contextEdit.label "Измени">
 <!ENTITY contextApply.label "Користи">
+<!ENTITY usePersona.label "Use Persona">
+<!ENTITY usePersona.accesskey "P">
+<!ENTITY usePersona.tooltip "Use this Persona">

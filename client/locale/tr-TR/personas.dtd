@@ -15,3 +15,6 @@
 <!ENTITY contextPreferences.label "Ayarlar">
 <!ENTITY contextEdit.label "Düzenle">
 <!ENTITY contextApply.label "Uygula">
+<!ENTITY usePersona.label "Use Persona">
+<!ENTITY usePersona.accesskey "P">
+<!ENTITY usePersona.tooltip "Use this Persona">

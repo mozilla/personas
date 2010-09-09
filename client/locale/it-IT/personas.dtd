@@ -15,3 +15,6 @@
 <!ENTITY contextPreferences.label "Impostazioni">
 <!ENTITY contextEdit.label "Modifica">
 <!ENTITY contextApply.label "Applica">
+<!ENTITY usePersona.label "Utilizza tema">
+<!ENTITY usePersona.accesskey "z">
+<!ENTITY usePersona.tooltip "Utilizza questo tema">
