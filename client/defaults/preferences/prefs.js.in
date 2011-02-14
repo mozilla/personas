@@ -114,3 +114,6 @@ pref("extensions.personas.perwindow", false);
 
 pref("PersonaService.logging.console", "@console_log_level@");
 pref("PersonaService.logging.dump", "@dump_log_level@");
+
+// Whether or not the toolbar button has been installed once (Firefox 4 support)
+pref("extensions.personas.toolbarButtonInstalled", false);

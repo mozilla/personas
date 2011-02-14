@@ -23,6 +23,7 @@
  *   Chris <kidkog@gmail.com>
  *   Byron Jones (glob) <bugzilla@glob.com.au>
  *   Anant Narayanan <anant@kix.in>
+ *   Jose E. Bolanos <jose@appcoast.com>
  *
  * Alternatively, the contents of this file may be used under the terms of
  * either the GNU General Public License Version 2 or later (the "GPL"), or
@@ -104,6 +105,11 @@ let PersonaController = {
   get _menuPopup() {
     delete this._menuPopup;
     return this._menuPopup = document.getElementById("personas-selector-menu");
+  },
+
+  get _toolbarButton() {
+    delete this._toolbarButton;
+    return this._toolbarButton = document.getElementById("personas-toolbar-button");
   },
 
   get _sessionStore() {
@@ -336,24 +342,45 @@ let PersonaController = {
     document.addEventListener("AddFavoritePersona", this, false, true);
     document.addEventListener("RemoveFavoritePersona", this, false, true);
 
-    // Check for a first-run or updated extension and display some additional
+
+    // Check for a first-run or updated version and display some additional
     // information to users.
     let lastVersion = this._prefs.get("lastversion");
-    let thisVersion = Cc["@mozilla.org/extensions/manager;1"].
-                      getService(Ci.nsIExtensionManager).
-                      getItemForID(PERSONAS_EXTENSION_ID).version;
-    if (lastVersion == "firstrun") {
-      // Show the first run page.
-      let firstRunURL = this._siteURL + "firstrun?version=" + thisVersion;
-      let t = this;
-      setTimeout(function() t.openURLInTab(firstRunURL), 500);
-      this._prefs.set("lastversion", thisVersion);
+    let thisVersion = null;
+    let t = this;
+
+    let displayVersionInfo = function() {
+      if (lastVersion == "firstrun") {
+        // Show the first run page.
+        let firstRunURL = t._siteURL + "firstrun?version=" + thisVersion;
+        setTimeout(function() t.openURLInTab(firstRunURL), 500);
+        t._prefs.set("lastversion", thisVersion);
+      }
+      else if (lastVersion != thisVersion) {
+        let updatedURL = t._siteURL + "updated?version=" + thisVersion;
+        setTimeout(function() t.openURLInTab(updatedURL), 500);
+        t._prefs.set("lastversion", thisVersion);
+      }
+    };
+
+    if ("@mozilla.org/extensions/manager;1" in Cc) {  // removed in FF 4.*
+      thisVersion = Cc["@mozilla.org/extensions/manager;1"].
+                        getService(Ci.nsIExtensionManager).
+                        getItemForID(PERSONAS_EXTENSION_ID).version
+      displayVersionInfo();
     }
-    else if (lastVersion != thisVersion) {
-      let updatedURL = this._siteURL + "updated?version=" + thisVersion;
-      let t = this;
-      setTimeout(function() t.openURLInTab(updatedURL), 500);
-      this._prefs.set("lastversion", thisVersion);
+    else {
+      try {
+        Cu.import("resource://gre/modules/AddonManager.jsm", this);
+        this.AddonManager.getAddonByID(PERSONAS_EXTENSION_ID,
+          function(aAddon) {
+            thisVersion = aAddon.version;
+            displayVersionInfo();
+          });
+      }
+      catch (e) {
+        // AddonManager module not available.
+      }
     }
 
     // Apply the current persona to the window if the LightweightThemeManager
@@ -368,6 +395,21 @@ let PersonaController = {
         ));
       } else if (PersonaService.selected != "default") {
         this._applyPersona(PersonaService.currentPersona);
+      }
+    }
+
+    // Perform special operations for Firefox 4 compatibility:
+    // * Hide the status bar button
+    // * Install the toolbar button in the Add-on bar (first time only).
+    if (PersonaService.appInfo.ID == PersonaService.FIREFOX_ID) {
+      let addonBar = window.document.getElementById("addon-bar");
+      if (addonBar) {
+        this._menuButton.setAttribute("hidden", true);
+
+        if (!this._prefs.get("toolbarButtonInstalled")) {
+          this._installToolbarButton(addonBar);
+          this._prefs.set("toolbarButtonInstalled", true);
+        }
       }
     }
   },
@@ -394,6 +436,32 @@ let PersonaController = {
     document.removeEventListener("RemoveFavoritePersona", this, false);
   },
 
+  _installToolbarButton : function(aToolbar) {
+    const PERSONAS_BUTTON_ID = "personas-toolbar-button";
+
+    let curSet = aToolbar.currentSet;
+
+    // Add the button if it's not in the toolbar's current set
+    if (-1 == curSet.indexOf(PERSONAS_BUTTON_ID)) {
+
+      // Insert the button at the end.
+      let newSet = curSet + "," + PERSONAS_BUTTON_ID;
+
+      aToolbar.currentSet = newSet;
+      aToolbar.setAttribute("currentset", newSet);
+      document.persist(aToolbar.id, "currentset");
+
+      try {
+        BrowserToolboxCustomizeDone(true);
+      }
+      catch(e){}
+
+      // Make sure the toolbar is visible
+      if (aToolbar.getAttribute("collapsed") == "true")
+        aToolbar.setAttribute("collapsed", "false");
+      document.persist(aToolbar.id, "collapsed");
+    }
+  },
 
   //**************************************************************************//
   // Appearance Updates
@@ -914,6 +982,16 @@ let PersonaController = {
       this._menuButton.appendChild(this._menuPopup);
   },
 
+  onToolbarButtonMouseDown: function(event) {
+    // If the menu popup isn't on the toolbar button, then move the popup
+    // onto the button so the popup appears when the user clicks it.
+    // We'll move the popup back onto the Personas menu in the Tools menu
+    // when the popup hides.
+    // FIXME: remove this workaround once bug 461899 is fixed.
+    if (this._menuPopup.parentNode != this._toolbarButton)
+      this._toolbarButton.appendChild(this._menuPopup);
+  },
+
   onPopupShowing: function(event) {
     if (event.target == this._menuPopup)
       this._rebuildMenu();
@@ -927,8 +1005,10 @@ let PersonaController = {
       // then move the popup back onto that menu so the popup appears when
       // the user selects it.  We'll move the popup back onto the menu button
       // in onMenuButtonMouseDown when the user clicks on the menu button.
-      if (this._menuPopup.parentNode != this._menu)
+      if (this._menuPopup.parentNode != this._menu) {
+        this._menuPopup.parentNode.removeAttribute("open");
         this._menu.appendChild(this._menuPopup);
+      }
     }
   },
 

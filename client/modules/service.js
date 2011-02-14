@@ -92,9 +92,15 @@ let PersonaService = {
     delete this.extension;
 
     if (this.appInfo.ID == this.FIREFOX_ID) {
-      return this.extension = Cc["@mozilla.org/fuel/application;1"].
-                              getService(Ci.fuelIApplication).
-                              extensions.get(PERSONAS_EXTENSION_ID);
+      let fuelApplication =
+        Cc["@mozilla.org/fuel/application;1"].getService(Ci.fuelIApplication);
+      // Fuel Application extensions is no longer available (synchronously) in
+      // Firefox 4. However, it is only used to detect the extension's first run
+      // and load the initial_persona cookie in old versions of Firefox which have no
+      // integrated support for Personas; it does not need to be adjusted since there
+      // will never exist a initial_persona cookie for Firefox 4.
+      if (fuelApplication.extensions)
+        return this.extension = fuelApplication.extensions.get(PERSONAS_EXTENSION_ID);
     }
 
     // If STEEL provides a FUEL-compatible extIExtension interface
@@ -588,7 +594,7 @@ let PersonaService = {
    * randomFavorite (a random persona from the favorite list).
    */
   get selected()        { return this._prefs.get("selected") },
-  set selected(newVal)  {        this._prefs.set("selected", newVal) },
+  set selected(newVal)  {        this._prefs.set("selected", newVal); },
 
   /**
    * extensions.personas.current: the current persona
@@ -1015,7 +1021,9 @@ let PersonaService = {
    */
   onLightweightThemeChanged: function() {
     let currentTheme = LightweightThemeManager.currentTheme;
-    if (currentTheme && currentTheme.id != this.currentPersona.id)
+
+    if (currentTheme &&
+        (currentTheme.id != this.currentPersona.id || this.selected == "default"))
       this.changeToPersona(currentTheme);
     else if (!currentTheme && this.selected != "default")
       this.changeToDefaultPersona();

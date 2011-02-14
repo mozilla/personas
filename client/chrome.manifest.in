@@ -32,6 +32,8 @@ skin  personas  classic/1.0  @chrome_path@skin/mac/thunderbird/   application={3
 style chrome://personas/content/customPersonaEditor.xul chrome://browser/skin/    application={ec8030f7-c20a-464f-9b0e-13a3a9e97384}
 style chrome://personas/content/customPersonaEditor.xul chrome://messenger/skin/  application={3550f703-e582-4d05-9a08-453d09bdfdc6}
 
+style chrome://global/content/customizeToolbar.xul  chrome://personas/content/personas.css  application={ec8030f7-c20a-464f-9b0e-13a3a9e97384}
+
 # localizations in alphabetical order
 #
 # Note: localizations sometimes become out of date, and we haven't quite

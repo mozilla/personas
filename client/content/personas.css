@@ -20,6 +20,7 @@
  * Contributor(s):
  *   Chris Beard <cbeard@mozilla.org>
  *   Myk Melez <myk@mozilla.org>
+ *   Jose E. Bolanos <jose@appcoast.com>
  *
  * Alternatively, the contents of this file may be used under the terms of
  * either the GNU General Public License Version 2 or later (the "GPL"), or
@@ -42,28 +43,46 @@
 /******************************************************************************/
 /* Personas Menu/Toolbarbutton */
 
-#personas-selector-button {
+#personas-selector-button,
+#personas-toolbar-button {
   list-style-image: url("chrome://personas/content/personas_16x16.png");
   -moz-image-region: rect(0, 16px, 16px, 0px);
 }
 
+#personas-toolbar-button {
+  -moz-box-orient: horizontal;
+}
+
+#personas-toolbar-button > .toolbarbutton-icon {
+  margin: 0px !important;
+  width: auto !important;
+  height: auto !important;
+}
+
 #personas-selector-button[buttonover="true"],
-#personas-selector-button:hover {
+#personas-selector-button:hover,
+#personas-toolbar-button[buttonover="true"],
+#personas-toolbar-button:hover {
   -moz-image-region: rect(16px, 16px, 32px, 0px);
 }
 
 #personas-selector-button[buttondown="true"],
 #personas-selector-button[open="true"],
-#personas-selector-button:hover:active  {
+#personas-selector-button:hover:active,
+#personas-toolbar-button[buttondown="true"],
+#personas-toolbar-button[open="true"],
+#personas-toolbar-button:hover:active {
   -moz-image-region: rect(48px, 16px, 64px, 0px);
 }
 
-#personas-selector-menu menuitem[header] {
+#personas-selector-menu menuitem[header],
+#personas-toolbar-menu menuitem[header] {
   font-weight: bold;
   color: black;
 }
 
-#personas-selector-menu menuitem[recent="true"] {
+#personas-selector-menu menuitem[recent="true"],
+#personas-toolbar-menu menuitem[recent="true"] {
   list-style-image: url("chrome://personas/content/new.png");
 }
 
