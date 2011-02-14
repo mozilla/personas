@@ -15,3 +15,6 @@
 <!ENTITY contextPreferences.label "Nastavení">
 <!ENTITY contextEdit.label "Upravit">
 <!ENTITY contextApply.label "Použít">
+<!ENTITY usePersona.label "Use Persona">
+<!ENTITY usePersona.accesskey "P">
+<!ENTITY usePersona.tooltip "Use this Persona">

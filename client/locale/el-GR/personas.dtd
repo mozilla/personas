@@ -15,3 +15,6 @@
 <!ENTITY contextPreferences.label "Ρυθμίσεις">
 <!ENTITY contextEdit.label "Επεξεργασία">
 <!ENTITY contextApply.label "Εφαρμογή">
+<!ENTITY usePersona.label "Χρήση Persona">
+<!ENTITY usePersona.accesskey "χ">
+<!ENTITY usePersona.tooltip "Χρήση αυτού του Persona">

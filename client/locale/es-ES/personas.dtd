@@ -15,3 +15,6 @@
 <!ENTITY contextPreferences.label "Conguraciones">
 <!ENTITY contextEdit.label "Editar">
 <!ENTITY contextApply.label "Aplicar">
+<!ENTITY usePersona.label "Utilizar Persona">
+<!ENTITY usePersona.accesskey "P">
+<!ENTITY usePersona.tooltip "Utilice esta Persona">
