@@ -22,6 +22,7 @@
    - Contributor(s):
    -   Chris Beard <cbeard@mozilla.org>
    -   Myk Melez <myk@mozilla.org>
+   -   Jose E. Bolanos <jose@appcoast.com>
    -
    - Alternatively, the contents of this file may be used under the terms of
    - either the GNU General Public License Version 2 or later (the "GPL"), or
@@ -52,7 +53,7 @@
   </popupset>
 
   <menupopup id="menu_ToolsPopup">
-    <menu id="personas-menu" class="menu-iconic" label="&personas_app_title;" 
+    <menu id="personas-menu" class="menu-iconic" label="&personas_app_title;"
                 insertafter="menu_openAddons">
        <menupopup id="personas-selector-menu"
                   onpopupshowing="return PersonaController.onPopupShowing(event)"
@@ -91,5 +92,11 @@
                     onmousedown="PersonaController.onMenuButtonMouseDown()">
     </statusbarpanel>
   </statusbar>
+
+  <toolbarpalette id="BrowserToolbarPalette">
+    <toolbarbutton id="personas-toolbar-button" type="menu"
+      label="&personas_app_title;"
+      onmousedown="PersonaController.onToolbarButtonMouseDown();"/>
+  </toolbarpalette>
 
 </overlay>
