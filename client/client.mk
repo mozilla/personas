@@ -49,7 +49,7 @@ name              := personas
 # 1.4x0d200909191530, where "x0d" is required by a peculiarity of Mozilla's
 # version comparator (nsIVersionComparator) and the rest of the string is
 # a timestamp.
-version           := 1.6.1
+version           := 1.6.2
 
 # These variables control publication of the extension to a remote website.
 site_url_base     := https://ftp.mozilla.org/pub/mozilla.org/labs/personas
@@ -60,7 +60,7 @@ site_path_remote  := stage.mozilla.org:/home/ftp/pub/labs/personas
 # the extension is compatible.  These are used in both the install and update
 # manifests.
 fx_min_version    := 3.0
-fx_max_version    := 3.6.*
+fx_max_version    := 4.0.*
 
 tb_min_version    := 3.0b4
 tb_max_version    := 3.1.*
