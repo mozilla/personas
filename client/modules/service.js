@@ -133,6 +133,8 @@ let PersonaService = {
     this._prefs.observe("useAccentColor", this.onUseColorChanged,     this);
     this._prefs.observe("selected",       this.onSelectedModeChanged, this);
 
+    this._ltmSyncTimer = Cc["@mozilla.org/timer;1"].createInstance(Ci.nsITimer);
+
     // Get the initial persona specified by a cookie, if any.  The gallery
     // sets this when users download Personas from the Details page
     // for a specific persona, so that the user sees that persona when they
@@ -831,16 +833,24 @@ let PersonaService = {
   _getRandomPersonaFromCategory: function(aCategoryName) {
     // If we have the list of categories, use it to pick a random persona
     // from the selected category.
-    if (this.personas && this.personas.categories) {
-      let personas;
-      for each (let category in this.personas.categories) {
-        if (aCategoryName == category.name) {
-          personas = category.personas;
-          break;
+
+    if (this.personas) {
+      let personas = null;
+
+      if (aCategoryName == "new")
+        personas = this.personas.featured;
+      else if (aCategoryName == "popular")
+        personas = this.personas.popular;
+      else if (this.personas.categories) {
+        for each (let category in this.personas.categories) {
+          if (aCategoryName == category.name) {
+            personas = category.personas;
+            break;
+          }
         }
       }
-
-      return this._getRandomPersonaFromArray(personas);
+      if (personas)
+        return this._getRandomPersonaFromArray(personas);
     }
     return this.currentPersona;
   },
@@ -1014,6 +1024,8 @@ let PersonaService = {
   //**************************************************************************//
   // Lightweight Themes - Personas synchronization
 
+  _ltmSyncTimer : null,
+
   /**
    * Updates the add-on to reflect the changes from the Tools - Add-ons - Themes
    * dialog. If a lightweight theme is set, it is also set as the add-on's current
@@ -1022,11 +1034,28 @@ let PersonaService = {
   onLightweightThemeChanged: function() {
     let currentTheme = LightweightThemeManager.currentTheme;
 
+    this._ltmSyncTimer.cancel();
+
     if (currentTheme &&
         (currentTheme.id != this.currentPersona.id || this.selected == "default"))
       this.changeToPersona(currentTheme);
-    else if (!currentTheme && this.selected != "default")
-      this.changeToDefaultPersona();
+    else if (!currentTheme && this.selected != "default") {
+
+      // XXX: In Firefox 4, a persona change using the LightweightThemeManager causes
+      // two "lightweight-theme-changed" notifications to be fired instead of one:
+      // the first one with a null theme, and the second one with the actual theme.
+      // This causes the extension to get confused, as the first null theme causes
+      // it go change the persona to the default one, losing the "random" setting,
+      // amongst other things. To circumvent this, notifications with a "null" theme
+      // are delayed just a bit to allow the second notification to cancel it. If there's
+      // no second notification, then the null theme is applied.
+      // See: https://bugzilla.mozilla.org/show_bug.cgi?id=631803
+      let t = this;
+      this._ltmSyncTimer.initWithCallback(
+        { notify : function() { t.changeToDefaultPersona(); } },
+        100,
+        Ci.nsITimer.TYPE_ONE_SHOT);
+    }
   },
 
   //**************************************************************************//

@@ -1155,7 +1155,7 @@ let PersonaController = {
         // personas are enabled.
         if (!this._prefs.get("perwindow")) {
           popupmenu.appendChild(document.createElement("menuseparator"));
-          popupmenu.appendChild(this._createRandomItem(this._strings.get("new")));
+          popupmenu.appendChild(this._createRandomItem(this._strings.get("new"), "new"));
         }
 
         // Create an item that links to the gallery for this category.
@@ -1189,7 +1189,7 @@ let PersonaController = {
         // personas are enabled.
         if (!this._prefs.get("perwindow")) {
           popupmenu.appendChild(document.createElement("menuseparator"));
-          popupmenu.appendChild(this._createRandomItem(this._strings.get("popular")));
+          popupmenu.appendChild(this._createRandomItem(this._strings.get("popular"), "popular"));
         }
 
         // Create an item that links to the gallery for this category.
@@ -1311,14 +1311,14 @@ let PersonaController = {
     return item;
   },
 
-  _createRandomItem: function(category) {
+  _createRandomItem: function(aCategoryName, aCategory) {
     let item = document.createElement("menuitem");
 
     item.setAttribute("class", "menuitem-iconic");
-    item.setAttribute("label", this._strings.get("useRandomPersona", [category]));
+    item.setAttribute("label", this._strings.get("useRandomPersona", [aCategoryName]));
     item.setAttribute("oncommand", "PersonaController.onSelectPersona(event)");
     item.setAttribute("persona", "random");
-    item.setAttribute("category", category);
+    item.setAttribute("category", aCategory || aCategoryName);
 
     return item;
   },
