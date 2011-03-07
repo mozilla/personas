@@ -423,7 +423,7 @@ let PersonaService = {
     // Only refresh if the user is signed in at the moment.
     if (this.isUserSignedIn) {
       let url =
-        "http://" + this._prefs.get("host") + "/gallery/All/Favorites?json=1";
+        "https://" + this._prefs.get("host") + "/gallery/All/Favorites?json=1";
       let t = this;
       this._makeRequest(url, function(evt) { t.onFavoritesLoadComplete(evt) });
     }
