@@ -178,7 +178,7 @@ let PersonaService = {
           "description":null,
           "author":"Lee.Tom",
           "username":"Lee.Tom",
-          "detailURL":"http:\/\/www.getpersonas.com\/persona\/33",
+          "detailURL":"https:\/\/www.getpersonas.com\/persona\/33",
           "headerURL":"http:\/\/www.getpersonas.com\/static\/3\/3\/33\/tbox-groovy_blue.jpg",
           "footerURL":"http:\/\/www.getpersonas.com\/static\/3\/3\/33\/stbar-groovy_blue.jpg",
           "previewURL":"http:\/\/www.getpersonas.com\/static\/3\/3\/33\/preview.jpg",
