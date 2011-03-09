@@ -148,7 +148,7 @@ let PersonaController = {
   },
 
   get _siteURL() {
-    return "http://" + this._prefs.get("host") + "/";
+    return "https://" + this._prefs.get("host") + "/";
   },
 
   get _previewTimeout() {
